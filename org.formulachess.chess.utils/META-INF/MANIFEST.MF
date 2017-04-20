@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.formulachess.chess.utils; singleton:=true
+Bundle-Version: 1.0.0
+Bundle-ClassPath: .
+Bundle-Activator: org.formulachess.chess.utils.FormulachessPlugin
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.core.runtime
+Bundle-ActivationPolicy: lazy
+Eclipse-LazyStart: true
+Export-Package: org.formulachess.chess.utils,
+ org.formulachess.engine,
+ org.formulachess.pgn,
+ org.formulachess.pgn.ast,
+ org.formulachess.pgn.engine,
+ org.formulachess.util
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

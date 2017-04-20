@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.formulachess.chess.ui; singleton:=true
+Bundle-Version: 1.0.0
+Bundle-ClassPath: .
+Bundle-Activator: org.formulachess.ui.ChessUIPlugin
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Bundle-ActivationPolicy: lazy
+Eclipse-LazyStart: true
+Require-Bundle: org.eclipse.core.runtime,
+ org.formulachess.chess.utils,
+ org.eclipse.ui;bundle-version="[3.0.0,4.0.0)"
+Export-Package: org.formulachess.ui
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

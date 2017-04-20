@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<fragment>
+   <extension
+         id="problems1"
+         point="org.formulachess.chess.puzzles.chesspb">
+      <path
+            name="puzzles/303.zip" type="PROBLEM">
+      </path>
+   </extension>
+   <extension
+         id="problems2"
+         point="org.formulachess.chess.puzzles.chesspb">
+      <path
+            name="puzzles/solutions.pgn" type="PROBLEM">
+      </path>
+   </extension>
+   <extension
+         id="game1"
+         point="org.formulachess.chess.puzzles.chesspb">
+      <path name="puzzles/games.zip" type="PGN_GAME"/>
+   </extension>   
+   <extension
+         id="game2"
+         point="org.formulachess.chess.puzzles.chesspb">
+      <path
+            name="puzzles/frchamp.zip" type="PGN_GAME">
+      </path>
+   </extension>
+   <extension
+         id="game3"
+         point="org.formulachess.chess.puzzles.chesspb">
+      <path
+            name="http://www.echecs.asso.fr/Tournois/2007/ChFra/ChFra2007.pgn" type="PGN_GAME">
+      </path>
+   </extension>
+   <extension
+         id="game4"
+         point="org.formulachess.chess.puzzles.chesspb">
+      <path
+            name="puzzles/morkai-tremembe.pgn" type="PGN_GAME">
+      </path>
+   </extension>
+   <extension
+         id="game5"
+         point="org.formulachess.chess.puzzles.chesspb">
+      <path
+            name="puzzles/MemRR07.pgn" type="PGN_GAME">
+      </path>
+   </extension>
+   <extension
+         id="game6"
+         point="org.formulachess.chess.puzzles.chesspb">
+      <path
+            name="puzzles/Bobbytje.pgn" type="PGN_GAME">
+      </path>
+   </extension>
+    <extension
+         id="game6"
+         point="org.formulachess.chess.puzzles.chesspb">
+      <path
+            name="puzzles/echecs_com.pgn" type="PGN_GAME">
+      </path>
+   </extension>  
+</fragment>

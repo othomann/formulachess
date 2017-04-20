@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<project name="jikespg" default="jikespg" basedir=".">
+	<property name="jikespg_home" value="${basedir}" />
+	<property name="dest" value="${basedir}" />
+
+	<target name="jikespg">
+		<exec dir="${dest}" executable="${jikespg_home}/jikespg.exe" output="${dest}/log.txt">
+			<arg line="${dest}/pgn.g"/>
+		</exec>
+	</target>
+</project>

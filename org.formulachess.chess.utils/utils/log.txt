@@ -1,0 +1,67 @@
+
+ IBM Research Jikes Parser Generator            Mon Oct 03 22:54:19 2005
+%OPTIONS ACTION, AN=JavaAction.java, GP=java, 
+%OPTIONS FILE-PREFIX=java, ESCAPE=$, PREFIX=TokenName, OUTPUT-SIZE=125 ,
+%OPTIONS NOGOTO-DEFAULT, SINGLE-PRODUCTIONS, LALR=1 , TABLE=TIME , 
+%OPTIONS ERROR_MAPS 
+%OPTIONS first follow
+%OPTIONS TRACE=FULL ,
+%OPTIONS VERBOSE
+Options in effect:
+    ACTION  ACTFILE-NAME=JavaAction.java  BLOCKB=/.  BLOCKE=./  BYTE  CONFLICTS
+    DEFAULT=5  NODEBUG  DEFERRED  NOEDIT  ERROR-MAPS  ESCAPE=$  
+    FILE-PREFIX=java  FIRST  FOLLOW  GENERATE-PARSER=JAVA  NOGOTO-DEFAULT  
+    HACTFILE-NAME=javahdr.java  HBLOCKB=/:  HBLOCKE=:/  LALR=1  LIST  
+    MAX-DISTANCE=30  MIN-DISTANCE=3  NAMES=OPTIMIZED  NONT-CHECK  ORMARK=|  
+    OUTPUT-SIZE=125  PREFIX=TokenName  READ-REDUCE  NOSCOPES  NOSHIFT-DEFAULT
+    SINGLE-PRODUCTIONS  STACK-SIZE=128  STATES  SUFFIX=  TABLE=TIME  TRACE=FULL
+    VERBOSE  WARNINGS  XREF  
+
+
+This grammar is LALR(1).
+
+Number of Terminals: 32
+Number of Nonterminals: 19
+Number of Productions: 56
+Number of Single Productions: 1
+Number of Items: 196
+Number of States: 59
+Number of Shift actions: 41
+Number of Goto actions: 26
+Number of Shift/Reduce actions: 74
+Number of Goto/Reduce actions: 15
+Number of Reduce actions: 243
+Number of Shift-Reduce conflicts: 0
+Number of Reduce-Reduce conflicts: 0
+Number of Reductions saved by default: 241
+
+Length of Check table: 276
+Length of Action table: 229
+Number of entries in Action Table: 217
+Percentage of increase: 5.5%
+Highest symbol in Check Table: 51
+Storage Required for Tables: 734 Bytes, 1K
+Storage Required for Rules: 110 Bytes
+
+
+Actions in Compressed Tables:
+     Number of Shifts: 41
+     Number of Shift/Reduces: 74
+     Number of Gotos: 26
+     Number of Goto/Reduces: 15
+     Number of Reduces: 2
+     Number of Defaults: 31
+
+Error maps storage:
+    Storage required for ACTION_SYMBOLS_BASE map: 118 Bytes
+    Storage required for ACTION_SYMBOLS_RANGE map: 99 Bytes
+    Storage required for NACTION_SYMBOLS_BASE map: 118 Bytes
+    Storage required for NACTION_SYMBOLS_RANGE map: 52 Bytes
+    Storage required for SYMBOL_INDEX map: 52 Bytes
+    Storage required for STRING_BUFFER map: 680 Bytes
+
+***Warning: Base Check vector contains value > 127. 16-bit words used.
+Escaped symbol $eof is an invalid C variable.
+
+Escaped symbol $error is an invalid C variable.
+

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension-point id="chesspb" name="chesspb" schema="schema/chesspb.exsd"/>
+
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="%categoryViewName"
+            id="org.formulachess.chess.puzzles">
+      </category>
+      <view
+            name="%puzzleViewName"
+           	icon="icons/wk_16.gif"
+            category="org.formulachess.chess.puzzles"
+            class="org.formulachess.chess.puzzles.views.ChessPuzzleView"
+            id="org.formulachess.chess.puzzles.views.chessPuzzleView">
+      </view>
+   </extension>
+   
+
+  <extension
+        id="FormulachessApplication"
+        point="org.eclipse.core.runtime.applications">
+     <application>
+        <run class="org.formulachess.chess.puzzles.FormulachessApplication"/>
+     </application>
+  </extension>
+  <extension
+        point="org.eclipse.ui.perspectives">
+     <perspective
+           class="org.formulachess.chess.puzzles.PuzzlePerspective"
+           name="%perspectiveName"
+           id="org.formulachess.chess.puzzles.PuzzlePerspective"/>
+  </extension>
+
+	<extension
+	      point="org.eclipse.core.runtime.products"
+	      id="product">
+	   <product name="formulachess" application="org.formulachess.chess.puzzles.FormulachessApplication">
+	      <property name="appName" value="Formulachess"/>
+	      <property name="windowImage" value="icons/wk_16.gif"/>
+	      <property name="aboutImage" value="icons/wk_16.gif"/>
+	      <property
+	            name="aboutText"
+	            value="Welcome to formulachess"/>
+       <property
+             name="windowImages"
+             value="icons/wk_16.gif,icons/wk_32.gif"/>
+	   </product>
+	</extension>
+</plugin>

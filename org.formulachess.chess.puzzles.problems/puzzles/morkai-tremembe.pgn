@@ -1,0 +1,24 @@
+[Event "Partie jouée en différé"]
+[Site "Echecs.com"]
+[Date "2007.10.28"]
+[Time "23:14:51"]
+[Round "-"]
+[Variant ""]
+[White "morkai"]
+[Black "tremembe"]
+[WhiteElo "1588"]
+[BlackElo "1356"]
+[ECO ""]
+[TimeControl "10/10/0"]
+[Mode "Jeu en différé"]
+[Result "*"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 Nd4 4. Nxd4 exd4
+5. c3 c6 6. Ba4 dxc3 7. Nxc3 d6 8. d4 Be6
+9. O-O Nf6 10. Bg5 Be7 11. f4 Bc4 12. Re1 O-O
+13. Bc2 Re8 14. b3 Ba6 15. Qf3 Qb6 16. Rad1 c5
+17. Na4 Qc7 18. dxc5 dxc5 19. e5 Nd7 20. e6 fxe6
+21. Rxe6 Bxg5 22. Rxe8+ Rxe8 23. fxg5 Be2
+24. Qd5+ Kh8 25. Qxd7 Qe5 26. Re1 Qe3+ 27. Kh1 Rf8
+28. h3 Qf2 29. Qd2 Re8 30. Bd3 *
+

@@ -1,0 +1,40 @@
+grammar org.formulachess.chess.Pgn with org.eclipse.xtext.common.Terminals
+
+generate pgn "http://www.formulachess.org/pgn"
+
+Model:
+	database+=game*;
+	
+game:
+	tagsections movetext;
+
+tagsections:
+	{tagsections}
+	sections += tagsection*
+;
+
+tagsection:
+	'[' ID STRING ']'
+;
+
+movetext:
+	movesequence*
+;
+
+movesequence:
+	move variation
+	| move
+;
+
+variation :
+	'(' movesequence ')'
+;
+move :
+	number_indication whitemove
+	
+	| game_termination
+;
+
+game_termination :
+	'1-0' | '0-1' | '1/2-1/2'
+;

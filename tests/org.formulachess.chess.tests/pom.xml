@@ -3,6 +3,7 @@
   <groupId>org.formulachess.chess.tests</groupId>
   <artifactId>org.formulachess.chess.tests</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <packaging>eclipse-test-plugin</packaging>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <resources>
@@ -14,4 +15,17 @@
       </resource>
     </resources>
   </build>
+
+	<build>
+	        <plugins>
+	         <plugin>
+	                <groupId>org.eclipse.tycho</groupId>
+	                <artifactId>tycho-surefire-plugin</artifactId>
+	                <version>${tycho.version}</version>
+	                <configuration>
+			              <testSuite>org.formulachess.engine.tests.TestAllMoves</testSuite>
+	                </configuration>
+	         </plugin>
+	        </plugins>
+	</build>
 </project>

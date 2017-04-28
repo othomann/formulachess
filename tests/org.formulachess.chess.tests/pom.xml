@@ -3,18 +3,6 @@
   <groupId>org.formulachess.chess.tests</groupId>
   <artifactId>org.formulachess.chess.tests</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>eclipse-test-plugin</packaging>
-  <build>
-    <sourceDirectory>src</sourceDirectory>
-    <resources>
-      <resource>
-        <directory>src</directory>
-        <excludes>
-          <exclude>**/*.java</exclude>
-        </excludes>
-      </resource>
-    </resources>
-  </build>
 
 	<build>
 	        <plugins>

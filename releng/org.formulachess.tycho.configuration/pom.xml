@@ -13,11 +13,19 @@
 
  <repositories>
   <repository>
-   <id>mars</id>
+   <id>oxygen</id>
    <url>${oxygen-repo.url}</url>
    <layout>p2</layout>
   </repository>
  </repositories>
+
+<dependencies>
+<dependency>
+    <groupId>org.osgi</groupId>
+    <artifactId>org.osgi.annotation</artifactId>
+    <version>6.0.0</version>
+</dependency>
+</dependencies>
 
  <build>
   <plugins>
@@ -27,7 +35,6 @@
     <version>${tycho.version}</version>
     <extensions>true</extensions>
    </plugin>
-
    <plugin>
     <groupId>org.eclipse.tycho</groupId>
     <artifactId>target-platform-configuration</artifactId>
@@ -64,4 +71,41 @@
    </plugin>
   </plugins>
  </build>
+<profiles>
+	<profile>
+		<id>code-coverage</id>
+		<activation>
+			<!-- Enable jacoco only on plugin projects -->
+			<file>
+				<exists>META-INF/MANIFEST.MF</exists>
+			</file>
+		</activation>
+		<properties>
+			<jacoco.destFile>${project.basedir}/../target/jacoco.exec</jacoco.destFile>
+		</properties>
+		<build>
+			<plugins>
+				<plugin>
+					<groupId>org.jacoco</groupId>
+					<artifactId>jacoco-maven-plugin</artifactId>
+					<version>0.7.9</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>prepare-agent</goal>
+							</goals>
+							<configuration>
+								<includes>
+									<include>${coverage.filter}</include>
+								</includes>
+								<!-- Merge reports from all executions -->
+								<append>true</append>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</build>
+	</profile>
+</profiles>
 </project>

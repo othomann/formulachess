@@ -4,3 +4,4 @@ Bundle-Name: Applet
 Bundle-SymbolicName: org.formulachess.chess.applet
 Bundle-Version: 1.0.0
 Bundle-Localization: plugin
+Require-Bundle: org.formulachess.chess.utils;bundle-version="1.0.0"

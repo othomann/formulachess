@@ -24,11 +24,11 @@ public class PGNModel {
 	}
 
 	public void setIsReady(boolean value) {
-		this.model.isReady = value;
+		this.model.setIsReady(value);
 	}
-	
+
 	public boolean isReady() {
-		return this.model.isReady;
+		return this.model.isReady();
 	}	
 	
 	public void playMovesTill(Move[] moves, int index) {
@@ -40,7 +40,7 @@ public class PGNModel {
 			}
 			this.model.update();
 			this.currentMoveCounter = -1;
-		} else if (this.currentMoveCounter != index || this.model.moveNumber != index) {
+		} else if (this.currentMoveCounter != index || this.model.getMoveNumber() != index) {
 			if (this.fenNotation != null) {
 				this.model.initialize(this.fenNotation);
 			} else {

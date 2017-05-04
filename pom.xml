@@ -2,7 +2,6 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.formulachess.tycho</groupId>
   <artifactId>org.formulachess.tycho.root</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <parent>
     <groupId>org.formulachess.tycho</groupId>

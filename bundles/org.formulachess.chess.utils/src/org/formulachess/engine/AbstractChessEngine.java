@@ -2,15 +2,15 @@ package org.formulachess.engine;
 
 import java.util.Arrays;
 import java.util.Observable;
+import static org.formulachess.engine.Piece.*;
 
-
-public abstract class AbstractChessEngine extends Observable implements PieceConstants, ModelConstants, MoveConstants {
+public abstract class AbstractChessEngine extends Observable implements ModelConstants, MoveConstants {
 
 	public abstract long[] allMoves();
 	
-	public abstract long[] allMoves(int pieceType);
+	public abstract long[] allMoves(Piece pieceType);
 	
-	public abstract long[] allMoves(int pieceType, int startingSquare);
+	public abstract long[] allMoves(Piece pieceType, int startingSquare);
 	
 	public abstract long getLastMove();
 	
@@ -57,14 +57,14 @@ public abstract class AbstractChessEngine extends Observable implements PieceCon
 		this.notifyObservers();
 	}
 
-	public static int[] getEmptyBoard() {
-		int[] array = new int[64];
-		Arrays.fill(array, PieceConstants.EMPTY);
+	public static Piece[] getEmptyBoard() {
+		Piece[] array = new Piece[64];
+		Arrays.fill(array, Piece.EMPTY);
 		return array;
 	}
 
-	public static int[] getInitialPosition() {
-		return new int[] {
+	public static Piece[] getInitialPosition() {
+		return new Piece[] {
 				BLACK_ROOK, BLACK_KNIGHT, BLACK_BISHOP, BLACK_QUEEN, BLACK_KING, BLACK_BISHOP, BLACK_KNIGHT, BLACK_ROOK,
 				BLACK_PAWN,   BLACK_PAWN,   BLACK_PAWN,  BLACK_PAWN, BLACK_PAWN,   BLACK_PAWN,   BLACK_PAWN, BLACK_PAWN,
 				     EMPTY,        EMPTY,        EMPTY,       EMPTY,      EMPTY,        EMPTY,        EMPTY,      EMPTY,

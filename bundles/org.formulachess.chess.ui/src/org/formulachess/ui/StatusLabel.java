@@ -14,11 +14,11 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.formulachess.engine.BoardConstants;
 import org.formulachess.engine.ChessEngine;
 import org.formulachess.engine.MoveConstants;
-import org.formulachess.engine.PieceConstants;
+import org.formulachess.engine.Piece;
 import org.formulachess.pgn.engine.PGNMoveContainer;
+import static org.formulachess.engine.Turn.*;
 
 public class StatusLabel extends Composite implements Observer {
 
@@ -71,8 +71,8 @@ public class StatusLabel extends Composite implements Observer {
 		// check if it is mate or stalemate
 		long[] nextMoves = this.model.allMoves();
 		if (nextMoves.length == 0) {
-			if ((this.model.turn == BoardConstants.WHITE_TURN && !this.model.isWhiteInCheck())
-			|| (this.model.turn == BoardConstants.BLACK_TURN && !this.model.isBlackInCheck())) {
+			if ((this.model.getTurn() == WHITE_TURN && !this.model.isWhiteInCheck())
+			|| (this.model.getTurn() == BLACK_TURN && !this.model.isBlackInCheck())) {
 				this.status.setText(this.currentMessages.getString("statuslabel.status.stalemate")); //$NON-NLS-1$
 				return;
 			}
@@ -82,7 +82,7 @@ public class StatusLabel extends Composite implements Observer {
 			this.model.undoMoveWithoutNotification(lastMove);
 			
 			int startingSquare = (int) (lastMove & MoveConstants.STARTING_SQUARE_MASK);
-			final int piece = this.model.board[startingSquare];
+			final Piece piece = this.model.getBoard(startingSquare);
 			
 			long[] moves = this.model.allMoves(piece);
 			
@@ -90,12 +90,12 @@ public class StatusLabel extends Composite implements Observer {
 			this.model.playMoveWithoutNotification(lastMove);
 
 			StringBuffer moveNotation = new StringBuffer();
-			if (this.model.startingColor == BoardConstants.WHITE_TURN) {
-				moveNotation.append(this.model.moveNumber / 2 + 1);
+			if (this.model.getStartingColor() == WHITE_TURN) {
+				moveNotation.append(this.model.getMoveNumber() / 2 + 1);
 			} else {
-				moveNotation.append((this.model.moveNumber + 1) / 2 + 1);
+				moveNotation.append((this.model.getMoveNumber() + 1) / 2 + 1);
 			}
-			if (piece > PieceConstants.EMPTY) {
+			if (piece.isBlack()) {
 				moveNotation.append("..."); //$NON-NLS-1$
 			} else {
 				moveNotation.append(". "); //$NON-NLS-1$
@@ -108,7 +108,7 @@ public class StatusLabel extends Composite implements Observer {
 			}
 			this.status.setText(moveNotation.toString());
 		} else {
-			if (this.model.turn == BoardConstants.WHITE_TURN) {
+			if (this.model.getTurn() == WHITE_TURN) {
 				this.status.setText(this.currentMessages.getString("statuslabel.status.whitetoplay")); //$NON-NLS-1$
 			} else {
 				this.status.setText(this.currentMessages.getString("statuslabel.status.blacktoplay")); //$NON-NLS-1$

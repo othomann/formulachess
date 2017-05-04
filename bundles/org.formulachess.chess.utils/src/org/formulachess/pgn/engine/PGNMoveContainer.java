@@ -8,7 +8,10 @@ import java.util.ResourceBundle;
 import org.formulachess.engine.ChessEngine;
 import org.formulachess.engine.ModelConstants;
 import org.formulachess.engine.MoveConstants;
+import org.formulachess.engine.Piece;
 import org.formulachess.util.HashtableOfLong;
+
+import static org.formulachess.engine.Piece.*;
 
 public class PGNMoveContainer implements MoveConstants, ModelConstants {
 
@@ -106,9 +109,9 @@ public class PGNMoveContainer implements MoveConstants, ModelConstants {
 		long info = move;
 		int startingPosition = (int) (info & STARTING_SQUARE_MASK);
 		int endingPosition = (int) ((info & ENDING_SQUARE_MASK) >> ENDING_SQUARE_SHIFT);
-		int capturePiece = (int) ((info & CAPTURE_PIECE_MASK) >> CAPTURE_PIECE_SHIFT);
-		int promotion = (int) ((info & PROMOTION_PIECE_MASK) >> PROMOTION_PIECE_SHIFT);
-		switch(model.board[startingPosition]) {
+		Piece capturePiece = Piece.getPiece((int) ((info & CAPTURE_PIECE_MASK) >> CAPTURE_PIECE_SHIFT));
+		Piece promotion = Piece.getPiece((int) ((info & PROMOTION_PIECE_MASK) >> PROMOTION_PIECE_SHIFT));
+		switch(model.getBoard(startingPosition)) {
 			case WHITE_BISHOP :
 			case BLACK_BISHOP :
 				buffer.append(bundle.getString("piece.bishop")); //$NON-NLS-1$
@@ -140,6 +143,7 @@ public class PGNMoveContainer implements MoveConstants, ModelConstants {
 				if (capturePiece != EMPTY) {
 					buffer.append((char) ((startingPosition % 8) + 'a'));
 				}
+			default:
 		}
 		if (columnAmbiguity) {
 			buffer.append((char) ((startingPosition % 8) + 'a'));
@@ -152,7 +156,7 @@ public class PGNMoveContainer implements MoveConstants, ModelConstants {
 		}
 		buffer.append((char) ((endingPosition % 8) + 'a'));
 		buffer.append(8 - (endingPosition / 8));
-		if (promotion != 0) {
+		if (promotion != UNDEFINED) {
 			buffer.append("="); //$NON-NLS-1$
 			switch(promotion) {
 				case WHITE_BISHOP :
@@ -171,6 +175,7 @@ public class PGNMoveContainer implements MoveConstants, ModelConstants {
 				case BLACK_KNIGHT :
 					buffer.append(bundle.getString("piece.knight")); //$NON-NLS-1$
 					break;
+				default:
 			}
 		}
 		return buffer.toString();

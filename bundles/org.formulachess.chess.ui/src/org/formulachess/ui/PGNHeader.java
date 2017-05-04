@@ -19,11 +19,11 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
-import org.formulachess.engine.BoardConstants;
 import org.formulachess.engine.ChessEngine;
 import org.formulachess.pgn.ast.Move;
 import org.formulachess.pgn.ast.PGNGame;
 import org.formulachess.pgn.ast.TagSection;
+import static org.formulachess.engine.Turn.*;
 
 public class PGNHeader extends Composite implements Observer {
 
@@ -195,7 +195,7 @@ public class PGNHeader extends Composite implements Observer {
 			buffer = new StringBuffer();
 			appendToBuffer(buffer, this.whiteName);
 			gc.setFont(this.bold_font);
-			if (this.model.turn == BoardConstants.WHITE_TURN) {
+			if (this.model.getTurn() == WHITE_TURN) {
 				gc.drawString(">", 8, 25, true); //$NON-NLS-1$
 			}
 			gc.drawString(buffer.toString(), 39 + this.prefixOffset, 24, true);
@@ -204,7 +204,7 @@ public class PGNHeader extends Composite implements Observer {
 			gc.setFont(this.normal_font);
 			gc.drawString(this.blackPrefix, 39, 43, true);
 			gc.setFont(this.bold_font);
-			if (this.model.turn == BoardConstants.BLACK_TURN) {
+			if (this.model.getTurn() == BLACK_TURN) {
 				gc.drawString(">", 8, 45, true); //$NON-NLS-1$
 			}
 			buffer = new StringBuffer();

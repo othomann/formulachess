@@ -8,14 +8,15 @@ import java.util.ResourceBundle;
 import org.formulachess.engine.ChessEngine;
 import org.formulachess.engine.ModelConstants;
 import org.formulachess.engine.MoveConstants;
+import org.formulachess.engine.Piece;
 
 public class Converter implements MoveConstants, ModelConstants {
 
-	public static String moveToString(int[] board, long move) {
+	public static String moveToString(Piece[] board, long move) {
 		return moveToString(board, move, Locale.getDefault());
 	}
 
-	public static String moveToString(int[] board, long move, Locale locale) {
+	public static String moveToString(Piece[] board, long move, Locale locale) {
 		/*
 		 * 		buffer.append((char) ((this.endingPosition % 8) + 'a'));
 		 * 		buffer.append(8 - (this.endingPosition / 8));
@@ -70,7 +71,7 @@ public class Converter implements MoveConstants, ModelConstants {
 		try {
 			stringWriter = new StringWriter();
 			for (int i = 0; i < moves.length; i++) {
-				stringWriter.write(Converter.moveToString(model.board, moves[i]) + " "); //$NON-NLS-1$
+				stringWriter.write(Converter.moveToString(model.getBoard(), moves[i]) + " "); //$NON-NLS-1$
 			}
 			stringWriter.flush();
 			stringWriter.close();

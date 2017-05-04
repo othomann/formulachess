@@ -15,12 +15,10 @@ public class TestPgnParser extends TestCase {
 		super(name);
 	}
 	public static Test suite() {
-		if (true) {
-			return new TestSuite(TestPgnParser.class);
-		}
-		TestSuite suite= new TestSuite();
-		suite.addTest(new TestPgnParser("test002")); //$NON-NLS-1$
-		return suite;
+		return new TestSuite(TestPgnParser.class);
+//		TestSuite suite= new TestSuite();
+//		suite.addTest(new TestPgnParser("test002")); //$NON-NLS-1$
+//		return suite;
 	}
 	public void test001() {
 		final String source =

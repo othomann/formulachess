@@ -37,7 +37,7 @@ public class MateSearch {
 		MateMove[] next = createSearchableMoves(model, nextMoves, true);
 		loop: for (int i = 0; i < nextMovesLength; i++) {
 			long move = next[i].move;
-			MateNode current = result.add(next[i], model.turn, depth);
+			MateNode current = result.add(next[i], model.getTurn(), depth);
 			if ((depth == maximum && ((move & MoveConstants.CHECK_MASK) >> MoveConstants.CHECK_SHIFT != 0))
 					|| depth != maximum) {
 				int mobility = next[i].mobility;
@@ -68,7 +68,7 @@ public class MateSearch {
 						if (DEBUG) {
 							debug(opponentNextMoves[j], 2 * depth);
 						}
-						MateNode opponentCurrent = result.add(opponentNextMoves[j], model.turn, depth);
+						MateNode opponentCurrent = result.add(opponentNextMoves[j], model.getTurn(), depth);
 						result = opponentCurrent;
 						model.playMoveWithoutNotification(opponentMove);
 						if (!searchMate(model, depth + 1, maximum, result)) {

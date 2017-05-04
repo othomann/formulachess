@@ -181,7 +181,7 @@ public class Connection extends Composite implements Observer {
 			
 			int startingSquare = (int) (lastMove & MoveConstants.STARTING_SQUARE_MASK);
 	
-			long[] moves = this.model.allMoves(this.model.board[startingSquare]);
+			long[] moves = this.model.allMoves(this.model.getBoard(startingSquare));
 			
 			PGNMoveContainer container = new PGNMoveContainer(this.model, moves, this.currentLocale);
 			String moveNotation = container.getMoveNotation(lastMove);

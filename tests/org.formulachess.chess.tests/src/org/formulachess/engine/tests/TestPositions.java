@@ -9,12 +9,10 @@ public class TestPositions extends TestCase {
 		super(name);
 	}
 	public static Test suite() {
-		if (true) {
-			return new TestSuite(TestPositions.class);
-		}
-		TestSuite suite= new TestSuite();
-		suite.addTest(new TestPositions("test009")); //$NON-NLS-1$
-		return suite;
+		return new TestSuite(TestPositions.class);
+//		TestSuite suite= new TestSuite();
+//		suite.addTest(new TestPositions("test009")); //$NON-NLS-1$
+//		return suite;
 	}
 	public void test001() {
 		assertTrue("wrong square (" + Converter.squareToInt("a8") + ")", Converter.squareToInt("a8") == 0); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$

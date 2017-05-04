@@ -13,18 +13,20 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
-import org.formulachess.engine.BoardConstants;
-import org.formulachess.engine.PieceConstants;
+import org.formulachess.engine.Piece;
+import org.formulachess.engine.Turn;
+
+import static org.formulachess.engine.Turn.*;
 
 public class PromotionDialog {
 	public Rectangle screenSize;
-	private int promotionCode;
+	private Piece promotionCode;
 	private ImageFactory imageFactory;
 	private Shell dialog;
 	private Display display;
 	private Messages currentMessages;
 
-	public PromotionDialog(Shell shell, int color, ImageFactory imageFactory, Locale locale) {
+	public PromotionDialog(Shell shell, Turn color, ImageFactory imageFactory, Locale locale) {
 		this.dialog = new Shell(shell, SWT.CLOSE | SWT.APPLICATION_MODAL);
 		this.currentMessages = new Messages(locale);
 		this.dialog.setText(this.currentMessages.getString("dialog.promotion.title")); //$NON-NLS-1$
@@ -45,54 +47,54 @@ public class PromotionDialog {
 		this.dialog.dispose();
 	}
 	
-	public void initImageButtons(Shell shell, final int color) {
+	public void initImageButtons(Shell shell, final Turn color) {
 		Button queen = new Button(shell, SWT.PUSH);
 		Button rook = new Button(shell, SWT.PUSH);
 		Button knight = new Button(shell, SWT.PUSH);
 		Button bishop = new Button(shell, SWT.PUSH);
 		queen.addListener (SWT.Selection, new Listener () {
 			public void handleEvent (Event e) {
-				if (color == BoardConstants.WHITE_TURN) {
-					setPromotionCode(PieceConstants.WHITE_QUEEN);
+				if (color == WHITE_TURN) {
+					setPromotionCode(Piece.WHITE_QUEEN);
 				} else {
-					setPromotionCode(PieceConstants.BLACK_QUEEN);
+					setPromotionCode(Piece.BLACK_QUEEN);
 				}
 				close();
 			}
 		});
 		rook.addListener (SWT.Selection, new Listener () {
 			public void handleEvent (Event e) {
-				if (color == BoardConstants.WHITE_TURN) {
-					setPromotionCode(PieceConstants.WHITE_ROOK);
+				if (color == WHITE_TURN) {
+					setPromotionCode(Piece.WHITE_ROOK);
 				} else {
-					setPromotionCode(PieceConstants.BLACK_ROOK);
+					setPromotionCode(Piece.BLACK_ROOK);
 				}
 				close();
 			}
 		});
 		knight.addListener (SWT.Selection, new Listener () {
 			public void handleEvent (Event e) {
-				if (color == BoardConstants.WHITE_TURN) {
-					setPromotionCode(PieceConstants.WHITE_KNIGHT);
+				if (color == WHITE_TURN) {
+					setPromotionCode(Piece.WHITE_KNIGHT);
 				} else {
-					setPromotionCode(PieceConstants.BLACK_KNIGHT);
+					setPromotionCode(Piece.BLACK_KNIGHT);
 				}
 				close();
 			}
 		});
 		bishop.addListener (SWT.Selection, new Listener () {
 			public void handleEvent (Event e) {
-				if (color == BoardConstants.WHITE_TURN) {
-					setPromotionCode(PieceConstants.WHITE_BISHOP);
+				if (color == WHITE_TURN) {
+					setPromotionCode(Piece.WHITE_BISHOP);
 				} else {
-					setPromotionCode(PieceConstants.BLACK_BISHOP);
+					setPromotionCode(Piece.BLACK_BISHOP);
 				}
 				close();
 			}
 		});
 
 		
-		if (color == BoardConstants.WHITE_TURN) {
+		if (color == WHITE_TURN) {
 			queen.setImage(this.imageFactory.whiteQueen);
 			rook.setImage(this.imageFactory.whiteRook);
 			knight.setImage(this.imageFactory.whiteKnight);
@@ -126,11 +128,11 @@ public class PromotionDialog {
 		bishop.setLayoutData(formData4);
 	}
 
-	public void setPromotionCode(int promotionIndex) {
-		this.promotionCode = promotionIndex;
+	public void setPromotionCode(Piece promotionPiece) {
+		this.promotionCode = promotionPiece;
 	}
 
-	public int getPromotionCode() {
+	public Piece getPromotionCode() {
 		return this.promotionCode;
 	}
 	/**

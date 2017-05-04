@@ -18,12 +18,12 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.formulachess.engine.BoardConstants;
 import org.formulachess.engine.ChessEngine;
 import org.formulachess.engine.MoveConstants;
-import org.formulachess.engine.PieceConstants;
+import org.formulachess.engine.Piece;
+import org.formulachess.engine.Turn;
 
-public class BoardCanvas extends Canvas implements Settings, PieceConstants, Observer, BoardConstants {
+public class BoardCanvas extends Canvas implements Settings, Observer {
 		
 	class Controller implements PaintListener, MouseMoveListener, MouseTrackListener, MouseListener {
 		
@@ -69,7 +69,7 @@ public class BoardCanvas extends Canvas implements Settings, PieceConstants, Obs
 			}
 			BoardCanvas.this.dragImage = getSelectedPieceImage();
 			
-			BoardCanvas.this.possibleNextMoves = BoardCanvas.this.model.allMoves(BoardCanvas.this.model.board[BoardCanvas.this.selectedPieceIndex], BoardCanvas.this.selectedPieceIndex);
+			BoardCanvas.this.possibleNextMoves = BoardCanvas.this.model.allMoves(BoardCanvas.this.model.getBoard(BoardCanvas.this.selectedPieceIndex), BoardCanvas.this.selectedPieceIndex);
 			if (BoardCanvas.this.possibleNextMoves != null) {
 				int row, col;
 				for (int i = 0, max = BoardCanvas.this.possibleNextMoves.length; i < max; i++) {
@@ -159,7 +159,7 @@ public class BoardCanvas extends Canvas implements Settings, PieceConstants, Obs
 		 */
 		public void mouseUp(MouseEvent e) {
 			BoardCanvas.this.possibleNextMoves = null;
-			if (!BoardCanvas.this.model.isReady) {
+			if (!BoardCanvas.this.model.isReady()) {
 				BoardCanvas.this.drag = false;
 				BoardCanvas.this.setCursor(null);
 				BoardCanvas.this.selectedPieceIndex = -1;
@@ -184,7 +184,7 @@ public class BoardCanvas extends Canvas implements Settings, PieceConstants, Obs
 			} else {
 				BoardCanvas.this.endingSquareIndex = 7 - colOrigin + (7 - rowOrigin) * 8;
 			}
-			long[] moves = BoardCanvas.this.model.allMoves(BoardCanvas.this.model.board[BoardCanvas.this.selectedPieceIndex]);
+			long[] moves = BoardCanvas.this.model.allMoves(BoardCanvas.this.model.getBoard(BoardCanvas.this.selectedPieceIndex));
 			long[] selectedMoves = new long[4];
 			int selectedMoveIndex = 0;
 			loop: for (int i = 0, max = moves.length; i < max; i++) {
@@ -204,11 +204,11 @@ public class BoardCanvas extends Canvas implements Settings, PieceConstants, Obs
 			}
 			if (selectedMoveIndex > 0) {
 				if (selectedMoveIndex > 1) {
-					PromotionDialog dialog = new PromotionDialog(BoardCanvas.this.getShell(), BoardCanvas.this.model.turn, this.imageFactory, BoardCanvas.this.model.locale);
+					PromotionDialog dialog = new PromotionDialog(BoardCanvas.this.getShell(), BoardCanvas.this.model.getTurn(), this.imageFactory, BoardCanvas.this.model.locale);
 					dialog.open();
-					int code = dialog.getPromotionCode();
+					Piece code = dialog.getPromotionCode();
 					for (int i = 0; i < selectedMoveIndex; i++) {
-						if (((selectedMoves[i] & MoveConstants.PROMOTION_PIECE_MASK) >> MoveConstants.PROMOTION_PIECE_SHIFT) == code) {
+						if (((selectedMoves[i] & MoveConstants.PROMOTION_PIECE_MASK) >> MoveConstants.PROMOTION_PIECE_SHIFT) == code.getValue()) {
 							BoardCanvas.this.model.playMove(selectedMoves[i]);
 						}
 					}
@@ -351,7 +351,7 @@ public class BoardCanvas extends Canvas implements Settings, PieceConstants, Obs
 	}
 	
 	Image getSelectedPieceImage() {
-		switch(this.model.board[this.selectedPieceIndex]) {
+		switch(this.model.getBoard(this.selectedPieceIndex)) {
 				case WHITE_BISHOP :
 					return this.whiteBishop;
 				case WHITE_KING :
@@ -460,12 +460,12 @@ public class BoardCanvas extends Canvas implements Settings, PieceConstants, Obs
 				col = 7 - i / 8;
 			}
 			Image currentImage = null;
-			switch(this.model.board[i]) {
+			switch(this.model.getBoard(i)) {
 				case WHITE_BISHOP :
 					currentImage = this.whiteBishop;
 					break;
 				case WHITE_KING :
-					if (isMate && this.model.turn == BoardConstants.WHITE_TURN) {
+					if (isMate && this.model.getTurn() == Turn.WHITE_TURN) {
 						currentImage = this.whiteKingMate;
 					} else {
 						currentImage = this.whiteKing;
@@ -487,7 +487,7 @@ public class BoardCanvas extends Canvas implements Settings, PieceConstants, Obs
 					currentImage = this.blackBishop;
 					break;
 				case BLACK_KING :
-					if (isMate && this.model.turn == BoardConstants.BLACK_TURN) {
+					if (isMate && this.model.getTurn() == Turn.BLACK_TURN) {
 						currentImage = this.blackKingMate;
 					} else {
 						currentImage = this.blackKing;
@@ -505,6 +505,8 @@ public class BoardCanvas extends Canvas implements Settings, PieceConstants, Obs
 				case BLACK_ROOK :
 					currentImage = this.blackRook;
 					break;
+				case UNDEFINED :
+				case EMPTY:
 			}
 			if (currentImage != null) {
 				gc.drawImage(

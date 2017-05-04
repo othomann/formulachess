@@ -1,6 +1,6 @@
 package org.formulachess.engine;
 
-public interface ModelConstants extends PieceConstants {
+public interface ModelConstants {
 
 	int[] TAB_120 = {
 		-1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -29,9 +29,6 @@ public interface ModelConstants extends PieceConstants {
 	
 	int[] KNIGHT_POSITIONS = { 21, 19, 12, 8, -8, -12, -19, -21};
 	int[] KING_POSITIONS = { -11, -10, -9, -1, 1, 9, 10, 11};
-	
-	int WHITE_TURN = 1;
-	int BLACK_TURN = 0;
 	
 	long[] NO_MOVES = new long[0];
 }

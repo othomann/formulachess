@@ -10,7 +10,7 @@ public class Converter implements MoveConstants, ModelConstants {
 		 * 		buffer.append((char) ((this.endingPosition % 8) + 'a'));
 		 * 		buffer.append(8 - (this.endingPosition / 8));
 		 */
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		long info = move;
 		int startingPosition = (int) (info & STARTING_SQUARE_MASK);
 		int endingPosition = (int) ((info & ENDING_SQUARE_MASK) >> ENDING_SQUARE_SHIFT);
@@ -39,7 +39,7 @@ public class Converter implements MoveConstants, ModelConstants {
 		}
 		buffer.append((char) ((endingPosition % 8) + 'a'));
 		buffer.append(8 - (endingPosition / 8));
-		return buffer.toString();
+		return String.valueOf(buffer);
 	}
 	
 	public static int squareToInt(String s) {
@@ -53,10 +53,10 @@ public class Converter implements MoveConstants, ModelConstants {
 		if (squareNumber == 0) {
 			return "-";
 		}
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		buffer.append((char) ((squareNumber % 8) + 'a'));
 		buffer.append(8 - (squareNumber / 8));
-		return buffer.toString();
+		return String.valueOf(buffer);
 	}
 	
 	public static String allNextMoves(ChessEngine model, long[] moves) {

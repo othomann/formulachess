@@ -10,6 +10,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Olivier
@@ -18,6 +20,7 @@ import java.io.LineNumberReader;
  * Window>Preferences>Java>Code Generation>Code Template
  */
 public class FileConverter2 {
+	static Logger CurrentLogger = Logger.getLogger(FileConverter2.class.getCanonicalName());
 
 	public static void main(String[] args) {
 		try {
@@ -34,9 +37,9 @@ public class FileConverter2 {
 				counter++;
 			}
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			CurrentLogger.log(Level.SEVERE, "Should not happen", e); //$NON-NLS-1$
 		} catch (IOException e) {
-			e.printStackTrace();
+			CurrentLogger.log(Level.SEVERE, "Should not happen", e); //$NON-NLS-1$
 		}
 	}
 	
@@ -47,6 +50,6 @@ public class FileConverter2 {
 		if (i < 100) {
 			return "0" + i; //$NON-NLS-1$
 		}
-		return "" + i; //$NON-NLS-1$
+		return Integer.toString(i);
 	}
 }

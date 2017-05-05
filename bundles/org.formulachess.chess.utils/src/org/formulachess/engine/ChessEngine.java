@@ -1,5 +1,22 @@
 package org.formulachess.engine;
 
+import static org.formulachess.engine.Piece.BLACK_BISHOP;
+import static org.formulachess.engine.Piece.BLACK_KING;
+import static org.formulachess.engine.Piece.BLACK_KNIGHT;
+import static org.formulachess.engine.Piece.BLACK_PAWN;
+import static org.formulachess.engine.Piece.BLACK_QUEEN;
+import static org.formulachess.engine.Piece.BLACK_ROOK;
+import static org.formulachess.engine.Piece.EMPTY;
+import static org.formulachess.engine.Piece.UNDEFINED;
+import static org.formulachess.engine.Piece.WHITE_BISHOP;
+import static org.formulachess.engine.Piece.WHITE_KING;
+import static org.formulachess.engine.Piece.WHITE_KNIGHT;
+import static org.formulachess.engine.Piece.WHITE_PAWN;
+import static org.formulachess.engine.Piece.WHITE_QUEEN;
+import static org.formulachess.engine.Piece.WHITE_ROOK;
+import static org.formulachess.engine.Turn.BLACK_TURN;
+import static org.formulachess.engine.Turn.WHITE_TURN;
+
 import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
@@ -7,15 +24,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.formulachess.util.Util;
-import static org.formulachess.engine.Piece.*;
-import static org.formulachess.engine.Turn.*;
 
 public class ChessEngine extends AbstractChessEngine {
-	private static final long[] EMPTY_MOVES = new long[0];
-	private static final Logger logger = Logger.getLogger(ChessEngine.class.getName());
-
 	static final boolean DEBUG = true;
+	private static final long[] EMPTY_MOVES = new long[0];
+
 	private static final int HISTORY_DEFAULT_SIZE = 10;
+	private static final Logger logger = Logger.getLogger(ChessEngine.class.getName());
 
 	public static long perft(String FENNotation, int depth) {
 		ChessEngine model = new ChessEngine(Locale.getDefault(), FENNotation);
@@ -27,24 +42,20 @@ public class ChessEngine extends AbstractChessEngine {
 
 	private int blackKingSquare;
 	private Piece[] board;
+	private Messages currentMessages;
 	private int enPassantSquare;
 	private int fiftyMovesRuleNumber;
 	private long[] history;
-	private String[] moveHistory;
 	private boolean isReady;
 
+	public Locale locale;
+	private String[] moveHistory;
 	private int moveNumber;
 	private int movesCounter;
+
 	private long[] nextMoves;
+
 	private Turn startingColor;
-
-	public Turn getStartingColor() {
-		return startingColor;
-	}
-
-	public void setStartingColor(Turn startingColor) {
-		this.startingColor = startingColor;
-	}
 
 	private int startingMoveNumber;
 	private Turn turn;
@@ -52,42 +63,6 @@ public class ChessEngine extends AbstractChessEngine {
 	private boolean whiteCanCastleQueenSide;
 
 	private int whiteKingSquare;
-
-	public boolean isBlackCanCastleKingSide() {
-		return blackCanCastleKingSide;
-	}
-
-	public void setBlackCanCastleKingSide(boolean blackCanCastleKingSide) {
-		this.blackCanCastleKingSide = blackCanCastleKingSide;
-	}
-
-	public boolean isBlackCanCastleQueenSide() {
-		return blackCanCastleQueenSide;
-	}
-
-	public void setBlackCanCastleQueenSide(boolean blackCanCastleQueenSide) {
-		this.blackCanCastleQueenSide = blackCanCastleQueenSide;
-	}
-
-	public boolean isWhiteCanCastleKingSide() {
-		return whiteCanCastleKingSide;
-	}
-
-	public void setWhiteCanCastleKingSide(boolean whiteCanCastleKingSide) {
-		this.whiteCanCastleKingSide = whiteCanCastleKingSide;
-	}
-
-	public boolean isWhiteCanCastleQueenSide() {
-		return whiteCanCastleQueenSide;
-	}
-
-	public void setWhiteCanCastleQueenSide(boolean whiteCanCastleQueenSide) {
-		this.whiteCanCastleQueenSide = whiteCanCastleQueenSide;
-	}
-
-	private Messages currentMessages;
-
-	public Locale locale;
 
 	public ChessEngine(Locale currentLocale) {
 		this.locale = currentLocale;
@@ -502,6 +477,10 @@ public class ChessEngine extends AbstractChessEngine {
 		return moves;
 	}
 
+	public Turn getStartingColor() {
+		return startingColor;
+	}
+
 	public Turn getTurn() {
 		return this.turn;
 	}
@@ -512,6 +491,14 @@ public class ChessEngine extends AbstractChessEngine {
 
 	public void initializeToStartingPosition() {
 		decodeFENNotation("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"); //$NON-NLS-1$
+	}
+
+	public boolean isBlackCanCastleKingSide() {
+		return blackCanCastleKingSide;
+	}
+
+	public boolean isBlackCanCastleQueenSide() {
+		return blackCanCastleQueenSide;
 	}
 
 	public boolean isBlackInCheck() {
@@ -760,6 +747,14 @@ public class ChessEngine extends AbstractChessEngine {
 
 	public boolean isReady() {
 		return this.isReady;
+	}
+
+	public boolean isWhiteCanCastleKingSide() {
+		return whiteCanCastleKingSide;
+	}
+
+	public boolean isWhiteCanCastleQueenSide() {
+		return whiteCanCastleQueenSide;
 	}
 
 	public boolean isWhiteInCheck() {
@@ -1880,6 +1875,29 @@ public class ChessEngine extends AbstractChessEngine {
 		}
 	}
 
+	public void setBlackCanCastleKingSide(boolean blackCanCastleKingSide) {
+		this.blackCanCastleKingSide = blackCanCastleKingSide;
+	}
+
+	public void setBlackCanCastleQueenSide(boolean blackCanCastleQueenSide) {
+		this.blackCanCastleQueenSide = blackCanCastleQueenSide;
+	}
+
+	public void setBoard(int i, Piece piece) {
+		if (this.board == null) {
+			this.board = getEmptyBoard();
+		}
+		this.board[i] = piece;
+		switch (piece) {
+		case WHITE_KING:
+			this.whiteKingSquare = i;
+			break;
+		case BLACK_KING:
+			this.blackKingSquare = i;
+		default:
+		}
+	}
+
 	public void setBoard(Piece[] board) {
 		this.board = board;
 	}
@@ -1892,12 +1910,24 @@ public class ChessEngine extends AbstractChessEngine {
 		this.moveNumber = moveNumber;
 	}
 
+	public void setStartingColor(Turn startingColor) {
+		this.startingColor = startingColor;
+	}
+
 	public void setTurn(Turn turn) {
 		this.turn = turn;
 	}
 
+	public void setWhiteCanCastleKingSide(boolean whiteCanCastleKingSide) {
+		this.whiteCanCastleKingSide = whiteCanCastleKingSide;
+	}
+
+	public void setWhiteCanCastleQueenSide(boolean whiteCanCastleQueenSide) {
+		this.whiteCanCastleQueenSide = whiteCanCastleQueenSide;
+	}
+
 	public String toFENNotation() {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		int empty = 0;
 		for (int i = 0; i < 64; i++) {
 			if (i % 8 == 0 && i > 0) {
@@ -2029,11 +2059,11 @@ public class ChessEngine extends AbstractChessEngine {
 		}
 		buffer.append(" " + Converter.intToSquare(this.enPassantSquare)); //$NON-NLS-1$
 		buffer.append(" " + this.fiftyMovesRuleNumber + " " + this.startingMoveNumber); //$NON-NLS-1$ //$NON-NLS-2$
-		return buffer.toString();
+		return String.valueOf(buffer);
 	}
 
 	public String toString() {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		for (int i = 0; i < 64; i++) {
 			if (i % 8 == 0) {
 				if (i > 0) {
@@ -2125,7 +2155,7 @@ public class ChessEngine extends AbstractChessEngine {
 			buffer.append("- No castling"); //$NON-NLS-1$
 		}
 		buffer.append(Util.LINE_SEPARATOR);
-		return buffer.toString();
+		return String.valueOf(buffer);
 	}
 
 	public void undoMove() {
@@ -2265,20 +2295,5 @@ public class ChessEngine extends AbstractChessEngine {
 		}
 		this.moveNumber--;
 		this.startingMoveNumber--;
-	}
-
-	public void setBoard(int i, Piece piece) {
-		if (this.board == null) {
-			this.board = getEmptyBoard();
-		}
-		this.board[i] = piece;
-		switch (piece) {
-		case WHITE_KING:
-			this.whiteKingSquare = i;
-			break;
-		case BLACK_KING:
-			this.blackKingSquare = i;
-		default:
-		}
 	}
 }

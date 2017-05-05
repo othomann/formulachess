@@ -21,13 +21,6 @@ public class MateMove implements Comparable<MateMove> {
 	 */
 	public int compareTo(MateMove o) {
 		MateMove otherMove = o;
-		
-		if (this.mobility == 0) {
-			return -1;
-		}
-		if (otherMove.mobility == 0) {
-			return 1;
-		}
 		int category = category(this);
 		int otherCategory = category(otherMove);
 		
@@ -56,16 +49,29 @@ public class MateMove implements Comparable<MateMove> {
 		return this.notation; // + " mobility = " + this.mobility;
 	}
 
-	public boolean equals(Object obj) {
-		if (!(obj instanceof MateMove)) {
-			return false;
-		}
-		MateMove otherMove = (MateMove) obj;
-		return this.mobility == otherMove.mobility && this.move == otherMove.move;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + mobility;
+		result = prime * result + (int) (move ^ (move >>> 32));
+		return result;
 	}
 
-	public int hashCode() {
-		return (int) this.move + this.mobility;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MateMove other = (MateMove) obj;
+		if (mobility != other.mobility)
+			return false;
+		if (move != other.move)
+			return false;
+		return true;
 	}
 }
 

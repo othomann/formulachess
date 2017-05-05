@@ -59,7 +59,7 @@ public class MateNode implements Comparable<MateNode> {
 		return this.move.equals(((MateNode) obj).move);
 	}
 	
-	private void generarePGNForSingleNode(int number, Turn rootTurn, boolean detailFirst, StringBuffer buffer) {
+	private void generarePGNForSingleNode(int number, Turn rootTurn, boolean detailFirst, StringBuilder buffer) {
 		if (this.move != null) {
 			if (rootTurn == WHITE_TURN) {
 				final int moveNumber = (number / 2) + 1;
@@ -94,12 +94,12 @@ public class MateNode implements Comparable<MateNode> {
 	}	
 	
 	public String generatePGN() {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		generatePGN(-1, this.turn, true, buffer);
-		return buffer.toString();
+		return String.valueOf(buffer);
 	}
 	
-	public void generatePGN(int number, Turn rootTurn, boolean detailFirst, StringBuffer buffer) {
+	public void generatePGN(int number, Turn rootTurn, boolean detailFirst, StringBuilder buffer) {
 		ArrayList<MateNode> siblings = this.parent != null ? this.parent.children : this.children;
 		boolean hasSibling = siblings.size() != 1;
 		if (hasSibling) {
@@ -120,7 +120,7 @@ public class MateNode implements Comparable<MateNode> {
 		}
 	}
 
-	public void generatePGNForChildren(ArrayList<MateNode> subNodes, int number, Turn rootTurn, boolean detailFirst, StringBuffer buffer) {
+	public void generatePGNForChildren(ArrayList<MateNode> subNodes, int number, Turn rootTurn, boolean detailFirst, StringBuilder buffer) {
 		if (subNodes != null) {
 			for (int i = 0, max = subNodes.size(); i < max; i++) {
 				MateNode nextNode = subNodes.get(i);
@@ -129,7 +129,7 @@ public class MateNode implements Comparable<MateNode> {
 		}
 	}
 
-	public void generatePGNForSiblings(ArrayList<MateNode> subNodes, MateNode currentNode, int number, Turn rootTurn, StringBuffer buffer) {
+	public void generatePGNForSiblings(ArrayList<MateNode> subNodes, MateNode currentNode, int number, Turn rootTurn, StringBuilder buffer) {
 		if (subNodes != null) {
 			int i = 0;
 			MateNode nextNode = subNodes.get(i);
@@ -164,7 +164,7 @@ public class MateNode implements Comparable<MateNode> {
 		return this.parent == null;
 	}
 
-	private void printSingleNode(int number, Turn rootTurn, boolean detailFirst, StringBuffer buffer) {
+	private void printSingleNode(int number, Turn rootTurn, boolean detailFirst, StringBuilder buffer) {
 		if (this.move != null) {
 			if (rootTurn == WHITE_TURN) {
 				final int moveNumber = (number / 2) + 1;
@@ -222,9 +222,9 @@ public class MateNode implements Comparable<MateNode> {
 	}
 	
 	public String toString() {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		printSingleNode(1, this.turn, true, buffer);
-		return buffer.toString();
+		return String.valueOf(buffer);
 	}
 
 }

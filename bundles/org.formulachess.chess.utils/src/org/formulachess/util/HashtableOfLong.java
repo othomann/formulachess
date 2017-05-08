@@ -27,6 +27,7 @@ public final class HashtableOfLong implements Cloneable {
 			this.keys = keys;
 			this.index = keys.length;
 		}
+		@Override
 		public boolean hasMoreElements() {
 			String _entry = this.entry;
 			int i = this.index;
@@ -38,6 +39,7 @@ public final class HashtableOfLong implements Cloneable {
 			this.index = i;
 			return _entry != null;
 		}
+		@Override
 		public String nextElement() {
 			String _entry = this.entry;
 			int i = this.index;
@@ -57,12 +59,12 @@ public final class HashtableOfLong implements Cloneable {
 	
 	public static final long NO_VALUE = Long.MIN_VALUE;
 
-	public int elementSize; // number of elements in the table
+	private int elementSize; // number of elements in the table
 	
 	// to avoid using Enumerations, walk the individual tables skipping nulls
-	public String[] keyTable;
-	int threshold;
-	public long[] valueTable;
+	private String[] keyTable;
+	private int threshold;
+	private long[] valueTable;
 
 	public HashtableOfLong() {
 		this(13);
@@ -79,6 +81,7 @@ public final class HashtableOfLong implements Cloneable {
 		this.valueTable = new long[extraRoom];
 	}
 
+	@Override
 	public Object clone() throws CloneNotSupportedException {
 		HashtableOfLong result = (HashtableOfLong) super.clone();
 		result.elementSize = this.elementSize;
@@ -96,7 +99,7 @@ public final class HashtableOfLong implements Cloneable {
 
 	public boolean containsKey(String key) {
 
-		int index = Math.abs(key.hashCode()) % this.valueTable.length;
+		int index = key.hashCode() % this.valueTable.length;
 		String currentKey;
 		while ((currentKey = this.keyTable[index]) != null) {
 			if (key.equals(currentKey))
@@ -108,7 +111,7 @@ public final class HashtableOfLong implements Cloneable {
 
 	public long get(String key) {
 
-		int index = Math.abs(key.hashCode()) % this.valueTable.length;
+		int index = key.hashCode() % this.valueTable.length;
 		String currentKey;
 		while ((currentKey = this.keyTable[index]) != null) {
 			if (key.equals(currentKey))
@@ -123,7 +126,7 @@ public final class HashtableOfLong implements Cloneable {
 
 	public long put(String key, long value) {
 
-		int index = Math.abs(key.hashCode()) % this.valueTable.length;
+		int index = key.hashCode() % this.valueTable.length;
 		String currentKey;
 		while ((currentKey = this.keyTable[index]) != null) {
 			if (key.equals(currentKey))
@@ -174,6 +177,7 @@ public final class HashtableOfLong implements Cloneable {
 		return this.elementSize;
 	}
 
+	@Override
 	public String toString() {
 		String s = ""; //$NON-NLS-1$
 		String key;

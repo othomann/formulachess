@@ -1,10 +1,11 @@
 package org.formulachess.engine.tests;
 
+import static org.formulachess.engine.Turn.BLACK_TURN;
+import static org.formulachess.engine.Turn.WHITE_TURN;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.PrintStream;
-import java.io.StringWriter;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,7 +14,6 @@ import org.formulachess.engine.AbstractChessEngine;
 import org.formulachess.engine.ChessEngine;
 import org.formulachess.engine.Piece;
 import org.formulachess.pgn.engine.PGNMoveContainer;
-import static org.formulachess.engine.Turn.*;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -118,19 +118,11 @@ public class TestAllMoves extends TestCase {
 		model.setTurn(WHITE_TURN);
 		long[] moves = model.allMoves();
 		assertEquals(WRONG_SIZE, 8, moves.length);
-		StringWriter stringWriter = null;
-		try {
-			stringWriter = new StringWriter();
-			for (int i = 0; i < moves.length; i++) {
-				stringWriter.write(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
-			}
-			stringWriter.flush();
-			stringWriter.close();
-		} catch (IOException e) {
-			MyLogger.log(Level.SEVERE, "should not happen", e); //$NON-NLS-1$
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < moves.length; i++) {
+			builder.append(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
 		}
-		assertNotNull(stringWriter);
-		assertEquals("Wrong moves", "Rd6 Re6 Rf6 Rd5 Rf5 Rd4 Re4 Rf4 ", stringWriter.getBuffer().toString()); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("Wrong moves", "Rd6 Re6 Rf6 Rd5 Rf5 Rd4 Re4 Rf4 ", String.valueOf(builder)); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void test002() {
@@ -143,20 +135,12 @@ public class TestAllMoves extends TestCase {
 		model.setBlackCanCastleQueenSide(false);
 		long[] moves = model.allMoves();
 		assertEquals(WRONG_SIZE, 11, moves.length);
-		StringWriter stringWriter = null;
-		try {
-			stringWriter = new StringWriter();
-			for (int i = 0; i < moves.length; i++) {
-				stringWriter.write(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
-			}
-			stringWriter.flush();
-			stringWriter.close();
-		} catch (IOException e) {
-			MyLogger.log(Level.SEVERE, "should not happen", e); //$NON-NLS-1$
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < moves.length; i++) {
+			builder.append(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
 		}
-		assertNotNull(stringWriter);
 		assertEquals("Wrong moves", "Rb8 Ra7 Rb7 Cf3 Cd3 Cg4 Cc4 Cg6 Cc6 Cf7 Cd7 ", //$NON-NLS-1$ //$NON-NLS-2$
-				stringWriter.getBuffer().toString());
+				String.valueOf(builder));
 	}
 
 	public void test003() {
@@ -170,19 +154,11 @@ public class TestAllMoves extends TestCase {
 		model.setBlackCanCastleQueenSide(false);
 		long[] moves = model.allMoves();
 		assertEquals(WRONG_SIZE, 2, moves.length);
-		StringWriter stringWriter = null;
-		try {
-			stringWriter = new StringWriter();
-			for (int i = 0; i < moves.length; i++) {
-				stringWriter.write(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
-			}
-			stringWriter.flush();
-			stringWriter.close();
-		} catch (IOException e) {
-			MyLogger.log(Level.SEVERE, "should not happen", e); //$NON-NLS-1$
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < moves.length; i++) {
+			builder.append(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
 		}
-		assertNotNull(stringWriter);
-		assertEquals("Wrong moves", "Rb8 Rb7 ", stringWriter.getBuffer().toString()); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("Wrong moves", "Rb8 Rb7 ", String.valueOf(builder)); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void test004() {
@@ -210,21 +186,13 @@ public class TestAllMoves extends TestCase {
 		model.setTurn(WHITE_TURN);
 		long[] moves = model.allMoves();
 		assertEquals(WRONG_SIZE, 26, moves.length);
-		StringWriter stringWriter = null;
-		try {
-			stringWriter = new StringWriter();
-			for (int i = 0; i < moves.length; i++) {
-				stringWriter.write(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
-			}
-			stringWriter.flush();
-			stringWriter.close();
-		} catch (IOException e) {
-			MyLogger.log(Level.SEVERE, "should not happen", e); //$NON-NLS-1$
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < moves.length; i++) {
+			builder.append(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
 		}
-		assertNotNull(stringWriter);
 		assertEquals("Wrong moves", //$NON-NLS-1$
 				"Ta2 Ta3 Ta4 Ta5 Ta6 Ta7 Ta8 Tb1 Tc1 Td1 Rd2 Re2 Rf2 Rd1 Rf1 Rg1 Rc1 Th2 Th3 Th4 Th5 Th6 Th7 Th8 Tg1 Tf1 ", //$NON-NLS-1$
-				stringWriter.getBuffer().toString());
+				String.valueOf(builder));
 	}
 
 	public void test006() {
@@ -239,21 +207,13 @@ public class TestAllMoves extends TestCase {
 		model.setTurn(WHITE_TURN);
 		long[] moves = model.allMoves();
 		assertEquals(WRONG_SIZE, 24, moves.length);
-		StringWriter stringWriter = null;
-		try {
-			stringWriter = new StringWriter();
-			for (int i = 0; i < moves.length; i++) {
-				stringWriter.write(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
-			}
-			stringWriter.flush();
-			stringWriter.close();
-		} catch (IOException e) {
-			MyLogger.log(Level.SEVERE, "should not happen", e); //$NON-NLS-1$
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < moves.length; i++) {
+			builder.append(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
 		}
-		assertNotNull(stringWriter);
 		assertEquals("Wrong moves", //$NON-NLS-1$
 				"Ta2 Ta3 Ta4 Ta5 Ta6 Ta7 Ta8 Tb1 Tc1 Td1 Rd2 Re2 Rf2 Rd1 Rf1 Th2 Th3 Th4 Th5 Th6 Th7 Th8 Tg1 Tf1 ", //$NON-NLS-1$
-				stringWriter.getBuffer().toString());
+				String.valueOf(builder));
 	}
 
 	public void test007() {
@@ -264,19 +224,11 @@ public class TestAllMoves extends TestCase {
 		model.setTurn(WHITE_TURN);
 		long[] moves = model.allMoves();
 		assertEquals(WRONG_SIZE, 6, moves.length); 
-		StringWriter stringWriter = null;
-		try {
-			stringWriter = new StringWriter();
-			for (int i = 0; i < moves.length; i++) {
-				stringWriter.write(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
-			}
-			stringWriter.flush();
-			stringWriter.close();
-		} catch (IOException e) {
-			MyLogger.log(Level.SEVERE, "should not happen", e); //$NON-NLS-1$
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < moves.length; i++) {
+			builder.append(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
 		}
-		assertNotNull(stringWriter);
-		assertEquals("Wrong moves", "b4 Rd2 Re2 Rf2 Rd1 Rf1 ", stringWriter.getBuffer().toString()); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("Wrong moves", "b4 Rd2 Re2 Rf2 Rd1 Rf1 ", String.valueOf(builder)); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void test008() {
@@ -287,19 +239,12 @@ public class TestAllMoves extends TestCase {
 		model.setTurn(WHITE_TURN);
 		long[] moves = model.allMoves();
 		assertEquals(WRONG_SIZE, 7, moves.length); 
-		StringWriter stringWriter = null;
-		try {
-			stringWriter = new StringWriter();
-			for (int i = 0; i < moves.length; i++) {
-				stringWriter.write(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
-			}
-			stringWriter.flush();
-			stringWriter.close();
-		} catch (IOException e) {
-			MyLogger.log(Level.SEVERE, "should not happen", e); //$NON-NLS-1$
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < moves.length; i++) {
+			builder.append(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
 		}
-		assertNotNull(stringWriter);
-		assertEquals("Wrong moves", "b3 b4 Rd2 Re2 Rf2 Rd1 Rf1 ", stringWriter.getBuffer().toString()); //$NON-NLS-1$ //$NON-NLS-2$
+		
+		assertEquals("Wrong moves", "b3 b4 Rd2 Re2 Rf2 Rd1 Rf1 ", String.valueOf(builder)); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void test009() {
@@ -311,19 +256,11 @@ public class TestAllMoves extends TestCase {
 		model.setTurn(WHITE_TURN);
 		long[] moves = model.allMoves();
 		assertEquals(WRONG_SIZE, 8, moves.length); 
-		StringWriter stringWriter = null;
-		try {
-			stringWriter = new StringWriter();
-			for (int i = 0; i < moves.length; i++) {
-				stringWriter.write(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
-			}
-			stringWriter.flush();
-			stringWriter.close();
-		} catch (IOException e) {
-			MyLogger.log(Level.SEVERE, "should not happen", e); //$NON-NLS-1$
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < moves.length; i++) {
+			builder.append(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
 		}
-		assertNotNull(stringWriter);
-		assertEquals("Wrong moves", "b3 b4 a3 Rd2 Re2 Rf2 Rd1 Rf1 ", stringWriter.getBuffer().toString()); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("Wrong moves", "b3 b4 a3 Rd2 Re2 Rf2 Rd1 Rf1 ", String.valueOf(builder)); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void test010() {
@@ -336,19 +273,11 @@ public class TestAllMoves extends TestCase {
 		model.setTurn(WHITE_TURN);
 		long[] moves = model.allMoves();
 		assertEquals(WRONG_SIZE, 8, moves.length); 
-		StringWriter stringWriter = null;
-		try {
-			stringWriter = new StringWriter();
-			for (int i = 0; i < moves.length; i++) {
-				stringWriter.write(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
-			}
-			stringWriter.flush();
-			stringWriter.close();
-		} catch (IOException e) {
-			MyLogger.log(Level.SEVERE, "should not happen", e); //$NON-NLS-1$
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < moves.length; i++) {
+			builder.append(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
 		}
-		assertNotNull(stringWriter);
-		assertEquals("Wrong moves", "b3 b4 a3 Rd2 Re2 Rf2 Rd1 Rf1 ", stringWriter.getBuffer().toString()); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("Wrong moves", "b3 b4 a3 Rd2 Re2 Rf2 Rd1 Rf1 ", String.valueOf(builder)); //$NON-NLS-1$ //$NON-NLS-2$
 
 		for (int i = 0, max = moves.length; i < max; i++) {
 			model.playMove(moves[i]);
@@ -368,20 +297,12 @@ public class TestAllMoves extends TestCase {
 		playAllMoves("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", model, moves); //$NON-NLS-1$
 		moves = model.allMoves();
 		assertEquals(WRONG_SIZE, 20, moves.length); 
-		StringWriter stringWriter = null;
-		try {
-			stringWriter = new StringWriter();
-			for (int i = 0; i < moves.length; i++) {
-				stringWriter.write(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
-			}
-			stringWriter.flush();
-			stringWriter.close();
-		} catch (IOException e) {
-			MyLogger.log(Level.SEVERE, "should not happen", e); //$NON-NLS-1$
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < moves.length; i++) {
+			builder.append(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
 		}
-		assertNotNull(stringWriter);
 		assertEquals("Wrong moves", "a3 a4 b3 b4 c3 c4 d3 d4 e3 e4 f3 f4 g3 g4 h3 h4 Cc3 Ca3 Ch3 Cf3 ", //$NON-NLS-1$ //$NON-NLS-2$
-				stringWriter.getBuffer().toString());
+				String.valueOf(builder));
 	}
 
 	public void test012() {
@@ -392,21 +313,13 @@ public class TestAllMoves extends TestCase {
 		playAllMoves("rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq c6 0 2", model, moves); //$NON-NLS-1$
 		moves = repeatAllMoves(model, 1000);
 		assertEquals(WRONG_SIZE, 30, moves.length); 
-		StringWriter stringWriter = null;
-		try {
-			stringWriter = new StringWriter();
-			for (int i = 0; i < moves.length; i++) {
-				stringWriter.write(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
-			}
-			stringWriter.flush();
-			stringWriter.close();
-		} catch (IOException e) {
-			MyLogger.log(Level.SEVERE, "should not happen", e); //$NON-NLS-1$
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < moves.length; i++) {
+			builder.append(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
 		}
-		assertNotNull(stringWriter);
 		assertEquals("Wrong moves", //$NON-NLS-1$
 				"e5 a3 a4 b3 b4 c3 c4 d3 d4 f3 f4 g3 g4 h3 h4 Cc3 Ca3 De2 Df3 Dg4 Dh5 Re2 Fe2 Fd3 Fc4 Fb5 Fa6 Ce2 Ch3 Cf3 ", //$NON-NLS-1$
-				stringWriter.getBuffer().toString());
+				String.valueOf(builder));
 	}
 
 	public void test013() {

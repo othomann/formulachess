@@ -12,37 +12,34 @@ import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
-/**
- * @author oliviert
- */
 public class ImageFactory {
 
 	private static final int TRANSPARENCY = 150;
-	
-    public Image board;
-    public Image whiteKing;
+
+	public Image board;
+	public Image whiteKing;
 	public Image whiteKingMate;
-    public Image whiteQueen;
-    public Image whiteKnight;
-    public Image whiteRook;
-    public Image whiteBishop;
-    public Image whitePawn;
-    public Image blackKing;
-    public Image blackKingMate;
-    public Image blackQueen;
-    public Image blackKnight;
-    public Image blackRook;
-    public Image blackBishop;
-    public Image blackPawn;
-    public Image switchImage;
-    public Image control;
-    public Image possibleMove;
-    
-    public ImageFactory(Display display) {
+	public Image whiteQueen;
+	public Image whiteKnight;
+	public Image whiteRook;
+	public Image whiteBishop;
+	public Image whitePawn;
+	public Image blackKing;
+	public Image blackKingMate;
+	public Image blackQueen;
+	public Image blackKnight;
+	public Image blackRook;
+	public Image blackBishop;
+	public Image blackPawn;
+	public Image switchImage;
+	public Image control;
+	public Image possibleMove;
+
+	public ImageFactory(Display display) {
 		// init images
 		String imagesDirectory = "images/set3/"; //$NON-NLS-1$
-		this.board = new Image(display,ImageFactory.class.getResourceAsStream(imagesDirectory + "board.gif")); //$NON-NLS-1$
-		this.blackBishop =	new Image(display, ImageFactory.class.getResourceAsStream(imagesDirectory + "bb.gif")); //$NON-NLS-1$
+		this.board = new Image(display, ImageFactory.class.getResourceAsStream(imagesDirectory + "board.gif")); //$NON-NLS-1$
+		this.blackBishop = new Image(display, ImageFactory.class.getResourceAsStream(imagesDirectory + "bb.gif")); //$NON-NLS-1$
 		this.blackKing = new Image(display, ImageFactory.class.getResourceAsStream(imagesDirectory + "bk.gif")); //$NON-NLS-1$
 		this.blackKingMate = new Image(display, ImageFactory.class.getResourceAsStream(imagesDirectory + "bkmat.gif")); //$NON-NLS-1$
 		this.blackKnight = new Image(display, ImageFactory.class.getResourceAsStream(imagesDirectory + "bn.gif")); //$NON-NLS-1$
@@ -50,7 +47,7 @@ public class ImageFactory {
 		this.blackQueen = new Image(display, ImageFactory.class.getResourceAsStream(imagesDirectory + "bq.gif")); //$NON-NLS-1$
 		this.blackRook = new Image(display, ImageFactory.class.getResourceAsStream(imagesDirectory + "br.gif")); //$NON-NLS-1$
 
-		this.whiteBishop =	new Image(display, ImageFactory.class.getResourceAsStream(imagesDirectory + "wb.gif")); //$NON-NLS-1$
+		this.whiteBishop = new Image(display, ImageFactory.class.getResourceAsStream(imagesDirectory + "wb.gif")); //$NON-NLS-1$
 		this.whiteKing = new Image(display, ImageFactory.class.getResourceAsStream(imagesDirectory + "wk.gif")); //$NON-NLS-1$
 		this.whiteKingMate = new Image(display, ImageFactory.class.getResourceAsStream(imagesDirectory + "wkmat.gif")); //$NON-NLS-1$
 		this.whiteKnight = new Image(display, ImageFactory.class.getResourceAsStream(imagesDirectory + "wn.gif")); //$NON-NLS-1$
@@ -58,10 +55,10 @@ public class ImageFactory {
 		this.whiteQueen = new Image(display, ImageFactory.class.getResourceAsStream(imagesDirectory + "wq.gif")); //$NON-NLS-1$
 		this.whiteRook = new Image(display, ImageFactory.class.getResourceAsStream(imagesDirectory + "wr.gif")); //$NON-NLS-1$
 		this.switchImage = new Image(display, ImageFactory.class.getResourceAsStream(imagesDirectory + "switch.gif")); //$NON-NLS-1$
-		this.control  = new Image(display, ImageFactory.class.getResourceAsStream(imagesDirectory + "control.gif")); //$NON-NLS-1$
-		
-		PaletteData palette = new PaletteData(new RGB[] {new RGB(255, 0, 0)});
-		final int block = Settings.SET3[Settings.BOARD_WIDTH_INDEX];		
+		this.control = new Image(display, ImageFactory.class.getResourceAsStream(imagesDirectory + "control.gif")); //$NON-NLS-1$
+
+		PaletteData palette = new PaletteData(new RGB[] { new RGB(255, 0, 0) });
+		final int block = Settings.SET3[Settings.BOARD_WIDTH_INDEX];
 		ImageData imageData = new ImageData(block, block, 8, palette);
 		for (int y = 0; y < block; y++) {
 			for (int x = 0; x < block; x++) {
@@ -69,9 +66,9 @@ public class ImageFactory {
 			}
 		}
 		this.possibleMove = new Image(display, imageData);
-    }
-    
-    public void dispose() {
+	}
+
+	public void dispose() {
 		this.board.dispose();
 		this.blackBishop.dispose();
 		this.blackKing.dispose();
@@ -92,5 +89,5 @@ public class ImageFactory {
 		this.control.dispose();
 
 		this.possibleMove.dispose();
-    }
+	}
 }

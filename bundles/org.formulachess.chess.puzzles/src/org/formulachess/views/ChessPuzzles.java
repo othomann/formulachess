@@ -55,8 +55,8 @@ import org.formulachess.util.Util;
 
 public class ChessPuzzles {
 
-	public static final int[] BOARD_SETTINGS = Settings.SET3;
-    public static final String ID_VIEW = "org.formulachess.chess.puzzles.views.chessPuzzleView"; //$NON-NLS-1$
+	private static final int[] BOARD_SETTINGS = Settings.SET3;
+	public static final String ID_VIEW = "org.formulachess.chess.puzzles.views.chessPuzzleView"; //$NON-NLS-1$
 	private static final String HTTP_HEADER = "http://"; //$NON-NLS-1$
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 	Button backButton;

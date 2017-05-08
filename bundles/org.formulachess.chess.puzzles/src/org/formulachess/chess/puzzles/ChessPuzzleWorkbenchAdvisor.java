@@ -6,10 +6,12 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
 public class ChessPuzzleWorkbenchAdvisor extends WorkbenchAdvisor {
 
+	@Override
 	public String getInitialWindowPerspectiveId() {
 		return PuzzlePerspective.ID_PERSPECTIVE;
 	}
 
+	@Override
 	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
 		return new ChessPuzzleWorkbenchWindowsAdvisor(configurer);
 	}

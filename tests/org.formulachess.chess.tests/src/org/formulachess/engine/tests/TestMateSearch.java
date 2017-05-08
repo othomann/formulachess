@@ -1,21 +1,24 @@
 package org.formulachess.engine.tests;
 
+import static org.formulachess.engine.Turn.WHITE_TURN;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.formulachess.engine.ChessEngine;
+import org.formulachess.engine.MateNode;
+import org.formulachess.engine.MateSearch;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.formulachess.engine.MateNode;
-import org.formulachess.engine.MateSearch;
-import org.formulachess.engine.ChessEngine;
-import static org.formulachess.engine.Turn.*;
-
 public class TestMateSearch extends TestCase {
-
+	private static final Logger MyLogger = Logger.getLogger(TestMateSearch.class.getCanonicalName());
 	static int counter = 1;
 
 	static final private boolean DEBUG = true;
@@ -87,17 +90,11 @@ public class TestMateSearch extends TestCase {
 		if (DEBUG) {
 			System.out.println(String.valueOf(buffer));
 		}
-		PrintWriter writer = null;
-		try {
-			writer = new PrintWriter(new FileWriter("/Users/olivier/Documents/workspaces/echecs/org.formulachess.chess.tests/src/org/formulachess/engine/tests/solutions2.pgn", true)); //$NON-NLS-1$
+		try (PrintWriter writer = new PrintWriter(new FileWriter("/Users/olivier/Documents/workspaces/echecs/org.formulachess.chess.tests/src/org/formulachess/engine/tests/solutions2.pgn", true))) { //$NON-NLS-1$
 			writer.println(String.valueOf(buffer));
 			writer.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (writer != null) {
-				writer.close();
-			}
+		} catch(IOException e) {
+			MyLogger.log(Level.SEVERE, "Could not save mate", e); //$NON-NLS-1$
 		}
 	}
 	protected void setUp() {

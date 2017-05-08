@@ -62,11 +62,6 @@ public class ChessEngine extends AbstractChessEngine {
 	private static final int HISTORY_DEFAULT_SIZE = 10;
 	private static final Logger logger = Logger.getLogger(ChessEngine.class.getName());
 
-	public static long perft(String FENNotation, int depth) {
-		ChessEngine model = new ChessEngine(Locale.getDefault(), FENNotation);
-		return model.perft(depth);
-	}
-
 	private boolean blackCanCastleKingSide;
 	private boolean blackCanCastleQueenSide;
 
@@ -93,6 +88,11 @@ public class ChessEngine extends AbstractChessEngine {
 	private boolean whiteCanCastleQueenSide;
 
 	private int whiteKingSquare;
+
+	public static long perft(String fenNotation, int depth) {
+		ChessEngine model = new ChessEngine(Locale.getDefault(), fenNotation);
+		return model.perft(depth);
+	}
 
 	public ChessEngine(Locale currentLocale) {
 		this.locale = currentLocale;

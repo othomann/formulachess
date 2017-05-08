@@ -35,7 +35,7 @@ public interface Settings {
 			5     // FONT_HEIGHT_DELTA_INDEX
 	};
 	
-    int[] SET3 = {
+	int[] SET3 = {
 			0,   // BOARD_WIDTH_ORIGIN_INDEX
 			0,   // BOARD_HEIGHT_ORIGIN_INDEX
 			384, // BOARD_WIDTH_INDEX

@@ -204,7 +204,7 @@ public class BoardCanvas extends Canvas implements Settings, Observer {
 			}
 			if (selectedMoveIndex > 0) {
 				if (selectedMoveIndex > 1) {
-					PromotionDialog dialog = new PromotionDialog(BoardCanvas.this.getShell(), BoardCanvas.this.model.getTurn(), this.imageFactory, BoardCanvas.this.model.locale);
+					PromotionDialog dialog = new PromotionDialog(BoardCanvas.this.getShell(), BoardCanvas.this.model.getTurn(), this.imageFactory, BoardCanvas.this.model.getLocale());
 					dialog.open();
 					Piece code = dialog.getPromotionCode();
 					for (int i = 0; i < selectedMoveIndex; i++) {

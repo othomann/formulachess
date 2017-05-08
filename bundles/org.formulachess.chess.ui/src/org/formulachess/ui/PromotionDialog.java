@@ -1,6 +1,8 @@
 package org.formulachess.ui;
 
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
@@ -19,6 +21,7 @@ import org.formulachess.engine.Turn;
 import static org.formulachess.engine.Turn.*;
 
 public class PromotionDialog {
+	private static final Logger MyLogger = Logger.getLogger(PromotionDialog.class.getCanonicalName());
 	public Rectangle screenSize;
 	private Piece promotionCode;
 	private ImageFactory imageFactory;
@@ -146,8 +149,8 @@ public class PromotionDialog {
 			try {
 				if (!this.display.readAndDispatch())
 					this.display.sleep();
-			} catch (Throwable e) {
-				e.printStackTrace();
+			} catch (Exception e) {
+				MyLogger.log(Level.SEVERE, "Failed in dispatch", e);
 			}
 		}
 		this.display.update();

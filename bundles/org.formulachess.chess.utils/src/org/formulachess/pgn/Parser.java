@@ -1,6 +1,8 @@
 package org.formulachess.pgn;
 
 import java.util.Enumeration;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -28,8 +30,8 @@ import org.formulachess.util.Util;
  * Window>Preferences>Java>Code Generation.
  */
 public class Parser implements ParserBasicInformation, TerminalSymbols {
+	private static final Logger MyLogger = Logger.getLogger(Parser.class.getCanonicalName());
 	private static final boolean DEBUG = false;
-	public static final char[] EMPTY_NAG = new char[0];
 	//internal data for the automat 
 	protected final static int StackIncrement = 255;
 	protected int stateStackTop;
@@ -56,14 +58,14 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 	protected int lastErrorEndPosition;
 
 	// internal tables for the automaton.
-    public final static byte rhs[] =  {0,
+    private final static byte rhs[] =  {0,
         2,2,0,3,3,0,5,1,2,2,2,0,3,5,3,
         2,3,3,3,4,4,3,1,2,4,3,4,5,5,6,
         3,4,4,4,5,5,6,1,1,2,1,1,1,1,1,
         1,0,3,5,1,0,1,1,1,1
     };
 
-    public final static short check_table[] = {
+    private final static short check_table[] = {
         -8,-16,-17,1,0,-3,4,-5,7,8,
         9,10,11,12,0,-6,14,2,0,19,
         20,-4,21,22,-10,1,0,0,0,5,
@@ -94,7 +96,7 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
         0,0,0,0,0,0
     };
 
-    public final static char lhs[] = {0,
+    private final static char lhs[] = {0,
         40,41,41,42,43,43,45,46,44,25,25,25,26,26,26,
         29,29,29,49,49,49,50,48,18,18,18,18,18,18,18,
         18,18,18,18,18,18,18,18,18,13,13,13,13,13,13,
@@ -125,7 +127,7 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
         20,281,321,281,281,318,321,281,311
     };
     
-    final static char action[] = lhs;
+    private final static char action[] = lhs;
 
 	public final int getFirstToken() {
 		// Goal ::= '++' PGNDatabase
@@ -493,7 +495,7 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 	
 			parse();
 		} catch(java.io.IOException e) {
-			e.printStackTrace();
+			MyLogger.log(Level.SEVERE, "IOException", e);
 		}
 		return this.pgnDatabase;
 	}

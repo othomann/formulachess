@@ -282,11 +282,12 @@ public class Scanner implements TerminalSymbols {
 								if (this.source[this.currentPosition - 2] != '1') {
 									return TokenNameERROR;
 								}
-								if ((this.source[this.currentPosition++] == '2')
-										&& (this.source[this.currentPosition++] == '-')
-										&& (this.source[this.currentPosition++] == '1')
-										&& (this.source[this.currentPosition++] == '/')
-										&& (this.source[this.currentPosition++] == '2')) {
+								if ((this.source[this.currentPosition] == '2')
+										&& (this.source[this.currentPosition+1] == '-')
+										&& (this.source[this.currentPosition+2] == '1')
+										&& (this.source[this.currentPosition+3] == '/')
+										&& (this.source[this.currentPosition+4] == '2')) {
+									this.currentPosition += 5;
 									return TokenNameDRAW;
 								}
 							} else {

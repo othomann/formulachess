@@ -59,7 +59,7 @@ public class Util {
 	 * If a length is specified (ie. if length != -1), only length chars
 	 * are returned. Otherwise all chars in the stream are returned.
 	 * Note this doesn't close the stream.
-	 * @throws IOException if a problem occured reading the stream.
+	 * @throws IOException if a problem occurred reading the stream.
 	 */
 	public static char[] getInputStreamAsCharArray(InputStream stream, int length, String encoding) throws IOException {
 		try (InputStreamReader reader = encoding == null ? new InputStreamReader(stream)

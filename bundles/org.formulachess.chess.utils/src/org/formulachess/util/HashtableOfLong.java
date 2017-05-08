@@ -98,7 +98,7 @@ public final class HashtableOfLong implements Cloneable {
 	}
 
 	public boolean containsKey(String key) {
-		int index = Math.abs(key.hashCode()) % this.valueTable.length;
+		int index = getIndex(key);
 		String currentKey;
 		while ((currentKey = this.keyTable[index]) != null) {
 			if (key.equals(currentKey))
@@ -109,7 +109,7 @@ public final class HashtableOfLong implements Cloneable {
 	}
 
 	public long get(String key) {
-		int index = Math.abs(key.hashCode()) % this.valueTable.length;
+		int index = getIndex(key);
 		String currentKey;
 		while ((currentKey = this.keyTable[index]) != null) {
 			if (key.equals(currentKey))
@@ -123,7 +123,7 @@ public final class HashtableOfLong implements Cloneable {
 	}
 
 	public long put(String key, long value) {
-		int index = Math.abs(key.hashCode()) % this.valueTable.length;
+		int index = getIndex(key);
 		String currentKey;
 		while ((currentKey = this.keyTable[index]) != null) {
 			if (key.equals(currentKey))
@@ -153,7 +153,7 @@ public final class HashtableOfLong implements Cloneable {
 	}
 
 	public long remove(String key) {
-		int index = Math.abs(key.hashCode()) % this.valueTable.length;
+		int index = getIndex(key);
 		String currentKey;
 		while ((currentKey = this.keyTable[index]) != null) {
 			if (key.equals(currentKey)) {
@@ -167,6 +167,17 @@ public final class HashtableOfLong implements Cloneable {
 			index = (index + 1) % this.keyTable.length;
 		}
 		return NO_VALUE;
+	}
+
+	private int getIndex(String key) {
+		int index = key.hashCode();
+		if (index == Integer.MIN_VALUE) {
+			return 0;
+		}
+		if (index < 0) {
+			return -index % this.valueTable.length;
+		}
+		return index % this.valueTable.length;
 	}
 
 	public int size() {

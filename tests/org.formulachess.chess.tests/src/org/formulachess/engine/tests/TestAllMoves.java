@@ -40,7 +40,7 @@ public class TestAllMoves extends TestCase {
 			try {
 				this.stream = new PrintStream(new FileOutputStream("testAllMoves.txt", true)); //$NON-NLS-1$
 			} catch (FileNotFoundException e) {
-				e.printStackTrace();
+				MyLogger.log(Level.SEVERE, "Could not create stream", e); //$NON-NLS-1$
 				return;
 			}
 			System.setOut(this.stream);

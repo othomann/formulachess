@@ -283,10 +283,10 @@ public class Scanner implements TerminalSymbols {
 									return TokenNameERROR;
 								}
 								if ((this.source[this.currentPosition++] == '2')
-									&& (this.source[this.currentPosition++] == '-')
-									&& (this.source[this.currentPosition++] == '1')
-									&& (this.source[this.currentPosition++] == '/')
-									&& (this.source[this.currentPosition++] == '2')) {
+										&& (this.source[this.currentPosition++] == '-')
+										&& (this.source[this.currentPosition++] == '1')
+										&& (this.source[this.currentPosition++] == '/')
+										&& (this.source[this.currentPosition++] == '2')) {
 									return TokenNameDRAW;
 								}
 							} else {
@@ -398,17 +398,18 @@ public class Scanner implements TerminalSymbols {
 		}
 	}
 
+	@Override
 	public String toString() {
 		if (this.startPosition == this.source.length)
 			return "EOF\n\n" + new String(this.source); //$NON-NLS-1$
 		if (this.currentPosition > this.source.length)
 			return "behind the EOF :-( ....\n\n" + new String(this.source); //$NON-NLS-1$
 	
-		char front[] = new char[this.startPosition];
+		char[] front = new char[this.startPosition];
 		System.arraycopy(this.source, 0, front, 0, this.startPosition);
 	
 		int middleLength = (this.currentPosition - 1) - this.startPosition + 1;
-		char middle[];
+		char[] middle;
 		if (middleLength > -1) {
 			middle = new char[middleLength];
 			System.arraycopy(
@@ -421,7 +422,7 @@ public class Scanner implements TerminalSymbols {
 			middle = new char[0];
 		}
 		
-		char end[] = new char[this.source.length - (this.currentPosition - 1)];
+		char[] end = new char[this.source.length - (this.currentPosition - 1)];
 		System.arraycopy(
 			this.source, 
 			(this.currentPosition - 1) + 1, 

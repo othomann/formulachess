@@ -193,25 +193,25 @@ public class ChessEngine extends AbstractChessEngine {
 			Piece currentPiece = this.board[i];
 			if (currentPiece == searchPieceType) {
 				switch (currentPiece) {
-				case BLACK_BISHOP:
-					moveBishop(i, false);
-					break;
-				case BLACK_KNIGHT:
-					moveKnight(i, false);
-					break;
-				case BLACK_ROOK:
-					moveRook(i, false);
-					break;
-				case BLACK_QUEEN:
-					moveQueen(i, false);
-					break;
-				case BLACK_KING:
-					moveBlackKing(i);
-					break;
-				case BLACK_PAWN:
-					moveBlackPawn(i);
-					break;
-				default:
+					case BLACK_BISHOP:
+						moveBishop(i, false);
+						break;
+					case BLACK_KNIGHT:
+						moveKnight(i, false);
+						break;
+					case BLACK_ROOK:
+						moveRook(i, false);
+						break;
+					case BLACK_QUEEN:
+						moveQueen(i, false);
+						break;
+					case BLACK_KING:
+						moveBlackKing(i);
+						break;
+					case BLACK_PAWN:
+						moveBlackPawn(i);
+						break;
+					default:
 				}
 			}
 		}
@@ -221,36 +221,40 @@ public class ChessEngine extends AbstractChessEngine {
 	private final long[] allBlackMoves(Piece searchPieceType, int startingSquare) {
 		this.movesCounter = 0;
 		switch (searchPieceType) {
-		case BLACK_BISHOP:
-			moveBishop(startingSquare, false);
-			break;
-		case BLACK_KNIGHT:
-			moveKnight(startingSquare, false);
-			break;
-		case BLACK_ROOK:
-			moveRook(startingSquare, false);
-			break;
-		case BLACK_QUEEN:
-			moveQueen(startingSquare, false);
-			break;
-		case BLACK_KING:
-			moveBlackKing(startingSquare);
-			break;
-		case BLACK_PAWN:
-			moveBlackPawn(startingSquare);
-		default:
+			case BLACK_BISHOP:
+				moveBishop(startingSquare, false);
+				break;
+			case BLACK_KNIGHT:
+				moveKnight(startingSquare, false);
+				break;
+			case BLACK_ROOK:
+				moveRook(startingSquare, false);
+				break;
+			case BLACK_QUEEN:
+				moveQueen(startingSquare, false);
+				break;
+			case BLACK_KING:
+				moveBlackKing(startingSquare);
+				break;
+			case BLACK_PAWN:
+				moveBlackPawn(startingSquare);
+				break;
+			default:
 		}
 		return getNextMoves();
 	}
 
+	@Override
 	public long[] allMoves() {
 		return this.turn == WHITE_TURN ? allWhiteMoves() : allBlackMoves();
 	}
 
+	@Override
 	public long[] allMoves(Piece pieceType) {
 		return this.turn == WHITE_TURN ? allWhiteMoves(pieceType) : allBlackMoves(pieceType);
 	}
 
+	@Override
 	public long[] allMoves(Piece pieceType, int startingSquare) {
 		return this.turn == WHITE_TURN ? allWhiteMoves(pieceType, startingSquare)
 				: allBlackMoves(pieceType, startingSquare);
@@ -262,24 +266,25 @@ public class ChessEngine extends AbstractChessEngine {
 			Piece currentPiece = this.board[i];
 			if (currentPiece != EMPTY) {
 				switch (currentPiece) {
-				case WHITE_BISHOP:
-					moveBishop(i, true);
-					break;
-				case WHITE_KNIGHT:
-					moveKnight(i, true);
-					break;
-				case WHITE_ROOK:
-					moveRook(i, true);
-					break;
-				case WHITE_QUEEN:
-					moveQueen(i, true);
-					break;
-				case WHITE_KING:
-					moveWhiteKing(i);
-					break;
-				case WHITE_PAWN:
-					moveWhitePawn(i);
-				default:
+					case WHITE_BISHOP:
+						moveBishop(i, true);
+						break;
+					case WHITE_KNIGHT:
+						moveKnight(i, true);
+						break;
+					case WHITE_ROOK:
+						moveRook(i, true);
+						break;
+					case WHITE_QUEEN:
+						moveQueen(i, true);
+						break;
+					case WHITE_KING:
+						moveWhiteKing(i);
+						break;
+					case WHITE_PAWN:
+						moveWhitePawn(i);
+						break;
+					default:
 				}
 			}
 		}
@@ -292,24 +297,25 @@ public class ChessEngine extends AbstractChessEngine {
 			Piece currentPiece = this.board[i];
 			if (currentPiece == searchPieceType) {
 				switch (currentPiece) {
-				case WHITE_BISHOP:
-					moveBishop(i, true);
-					break;
-				case WHITE_KNIGHT:
-					moveKnight(i, true);
-					break;
-				case WHITE_ROOK:
-					moveRook(i, true);
-					break;
-				case WHITE_QUEEN:
-					moveQueen(i, true);
-					break;
-				case WHITE_KING:
-					moveWhiteKing(i);
-					break;
-				case WHITE_PAWN:
-					moveWhitePawn(i);
-				default:
+					case WHITE_BISHOP:
+						moveBishop(i, true);
+						break;
+					case WHITE_KNIGHT:
+						moveKnight(i, true);
+						break;
+					case WHITE_ROOK:
+						moveRook(i, true);
+						break;
+					case WHITE_QUEEN:
+						moveQueen(i, true);
+						break;
+					case WHITE_KING:
+						moveWhiteKing(i);
+						break;
+					case WHITE_PAWN:
+						moveWhitePawn(i);
+						break;
+					default:
 				}
 			}
 		}
@@ -319,24 +325,25 @@ public class ChessEngine extends AbstractChessEngine {
 	private final long[] allWhiteMoves(Piece searchPieceType, int startingSquare) {
 		this.movesCounter = 0;
 		switch (searchPieceType) {
-		case WHITE_BISHOP:
-			moveBishop(startingSquare, true);
-			break;
-		case WHITE_KNIGHT:
-			moveKnight(startingSquare, true);
-			break;
-		case WHITE_ROOK:
-			moveRook(startingSquare, true);
-			break;
-		case WHITE_QUEEN:
-			moveQueen(startingSquare, true);
-			break;
-		case WHITE_KING:
-			moveWhiteKing(startingSquare);
-			break;
-		case WHITE_PAWN:
-			moveWhitePawn(startingSquare);
-		default:
+			case WHITE_BISHOP:
+				moveBishop(startingSquare, true);
+				break;
+			case WHITE_KNIGHT:
+				moveKnight(startingSquare, true);
+				break;
+			case WHITE_ROOK:
+				moveRook(startingSquare, true);
+				break;
+			case WHITE_QUEEN:
+				moveQueen(startingSquare, true);
+				break;
+			case WHITE_KING:
+				moveWhiteKing(startingSquare);
+				break;
+			case WHITE_PAWN:
+				moveWhitePawn(startingSquare);
+				break;
+			default:
 		}
 		return getNextMoves();
 	}
@@ -457,6 +464,7 @@ public class ChessEngine extends AbstractChessEngine {
 		return board[index];
 	}
 
+	@Override
 	public long getLastMove() {
 		if (this.moveNumber < 0) {
 			return -1;
@@ -485,10 +493,12 @@ public class ChessEngine extends AbstractChessEngine {
 		return this.turn;
 	}
 
+	@Override
 	public void initialize(String fenNotation) {
 		decodeFENNotation(fenNotation);
 	}
 
+	@Override
 	public void initializeToStartingPosition() {
 		decodeFENNotation("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"); //$NON-NLS-1$
 	}

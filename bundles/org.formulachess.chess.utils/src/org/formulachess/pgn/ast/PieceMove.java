@@ -21,15 +21,15 @@ public class PieceMove extends Move {
 		this.pieceIdentification = pieceIdentification;
 	}
 
-	public void appendDetailed(StringBuffer buffer) {
+	public void appendDetailed(StringBuilder buffer) {
 		buffer.append(this.pieceIdentification);
 	}
 
-	public void appendSpecificEnd(StringBuffer buffer) {
+	public void appendSpecificEnd(StringBuilder buffer) {
 		// nothing to do
 	}
 
-	public void appendDetailed(StringBuffer buffer, ResourceBundle bundle) {
+	public void appendDetailed(StringBuilder buffer, ResourceBundle bundle) {
 		switch(this.pieceIdentification) {
 			case 'B' :
 				buffer.append(bundle.getString("piece.bishop")); //$NON-NLS-1$
@@ -49,7 +49,7 @@ public class PieceMove extends Move {
 		}
 	}
 
-	public void appendSpecificEnd(StringBuffer buffer, ResourceBundle bundle) {
+	public void appendSpecificEnd(StringBuilder buffer, ResourceBundle bundle) {
 		// nothing to do
 	}
 

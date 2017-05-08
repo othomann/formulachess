@@ -99,7 +99,7 @@ public abstract class Move extends ASTNode {
 	 * @see formulachess.pgn.ast.MateMove#getMoveNotation()
 	 */
 	public String getMoveNotation() {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		appendDetailed(buffer);
 		if (this.startingFile != 0) {
 			buffer.append(this.startingFile);	
@@ -127,7 +127,7 @@ public abstract class Move extends ASTNode {
 	 * @see formulachess.pgn.ast.MateMove#getMoveNotation()
 	 */
 	public String getMoveNotation(ResourceBundle bundle) {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		appendDetailed(buffer, bundle);
 		if (this.startingFile != 0) {
 			buffer.append(this.startingFile);	
@@ -151,13 +151,13 @@ public abstract class Move extends ASTNode {
 		return buffer.toString();
 	}
 
-	abstract void appendSpecificEnd(StringBuffer buffer);
+	abstract void appendSpecificEnd(StringBuilder buffer);
 
-	public abstract void appendDetailed(StringBuffer buffer);
+	public abstract void appendDetailed(StringBuilder buffer);
 
-	abstract void appendSpecificEnd(StringBuffer buffer, ResourceBundle bundle);
+	abstract void appendSpecificEnd(StringBuilder buffer, ResourceBundle bundle);
 
-	public abstract void appendDetailed(StringBuffer buffer, ResourceBundle bundle);
+	public abstract void appendDetailed(StringBuilder buffer, ResourceBundle bundle);
 	
 	public void addVariation(Variation variation) {
 		if (this.variations == null) {
@@ -184,8 +184,9 @@ public abstract class Move extends ASTNode {
 	}
 	
 
+	@Override
 	public String toString() {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		if (this.isWhiteMove) {
 			buffer.append(this.moveIndication).append('.').append(' ');
 		}
@@ -214,15 +215,7 @@ public abstract class Move extends ASTNode {
 		if (this.isCheckMate) {
 			buffer.append('#');
 		}
-/*		if (this.variations != null) {
-			buffer.append(LINE_SEPARATOR);
-			for (int i = 0, max = this.variationsCounter; i < max; i++) {
-				buffer
-					.append(this.variations[i])
-					.append(LINE_SEPARATOR);
-			}
-		}*/
-		return buffer.toString();
+		return String.valueOf(buffer);
 	}	
 	/**
 	 * Returns the moveIndication.
@@ -254,6 +247,7 @@ public abstract class Move extends ASTNode {
 	/**
 	 * @see java.lang.Object#equals(Object)
 	 */
+	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Move)) {
 			return false;
@@ -262,6 +256,7 @@ public abstract class Move extends ASTNode {
 		return this.getMoveNotation().equals(move.getMoveNotation()) && this.getMoveIndication() == move.getMoveIndication();
 	}
 
+	@Override
 	public int hashCode() {
 		return this.getMoveNotation().hashCode();
 	}
@@ -271,12 +266,10 @@ public abstract class Move extends ASTNode {
 		collection.add(this);
 		ASTNode parentNode = this.getParent();
 		while  (parentNode != null) {
-			if (((Move) parentNode).hasVariations()) {
-				if (variationsContainsLastMove(((Move) parentNode).getVariations(), (Move) collection.get(0))) {
-					parentNode = parentNode.getParent();
-					if (parentNode == null) {
-						break;
-					}
+			if (((Move) parentNode).hasVariations() && variationsContainsLastMove(((Move) parentNode).getVariations(), (Move) collection.get(0))) {
+				parentNode = parentNode.getParent();
+				if (parentNode == null) {
+					break;
 				}
 			}
 			collection.add(0, parentNode);
@@ -303,12 +296,12 @@ public abstract class Move extends ASTNode {
 		if (parentNode == null) {
 			return false;
 		}
-		Variation[] _variations = ((Move)parentNode).getVariations();
-		if (_variations.length == 0) {
+		Variation[] currentVariations = ((Move)parentNode).getVariations();
+		if (currentVariations.length == 0) {
 			return false;
 		}
-		for (int i = 0, max = _variations.length; i < max; i++) {
-			Move firstMove = _variations[i].getMove(0);
+		for (int i = 0, max = currentVariations.length; i < max; i++) {
+			Move firstMove = currentVariations[i].getMove(0);
 			if (firstMove != null && firstMove.equals(this)) {
 				return true;
 			}

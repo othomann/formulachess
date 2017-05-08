@@ -31,11 +31,11 @@ public class PawnMove extends Move {
 		this.promotedPiece = promotedPiece;
 	}
 	
-	public void appendDetailed(StringBuffer buffer) {
+	public void appendDetailed(StringBuilder buffer) {
 		// nothing to do
 	}
 
-	public void appendSpecificEnd(StringBuffer buffer) {
+	public void appendSpecificEnd(StringBuilder buffer) {
 		if (this.isPromotion) {
 			buffer
 				.append('=')
@@ -43,11 +43,11 @@ public class PawnMove extends Move {
 		}
 	}
 
-	public void appendDetailed(StringBuffer buffer, ResourceBundle bundle) {
+	public void appendDetailed(StringBuilder buffer, ResourceBundle bundle) {
 		// nothing to do
 	}
 
-	public void appendSpecificEnd(StringBuffer buffer, ResourceBundle bundle) {
+	public void appendSpecificEnd(StringBuilder buffer, ResourceBundle bundle) {
 		if (this.isPromotion) {
 			buffer.append('=');
 			switch(this.promotedPiece) {

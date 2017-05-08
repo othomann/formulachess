@@ -14,7 +14,7 @@ public class Castle extends Move {
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		if (this.isWhiteMove) {
 			buffer.append(this.moveIndication).append('.').append(' ');
 		}
@@ -39,7 +39,7 @@ public class Castle extends Move {
 	 * @see formulachess.pgn.ast.MateMove#getMoveNotation()
 	 */
 	public String getMoveNotation() {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		if (this.isKingSize) {
 			buffer.append("O-O"); //$NON-NLS-1$
 		} else {
@@ -55,19 +55,19 @@ public class Castle extends Move {
 		return getMoveNotation();
 	}
 	
-	public void appendDetailed(StringBuffer buffer) {
+	public void appendDetailed(StringBuilder buffer) {
 		// nothing to do
 	}
 	
-	public void appendSpecificEnd(StringBuffer buffer) {
+	public void appendSpecificEnd(StringBuilder buffer) {
 		// nothing to do
 	}
 
-	public void appendDetailed(StringBuffer buffer, ResourceBundle bundle) {
+	public void appendDetailed(StringBuilder buffer, ResourceBundle bundle) {
 		// nothing to do
 	}
 
-	public void appendSpecificEnd(StringBuffer buffer, ResourceBundle bundle) {
+	public void appendSpecificEnd(StringBuilder buffer, ResourceBundle bundle) {
 		// nothing to do
 	}
 

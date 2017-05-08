@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Observable;
 import static org.formulachess.engine.Piece.*;
 
-public abstract class AbstractChessEngine extends Observable implements ModelConstants, MoveConstants {
+public abstract class AbstractChessEngine extends Observable implements MoveConstants {
 
 	public abstract long[] allMoves();
 	

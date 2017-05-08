@@ -3,7 +3,7 @@ package org.formulachess.engine;
 import java.io.IOException;
 import java.io.StringWriter;
 
-public class Converter implements MoveConstants, ModelConstants {
+public class Converter implements MoveConstants {
 
 	public static String moveToString(Piece[] board, long move) {
 		/*

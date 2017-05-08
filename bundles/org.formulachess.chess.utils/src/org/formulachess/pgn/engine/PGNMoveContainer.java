@@ -1,19 +1,19 @@
 package org.formulachess.pgn.engine;
 
+import static org.formulachess.engine.Piece.EMPTY;
+import static org.formulachess.engine.Piece.UNDEFINED;
+
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 import org.formulachess.engine.ChessEngine;
-import org.formulachess.engine.ModelConstants;
 import org.formulachess.engine.MoveConstants;
 import org.formulachess.engine.Piece;
 import org.formulachess.util.HashtableOfLong;
 
-import static org.formulachess.engine.Piece.*;
-
-public class PGNMoveContainer implements MoveConstants, ModelConstants {
+public class PGNMoveContainer implements MoveConstants {
 
 	private HashtableOfLong pgnNotationContainer;
 	private HashtableOfLong currentLocaleContainer;

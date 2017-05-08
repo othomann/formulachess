@@ -6,11 +6,10 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import org.formulachess.engine.ChessEngine;
-import org.formulachess.engine.ModelConstants;
 import org.formulachess.engine.MoveConstants;
 import org.formulachess.engine.Piece;
 
-public class Converter implements MoveConstants, ModelConstants {
+public class Converter implements MoveConstants {
 
 	public static String moveToString(Piece[] board, long move) {
 		return moveToString(board, move, Locale.getDefault());

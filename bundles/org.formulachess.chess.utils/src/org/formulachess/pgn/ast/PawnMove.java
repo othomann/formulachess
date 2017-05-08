@@ -6,7 +6,7 @@ public class PawnMove extends Move {
 
 	private boolean isPromotion;
 	private char promotedPiece;
-	
+
 	public PawnMove() {
 		this.isCapture = false;
 		this.isCheck = false;
@@ -14,10 +14,12 @@ public class PawnMove extends Move {
 		this.isPromotion = false;
 		this.isWhiteMove = false;
 	}
-	
+
 	/**
 	 * Sets the isPromotion.
-	 * @param isPromotion The isPromotion to set
+	 * 
+	 * @param isPromotion
+	 *            The isPromotion to set
 	 */
 	public void setIsPromotion(boolean isPromotion) {
 		this.isPromotion = isPromotion;
@@ -25,44 +27,41 @@ public class PawnMove extends Move {
 
 	/**
 	 * Sets the promotedPiece.
-	 * @param promotedPiece The promotedPiece to set
+	 * 
+	 * @param promotedPiece
+	 *            The promotedPiece to set
 	 */
 	public void setPromotedPiece(char promotedPiece) {
 		this.promotedPiece = promotedPiece;
 	}
-	
-	public void appendDetailed(StringBuilder buffer) {
-		// nothing to do
-	}
 
-	public void appendSpecificEnd(StringBuilder buffer) {
-		if (this.isPromotion) {
-			buffer
-				.append('=')
-				.append(this.promotedPiece);
-		}
-	}
-
+	@Override
 	public void appendDetailed(StringBuilder buffer, ResourceBundle bundle) {
 		// nothing to do
 	}
 
+	@Override
 	public void appendSpecificEnd(StringBuilder buffer, ResourceBundle bundle) {
 		if (this.isPromotion) {
 			buffer.append('=');
-			switch(this.promotedPiece) {
-				case 'B' :
+			if (bundle == null) {
+				buffer.append(this.promotedPiece);
+			} else {
+				switch (this.promotedPiece) {
+				case 'B':
 					buffer.append(bundle.getString("piece.bishop")); //$NON-NLS-1$
 					break;
-				case 'N' :
+				case 'N':
 					buffer.append(bundle.getString("piece.knight")); //$NON-NLS-1$
 					break;
-				case 'R' :
+				case 'R':
 					buffer.append(bundle.getString("piece.rook")); //$NON-NLS-1$
 					break;
-				case 'Q' :
+				case 'Q':
 					buffer.append(bundle.getString("piece.queen")); //$NON-NLS-1$
 					break;
+				default:
+				}
 			}
 		}
 	}

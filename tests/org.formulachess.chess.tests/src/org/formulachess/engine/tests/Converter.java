@@ -10,16 +10,16 @@ import org.formulachess.engine.MoveConstants;
 import org.formulachess.engine.Piece;
 
 public class Converter implements MoveConstants {
+	
+	private Converter() {
+		// disable constructor
+	}
 
 	public static String moveToString(Piece[] board, long move) {
 		return moveToString(board, move, Locale.getDefault());
 	}
 
 	public static String moveToString(Piece[] board, long move, Locale locale) {
-		/*
-		 * 		buffer.append((char) ((this.endingPosition % 8) + 'a'));
-		 * 		buffer.append(8 - (this.endingPosition / 8));
-		 */
 		ResourceBundle bundle = ResourceBundle.getBundle("org.formulachess.engine.messages", locale); //$NON-NLS-1$
 		StringBuilder buffer = new StringBuilder();
 		int startingPosition = (int) (move & STARTING_SQUARE_MASK);
@@ -45,9 +45,9 @@ public class Converter implements MoveConstants {
 			case BLACK_KNIGHT :
 				buffer.append(bundle.getString("piece.knight")); //$NON-NLS-1$
 				break;
+			default:
 		}
-		buffer.append((char) ((endingPosition % 8) + 'a'));
-		buffer.append(8 - (endingPosition / 8));
+		buffer.append(intToSquare(endingPosition));
 		return String.valueOf(buffer);
 	}
 	
@@ -65,18 +65,12 @@ public class Converter implements MoveConstants {
 		return String.valueOf(buffer);
 	}
 	
-	public static String allNextMoves(ChessEngine model, long[] moves) {
-		StringWriter stringWriter = null;
-		try {
-			stringWriter = new StringWriter();
+	public static String allNextMoves(ChessEngine model, long[] moves) throws IOException {
+		try (StringWriter stringWriter = new StringWriter()){
 			for (int i = 0; i < moves.length; i++) {
 				stringWriter.write(Converter.moveToString(model.getBoard(), moves[i]) + " "); //$NON-NLS-1$
 			}
-			stringWriter.flush();
-			stringWriter.close();
-		} catch (IOException e) {
-			return "Could not retrieve all moves"; //$NON-NLS-1$
+			return String.valueOf(stringWriter);
 		}
-		return stringWriter.toString();
 	}
 }

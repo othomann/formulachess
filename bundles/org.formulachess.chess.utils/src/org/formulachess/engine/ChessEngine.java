@@ -138,6 +138,8 @@ public class ChessEngine extends AbstractChessEngine {
 		case 46:
 		case 47:
 			info |= (this.enPassantSquare - 31) << EN_PASSANT_SQUARE_SHIFT;
+			break;
+		default:
 		}
 		info |= (this.whiteCanCastleKingSide ? 1 : 0) << CASTLING_SHIFT;
 		info |= (this.whiteCanCastleQueenSide ? 1 : 0) << (CASTLING_SHIFT + 1);

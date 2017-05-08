@@ -9,22 +9,22 @@ public class Variation extends ASTNode {
 	}
 	
 	public String toString() {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append('(');
+		StringBuilder builder = new StringBuilder();
+		builder.append('(');
 		for (int i = 0, max = this.moves.length; i < max; i++) {
 			Move move = this.moves[i];
 			if (i == 0 && !move.isWhiteMove()) {
-				buffer
+				builder
 					.append(move.getMoveIndication())
 					.append("...") //$NON-NLS-1$
 					.append(move);
 			} else {
-				buffer.append(move);
+				builder.append(move);
 			}
-			buffer.append(' ');
+			builder.append(' ');
 		}
-		buffer.append(')');
-		return buffer.toString();
+		builder.append(')');
+		return String.valueOf(builder);
 	}
 	
 	public Move getMove(int i) {

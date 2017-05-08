@@ -8,6 +8,8 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
+import static org.formulachess.ui.Sets.*;
+
 public class RowCoordsCanvas extends Canvas {
 
 	class Controller implements PaintListener {
@@ -36,10 +38,10 @@ public class RowCoordsCanvas extends Canvas {
 		Display display = getDisplay();
 		this.settings = settings;
 		setBackground(display.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
-		this.preferredSize = new Point(settings[Settings.SWITCH_BUTTON_WIDTH_SIZE_INDEX], settings[Settings.BOARD_HEIGHT_INDEX]);
+		this.preferredSize = new Point(settings[SWITCH_BUTTON_WIDTH_SIZE_INDEX], settings[BOARD_HEIGHT_INDEX]);
 		setSize(this.preferredSize);
 		// init double buffer
-		this.doubleBuffer = new Image(display, settings[Settings.SWITCH_BUTTON_WIDTH_SIZE_INDEX], settings[Settings.BOARD_HEIGHT_INDEX]);
+		this.doubleBuffer = new Image(display, settings[SWITCH_BUTTON_WIDTH_SIZE_INDEX], settings[BOARD_HEIGHT_INDEX]);
 		
 		addPaintListener(new Controller());		
 	}
@@ -63,7 +65,7 @@ public class RowCoordsCanvas extends Canvas {
 		gc.fillRectangle(0,0,this.preferredSize.x, this.preferredSize.y);
 
 		gc.setForeground(display.getSystemColor(SWT.COLOR_DARK_GRAY));
-		Font font = new Font(display, "Courier", this.settings[Settings.FONT_SIZE_INDEX], SWT.BOLD); //$NON-NLS-1$
+		Font font = new Font(display, "Courier", this.settings[FONT_SIZE_INDEX], SWT.BOLD); //$NON-NLS-1$
 		gc.setFont(font);
 		FontMetrics metrics = gc.getFontMetrics();
 		if (this.whiteBottom) {
@@ -71,18 +73,18 @@ public class RowCoordsCanvas extends Canvas {
 				gc.drawString(
 					Integer.toString(8 - i),
 					10,
-					(this.settings[Settings.SQUARE_HEIGHT_INDEX] / 2) - (metrics.getDescent() * 2)
-						+ (i * this.settings[Settings.SQUARE_HEIGHT_INDEX]),
+					(this.settings[SQUARE_HEIGHT_INDEX] / 2) - (metrics.getDescent() * 2)
+						+ (i * this.settings[SQUARE_HEIGHT_INDEX]),
 					true);
 			}
 		} else {
 			for (int i = 0; i < 8; i++) {
 				gc.drawString(
 					Integer.toString(i + 1),
-					this.settings[Settings.FONT_WIDTH_DELTA_INDEX],
-					(this.settings[Settings.SQUARE_HEIGHT_INDEX] / 2)
+					this.settings[FONT_WIDTH_DELTA_INDEX],
+					(this.settings[SQUARE_HEIGHT_INDEX] / 2)
 						- (metrics.getDescent() * 2)
-						+ (i * this.settings[Settings.SQUARE_HEIGHT_INDEX]),
+						+ (i * this.settings[SQUARE_HEIGHT_INDEX]),
 					true);
 			}
 		}

@@ -58,7 +58,7 @@ public class ImageFactory {
 		this.control = new Image(display, ImageFactory.class.getResourceAsStream(imagesDirectory + "control.gif")); //$NON-NLS-1$
 
 		PaletteData palette = new PaletteData(new RGB[] { new RGB(255, 0, 0) });
-		final int block = Settings.SET3[Settings.BOARD_WIDTH_INDEX];
+		final int block = Sets.getSet(Sets.SET3_PATH)[Sets.BOARD_WIDTH_INDEX];
 		ImageData imageData = new ImageData(block, block, 8, palette);
 		for (int y = 0; y < block; y++) {
 			for (int x = 0; x < block; x++) {

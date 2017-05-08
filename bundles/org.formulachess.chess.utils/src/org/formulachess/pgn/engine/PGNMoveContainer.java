@@ -3,8 +3,7 @@ package org.formulachess.pgn.engine;
 import static org.formulachess.engine.Piece.EMPTY;
 import static org.formulachess.engine.Piece.UNDEFINED;
 
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -17,11 +16,11 @@ public class PGNMoveContainer implements MoveConstants {
 
 	private HashtableOfLong pgnNotationContainer;
 	private HashtableOfLong currentLocaleContainer;
-	private Hashtable<Locale, ResourceBundle> bundles;
+	private HashMap<Locale, ResourceBundle> bundles;
 	private long[] moves;
 	
 	public PGNMoveContainer(ChessEngine model, long[] moves, Locale currentLocale) {
-		this.bundles = new Hashtable<Locale, ResourceBundle>();
+		this.bundles = new HashMap<>();
 		this.moves = moves;
 		this.bundles.put(Locale.ENGLISH, ResourceBundle.getBundle("org.formulachess.engine.messages", Locale.ENGLISH)); //$NON-NLS-1$
 		this.bundles.put(currentLocale, ResourceBundle.getBundle("org.formulachess.engine.messages", currentLocale)); //$NON-NLS-1$
@@ -68,8 +67,7 @@ public class PGNMoveContainer implements MoveConstants {
 	}
 
 	public String getMoveNotation(long move) {
-		for (Enumeration<String> enumeration = this.currentLocaleContainer.keys(); enumeration.hasMoreElements(); ) {
-			String moveNotation = enumeration.nextElement();
+		for (String moveNotation : this.currentLocaleContainer) {
 			if (this.currentLocaleContainer.get(moveNotation) == move) {
 				return moveNotation;
 			}
@@ -78,8 +76,7 @@ public class PGNMoveContainer implements MoveConstants {
 	}
 
 	public String getPGNMoveNotation(long move) {
-		for (Enumeration<String> enumeration = this.pgnNotationContainer.keys(); enumeration.hasMoreElements(); ) {
-			String moveNotation = enumeration.nextElement();
+		for (String moveNotation : this.pgnNotationContainer) {
 			if (this.pgnNotationContainer.get(moveNotation) == move) {
 				return moveNotation;
 			}
@@ -100,12 +97,8 @@ public class PGNMoveContainer implements MoveConstants {
 	}
 	
 	private String moveToString(ChessEngine model, long move, Locale locale, boolean columnAmbiguity, boolean rowAmbiguity) {
-		/*
-		 * 		buffer.append((char) ((this.endingPosition % 8) + 'a'));
-		 * 		buffer.append(8 - (this.endingPosition / 8));
-		 */
 		ResourceBundle bundle = this.bundles.get(locale);
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder builder = new StringBuilder();
 		long info = move;
 		int startingPosition = (int) (info & STARTING_SQUARE_MASK);
 		int endingPosition = (int) ((info & ENDING_SQUARE_MASK) >> ENDING_SQUARE_SHIFT);
@@ -114,15 +107,15 @@ public class PGNMoveContainer implements MoveConstants {
 		switch(model.getBoard(startingPosition)) {
 			case WHITE_BISHOP :
 			case BLACK_BISHOP :
-				buffer.append(bundle.getString("piece.bishop")); //$NON-NLS-1$
+				builder.append(bundle.getString("piece.bishop")); //$NON-NLS-1$
 				break;
 			case WHITE_ROOK :
 			case BLACK_ROOK :
-				buffer.append(bundle.getString("piece.rook")); //$NON-NLS-1$
+				builder.append(bundle.getString("piece.rook")); //$NON-NLS-1$
 				break;
 			case WHITE_QUEEN :
 			case BLACK_QUEEN :
-				buffer.append(bundle.getString("piece.queen")); //$NON-NLS-1$
+				builder.append(bundle.getString("piece.queen")); //$NON-NLS-1$
 				break;
 			case WHITE_KING :
 			case BLACK_KING :
@@ -132,84 +125,83 @@ public class PGNMoveContainer implements MoveConstants {
 					}
 					return "O-O-O"; //$NON-NLS-1$
 				}
-				buffer.append(bundle.getString("piece.king")); //$NON-NLS-1$
+				builder.append(bundle.getString("piece.king")); //$NON-NLS-1$
 				break;
 			case WHITE_KNIGHT :
 			case BLACK_KNIGHT :
-				buffer.append(bundle.getString("piece.knight")); //$NON-NLS-1$
+				builder.append(bundle.getString("piece.knight")); //$NON-NLS-1$
 				break;
 			case WHITE_PAWN :
 			case BLACK_PAWN :
 				if (capturePiece != EMPTY) {
-					buffer.append((char) ((startingPosition % 8) + 'a'));
+					builder.append((char) ((startingPosition % 8) + 'a'));
 				}
 			default:
 		}
 		if (columnAmbiguity) {
-			buffer.append((char) ((startingPosition % 8) + 'a'));
+			builder.append((char) ((startingPosition % 8) + 'a'));
 		}
 		if (rowAmbiguity) {
-			buffer.append(8 - (startingPosition / 8));
+			builder.append(8 - (startingPosition / 8));
 		}
 		if (capturePiece != EMPTY) {
-			buffer.append("x"); //$NON-NLS-1$
+			builder.append("x"); //$NON-NLS-1$
 		}
-		buffer.append((char) ((endingPosition % 8) + 'a'));
-		buffer.append(8 - (endingPosition / 8));
+		builder.append((char) ((endingPosition % 8) + 'a'));
+		builder.append(8 - (endingPosition / 8));
 		if (promotion != UNDEFINED) {
-			buffer.append("="); //$NON-NLS-1$
+			builder.append("="); //$NON-NLS-1$
 			switch(promotion) {
 				case WHITE_BISHOP :
 				case BLACK_BISHOP :
-					buffer.append(bundle.getString("piece.bishop")); //$NON-NLS-1$
+					builder.append(bundle.getString("piece.bishop")); //$NON-NLS-1$
 					break;
 				case WHITE_ROOK :
 				case BLACK_ROOK :
-					buffer.append(bundle.getString("piece.rook")); //$NON-NLS-1$
+					builder.append(bundle.getString("piece.rook")); //$NON-NLS-1$
 					break;
 				case WHITE_QUEEN :
 				case BLACK_QUEEN :
-					buffer.append(bundle.getString("piece.queen")); //$NON-NLS-1$
+					builder.append(bundle.getString("piece.queen")); //$NON-NLS-1$
 					break;
 				case WHITE_KNIGHT :
 				case BLACK_KNIGHT :
-					buffer.append(bundle.getString("piece.knight")); //$NON-NLS-1$
+					builder.append(bundle.getString("piece.knight")); //$NON-NLS-1$
 					break;
 				default:
 			}
 		}
-		return buffer.toString();
+		return String.valueOf(builder);
 	}
-	
+	@Override
 	public String toString() {
 		return toString(true);
 	}
 	
 	public String toString(boolean sort) {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder builder = new StringBuilder();
 		if (sort) {
-			Enumeration<String> enumeration = this.currentLocaleContainer.keys();
 			String[] movesNotations = new String[this.currentLocaleContainer.size()];
 			int i = 0;
-			for (; enumeration.hasMoreElements(); ) {
-				movesNotations[i] = enumeration.nextElement();
+			for (String moveNotation : this.currentLocaleContainer) {
+				movesNotations[i] = moveNotation;
 				i++;
 			}
 			java.util.Arrays.sort(movesNotations);
 			i = 0;
 			for (int max = movesNotations.length; i < max; i++) {
-				buffer
+				builder
 					.append(movesNotations[i])
 					.append(" "); //$NON-NLS-1$
 			}
 		} else if (this.moves != null) {
 			for (int i = 0, max = this.moves.length; i < max; i++) {
-				buffer
+				builder
 					.append(getMoveNotation(this.moves[i]))
 					.append(" "); //$NON-NLS-1$
 			}
 		}
-		return buffer.toString();
+		return String.valueOf(builder);
 	}
 	
 }

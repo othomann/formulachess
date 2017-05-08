@@ -20,6 +20,7 @@ public class Board extends Composite {
 			this.board = board;
 		}
 		
+		@Override
 		public void mouseDown(MouseEvent e) {
 			this.board.boardCanvas.switchSide();
 			this.board.colCoordsCanvas.switchSide();
@@ -39,7 +40,7 @@ public class Board extends Composite {
 	
 	public Board(Composite parent, ChessEngine chessEngine, int[] settings, int whitePosition, ImageFactory imageFactory, int style) {
 		super(parent, style);
-		this.preferredSize = new Point(settings[Settings.BOARD_WIDTH_INDEX] + settings[Settings.SWITCH_BUTTON_WIDTH_SIZE_INDEX], settings[Settings.BOARD_HEIGHT_INDEX] + settings[Settings.SWITCH_BUTTON_HEIGHT_SIZE_INDEX]);
+		this.preferredSize = new Point(settings[Sets.BOARD_WIDTH_INDEX] + settings[Sets.SWITCH_BUTTON_WIDTH_SIZE_INDEX], settings[Sets.BOARD_HEIGHT_INDEX] + settings[Sets.SWITCH_BUTTON_HEIGHT_SIZE_INDEX]);
 		final Color backgroundColor = getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
 		this.setBackground(backgroundColor);
 		
@@ -79,9 +80,12 @@ public class Board extends Composite {
 		pack();
 	}
 	
+	@Override
 	public Point computeSize (int wHint, int hHint, boolean changed) {
 		return this.preferredSize;
 	}
+
+	@Override
 	public void dispose() {
 		this.boardCanvas.dispose();
 		this.colCoordsCanvas.dispose();

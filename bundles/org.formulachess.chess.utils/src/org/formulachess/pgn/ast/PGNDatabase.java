@@ -8,14 +8,14 @@ public class PGNDatabase extends ASTNode {
 	
 	public void addPGNGame(PGNGame pgnGame) {
 		if (this.gamesCounter == this.games.length) {
-			System.arraycopy(this.games, 0, (this.games = new PGNGame[this.gamesCounter * 2]), 0, this.gamesCounter);
+			System.arraycopy(this.games, 0, this.games = new PGNGame[this.gamesCounter * 2], 0, this.gamesCounter);
 		}
 		this.games[this.gamesCounter++] = pgnGame;
 	}
 
 	public PGNGame[] getPGNGames() {
 		if (this.gamesCounter != this.games.length) {
-			System.arraycopy(this.games, 0, (this.games = new PGNGame[this.gamesCounter]), 0, this.gamesCounter);
+			System.arraycopy(this.games, 0, this.games = new PGNGame[this.gamesCounter], 0, this.gamesCounter);
 		}
 		return this.games;
 	}
@@ -32,11 +32,11 @@ public class PGNDatabase extends ASTNode {
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder builder = new StringBuilder();
 		for (int i = 0, max = this.gamesCounter; i < max; i++) {
-			buffer.append(this.games[i]).append(LINE_SEPARATOR).append(LINE_SEPARATOR);
+			builder.append(this.games[i]).append(LINE_SEPARATOR).append(LINE_SEPARATOR);
 		}
-		return buffer.toString();
+		return String.valueOf(builder);
 	}
 
 

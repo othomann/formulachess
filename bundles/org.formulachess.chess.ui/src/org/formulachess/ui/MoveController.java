@@ -338,7 +338,7 @@ public class MoveController extends Composite {
 	}
 
 	public void update() {
-		this.moveIndex = MoveController.this.pgnModel.currentMoveCounter;
+		this.moveIndex = MoveController.this.pgnModel.getCurrentMoveCounter();
 		// update the table
 		if (this.moveIndex >= 0) {
 			this.table.setSelection(getRowIndex(this.moveIndex));

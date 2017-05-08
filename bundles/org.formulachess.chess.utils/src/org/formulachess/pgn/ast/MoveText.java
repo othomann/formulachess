@@ -33,17 +33,17 @@ public class MoveText extends ASTNode {
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder builder = new StringBuilder();
 		if (this.comment != null) {
-			buffer.append(this.comment);
-			buffer.append(LINE_SEPARATOR);
+			builder.append(this.comment);
+			builder.append(LINE_SEPARATOR);
 		}
 		for (int i = 0, max = this.moves == null? 0 : this.moves.length; i < max; i++) {
-			buffer.append(this.moves[i]).append(' ');
+			builder.append(this.moves[i]).append(' ');
 		}
-		buffer.append(LINE_SEPARATOR);
-		buffer.append(this.gameTermination);
-		return buffer.toString();
+		builder.append(LINE_SEPARATOR);
+		builder.append(this.gameTermination);
+		return String.valueOf(builder);
 	}
 
 	public Move getMove(int i) {

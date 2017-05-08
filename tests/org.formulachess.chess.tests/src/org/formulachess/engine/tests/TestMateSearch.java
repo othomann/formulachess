@@ -21,7 +21,7 @@ public class TestMateSearch extends TestCase {
 	private static final Logger MyLogger = Logger.getLogger(TestMateSearch.class.getCanonicalName());
 	static int counter = 1;
 
-	static final private boolean DEBUG = true;
+	private static final boolean DEBUG = true;
 	public static final String LINE_SEPARATOR = System.getProperty("line.separator");//$NON-NLS-1$
 	public static final String NEW_PGN_HEADER = "[Site \"?\"]\r\n" + //$NON-NLS-1$
 		"[Date \"????.??.??\"]\n" + //$NON-NLS-1$
@@ -36,13 +36,10 @@ public class TestMateSearch extends TestCase {
 		if (i < 100) {
 			return "0" + i; //$NON-NLS-1$
 		}
-		return "" + i; //$NON-NLS-1$
+		return Integer.toString(i);
 	}
 	public static Test suite() {
 		return new TestSuite(TestMateSearch.class);
-//		TestSuite suite= new TestSuite();
-//		suite.addTest(new TestMateSearch("_test661")); //$NON-NLS-1$
-//		return suite;
 	}
 
 	public TestMateSearch(String name) {
@@ -54,12 +51,12 @@ public class TestMateSearch extends TestCase {
 		long time = System.currentTimeMillis();
 		MateNode root = MateNode.newRoot(model.getTurn());
 		assertTrue("No mate found", MateSearch.searchMate(model, 1, maxDepth, root)); //$NON-NLS-1$
-		time = (System.currentTimeMillis() - time);
-		if (DEBUG) {
-			System.out.println("spent " + time); //$NON-NLS-1$
-			System.out.println(root);
-		}
+		time = System.currentTimeMillis() - time;
 		StringBuilder buffer = new StringBuilder();
+		if (DEBUG) {
+			buffer.append("spent ").append(time).append(LINE_SEPARATOR); //$NON-NLS-1$
+			buffer.append(root).append(LINE_SEPARATOR);
+		}
 		buffer
 			.append("[Event \"") //$NON-NLS-1$
 			.append(testName)
@@ -88,7 +85,7 @@ public class TestMateSearch extends TestCase {
 			buffer.append("0-1").append(LINE_SEPARATOR); //$NON-NLS-1$
 		}
 		if (DEBUG) {
-			System.out.println(String.valueOf(buffer));
+			MyLogger.log(Level.INFO, String.valueOf(buffer));
 		}
 		try (PrintWriter writer = new PrintWriter(new FileWriter("/Users/olivier/Documents/workspaces/echecs/org.formulachess.chess.tests/src/org/formulachess/engine/tests/solutions2.pgn", true))) { //$NON-NLS-1$
 			writer.println(String.valueOf(buffer));
@@ -96,9 +93,6 @@ public class TestMateSearch extends TestCase {
 		} catch(IOException e) {
 			MyLogger.log(Level.SEVERE, "Could not save mate", e); //$NON-NLS-1$
 		}
-	}
-	protected void setUp() {
-		// nothing to do
 	}
 	public void test001() {
 		checkMate("Position001", "3nkr2/3Rb1pp/p1B1ppn1/1p4P1/7P/6Q1/PPPNq3/1K6 w - - 0 1", 2); //$NON-NLS-1$ //$NON-NLS-2$

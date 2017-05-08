@@ -7,8 +7,8 @@ public abstract class ASTNode {
 
 	public static final String LINE_SEPARATOR = System.getProperty("line.separator"); //$NON-NLS-1$
 	
-	public ASTNode parent;
-	public List<Comment> comments;
+	private ASTNode parent;
+	private List<Comment> comments;
 
 	/**
 	 * Returns the parent.

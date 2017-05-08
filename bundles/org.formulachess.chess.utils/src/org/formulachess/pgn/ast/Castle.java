@@ -13,6 +13,7 @@ public class Castle extends Move {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();
 		if (this.isWhiteMove) {
@@ -38,6 +39,7 @@ public class Castle extends Move {
 	/**
 	 * @see formulachess.pgn.ast.MateMove#getMoveNotation()
 	 */
+	@Override
 	public String getMoveNotation() {
 		StringBuilder buffer = new StringBuilder();
 		if (this.isKingSize) {
@@ -51,22 +53,17 @@ public class Castle extends Move {
 		return buffer.toString();
 	}
 
+	@Override
 	public String getMoveNotation(ResourceBundle bundle) {
 		return getMoveNotation();
 	}
-	
-	public void appendDetailed(StringBuilder buffer) {
-		// nothing to do
-	}
-	
-	public void appendSpecificEnd(StringBuilder buffer) {
-		// nothing to do
-	}
 
+	@Override
 	public void appendDetailed(StringBuilder buffer, ResourceBundle bundle) {
 		// nothing to do
 	}
 
+	@Override
 	public void appendSpecificEnd(StringBuilder buffer, ResourceBundle bundle) {
 		// nothing to do
 	}

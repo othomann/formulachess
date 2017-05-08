@@ -1,6 +1,7 @@
 package org.formulachess.pgn;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.formulachess.pgn.ast.Comment;
 
@@ -20,17 +21,17 @@ public class Scanner implements TerminalSymbols {
 	public static final String UNTERMINATED_TAG_NAME = "Unterminated_Tag_Name"; //$NON-NLS-1$
 	public static final String UNTERMINATED_NAG = "Unterminated_NAG"; //$NON-NLS-1$
 
-	public char currentCharacter;
-	public int startPosition;
-	public int currentPosition;
-	public int initialPosition, eofPosition;
+	private char currentCharacter;
+	private int startPosition;
+	private int currentPosition;
+	private int eofPosition;
 
-	public char source[];
-	public char[] pieceIdentifications = new char[] { 'N', 'R', 'K', 'B', 'Q' };
-	public ArrayList<Comment> comments;
+	private char[] source;
+	private char[] pieceIdentifications = new char[] { 'N', 'R', 'K', 'B', 'Q' };
+	private List<Comment> comments;
 
 	public Scanner() {
-		this.comments = new ArrayList<Comment>();
+		this.comments = new ArrayList<>();
 	}
 
 	public int getNextToken() throws InvalidInputException {
@@ -364,10 +365,19 @@ public class Scanner implements TerminalSymbols {
 
 	public void resetTo(int begin, int end) {
 		//reset the scanner to a given position where it may rescan again
-		this.initialPosition = this.startPosition = this.currentPosition = begin;
+		this.startPosition = this.currentPosition = begin;
 		this.eofPosition = end < Integer.MAX_VALUE ? end + 1 : end;
 	}
 
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void clearComments() {
+		if (this.comments != null) {
+			this.comments.clear();
+		}
+	}
 	public char[] getCurrentTokenSource() {
 		char[] result;
 		int length;

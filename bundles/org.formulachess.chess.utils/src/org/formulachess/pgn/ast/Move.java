@@ -5,7 +5,7 @@ import java.util.ResourceBundle;
 
 public abstract class Move extends ASTNode {
 	private static final Variation[] EMPTY_VARIATIONS = new Variation[0];
-	
+
 	protected char startingFile;
 	protected char endingFile;
 	protected char startingRank;
@@ -19,21 +19,24 @@ public abstract class Move extends ASTNode {
 	protected boolean isCheck;
 	protected boolean isCheckMate;
 	protected boolean isCapture;
-	
+
 	public void setIsWhiteMove(boolean isWhiteMove) {
 		this.isWhiteMove = isWhiteMove;
 	}
-	
+
 	public void setComment(Comment comment) {
 		this.comment = comment;
 	}
-	
+
 	public void setMoveIndication(int moveIndication) {
 		this.moveIndication = moveIndication;
 	}
+
 	/**
 	 * Sets the isCheck.
-	 * @param isCheck The isCheck to set
+	 * 
+	 * @param isCheck
+	 *            The isCheck to set
 	 */
 	public void setIsCheck(boolean isCheck) {
 		this.isCheck = isCheck;
@@ -41,7 +44,9 @@ public abstract class Move extends ASTNode {
 
 	/**
 	 * Sets the isCheckMate.
-	 * @param isCheckMate The isCheckMate to set
+	 * 
+	 * @param isCheckMate
+	 *            The isCheckMate to set
 	 */
 	public void setIsCheckMate(boolean isCheckMate) {
 		this.isCheckMate = isCheckMate;
@@ -49,7 +54,9 @@ public abstract class Move extends ASTNode {
 
 	/**
 	 * Sets the endingFile.
-	 * @param endingFile The endingFile to set
+	 * 
+	 * @param endingFile
+	 *            The endingFile to set
 	 */
 	public void setEndingFile(char endingFile) {
 		this.endingFile = endingFile;
@@ -57,7 +64,9 @@ public abstract class Move extends ASTNode {
 
 	/**
 	 * Sets the endingRank.
-	 * @param endingRank The endingRank to set
+	 * 
+	 * @param endingRank
+	 *            The endingRank to set
 	 */
 	public void setEndingRank(char endingRank) {
 		this.endingRank = endingRank;
@@ -65,7 +74,9 @@ public abstract class Move extends ASTNode {
 
 	/**
 	 * Sets the startingFile.
-	 * @param startingFile The startingFile to set
+	 * 
+	 * @param startingFile
+	 *            The startingFile to set
 	 */
 	public void setStartingFile(char startingFile) {
 		this.startingFile = startingFile;
@@ -73,7 +84,9 @@ public abstract class Move extends ASTNode {
 
 	/**
 	 * Sets the startingRank.
-	 * @param startingRank The startingRank to set
+	 * 
+	 * @param startingRank
+	 *            The startingRank to set
 	 */
 	public void setStartingRank(char startingRank) {
 		this.startingRank = startingRank;
@@ -81,7 +94,9 @@ public abstract class Move extends ASTNode {
 
 	/**
 	 * Sets the isCapture.
-	 * @param isCapture The isCapture to set
+	 * 
+	 * @param isCapture
+	 *            The isCapture to set
 	 */
 	public void setIsCapture(boolean isCapture) {
 		this.isCapture = isCapture;
@@ -89,6 +104,7 @@ public abstract class Move extends ASTNode {
 
 	/**
 	 * Returns the isWhiteMove.
+	 * 
 	 * @return boolean
 	 */
 	public boolean isWhiteMove() {
@@ -99,30 +115,9 @@ public abstract class Move extends ASTNode {
 	 * @see formulachess.pgn.ast.MateMove#getMoveNotation()
 	 */
 	public String getMoveNotation() {
-		StringBuilder buffer = new StringBuilder();
-		appendDetailed(buffer);
-		if (this.startingFile != 0) {
-			buffer.append(this.startingFile);	
-		}
-		if (this.startingRank != 0) {
-			buffer.append(this.startingRank);
-		}
-		if (this.isCapture) {
-			buffer.append('x');
-		}
-		if (this.endingFile != 0) {
-			buffer.append(this.endingFile);
-		}
-		if (this.endingRank != 0) {
-			buffer.append(this.endingRank);
-		}
-		appendSpecificEnd(buffer);
-		if (this.isCheck) {
-			buffer.append('+');
-		}
-		return buffer.toString();
+		return getMoveNotation(null);
 	}
-	
+
 	/**
 	 * @see formulachess.pgn.ast.MateMove#getMoveNotation()
 	 */
@@ -130,7 +125,7 @@ public abstract class Move extends ASTNode {
 		StringBuilder buffer = new StringBuilder();
 		appendDetailed(buffer, bundle);
 		if (this.startingFile != 0) {
-			buffer.append(this.startingFile);	
+			buffer.append(this.startingFile);
 		}
 		if (this.startingRank != 0) {
 			buffer.append(this.startingRank);
@@ -148,23 +143,23 @@ public abstract class Move extends ASTNode {
 		if (this.isCheck) {
 			buffer.append('+');
 		}
+		if (this.isCheckMate) {
+			buffer.append('#');
+		}
 		return buffer.toString();
 	}
 
-	abstract void appendSpecificEnd(StringBuilder buffer);
-
-	public abstract void appendDetailed(StringBuilder buffer);
-
-	abstract void appendSpecificEnd(StringBuilder buffer, ResourceBundle bundle);
+	public abstract void appendSpecificEnd(StringBuilder buffer, ResourceBundle bundle);
 
 	public abstract void appendDetailed(StringBuilder buffer, ResourceBundle bundle);
-	
+
 	public void addVariation(Variation variation) {
 		if (this.variations == null) {
 			this.variations = new Variation[2];
 		}
 		if (this.variations.length == this.variationsCounter) {
-			System.arraycopy(this.variations, 0, (this.variations = new Variation[this.variationsCounter * 2]), 0, this.variationsCounter);
+			System.arraycopy(this.variations, 0, this.variations = new Variation[this.variationsCounter * 2], 0,
+					this.variationsCounter);
 		}
 		this.variations[this.variationsCounter++] = variation;
 		Move[] moves = variation.getMoves();
@@ -172,17 +167,17 @@ public abstract class Move extends ASTNode {
 			moves[0].setParent(this);
 		}
 	}
-	
+
 	public Variation[] getVariations() {
 		if (this.variations == null) {
 			return EMPTY_VARIATIONS;
 		}
 		if (this.variations.length != this.variationsCounter) {
-			System.arraycopy(this.variations, 0, (this.variations = new Variation[this.variationsCounter]), 0, this.variationsCounter);
+			System.arraycopy(this.variations, 0, this.variations = new Variation[this.variationsCounter], 0,
+					this.variationsCounter);
 		}
 		return this.variations;
 	}
-	
 
 	@Override
 	public String toString() {
@@ -190,35 +185,13 @@ public abstract class Move extends ASTNode {
 		if (this.isWhiteMove) {
 			buffer.append(this.moveIndication).append('.').append(' ');
 		}
-		appendDetailed(buffer);
-		if (this.startingFile != 0) {
-			buffer.append(this.startingFile);	
-		}
-		if (this.startingRank != 0) {
-			buffer.append(this.startingRank);
-		}
-		if (this.isCapture) {
-			buffer.append('x');
-		}
-		if (this.endingFile != 0) {
-			buffer.append(this.endingFile);
-		}
-		if (this.endingRank != 0) {
-			buffer.append(this.endingRank);
-		}
-		if (this.nag != null) {
-			buffer.append(this.nag);
-		}
-		if (this.isCheck) {
-			buffer.append('+');
-		}
-		if (this.isCheckMate) {
-			buffer.append('#');
-		}
+		buffer.append(getMoveNotation(null));
 		return String.valueOf(buffer);
-	}	
+	}
+
 	/**
 	 * Returns the moveIndication.
+	 * 
 	 * @return int
 	 */
 	public int getMoveIndication() {
@@ -227,6 +200,7 @@ public abstract class Move extends ASTNode {
 
 	/**
 	 * Returns the nag.
+	 * 
 	 * @return char[]
 	 */
 	public char[] getNag() {
@@ -235,7 +209,9 @@ public abstract class Move extends ASTNode {
 
 	/**
 	 * Sets the nag.
-	 * @param nag The nag to set
+	 * 
+	 * @param nag
+	 *            The nag to set
 	 */
 	public void setNag(char[] nag) {
 		this.nag = nag;
@@ -244,6 +220,7 @@ public abstract class Move extends ASTNode {
 	public boolean hasVariations() {
 		return this.variationsCounter != 0;
 	}
+
 	/**
 	 * @see java.lang.Object#equals(Object)
 	 */
@@ -253,20 +230,22 @@ public abstract class Move extends ASTNode {
 			return false;
 		}
 		Move move = (Move) obj;
-		return this.getMoveNotation().equals(move.getMoveNotation()) && this.getMoveIndication() == move.getMoveIndication();
+		return this.getMoveNotation().equals(move.getMoveNotation())
+				&& this.getMoveIndication() == move.getMoveIndication();
 	}
 
 	@Override
 	public int hashCode() {
 		return this.getMoveNotation().hashCode();
 	}
-	
+
 	public Move[] pathFromRoot() {
 		ArrayList<ASTNode> collection = new ArrayList<ASTNode>(this.getMoveIndication() * 2);
 		collection.add(this);
 		ASTNode parentNode = this.getParent();
-		while  (parentNode != null) {
-			if (((Move) parentNode).hasVariations() && variationsContainsLastMove(((Move) parentNode).getVariations(), (Move) collection.get(0))) {
+		while (parentNode != null) {
+			if (((Move) parentNode).hasVariations()
+					&& variationsContainsLastMove(((Move) parentNode).getVariations(), (Move) collection.get(0))) {
 				parentNode = parentNode.getParent();
 				if (parentNode == null) {
 					break;
@@ -277,9 +256,9 @@ public abstract class Move extends ASTNode {
 		}
 		Move[] result = new Move[collection.size()];
 		collection.toArray(result);
-		return result; 
+		return result;
 	}
-	
+
 	private boolean variationsContainsLastMove(Variation[] variationsArg, Move firstMove) {
 		for (int i = 0, max = variationsArg.length; i < max; i++) {
 			Variation variation = variationsArg[i];
@@ -290,13 +269,13 @@ public abstract class Move extends ASTNode {
 		}
 		return false;
 	}
-	
+
 	public boolean isVariationFirstMove() {
 		ASTNode parentNode = this.getParent();
 		if (parentNode == null) {
 			return false;
 		}
-		Variation[] currentVariations = ((Move)parentNode).getVariations();
+		Variation[] currentVariations = ((Move) parentNode).getVariations();
 		if (currentVariations.length == 0) {
 			return false;
 		}
@@ -308,8 +287,10 @@ public abstract class Move extends ASTNode {
 		}
 		return false;
 	}
+
 	/**
 	 * Returns the comment.
+	 * 
 	 * @return Comment
 	 */
 	public Comment getComment() {

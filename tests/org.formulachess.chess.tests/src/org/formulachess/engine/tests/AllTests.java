@@ -10,7 +10,7 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(TestAllMoves.class);
 		suite.addTestSuite(TestPgnParser.class);
 		suite.addTestSuite(TestPositions.class);
-//		suite.addTestSuite(TestMateSearch.class);
+		suite.addTestSuite(TestMateSearch.class);
 		return suite;
 	}
 }

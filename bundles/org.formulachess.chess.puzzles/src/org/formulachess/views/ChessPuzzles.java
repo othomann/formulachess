@@ -7,6 +7,8 @@ import java.net.URLConnection;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
@@ -55,7 +57,8 @@ import org.formulachess.util.Util;
 
 public class ChessPuzzles {
 
-	private static final int[] BOARD_SETTINGS = Settings.SET3;
+	private static final Logger MyLogger = Logger.getLogger(ChessPuzzles.class.getCanonicalName());
+	private static final int[] BOARD_SETTINGS = Sets.getSet(Sets.SET3_PATH);
 	public static final String ID_VIEW = "org.formulachess.chess.puzzles.views.chessPuzzleView"; //$NON-NLS-1$
 	private static final String HTTP_HEADER = "http://"; //$NON-NLS-1$
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
@@ -105,14 +108,16 @@ public class ChessPuzzles {
 		this.shell.setBackground(this.display.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
 
 		// initialize datas
- 		IExtensionPoint extension = Platform.getExtensionRegistry().getExtensionPoint(PuzzlesPlugin.PLUGIN_ID, PuzzlesPlugin.CHESS_PROBLEM_ID);
+		IExtensionPoint extension = Platform.getExtensionRegistry().getExtensionPoint(PuzzlesPlugin.PLUGIN_ID,
+				PuzzlesPlugin.CHESS_PROBLEM_ID);
 		if (extension != null) {
-			IExtension[] extensions =  extension.getExtensions();
+			IExtension[] extensions = extension.getExtensions();
 			this.datas = new DatabaseElementData[extensions.length];
-			for(int i = 0; i < extensions.length; i++){
-				IConfigurationElement [] configElements = extensions[i].getConfigurationElements();
-				for(int j = 0; j < configElements.length; j++) {
-					this.datas[i] = new DatabaseElementData(configElements[j].getAttribute("name"), configElements[j].getAttribute("type")); //$NON-NLS-1$//$NON-NLS-2$
+			for (int i = 0; i < extensions.length; i++) {
+				IConfigurationElement[] configElements = extensions[i].getConfigurationElements();
+				for (int j = 0; j < configElements.length; j++) {
+					this.datas[i] = new DatabaseElementData(configElements[j].getAttribute("name"), //$NON-NLS-1$
+							configElements[j].getAttribute("type")); //$NON-NLS-1$
 				}
 			}
 		}
@@ -160,7 +165,8 @@ public class ChessPuzzles {
 		innerPanel.setLayout(formLayout);
 
 		this.chessEngine = new ChessEngine(this.currentLocale);
-		this.board = new Board(innerPanel, this.chessEngine, BOARD_SETTINGS, BoardCanvas.WHITE_BOTTOM, this.imageFactory, SWT.NONE);
+		this.board = new Board(innerPanel, this.chessEngine, BOARD_SETTINGS, BoardCanvas.WHITE_BOTTOM,
+				this.imageFactory, SWT.NONE);
 
 		this.resetButton = new Button(innerPanel, SWT.PUSH);
 		this.resetButton.setText(this.currentMessages.getString("chesspuzzles.button.reset")); //$NON-NLS-1$
@@ -305,16 +311,16 @@ public class ChessPuzzles {
 	}
 
 	void addNewEntry(String filePath) {
-		TableItem item = new TableItem (this.fileNamesTable, SWT.READ_ONLY);
+		TableItem item = new TableItem(this.fileNamesTable, SWT.READ_ONLY);
 		DatabaseElementData data = new DatabaseElementData(filePath, DatabaseElementData.PGN_GAME);
 		item.setData(data);
 		item.setText(data.fileName);
 	}
 
 	void initializeFileNamesTable() {
- 		if (this.datas != null) {
-			for(int i = 0, max = this.datas.length; i < max; i++){
-				TableItem item = new TableItem (this.fileNamesTable, SWT.READ_ONLY);
+		if (this.datas != null) {
+			for (int i = 0, max = this.datas.length; i < max; i++) {
+				TableItem item = new TableItem(this.fileNamesTable, SWT.READ_ONLY);
 				item.setData(this.datas[i]);
 				item.setText(this.datas[i].fileName);
 			}
@@ -343,7 +349,8 @@ public class ChessPuzzles {
 				StringBuffer buffer = new StringBuffer();
 				while (nextEntry != null) {
 					if (nextEntry.getName().toLowerCase().endsWith(".pgn")) { //$NON-NLS-1$
-						buffer.append(Util.getInputStreamAsCharArray(zipInputStream, (int) nextEntry.getSize(), "ISO-8859-1")); //$NON-NLS-1$
+						buffer.append(Util.getInputStreamAsCharArray(zipInputStream, (int) nextEntry.getSize(),
+								"ISO-8859-1")); //$NON-NLS-1$
 					}
 					nextEntry = zipInputStream.getNextEntry();
 				}
@@ -354,14 +361,13 @@ public class ChessPuzzles {
 			Parser parser = new Parser();
 			pgnDatabase = parser.parse(contents);
 		} catch (IOException e) {
-			// file doesn't exist or the url is invalid
-			e.printStackTrace();
+			MyLogger.log(Level.SEVERE, "Could not read puzzles", e);
 		} finally {
 			if (inputStream != null) {
 				try {
 					inputStream.close();
-				} catch (IOException e1) {
-					e1.printStackTrace();
+				} catch (IOException e) {
+					MyLogger.log(Level.SEVERE, "Could not close stream", e);
 				}
 			}
 		}
@@ -424,6 +430,7 @@ public class ChessPuzzles {
 			}
 		}
 	}
+
 	/**
 	 * @param folders
 	 * @param backgroundColor
@@ -442,8 +449,12 @@ public class ChessPuzzles {
 		Button button = new Button(innerPanel, SWT.BORDER);
 		button.setText(this.currentMessages.getString("chesspuzzles.tabfolder.database.add_file")); //$NON-NLS-1$
 		button.addSelectionListener(new SelectionAdapter() {
-			/* (non-Javadoc)
-			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events
+			 * .SelectionEvent)
 			 */
 			public void widgetSelected(SelectionEvent e) {
 				final String filePath = new FileDialog(new Shell()).open();
@@ -455,26 +466,26 @@ public class ChessPuzzles {
 
 		Text urlText = new Text(innerPanel, SWT.BORDER);
 		urlText.setText(HTTP_HEADER);
-		urlText.addListener (SWT.DefaultSelection, new Listener () {
-			public void handleEvent (Event e) {
+		urlText.addListener(SWT.DefaultSelection, new Listener() {
+			public void handleEvent(Event e) {
 				addNewEntry(((Text) e.widget).getText());
 			}
 		});
 		this.fileNamesTable = new Table(innerPanel, SWT.BORDER);
 		this.fileNamesTable.setLinesVisible(false);
 
-		this.fileNamesTable.addListener (SWT.MouseDown, new Listener () {
-			public void handleEvent (Event event) {
+		this.fileNamesTable.addListener(SWT.MouseDown, new Listener() {
+			public void handleEvent(Event event) {
 				ChessPuzzles.this.problemsTable.removeAll();
-				Rectangle clientArea = ChessPuzzles.this.fileNamesTable.getClientArea ();
-				Point pt = new Point (event.x, event.y);
-				int index = ChessPuzzles.this.fileNamesTable.getTopIndex ();
-				while (index < ChessPuzzles.this.fileNamesTable.getItemCount ()) {
+				Rectangle clientArea = ChessPuzzles.this.fileNamesTable.getClientArea();
+				Point pt = new Point(event.x, event.y);
+				int index = ChessPuzzles.this.fileNamesTable.getTopIndex();
+				while (index < ChessPuzzles.this.fileNamesTable.getItemCount()) {
 					boolean visible = false;
-					TableItem item = ChessPuzzles.this.fileNamesTable.getItem (index);
-					for (int i=0; i < 1; i++) {
-						Rectangle rect = item.getBounds (i);
-						if (rect.contains (pt)) {
+					TableItem item = ChessPuzzles.this.fileNamesTable.getItem(index);
+					for (int i = 0; i < 1; i++) {
+						Rectangle rect = item.getBounds(i);
+						if (rect.contains(pt)) {
 							DatabaseElementData data = (DatabaseElementData) item.getData();
 							if (ChessPuzzles.this.pgnViewerTab != null) {
 								ChessPuzzles.this.pgnViewerTab.dispose();
@@ -508,11 +519,12 @@ public class ChessPuzzles {
 								folders.setSelection(1);
 							}
 						}
-						if (!visible && rect.intersects (clientArea)) {
+						if (!visible && rect.intersects(clientArea)) {
 							visible = true;
 						}
 					}
-					if (!visible) return;
+					if (!visible)
+						return;
 					index++;
 				}
 			}
@@ -557,8 +569,12 @@ public class ChessPuzzles {
 
 		this.combo = new Combo(innerPanel, SWT.READ_ONLY);
 		this.combo.addSelectionListener(new SelectionAdapter() {
-			/* (non-Javadoc)
-			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events
+			 * .SelectionEvent)
 			 */
 			public void widgetSelected(SelectionEvent e) {
 				Combo c = (Combo) e.widget;
@@ -574,8 +590,12 @@ public class ChessPuzzles {
 		Button setFilterButton = new Button(innerPanel, SWT.BORDER);
 		setFilterButton.setText(this.currentMessages.getString("chesspuzzles.tabfolder.pgn_viewer.button.filter")); //$NON-NLS-1$
 		setFilterButton.addSelectionListener(new SelectionAdapter() {
-			/* (non-Javadoc)
-			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events
+			 * .SelectionEvent)
 			 */
 			public void widgetSelected(SelectionEvent e) {
 				FilterDialog filterDialog = new FilterDialog(new Shell(), ChessPuzzles.this.currentMessages);
@@ -597,7 +617,8 @@ public class ChessPuzzles {
 		headerFormData.bottom = new FormAttachment(100, 0);
 		this.header.setLayoutData(headerFormData);
 
-		this.pgnViewerTabMoveController = new MoveController(innerPanel, SWT.NONE, Locale.getDefault(), this.imageFactory, this.chessEngine);
+		this.pgnViewerTabMoveController = new MoveController(innerPanel, SWT.NONE, Locale.getDefault(),
+				this.imageFactory, this.chessEngine);
 		if (this.currentPGNGame != null) {
 			this.pgnViewerTabMoveController.initializeMoveList(this.currentPGNGame);
 			this.pgnViewerTabMoveController.restartGame();
@@ -637,25 +658,25 @@ public class ChessPuzzles {
 		}
 		TagSection tagSection = game.getTagSection();
 		String tag = null;
-		switch(result.filterId) {
-			case FilterDialog.BLACK_NAME :
-				tag = getTag(tagSection, TagSection.TAG_BLACK);
-				break;
-			case FilterDialog.ECO :
-				tag = getTag(tagSection, TagSection.TAG_ECO);
-				break;
-			case FilterDialog.EVENT :
-				tag = getTag(tagSection, TagSection.TAG_EVENT);
-				break;
-			case FilterDialog.RESULT :
-				tag = getTag(tagSection, TagSection.TAG_RESULT);
-				break;
-			case FilterDialog.ROUND :
-				tag = getTag(tagSection, TagSection.TAG_ROUND);
-				break;
-			case FilterDialog.WHITE_NAME :
-				tag = getTag(tagSection, TagSection.TAG_WHITE);
-				break;
+		switch (result.filterId) {
+		case FilterDialog.BLACK_NAME:
+			tag = getTag(tagSection, TagSection.TAG_BLACK);
+			break;
+		case FilterDialog.ECO:
+			tag = getTag(tagSection, TagSection.TAG_ECO);
+			break;
+		case FilterDialog.EVENT:
+			tag = getTag(tagSection, TagSection.TAG_EVENT);
+			break;
+		case FilterDialog.RESULT:
+			tag = getTag(tagSection, TagSection.TAG_RESULT);
+			break;
+		case FilterDialog.ROUND:
+			tag = getTag(tagSection, TagSection.TAG_ROUND);
+			break;
+		case FilterDialog.WHITE_NAME:
+			tag = getTag(tagSection, TagSection.TAG_WHITE);
+			break;
 		}
 		if (tag == null) {
 			return false;
@@ -668,6 +689,7 @@ public class ChessPuzzles {
 		}
 		return tag.indexOf(result.filter) == -1;
 	}
+
 	/**
 	 * @param game
 	 * @return
@@ -717,25 +739,26 @@ public class ChessPuzzles {
 		this.problemsTable = new Table(innerPanel, SWT.BORDER);
 		this.problemsTable.setLinesVisible(false);
 
-		this.problemsTable.addListener (SWT.MouseDown, new Listener () {
-			public void handleEvent (Event event) {
-				Rectangle clientArea = ChessPuzzles.this.problemsTable.getClientArea ();
-				Point pt = new Point (event.x, event.y);
-				int index = ChessPuzzles.this.problemsTable.getTopIndex ();
-				while (index < ChessPuzzles.this.problemsTable.getItemCount ()) {
+		this.problemsTable.addListener(SWT.MouseDown, new Listener() {
+			public void handleEvent(Event event) {
+				Rectangle clientArea = ChessPuzzles.this.problemsTable.getClientArea();
+				Point pt = new Point(event.x, event.y);
+				int index = ChessPuzzles.this.problemsTable.getTopIndex();
+				while (index < ChessPuzzles.this.problemsTable.getItemCount()) {
 					boolean visible = false;
-					TableItem item = ChessPuzzles.this.problemsTable.getItem (index);
-					for (int i=0; i < 1; i++) {
-						Rectangle rect = item.getBounds (i);
-						if (rect.contains (pt)) {
+					TableItem item = ChessPuzzles.this.problemsTable.getItem(index);
+					for (int i = 0; i < 1; i++) {
+						Rectangle rect = item.getBounds(i);
+						if (rect.contains(pt)) {
 							ChessPuzzles.this.currentPGNGame = ChessPuzzles.this.games[index];
 							refresh();
 						}
-						if (!visible && rect.intersects (clientArea)) {
+						if (!visible && rect.intersects(clientArea)) {
 							visible = true;
 						}
 					}
-					if (!visible) return;
+					if (!visible)
+						return;
 					index++;
 				}
 			}
@@ -768,7 +791,8 @@ public class ChessPuzzles {
 		FormLayout formLayout = new FormLayout();
 		innerPanel.setLayout(formLayout);
 
-		this.problemTabMoveController = new MoveController(innerPanel, SWT.NONE, this.currentLocale, this.imageFactory, this.chessEngine);
+		this.problemTabMoveController = new MoveController(innerPanel, SWT.NONE, this.currentLocale, this.imageFactory,
+				this.chessEngine);
 		if (this.currentPGNGame != null) {
 			this.problemTabMoveController.initializeMoveList(this.currentPGNGame);
 		} else {
@@ -789,6 +813,7 @@ public class ChessPuzzles {
 		composite.setMinSize(innerPanel.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		return composite;
 	}
+
 	public void refresh() {
 		this.refreshMoveController(this.problemTabMoveController);
 		this.refreshMoveController(this.pgnViewerTabMoveController);
@@ -810,6 +835,7 @@ public class ChessPuzzles {
 	public void setFocus() {
 		this.shell.setFocus();
 	}
+
 	public void setLocale(Locale newLocale) {
 		this.currentLocale = newLocale;
 		this.currentMessages = new Messages(this.currentLocale);

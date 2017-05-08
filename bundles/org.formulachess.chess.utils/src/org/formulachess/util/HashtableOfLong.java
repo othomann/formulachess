@@ -10,15 +10,15 @@
  *******************************************************************************/
 package org.formulachess.util;
 
-import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
  * Hashtable of {String --> long}
  */
-public final class HashtableOfLong implements Cloneable {
+public final class HashtableOfLong implements Iterable<String> {
 	
-	class Enumerator implements Enumeration<String> {
+	class Enumerator implements Iterator<String> {
 		String entry;
 		int index;
 		String[] keys;
@@ -28,30 +28,30 @@ public final class HashtableOfLong implements Cloneable {
 			this.index = keys.length;
 		}
 		@Override
-		public boolean hasMoreElements() {
-			String _entry = this.entry;
+		public boolean hasNext() {
+			String currentEntry = this.entry;
 			int i = this.index;
 			String[] table = this.keys;
-			while (_entry == null && i > 0) {
-				_entry = table[--i];
+			while (currentEntry == null && i > 0) {
+				currentEntry = table[--i];
 			}
-			this.entry = _entry;
+			this.entry = currentEntry;
 			this.index = i;
-			return _entry != null;
+			return currentEntry != null;
 		}
 		@Override
-		public String nextElement() {
-			String _entry = this.entry;
+		public String next() {
+			String currentEntry = this.entry;
 			int i = this.index;
 			String[] table = this.keys;
-			while (_entry == null && i > 0) {
-				_entry = table[--i];
+			while (currentEntry == null && i > 0) {
+				currentEntry = table[--i];
 			}
-			this.entry = _entry;
+			this.entry = currentEntry;
 			this.index = i;
-			if (_entry != null) {
+			if (currentEntry != null) {
 				this.entry = null;
-				return _entry;
+				return currentEntry;
 			}
 			throw new NoSuchElementException();
 		}
@@ -75,26 +75,24 @@ public final class HashtableOfLong implements Cloneable {
 		this.elementSize = 0;
 		this.threshold = size; // size represents the expected number of elements
 		int extraRoom = (int) (size * 1.75f);
-		if (this.threshold == extraRoom)
+		if (this.threshold == extraRoom) {
 			extraRoom++;
+		}
 		this.keyTable = new String[extraRoom];
 		this.valueTable = new long[extraRoom];
 	}
 
-	@Override
-	public Object clone() throws CloneNotSupportedException {
-		HashtableOfLong result = (HashtableOfLong) super.clone();
-		result.elementSize = this.elementSize;
-		result.threshold = this.threshold;
+	public HashtableOfLong(HashtableOfLong table) {
+		this.elementSize = table.elementSize;
+		this.threshold = table.threshold;
 
-		int length = this.keyTable.length;
-		result.keyTable = new String[length];
-		System.arraycopy(this.keyTable, 0, result.keyTable, 0, length);
+		int length = table.keyTable.length;
+		this.keyTable = new String[length];
+		System.arraycopy(table.keyTable, 0, this.keyTable, 0, length);
 
-		length = this.valueTable.length;
-		result.valueTable = new long[length];
-		System.arraycopy(this.valueTable, 0, result.valueTable, 0, length);
-		return result;
+		length = table.valueTable.length;
+		this.valueTable = new long[length];
+		System.arraycopy(table.valueTable, 0, this.valueTable, 0, length);
 	}
 
 	public boolean containsKey(String key) {
@@ -118,7 +116,9 @@ public final class HashtableOfLong implements Cloneable {
 		}
 		return NO_VALUE;
 	}
-	public Enumeration<String> keys() {
+	
+	@Override
+	public Iterator<String> iterator() {
 		return new Enumerator(this.keyTable);
 	}
 

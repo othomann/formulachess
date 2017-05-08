@@ -25,11 +25,11 @@ public class TagPair extends ASTNode {
 	}
 	
 	public String toString() {
-		StringBuffer buffer = new StringBuffer();
-		buffer
+		StringBuilder builder = new StringBuilder();
+		builder
 			.append(this.name)
 			.append(this.value)
 			.append(']');
-		return buffer.toString();
+		return String.valueOf(builder);
 	}
 }

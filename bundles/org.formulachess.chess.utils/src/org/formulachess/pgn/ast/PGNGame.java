@@ -13,12 +13,12 @@ public class PGNGame extends ASTNode {
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		StringBuffer buffer = new StringBuffer();
-		buffer
+		StringBuilder builder = new StringBuilder();
+		builder
 			.append(this.tagSection)
 			.append(LINE_SEPARATOR)
 			.append(this.moveText);
-		return buffer.toString();
+		return String.valueOf(builder);
 	}
 
 	/**

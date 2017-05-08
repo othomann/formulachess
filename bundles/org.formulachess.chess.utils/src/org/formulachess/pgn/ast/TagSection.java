@@ -1,6 +1,6 @@
 package org.formulachess.pgn.ast;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 
 public class TagSection extends ASTNode {
 
@@ -20,23 +20,23 @@ public class TagSection extends ASTNode {
 	private static final int INITIAL_SIZE = 7;
 	private TagPair[] tagPairs = new TagPair[INITIAL_SIZE];
 	private int tagPairCounter = 0;
-	private Hashtable<String, String> tags;
+	private HashMap<String, String> tags;
 	
 	public TagSection() {
-		this.tags = new Hashtable<String, String>(INITIAL_SIZE);
+		this.tags = new HashMap<>(INITIAL_SIZE);
 	}
 	
 	public void addTagPair(TagPair tagPair) {
 		if (this.tagPairCounter == this.tagPairs.length) {
-			System.arraycopy(this.tagPairs, 0, (this.tagPairs = new TagPair[this.tagPairCounter * 2]), 0, this.tagPairCounter);
+			System.arraycopy(this.tagPairs, 0, this.tagPairs = new TagPair[this.tagPairCounter * 2], 0, this.tagPairCounter);
 		}
 		this.tagPairs[this.tagPairCounter++] = tagPair;
-		this.tags.put(new String(tagPair.getName()).trim(), new String(tagPair.getValue()));
+		this.tags.put(new String(tagPair.getName()).trim(), new String(tagPair.getValue()).trim());
 	}
 
 	public TagPair[] getTagPairs() {
 		if (this.tagPairCounter != this.tagPairs.length) {
-			System.arraycopy(this.tagPairs, 0, (this.tagPairs = new TagPair[this.tagPairCounter]), 0, this.tagPairCounter);
+			System.arraycopy(this.tagPairs, 0, this.tagPairs = new TagPair[this.tagPairCounter], 0, this.tagPairCounter);
 		}
 		return this.tagPairs;
 	}
@@ -54,11 +54,11 @@ public class TagSection extends ASTNode {
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder builder = new StringBuilder();
 		for (int i = 0, max = this.tagPairCounter; i < max; i++) {
-			buffer.append(this.tagPairs[i]).append(LINE_SEPARATOR);
+			builder.append(this.tagPairs[i]).append(LINE_SEPARATOR);
 		}
-		return buffer.toString();
+		return String.valueOf(builder);
 	}
 
 }

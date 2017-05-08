@@ -222,12 +222,12 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 	
 	protected void consumeToken(int type) throws InvalidInputException {
 		// attach comments to node
-		if (!this.scanner.comments.isEmpty()) {
+		if (!this.scanner.getComments().isEmpty()) {
 			if (this.nodeInformationPointer != 0) {
 				throw new InvalidInputException("Comment should not be there"); //$NON-NLS-1$
 			}
-			this.nodeStack[this.nodeStackPointer - 1].setComments(this.scanner.comments);
-			this.scanner.comments.clear();
+			this.nodeStack[this.nodeStackPointer - 1].setComments(this.scanner.getComments());
+			this.scanner.clearComments();
 		}
 		switch(type) {
 			case TokenNameStart_Tag_Section :

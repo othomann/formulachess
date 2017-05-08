@@ -10,7 +10,7 @@ public class PGNModel {
 	
 	private String fenNotation;
 	private ChessEngine model;
-	public int currentMoveCounter;
+	private int currentMoveCounter;
 	
 	public PGNModel(PGNGame pgnGame, ChessEngine model) {
 		if (pgnGame != null) {
@@ -21,6 +21,10 @@ public class PGNModel {
 		}
 		this.model = model;
 		this.currentMoveCounter = 0;
+	}
+
+	public int getCurrentMoveCounter() {
+		return currentMoveCounter;
 	}
 
 	public void setIsReady(boolean value) {

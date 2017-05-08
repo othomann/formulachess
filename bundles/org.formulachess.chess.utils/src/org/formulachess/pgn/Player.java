@@ -1,8 +1,8 @@
 package org.formulachess.pgn;
 
 public class Player {
-	public String firstName;
-	public String lastName;
+	private String firstName;
+	private String lastName;
 
 	public Player(String tagName) {
 		int indexOfComa = tagName.indexOf(',');
@@ -15,6 +15,7 @@ public class Player {
 				tagName.substring(indexOfComa + 1, tagName.length() - 1).trim();
 		}
 	}
+	@Override
 	public String toString() {
 		return this.lastName + ", " + this.firstName; //$NON-NLS-1$
 	}

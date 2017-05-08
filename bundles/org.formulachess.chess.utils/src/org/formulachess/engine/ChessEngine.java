@@ -27,7 +27,7 @@ import org.formulachess.util.Util;
 
 public class ChessEngine extends AbstractChessEngine {
 
-	private int[] TAB_120 = {
+	private static final int[] TAB_120 = {
 		-1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 		-1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 		-1,  0,  1,  2,  3,  4,  5,  6,  7, -1,
@@ -41,7 +41,7 @@ public class ChessEngine extends AbstractChessEngine {
 		-1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 		-1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
 		
-	private int[] TAB_64 = {
+	private static final  int[] TAB_64 = {
 		21, 22, 23, 24, 25, 26, 27, 28,
 		31, 32, 33, 34, 35, 36, 37, 38,
 		41, 42, 43, 44, 45, 46, 47, 48,
@@ -52,9 +52,9 @@ public class ChessEngine extends AbstractChessEngine {
 		91, 92, 93, 94, 95, 96, 97, 98
 	};
 	
-	private int[] KNIGHT_POSITIONS = { 21, 19, 12, 8, -8, -12, -19, -21};
-	private int[] KING_POSITIONS = { -11, -10, -9, -1, 1, 9, 10, 11};
-	private long[] NO_MOVES = new long[0];
+	private static final  int[] KNIGHT_POSITIONS = { 21, 19, 12, 8, -8, -12, -19, -21};
+	private static final  int[] KING_POSITIONS = { -11, -10, -9, -1, 1, 9, 10, 11};
+	private static final  long[] NO_MOVES = new long[0];
 
 	static final boolean DEBUG = true;
 	private static final long[] EMPTY_MOVES = new long[0];
@@ -78,7 +78,7 @@ public class ChessEngine extends AbstractChessEngine {
 	private long[] history;
 	private boolean isReady;
 
-	public Locale locale;
+	private Locale locale;
 	private String[] moveHistory;
 	private int moveNumber;
 	private int movesCounter;
@@ -492,6 +492,10 @@ public class ChessEngine extends AbstractChessEngine {
 
 	public Piece getBoard(int index) {
 		return board[index];
+	}
+	
+	public Locale getLocale() {
+		return this.locale;
 	}
 
 	@Override

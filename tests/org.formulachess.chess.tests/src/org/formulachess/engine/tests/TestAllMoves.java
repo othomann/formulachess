@@ -3,9 +3,6 @@ package org.formulachess.engine.tests;
 import static org.formulachess.engine.Turn.BLACK_TURN;
 import static org.formulachess.engine.Turn.WHITE_TURN;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,37 +18,15 @@ import junit.framework.TestSuite;
 
 public class TestAllMoves extends TestCase {
 
+	private static final String WRONG_MOVES = "Wrong moves"; //$NON-NLS-1$
 	private static final String WRONG_VALUE = "Wrong value"; //$NON-NLS-1$
 	private static Logger MyLogger = Logger.getLogger(TestAllMoves.class.getCanonicalName());
 	private static final String WRONG_SIZE = "wrong size"; //$NON-NLS-1$
 	private static final boolean TOTAL = false;
 	private static final boolean DEBUG = false;
-	private static final boolean DUMP_SYSOUT = System.getProperty("dump.sysout", "false") == "true";  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
-
-	PrintStream stream;
 
 	public TestAllMoves(String name) {
 		super(name);
-	}
-
-	@Override
-	protected void setUp() {
-		if (DUMP_SYSOUT) {
-			try {
-				this.stream = new PrintStream(new FileOutputStream("testAllMoves.txt", true)); //$NON-NLS-1$
-			} catch (FileNotFoundException e) {
-				MyLogger.log(Level.SEVERE, "Could not create stream", e); //$NON-NLS-1$
-				return;
-			}
-			System.setOut(this.stream);
-		}
-	}
-
-	protected void teardDown() {
-		if (DUMP_SYSOUT && this.stream != null) {
-			this.stream.flush();
-			this.stream.close();
-		}
 	}
 
 	public static Test suite() {
@@ -77,7 +52,7 @@ public class TestAllMoves extends TestCase {
 			MyLogger.log(Level.INFO, model.toString());
 			MyLogger.log(Level.INFO, pgnMoveContainer.toString());
 		}
-		assertEquals("Wrong moves", expectedMoves, pgnMoveContainer.toString()); //$NON-NLS-1$
+		assertEquals(WRONG_MOVES, expectedMoves, pgnMoveContainer.toString()); 
 		if (DEBUG) {
 			MyLogger.log(Level.INFO, "================ END " + testName + " ===================================="); //$NON-NLS-1$ //$NON-NLS-2$
 		}
@@ -122,7 +97,7 @@ public class TestAllMoves extends TestCase {
 		for (int i = 0; i < moves.length; i++) {
 			builder.append(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
 		}
-		assertEquals("Wrong moves", "Rd6 Re6 Rf6 Rd5 Rf5 Rd4 Re4 Rf4 ", String.valueOf(builder)); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals(WRONG_MOVES, "Rd6 Re6 Rf6 Rd5 Rf5 Rd4 Re4 Rf4 ", String.valueOf(builder)); //$NON-NLS-1$ 
 	}
 
 	public void test002() {
@@ -139,7 +114,7 @@ public class TestAllMoves extends TestCase {
 		for (int i = 0; i < moves.length; i++) {
 			builder.append(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
 		}
-		assertEquals("Wrong moves", "Rb8 Ra7 Rb7 Cf3 Cd3 Cg4 Cc4 Cg6 Cc6 Cf7 Cd7 ", //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals(WRONG_MOVES, "Rb8 Ra7 Rb7 Cf3 Cd3 Cg4 Cc4 Cg6 Cc6 Cf7 Cd7 ", //$NON-NLS-1$
 				String.valueOf(builder));
 	}
 
@@ -158,7 +133,7 @@ public class TestAllMoves extends TestCase {
 		for (int i = 0; i < moves.length; i++) {
 			builder.append(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
 		}
-		assertEquals("Wrong moves", "Rb8 Rb7 ", String.valueOf(builder)); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals(WRONG_MOVES, "Rb8 Rb7 ", String.valueOf(builder)); //$NON-NLS-1$ 
 	}
 
 	public void test004() {
@@ -190,7 +165,7 @@ public class TestAllMoves extends TestCase {
 		for (int i = 0; i < moves.length; i++) {
 			builder.append(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
 		}
-		assertEquals("Wrong moves", //$NON-NLS-1$
+		assertEquals(WRONG_MOVES, 
 				"Ta2 Ta3 Ta4 Ta5 Ta6 Ta7 Ta8 Tb1 Tc1 Td1 Rd2 Re2 Rf2 Rd1 Rf1 Rg1 Rc1 Th2 Th3 Th4 Th5 Th6 Th7 Th8 Tg1 Tf1 ", //$NON-NLS-1$
 				String.valueOf(builder));
 	}
@@ -211,7 +186,7 @@ public class TestAllMoves extends TestCase {
 		for (int i = 0; i < moves.length; i++) {
 			builder.append(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
 		}
-		assertEquals("Wrong moves", //$NON-NLS-1$
+		assertEquals(WRONG_MOVES, 
 				"Ta2 Ta3 Ta4 Ta5 Ta6 Ta7 Ta8 Tb1 Tc1 Td1 Rd2 Re2 Rf2 Rd1 Rf1 Th2 Th3 Th4 Th5 Th6 Th7 Th8 Tg1 Tf1 ", //$NON-NLS-1$
 				String.valueOf(builder));
 	}
@@ -228,7 +203,7 @@ public class TestAllMoves extends TestCase {
 		for (int i = 0; i < moves.length; i++) {
 			builder.append(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
 		}
-		assertEquals("Wrong moves", "b4 Rd2 Re2 Rf2 Rd1 Rf1 ", String.valueOf(builder)); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals(WRONG_MOVES, "b4 Rd2 Re2 Rf2 Rd1 Rf1 ", String.valueOf(builder)); //$NON-NLS-1$ 
 	}
 
 	public void test008() {
@@ -244,7 +219,7 @@ public class TestAllMoves extends TestCase {
 			builder.append(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
 		}
 		
-		assertEquals("Wrong moves", "b3 b4 Rd2 Re2 Rf2 Rd1 Rf1 ", String.valueOf(builder)); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals(WRONG_MOVES, "b3 b4 Rd2 Re2 Rf2 Rd1 Rf1 ", String.valueOf(builder)); //$NON-NLS-1$ 
 	}
 
 	public void test009() {
@@ -260,7 +235,7 @@ public class TestAllMoves extends TestCase {
 		for (int i = 0; i < moves.length; i++) {
 			builder.append(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
 		}
-		assertEquals("Wrong moves", "b3 b4 a3 Rd2 Re2 Rf2 Rd1 Rf1 ", String.valueOf(builder)); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals(WRONG_MOVES, "b3 b4 a3 Rd2 Re2 Rf2 Rd1 Rf1 ", String.valueOf(builder)); //$NON-NLS-1$ 
 	}
 
 	public void test010() {
@@ -277,7 +252,7 @@ public class TestAllMoves extends TestCase {
 		for (int i = 0; i < moves.length; i++) {
 			builder.append(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
 		}
-		assertEquals("Wrong moves", "b3 b4 a3 Rd2 Re2 Rf2 Rd1 Rf1 ", String.valueOf(builder)); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals(WRONG_MOVES, "b3 b4 a3 Rd2 Re2 Rf2 Rd1 Rf1 ", String.valueOf(builder)); //$NON-NLS-1$ 
 
 		for (int i = 0, max = moves.length; i < max; i++) {
 			model.playMove(moves[i]);
@@ -301,7 +276,7 @@ public class TestAllMoves extends TestCase {
 		for (int i = 0; i < moves.length; i++) {
 			builder.append(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
 		}
-		assertEquals("Wrong moves", "a3 a4 b3 b4 c3 c4 d3 d4 e3 e4 f3 f4 g3 g4 h3 h4 Cc3 Ca3 Ch3 Cf3 ", //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals(WRONG_MOVES, "a3 a4 b3 b4 c3 c4 d3 d4 e3 e4 f3 f4 g3 g4 h3 h4 Cc3 Ca3 Ch3 Cf3 ", //$NON-NLS-1$ 
 				String.valueOf(builder));
 	}
 
@@ -317,7 +292,7 @@ public class TestAllMoves extends TestCase {
 		for (int i = 0; i < moves.length; i++) {
 			builder.append(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
 		}
-		assertEquals("Wrong moves", //$NON-NLS-1$
+		assertEquals(WRONG_MOVES, 
 				"e5 a3 a4 b3 b4 c3 c4 d3 d4 f3 f4 g3 g4 h3 h4 Cc3 Ca3 De2 Df3 Dg4 Dh5 Re2 Fe2 Fd3 Fc4 Fb5 Fa6 Ce2 Ch3 Cf3 ", //$NON-NLS-1$
 				String.valueOf(builder));
 	}

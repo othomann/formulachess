@@ -21,7 +21,7 @@ public class TestAllMoves extends TestCase {
 
 	private static final String WRONG_MOVES = "Wrong moves"; //$NON-NLS-1$
 	private static final String WRONG_VALUE = "Wrong value"; //$NON-NLS-1$
-	private static Logger MyLogger = Logger.getLogger(TestAllMoves.class.getCanonicalName());
+	private static Logger myLogger = Logger.getLogger(TestAllMoves.class.getCanonicalName());
 	private static final String WRONG_SIZE = "wrong size"; //$NON-NLS-1$
 	private static final boolean TOTAL = false;
 	private static final boolean DEBUG = false;
@@ -41,7 +41,7 @@ public class TestAllMoves extends TestCase {
 			moves = model.allMoves();
 		}
 		if (DEBUG) {
-			MyLogger.log(Level.INFO, "spent " + (System.currentTimeMillis() - time) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
+			myLogger.log(Level.INFO, "spent " + (System.currentTimeMillis() - time) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return moves;
 	}
@@ -49,27 +49,27 @@ public class TestAllMoves extends TestCase {
 	public void display(String testName, ChessEngine model, long[] moves, String expectedMoves) {
 		PGNMoveContainer pgnMoveContainer = new PGNMoveContainer(model, moves, Locale.FRANCE);
 		if (DEBUG) {
-			MyLogger.log(Level.INFO, "================ START " + testName + " ===================================="); //$NON-NLS-1$ //$NON-NLS-2$
-			MyLogger.log(Level.INFO, model.toString());
-			MyLogger.log(Level.INFO, pgnMoveContainer.toString());
+			myLogger.log(Level.INFO, "================ START " + testName + " ===================================="); //$NON-NLS-1$ //$NON-NLS-2$
+			myLogger.log(Level.INFO, model.toString());
+			myLogger.log(Level.INFO, pgnMoveContainer.toString());
 		}
 		assertEquals(WRONG_MOVES, expectedMoves, pgnMoveContainer.toString());
 		if (DEBUG) {
-			MyLogger.log(Level.INFO, "================ END " + testName + " ===================================="); //$NON-NLS-1$ //$NON-NLS-2$
+			myLogger.log(Level.INFO, "================ END " + testName + " ===================================="); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
 	public void display(ChessEngine model, long[] moves) {
 		if (DEBUG) {
 			PGNMoveContainer pgnMoveContainer = new PGNMoveContainer(model, moves, Locale.FRANCE);
-			MyLogger.log(Level.INFO, model.toString());
-			MyLogger.log(Level.INFO, pgnMoveContainer.toString(false));
+			myLogger.log(Level.INFO, model.toString());
+			myLogger.log(Level.INFO, pgnMoveContainer.toString(false));
 		}
 	}
 
 	private void displayTime(long time) {
 		if (DEBUG) {
-			MyLogger.log(Level.INFO, "spent " + (System.currentTimeMillis() - time) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
+			myLogger.log(Level.INFO, "spent " + (System.currentTimeMillis() - time) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 

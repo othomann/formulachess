@@ -47,19 +47,7 @@ public class Scanner implements TerminalSymbols {
 					hasWhiteSpace = hasWhiteSpace || isWhiteSpace;
 				} while (isWhiteSpace);
 				if (this.currentCharacter == '$') {
-					try {
-						this.currentCharacter = this.source[this.currentPosition++];
-						if (!Character.isDigit(this.currentCharacter)) {
-							return TokenNameERROR;
-						}
-						while (Character.isDigit(this.currentCharacter)) {
-							this.currentCharacter = this.source[this.currentPosition++];
-						}
-						this.currentPosition--;
-						return TokenNameStart_nag;
-					} catch (IndexOutOfBoundsException e) {
-						throw new InvalidInputException(UNTERMINATED_NAG);
-					}
+					return consumeNag();
 				}
 				if (hasWhiteSpace) {
 					this.currentPosition--;
@@ -77,16 +65,7 @@ public class Scanner implements TerminalSymbols {
 				case ')':
 					return TokenNameEND_VARIATION;
 				case '[':
-					try {
-						this.currentCharacter = this.source[this.currentPosition++];
-						while (!Character.isWhitespace(this.currentCharacter)) {
-							// consume next character
-							this.currentCharacter = this.source[this.currentPosition++];
-						}
-						return TokenNameStart_Tag_Section;
-					} catch (IndexOutOfBoundsException e) {
-						throw new InvalidInputException(UNTERMINATED_TAG_NAME);
-					}
+					return consumeTagSection();
 				case ']':
 					return TokenNameEND_TAG_SECTION;
 				case '.':
@@ -123,50 +102,9 @@ public class Scanner implements TerminalSymbols {
 					}
 					return TokenNameGOOD_MOVE;
 				case '"':
-					try {
-						// consume next character
-						this.currentCharacter = this.source[this.currentPosition++];
-
-						while (this.currentCharacter != '"') {
-							/**** \r and \n are not valid in string literals ****/
-							if ((this.currentCharacter == '\n') || (this.currentCharacter == '\r')) {
-								// relocate if finding another quote fairly close: thus unicode '/u000D' will be
-								// fully consumed
-								for (int lookAhead = 0; lookAhead < 50; lookAhead++) {
-									if (this.currentPosition + lookAhead == this.source.length)
-										break;
-									if (this.source[this.currentPosition + lookAhead] == '\n')
-										break;
-									if (this.source[this.currentPosition + lookAhead] == '\"') {
-										this.currentPosition += lookAhead + 1;
-										break;
-									}
-								}
-								throw new InvalidInputException(INVALID_CHAR_IN_STRING);
-							}
-							// consume next character
-							this.currentCharacter = this.source[this.currentPosition++];
-						}
-					} catch (IndexOutOfBoundsException e) {
-						throw new InvalidInputException(UNTERMINATED_STRING);
-					}
-					return TokenNameStringLiteral;
+					return consumeStringLiteral();
 				case '{':
-					try {
-						// consume next character
-						this.currentCharacter = this.source[this.currentPosition++];
-
-						while (this.currentCharacter != '}') {
-							// consume next character
-							this.currentCharacter = this.source[this.currentPosition++];
-						}
-					} catch (IndexOutOfBoundsException e) {
-						throw new InvalidInputException(UNTERMINATED_COMMENT);
-					}
-					recordComment();
-					while (Character.isWhitespace(this.source[this.currentPosition])) {
-						this.currentPosition++;
-					}
+					consumeComment();
 					break;
 				case 'a':
 				case 'b':
@@ -182,19 +120,7 @@ public class Scanner implements TerminalSymbols {
 				case 'h':
 					return TokenNameFileName;
 				case '$':
-					try {
-						this.currentCharacter = this.source[this.currentPosition++];
-						if (!Character.isDigit(this.currentCharacter)) {
-							return TokenNameERROR;
-						}
-						while (Character.isDigit(this.currentCharacter)) {
-							this.currentCharacter = this.source[this.currentPosition++];
-						}
-						this.currentPosition--;
-						return TokenNameStart_nag;
-					} catch (IndexOutOfBoundsException e) {
-						throw new InvalidInputException(UNTERMINATED_NAG);
-					}
+					return consumeNag();
 				case 'O':
 					this.currentCharacter = this.source[this.currentPosition++];
 					if (checkDash()) {
@@ -214,22 +140,7 @@ public class Scanner implements TerminalSymbols {
 					}
 					return TokenNameERROR;
 				case ';':
-					try {
-						// consume next character
-						this.currentCharacter = this.source[this.currentPosition++];
-
-						while (this.currentCharacter != '\n' && this.currentCharacter != '\r') {
-							// consume next character
-							this.currentCharacter = this.source[this.currentPosition++];
-						}
-						this.currentPosition--;
-					} catch (IndexOutOfBoundsException e) {
-						throw new InvalidInputException(UNTERMINATED_COMMENT);
-					}
-					recordComment();
-					while (Character.isWhitespace(this.source[this.currentPosition])) {
-						this.currentPosition++;
-					}
+					consumeLineComment();
 					break;
 				default:
 					if (this.isPieceIndentification()) {
@@ -293,6 +204,103 @@ public class Scanner implements TerminalSymbols {
 			// ignore
 		}
 		return TokenNameEOF;
+	}
+
+	private void consumeLineComment() throws InvalidInputException {
+		try {
+			// consume next character
+			this.currentCharacter = this.source[this.currentPosition++];
+
+			while (this.currentCharacter != '\n' && this.currentCharacter != '\r') {
+				// consume next character
+				this.currentCharacter = this.source[this.currentPosition++];
+			}
+			this.currentPosition--;
+		} catch (IndexOutOfBoundsException e) {
+			throw new InvalidInputException(UNTERMINATED_COMMENT, e);
+		}
+		recordComment();
+		while (Character.isWhitespace(this.source[this.currentPosition])) {
+			this.currentPosition++;
+		}
+	}
+
+	private void consumeComment() throws InvalidInputException {
+		try {
+			// consume next character
+			this.currentCharacter = this.source[this.currentPosition++];
+
+			while (this.currentCharacter != '}') {
+				// consume next character
+				this.currentCharacter = this.source[this.currentPosition++];
+			}
+		} catch (IndexOutOfBoundsException e) {
+			throw new InvalidInputException(UNTERMINATED_COMMENT, e);
+		}
+		recordComment();
+		while (Character.isWhitespace(this.source[this.currentPosition])) {
+			this.currentPosition++;
+		}
+	}
+
+	private int consumeNag() throws InvalidInputException {
+		try {
+			this.currentCharacter = this.source[this.currentPosition++];
+			if (!Character.isDigit(this.currentCharacter)) {
+				return TokenNameERROR;
+			}
+			while (Character.isDigit(this.currentCharacter)) {
+				this.currentCharacter = this.source[this.currentPosition++];
+			}
+			this.currentPosition--;
+			return TokenNameStart_nag;
+		} catch (IndexOutOfBoundsException e) {
+			throw new InvalidInputException(UNTERMINATED_NAG, e);
+		}
+	}
+
+	private int consumeTagSection() throws InvalidInputException {
+		try {
+			this.currentCharacter = this.source[this.currentPosition++];
+			while (!Character.isWhitespace(this.currentCharacter)) {
+				// consume next character
+				this.currentCharacter = this.source[this.currentPosition++];
+			}
+			return TokenNameStart_Tag_Section;
+		} catch (IndexOutOfBoundsException e) {
+			throw new InvalidInputException(UNTERMINATED_TAG_NAME, e);
+		}
+	}
+
+	private int consumeStringLiteral() throws InvalidInputException {
+		try {
+			// consume next character
+			this.currentCharacter = this.source[this.currentPosition++];
+
+			while (this.currentCharacter != '"') {
+				/**** \r and \n are not valid in string literals ****/
+				if ((this.currentCharacter == '\n') || (this.currentCharacter == '\r')) {
+					// relocate if finding another quote fairly close: thus unicode '/u000D' will be
+					// fully consumed
+					for (int lookAhead = 0; lookAhead < 50; lookAhead++) {
+						if (this.currentPosition + lookAhead == this.source.length)
+							break;
+						if (this.source[this.currentPosition + lookAhead] == '\n')
+							break;
+						if (this.source[this.currentPosition + lookAhead] == '\"') {
+							this.currentPosition += lookAhead + 1;
+							break;
+						}
+					}
+					throw new InvalidInputException(INVALID_CHAR_IN_STRING);
+				}
+				// consume next character
+				this.currentCharacter = this.source[this.currentPosition++];
+			}
+		} catch (IndexOutOfBoundsException e) {
+			throw new InvalidInputException(UNTERMINATED_STRING, e);
+		}
+		return TokenNameStringLiteral;
 	}
 
 	private boolean isPieceIndentification() {

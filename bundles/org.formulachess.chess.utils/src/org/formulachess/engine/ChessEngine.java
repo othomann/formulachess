@@ -532,6 +532,7 @@ public class ChessEngine extends AbstractChessEngine {
 		return blackCanCastleQueenSide;
 	}
 
+	@Override
 	public boolean isBlackInCheck() {
 		return isBlackInCheck(this.blackKingSquare);
 	}
@@ -768,9 +769,7 @@ public class ChessEngine extends AbstractChessEngine {
 		return false;
 	}
 
-	/**
-	 * @return
-	 */
+	@Override
 	public boolean isMate() {
 		return allMoves().length == 0
 				&& ((this.turn == WHITE_TURN && isWhiteInCheck()) || (this.turn == BLACK_TURN && isBlackInCheck()));
@@ -788,6 +787,7 @@ public class ChessEngine extends AbstractChessEngine {
 		return whiteCanCastleQueenSide;
 	}
 
+	@Override
 	public boolean isWhiteInCheck() {
 		return isWhiteInCheck(this.whiteKingSquare);
 	}
@@ -1784,11 +1784,13 @@ public class ChessEngine extends AbstractChessEngine {
 		}
 	}
 
+	@Override
 	public void playMove(long move) {
 		this.playMoveWithoutNotification(move);
 		this.update();
 	}
 
+	@Override
 	public void playMoveWithoutNotification(long move) {
 		if (this.history.length == this.moveNumber + 1) {
 			// resize
@@ -1974,6 +1976,7 @@ public class ChessEngine extends AbstractChessEngine {
 		this.whiteCanCastleQueenSide = whiteCanCastleQueenSide;
 	}
 
+	@Override
 	public String toFENNotation() {
 		StringBuilder buffer = new StringBuilder();
 		int empty = 0;
@@ -2110,6 +2113,7 @@ public class ChessEngine extends AbstractChessEngine {
 		return String.valueOf(buffer);
 	}
 
+	@Override
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();
 		for (int i = 0; i < 64; i++) {
@@ -2206,22 +2210,26 @@ public class ChessEngine extends AbstractChessEngine {
 		return String.valueOf(buffer);
 	}
 
+	@Override
 	public void undoMove() {
 		undoMoveWithoutNotification();
 		update();
 	}
 
+	@Override
 	public void undoMove(long move) {
 		undoMoveWithoutNotification(move);
 		update();
 	}
 
+	@Override
 	public void undoMoveWithoutNotification() {
 		if (this.moveNumber >= 0) {
 			undoMoveWithoutNotification(getLastMove());
 		}
 	}
 
+	@Override
 	public void undoMoveWithoutNotification(long move) {
 		if (this.turn == WHITE_TURN) {
 			this.turn = BLACK_TURN;

@@ -10,7 +10,7 @@ import static org.formulachess.engine.Turn.*;
 
 public class MateNode implements Comparable<MateNode> {
 
-	static Comparator<MateNode> MateNodeComparator = new Comparator<MateNode>() {
+	static Comparator<MateNode> mateNodeComparator = new Comparator<MateNode>() {
 		public int compare(MateNode o1, MateNode o2) {
 			return o1.compareTo(o2);
 		}
@@ -40,7 +40,7 @@ public class MateNode implements Comparable<MateNode> {
 		MateNode newNode = new MateNode(this, moveArg, turn, depthArg);
 		this.children.add(newNode);
 		newNode.setDepth(depthArg);
-		Collections.sort(this.children, MateNodeComparator);
+		Collections.sort(this.children, mateNodeComparator);
 		return newNode;
 	}
 
@@ -220,7 +220,7 @@ public class MateNode implements Comparable<MateNode> {
 		MateNode node = this.parent;
 		while (node != null) {
 			node.depth = depth;
-			Collections.sort(node.children, MateNodeComparator);
+			Collections.sort(node.children, mateNodeComparator);
 			node = node.parent;
 		}
 	}

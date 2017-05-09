@@ -32,10 +32,9 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 	private static final Logger MyLogger = Logger.getLogger(Parser.class.getCanonicalName());
 	private static final boolean DEBUG = false;
 	// internal data for the automat
-	protected final static int StackIncrement = 255;
+	protected static final  int StackIncrement = 255;
 	protected int stateStackTop;
 	protected int[] stack = new int[StackIncrement];
-	public int lastAct; // handle for multiple parsing goals
 
 	// AST management
 	private ASTNode[] nodeStack = new ASTNode[StackIncrement];
@@ -48,16 +47,16 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 	private PGNDatabase pgnDatabase;
 
 	// scanner token
-	public Scanner scanner;
+	private Scanner scanner;
 
-	public int currentToken;
-	public int firstToken; // handle for multiple parsing goals
+	private int currentToken;
+	private int firstToken; // handle for multiple parsing goals
 
 	protected boolean hasReportedError;
 	protected int lastErrorEndPosition;
 
 	// internal tables for the automaton.
-	private final static byte[] rhs = { 0, 2, 2, 0, 3, 3, 0, 5, 1, 2, 2, 2, 0, 3, 5, 3, 2, 3, 3, 3, 4, 4, 3, 1, 2, 4, 3,
+	private static final byte[] rhs = { 0, 2, 2, 0, 3, 3, 0, 5, 1, 2, 2, 2, 0, 3, 5, 3, 2, 3, 3, 3, 4, 4, 3, 1, 2, 4, 3,
 			4, 5, 5, 6, 3, 4, 4, 4, 5, 5, 6, 1, 1, 2, 1, 1, 1, 1, 1, 1, 0, 3, 5, 1, 0, 1, 1, 1, 1 };
 
 	private static final short[] check_table = { -8, -16, -17, 1, 0, -3, 4, -5, 7, 8, 9, 10, 11, 12, 0, -6, 14, 2, 0,
@@ -120,15 +119,13 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 			this.stateStackTop = -1;
 			this.currentToken = getFirstToken();
 			ProcessTerminals: for (;;) {
-				try {
-					this.stack[++this.stateStackTop] = act;
-				} catch (IndexOutOfBoundsException e) {
+				this.stateStackTop++;
+				if (this.stateStackTop == this.stack.length) {
+					// resize
 					int oldStackLength = this.stack.length;
-					int oldStack[] = this.stack;
-					this.stack = new int[oldStackLength + StackIncrement];
-					System.arraycopy(oldStack, 0, this.stack, 0, oldStackLength);
-					this.stack[this.stateStackTop] = act;
+					System.arraycopy(this.stack, 0, this.stack = new int[oldStackLength + StackIncrement], 0, oldStackLength);
 				}
+				this.stack[this.stateStackTop] = act;
 
 				act = tAction(act, this.currentToken);
 
@@ -142,6 +139,7 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 						consumeToken(this.currentToken);
 						this.currentToken = this.scanner.getNextToken();
 					} catch (InvalidInputException e) {
+						MyLogger.log(Level.SEVERE, "Contains error", e);
 						this.hasReportedError = true;
 						return;
 					}
@@ -151,6 +149,7 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 						consumeToken(this.currentToken);
 						this.currentToken = this.scanner.getNextToken();
 					} catch (InvalidInputException e) {
+						MyLogger.log(Level.SEVERE, "Contains errors", e);
 						this.hasReportedError = true;
 						return;
 					}
@@ -227,270 +226,268 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 		switch (act) {
 		case 1:
 			if (DEBUG)
-				System.out.println("Goal ::= GREATER_THAN PGN-database"); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "Goal ::= GREATER_THAN PGN-database"); //$NON-NLS-1$
 			consumeGoal();
 			break;
 		case 2:
 			if (DEBUG)
-				System.out.println("PGN-database ::= PGN-database PGN-game"); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "PGN-database ::= PGN-database PGN-game"); //$NON-NLS-1$
 			consumePGNDatabase();
 			break;
 		case 3:
 			if (DEBUG)
-				System.out.println("PGN-database ::="); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "PGN-database ::="); //$NON-NLS-1$
 			consumeEmptyPGNDatabase();
 			break;
 		case 4:
 			if (DEBUG)
-				System.out.println("PGN-game ::= tag-section movetext-section space"); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "PGN-game ::= tag-section movetext-section space"); //$NON-NLS-1$
 			consumePGNGame();
 			break;
 		case 5:
 			if (DEBUG)
-				System.out.println("tag-section ::= tag-section tag-pair space"); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "tag-section ::= tag-section tag-pair space"); //$NON-NLS-1$
 			consumeTagSection();
 			break;
 		case 6:
 			if (DEBUG)
-				System.out.println("tag-section ::="); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "tag-section ::="); //$NON-NLS-1$
 			consumeEmptyTagSection();
 			break;
 		case 7:
 			if (DEBUG)
-				System.out.println("tag-pair ::= Start_Tag_Section space tag-value space..."); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "tag-pair ::= Start_Tag_Section space tag-value space..."); //$NON-NLS-1$
 			consumeTagPair();
 			break;
 		case 9:
 			if (DEBUG)
-				System.out.println("movetext-section ::= element-sequence game-termination"); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "movetext-section ::= element-sequence game-termination"); //$NON-NLS-1$
 			consumeMoveTextSection();
 			break;
 		case 10:
 			if (DEBUG)
-				System.out.println("element-sequence ::= element-sequence element"); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "element-sequence ::= element-sequence element"); //$NON-NLS-1$
 			consumeElementSequence();
 			break;
 		case 11:
 			if (DEBUG)
-				System.out.println("element-sequence ::= element-sequence recursive-variation"); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "element-sequence ::= element-sequence recursive-variation"); //$NON-NLS-1$
 			consumeElementSequenceWithRecursiveVariation();
 			break;
 		case 12:
 			if (DEBUG)
-				System.out.println("element-sequence ::="); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "element-sequence ::="); //$NON-NLS-1$
 			consumeEmptyElementSequence();
 			break;
 		case 13:
 			if (DEBUG)
-				System.out.println("element ::= move-number-indication WhiteMove space"); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "element ::= move-number-indication WhiteMove space"); //$NON-NLS-1$
 			consumeElementSingleMove();
 			break;
 		case 14:
 			if (DEBUG)
-				System.out.println("element ::= move-number-indication WhiteMove WHITESPACE..."); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "element ::= move-number-indication WhiteMove WHITESPACE..."); //$NON-NLS-1$
 			consumeElementTwoMoves();
 			break;
 		case 15:
 			if (DEBUG)
-				System.out.println("element ::= move-number-indication BlackMove space"); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "element ::= move-number-indication BlackMove space"); //$NON-NLS-1$
 			consumeElementBlackMove();
 			break;
 		case 16:
 			if (DEBUG)
-				System.out.println("WhiteMove ::= InnerSANMove numeric-annotation-glyph"); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "WhiteMove ::= InnerSANMove numeric-annotation-glyph"); //$NON-NLS-1$
 			consumeWhiteMove();
 			break;
 		case 17:
 			if (DEBUG)
-				System.out.println("WhiteMove ::= InnerSANMove CHECK numeric-annotation-glyph"); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "WhiteMove ::= InnerSANMove CHECK numeric-annotation-glyph"); //$NON-NLS-1$
 			consumeWhiteMoveWithCheck();
 			break;
 		case 18:
 			if (DEBUG)
-				System.out.println("WhiteMove ::= InnerSANMove CHECKMATE..."); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "WhiteMove ::= InnerSANMove CHECKMATE..."); //$NON-NLS-1$
 			consumeWhiteMoveWithCheckMate();
 			break;
 		case 19:
 			if (DEBUG)
-				System.out.println("BlackMove ::= BlackDots InnerSANMove..."); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "BlackMove ::= BlackDots InnerSANMove..."); //$NON-NLS-1$
 			consumeBlackMove();
 			break;
 		case 20:
 			if (DEBUG)
-				System.out.println("BlackMove ::= BlackDots InnerSANMove CHECK..."); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "BlackMove ::= BlackDots InnerSANMove CHECK..."); //$NON-NLS-1$
 			consumeBlackMoveWithCheck();
 			break;
 		case 21:
 			if (DEBUG)
-				System.out.println("BlackMove ::= BlackDots InnerSANMove CHECKMATE..."); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "BlackMove ::= BlackDots InnerSANMove CHECKMATE..."); //$NON-NLS-1$
 			consumeBlackMoveWithCheckMate();
 			break;
 		case 23:
 			if (DEBUG)
-				System.out.println("BlackMoveFollowingWhiteMove ::= WhiteMove"); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "BlackMoveFollowingWhiteMove ::= WhiteMove"); //$NON-NLS-1$
 			consumeBlackMoveFollowingWhiteMove();
 			break;
 		case 24:
 			if (DEBUG)
-				System.out.println("InnerSANMove ::= FileName RankName"); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "InnerSANMove ::= FileName RankName"); //$NON-NLS-1$
 			consumePawnMove();
 			break;
 		case 25:
 			if (DEBUG)
-				System.out.println("InnerSANMove ::= FileName RankName PROMOTE..."); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "InnerSANMove ::= FileName RankName PROMOTE..."); //$NON-NLS-1$
 			consumePawnMoveWithPromotion();
 			break;
 		case 26:
 			if (DEBUG)
-				System.out.println("InnerSANMove ::= FileName RankName PieceIdentification"); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "InnerSANMove ::= FileName RankName PieceIdentification"); //$NON-NLS-1$
 			consumePawnMoveWithPromotion();
 			break;
 		case 27:
 			if (DEBUG)
-				System.out.println("InnerSANMove ::= FileName CAPTURE FileName RankName"); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "InnerSANMove ::= FileName CAPTURE FileName RankName"); //$NON-NLS-1$
 			consumePawnMoveWithCapture();
 			break;
 		case 28:
 			if (DEBUG)
-				System.out.println("InnerSANMove ::= FileName CAPTURE FileName RankName..."); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "InnerSANMove ::= FileName CAPTURE FileName RankName..."); //$NON-NLS-1$
 			consumePawnMoveWithCapture();
 			break;
 		case 29:
 			if (DEBUG)
-				System.out.println("InnerSANMove ::= FileName CAPTURE FileName RankName..."); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "InnerSANMove ::= FileName CAPTURE FileName RankName..."); //$NON-NLS-1$
 			consumePawnMoveWithCaptureAndPromotion();
 			break;
 		case 30:
 			if (DEBUG)
-				System.out.println("InnerSANMove ::= FileName CAPTURE FileName RankName PROMOTE"); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "InnerSANMove ::= FileName CAPTURE FileName RankName PROMOTE"); //$NON-NLS-1$
 			consumePawnMoveWithCaptureAndPromotion();
 			break;
 		case 31:
 			if (DEBUG)
-				System.out.println("InnerSANMove ::= PieceIdentification FileName RankName"); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "InnerSANMove ::= PieceIdentification FileName RankName"); //$NON-NLS-1$
 			consumePieceMove();
 			break;
 		case 32:
 			if (DEBUG)
-				System.out.println("InnerSANMove ::= PieceIdentification FileName FileName..."); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "InnerSANMove ::= PieceIdentification FileName FileName..."); //$NON-NLS-1$
 			consumePieceMoveWithFileNameAmbiguity();
 			break;
 		case 33:
 			if (DEBUG)
-				System.out.println("InnerSANMove ::= PieceIdentification RankName FileName..."); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "InnerSANMove ::= PieceIdentification RankName FileName..."); //$NON-NLS-1$
 			consumePieceMoveWithRankNameAmbiguity();
 			break;
 		case 34:
 			if (DEBUG)
-				System.out.println("InnerSANMove ::= PieceIdentification CAPTURE FileName..."); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "InnerSANMove ::= PieceIdentification CAPTURE FileName..."); //$NON-NLS-1$
 			consumePieceMoveWithCapture();
 			break;
 		case 35:
 			if (DEBUG)
-				System.out.println("InnerSANMove ::= PieceIdentification FileName CAPTURE..."); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "InnerSANMove ::= PieceIdentification FileName CAPTURE..."); //$NON-NLS-1$
 			consumePieceMoveWithCaptureAndFileNameAmbiguity();
 			break;
 		case 36:
 			if (DEBUG)
-				System.out.println("InnerSANMove ::= PieceIdentification RankName CAPTURE..."); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "InnerSANMove ::= PieceIdentification RankName CAPTURE..."); //$NON-NLS-1$
 			consumePieceMoveWithCaptureAndRankNameAmbiguity();
 			break;
 		case 37:
 			if (DEBUG)
-				System.out.println("InnerSANMove ::= PieceIdentification FileName RankName..."); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "InnerSANMove ::= PieceIdentification FileName RankName..."); //$NON-NLS-1$
 			consumePieceMoveWithCaptureAndDoubleAmbiguity();
 			break;
 		case 38:
 			if (DEBUG)
-				System.out.println("InnerSANMove ::= CASTLE_KING_SIDE"); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "InnerSANMove ::= CASTLE_KING_SIDE"); //$NON-NLS-1$
 			consumeCastleKingSide();
 			break;
 		case 39:
 			if (DEBUG)
-				System.out.println("InnerSANMove ::= CASTLE_QUEEN_SIDE"); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "InnerSANMove ::= CASTLE_QUEEN_SIDE"); //$NON-NLS-1$
 			consumeCastleQueenSide();
 			break;
 		case 40:
 			if (DEBUG)
-				System.out.println("numeric-annotation-glyph ::= numeric-annotation-glyph..."); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "numeric-annotation-glyph ::= numeric-annotation-glyph..."); //$NON-NLS-1$
 			consumeNAG();
 			break;
 		case 41:
 			if (DEBUG)
-				System.out.println("numeric-annotation-glyph ::= EXCELLENT_MOVE"); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "numeric-annotation-glyph ::= EXCELLENT_MOVE"); //$NON-NLS-1$
 			consumeExcellentMoveNAG();
 			break;
 		case 42:
 			if (DEBUG)
-				System.out.println("numeric-annotation-glyph ::= VERY_BAD_MOVE"); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "numeric-annotation-glyph ::= VERY_BAD_MOVE"); //$NON-NLS-1$
 			consumeVeryBadMoveNAG();
 			break;
 		case 43:
 			if (DEBUG)
-				System.out.println("numeric-annotation-glyph ::= BAD_MOVE"); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "numeric-annotation-glyph ::= BAD_MOVE"); //$NON-NLS-1$
 			consumeBadMoveNAG();
 			break;
 		case 44:
 			if (DEBUG)
-				System.out.println("numeric-annotation-glyph ::= GOOD_MOVE"); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "numeric-annotation-glyph ::= GOOD_MOVE"); //$NON-NLS-1$
 			consumeGoodMoveMoveNAG();
 			break;
 		case 45:
 			if (DEBUG)
-				System.out.println("numeric-annotation-glyph ::= INTERESTING_MOVE"); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "numeric-annotation-glyph ::= INTERESTING_MOVE"); //$NON-NLS-1$
 			consumeInterestingMoveNAG();
 			break;
 		case 46:
 			if (DEBUG)
-				System.out.println("numeric-annotation-glyph ::= SUSPICIOUS_MOVE"); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "numeric-annotation-glyph ::= SUSPICIOUS_MOVE"); //$NON-NLS-1$
 			consumeSuspiciousMoveNAG();
 			break;
 		case 47:
 			if (DEBUG)
-				System.out.println("numeric-annotation-glyph ::="); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "numeric-annotation-glyph ::="); //$NON-NLS-1$
 			consumeEmptyNAG();
 			break;
 		case 48:
 			if (DEBUG)
-				System.out.println("move-number-indication ::= IntegerLiteral DOT space"); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "move-number-indication ::= IntegerLiteral DOT space"); //$NON-NLS-1$
 			consumeMoveIndication();
 			break;
 		case 49:
 			if (DEBUG)
-				System.out.println("recursive-variation ::= START_VARIATION space..."); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "recursive-variation ::= START_VARIATION space..."); //$NON-NLS-1$
 			consumeRecursiveVariation();
 			break;
 		case 52:
 			if (DEBUG)
-				System.out.println("game-termination ::= WHITE_VICTORY"); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "game-termination ::= WHITE_VICTORY"); //$NON-NLS-1$
 			consumeWhiteVictory();
 			break;
 		case 53:
 			if (DEBUG)
-				System.out.println("game-termination ::= BLACK_VICTORY"); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "game-termination ::= BLACK_VICTORY"); //$NON-NLS-1$
 			consumeBlackVictory();
 			break;
 		case 54:
 			if (DEBUG)
-				System.out.println("game-termination ::= DRAW"); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "game-termination ::= DRAW"); //$NON-NLS-1$
 			consumeDraw();
 			break;
 		case 55:
 			if (DEBUG)
-				System.out.println("game-termination ::= UNKNOWN"); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, "game-termination ::= UNKNOWN"); //$NON-NLS-1$
 			consumeUnknownResult();
 			break;
+		default:
 		}
 	}
 
 	protected void endParse(int act) {
-
-		this.lastAct = act;
-
 		if (act == ERROR_ACTION || this.hasReportedError) {
 			if (DEBUG) {
-				System.out.println("ERROR"); //$NON-NLS-1$
-				System.out.println(this.scanner);
+				MyLogger.log(Level.INFO, "ERROR"); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, String.valueOf(this.scanner));
 			}
 			this.pgnDatabase = null;
 		}
@@ -967,7 +964,7 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 
 	private void pushOnNodeStack(ASTNode astNode) {
 		if (this.nodeStackPointer == this.nodeStack.length) {
-			System.arraycopy(this.nodeStack, 0, (this.nodeStack = new ASTNode[this.nodeStackPointer + StackIncrement]),
+			System.arraycopy(this.nodeStack, 0, this.nodeStack = new ASTNode[this.nodeStackPointer + StackIncrement],
 					0, this.nodeStackPointer);
 		}
 		this.nodeStack[this.nodeStackPointer++] = astNode;
@@ -976,7 +973,7 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 	private void pushOnNodeInformationStack(char[] info) {
 		if (this.nodeInformationPointer == this.nodeInformation.length) {
 			System.arraycopy(this.nodeInformation, 0,
-					(this.nodeInformation = new char[this.nodeInformationPointer + StackIncrement][]), 0,
+					this.nodeInformation = new char[this.nodeInformationPointer + StackIncrement][], 0,
 					this.nodeInformationPointer);
 		}
 		this.nodeInformation[this.nodeInformationPointer++] = info;

@@ -41,65 +41,60 @@ public class MateSearch {
 		long[] nextMoves = model.allMoves();
 		int nextMovesLength = nextMoves.length;
 		MateMove[] next = createSearchableMoves(model, nextMoves, true);
+		MateNode currentResult = result;
 		loop: for (int i = 0; i < nextMovesLength; i++) {
 			long move = next[i].getMove();
-			MateNode current = result.add(next[i], model.getTurn(), depth);
+			MateNode current = currentResult.add(next[i], model.getTurn(), depth);
 			if ((depth == maximum && MateMove.isCheck(move)) || depth != maximum) {
 				int mobility = next[i].getMobility();
 				if (mobility == 0) {
-					if (DEBUG) {
-						debug(next[i], 2 * depth - 1);
-					}
+					debug(next[i], 2 * depth - 1);
 					if (!MateMove.isCheck(move)) {
 						// stalemate
-						result.remove(next[i], depth);
+						currentResult.remove(next[i], depth);
 						continue loop;
 					}
 					// mate
 					if (depth != 1) {
 						return true;
 					}
-					result.remove(next[i], depth);
+					currentResult.remove(next[i], depth);
 				} else if (depth < maximum) {
-					if (DEBUG) {
-						debug(next[i], 2 * depth - 1);
-					}
+					debug(next[i], 2 * depth - 1);
 					model.playMoveWithoutNotification(move);
-					int move_counter = 0;
-					result = current;
+					int moveCounter = 0;
+					currentResult = current;
 					MateMove[] opponentNextMoves = createSearchableMoves(model, model.allMoves(), true);
 					opponentLoop: for (int j = 0, max = opponentNextMoves.length; j < max; j++) {
 						long opponentMove = opponentNextMoves[j].getMove();
-						if (DEBUG) {
-							debug(opponentNextMoves[j], 2 * depth);
-						}
-						MateNode opponentCurrent = result.add(opponentNextMoves[j], model.getTurn(), depth);
-						result = opponentCurrent;
+						debug(opponentNextMoves[j], 2 * depth);
+						MateNode opponentCurrent = currentResult.add(opponentNextMoves[j], model.getTurn(), depth);
+						currentResult = opponentCurrent;
 						model.playMoveWithoutNotification(opponentMove);
-						if (!searchMate(model, depth + 1, maximum, result)) {
+						if (!searchMate(model, depth + 1, maximum, currentResult)) {
 							model.undoMoveWithoutNotification(opponentMove);
-							result = result.parent;
-							result.remove(opponentNextMoves[j], depth);
+							currentResult = currentResult.parent;
+							currentResult.remove(opponentNextMoves[j], depth);
 							break opponentLoop;
 						}
-						result = result.parent;
-						move_counter++;
+						currentResult = currentResult.parent;
+						moveCounter++;
 						model.undoMoveWithoutNotification(opponentMove);
 					}
-					result = result.parent;
+					currentResult = currentResult.parent;
 					model.undoMoveWithoutNotification(move);
-					if (mobility == move_counter) {
+					if (mobility == moveCounter) {
 						return true;
 					}
-					result.remove(next[i], depth);
+					currentResult.remove(next[i], depth);
 				} else {
 					// mobility != 0 && depth == maximum
 					// we can stop this depth
-					result.remove(next[i], depth);
+					currentResult.remove(next[i], depth);
 					return false;
 				}
 			} else {
-				result.remove(next[i], depth);
+				currentResult.remove(next[i], depth);
 			}
 		}
 		return false;

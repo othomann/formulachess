@@ -1245,9 +1245,9 @@ public class ChessEngine extends AbstractChessEngine {
 		this.board[endingSquare] = pieceType;
 		switch (pieceType) {
 		case WHITE_KING:
-			if (((startingSquare - endingSquare) == 2) || ((startingSquare - endingSquare) == -2)) {
-				if (startingSquare == 60) {
-					switch (endingSquare) {
+			if ((((startingSquare - endingSquare) == 2) || ((startingSquare - endingSquare) == -2)) 
+					&& startingSquare == 60) {
+				switch (endingSquare) {
 					case 62:
 						this.board[61] = WHITE_ROOK;
 						this.board[63] = EMPTY;
@@ -1255,7 +1255,8 @@ public class ChessEngine extends AbstractChessEngine {
 					case 58:
 						this.board[59] = WHITE_ROOK;
 						this.board[56] = EMPTY;
-					}
+						break;
+					default:
 				}
 			}
 			this.whiteKingSquare = endingSquare;
@@ -1264,13 +1265,15 @@ public class ChessEngine extends AbstractChessEngine {
 			if (((startingSquare - endingSquare) == 2) || ((startingSquare - endingSquare) == -2)) {
 				if (startingSquare == 4) {
 					switch (endingSquare) {
-					case 6:
-						this.board[5] = BLACK_ROOK;
-						this.board[7] = EMPTY;
-						break;
-					case 2:
-						this.board[3] = BLACK_ROOK;
-						this.board[0] = EMPTY;
+						case 6:
+							this.board[5] = BLACK_ROOK;
+							this.board[7] = EMPTY;
+							break;
+						case 2:
+							this.board[3] = BLACK_ROOK;
+							this.board[0] = EMPTY;
+							break;
+						default:
 					}
 				}
 			}
@@ -1284,12 +1287,13 @@ public class ChessEngine extends AbstractChessEngine {
 			}
 			if (endingSquare == this.enPassantSquare) {
 				switch (endingSquare - startingSquare) {
-				case -7:
-					this.board[startingSquare + 1] = EMPTY;
-					break;
-				case -9:
-					this.board[startingSquare - 1] = EMPTY;
-					break;
+					case -7:
+						this.board[startingSquare + 1] = EMPTY;
+						break;
+					case -9:
+						this.board[startingSquare - 1] = EMPTY;
+						break;
+					default:
 				}
 			}
 			break;
@@ -1301,12 +1305,13 @@ public class ChessEngine extends AbstractChessEngine {
 			}
 			if (endingSquare == this.enPassantSquare) {
 				switch (endingSquare - startingSquare) {
-				case 9:
-					this.board[startingSquare + 1] = EMPTY;
-					break;
-				case 7:
-					this.board[startingSquare - 1] = EMPTY;
-					break;
+					case 9:
+						this.board[startingSquare + 1] = EMPTY;
+						break;
+					case 7:
+						this.board[startingSquare - 1] = EMPTY;
+						break;
+					default:
 				}
 			}
 			break;
@@ -1782,10 +1787,10 @@ public class ChessEngine extends AbstractChessEngine {
 	public void playMoveWithoutNotification(long move) {
 		if (this.history.length == this.moveNumber + 1) {
 			// resize
-			System.arraycopy(this.history, 0, (this.history = new long[this.history.length + HISTORY_DEFAULT_SIZE]), 0,
+			System.arraycopy(this.history, 0, this.history = new long[this.history.length + HISTORY_DEFAULT_SIZE], 0,
 					this.moveNumber + 1);
 			System.arraycopy(this.moveHistory, 0,
-					(this.moveHistory = new String[this.history.length + HISTORY_DEFAULT_SIZE]), 0,
+					this.moveHistory = new String[this.history.length + HISTORY_DEFAULT_SIZE], 0,
 					this.moveNumber + 1);
 		}
 		++this.moveNumber;
@@ -2271,8 +2276,7 @@ public class ChessEngine extends AbstractChessEngine {
 		// detect castling and update the this.board
 		switch (pieceType) {
 		case WHITE_KING:
-			if (((startingSquare - endingSquare) == 2) || ((startingSquare - endingSquare) == -2)) {
-				if (startingSquare == 60) {
+			if ((((startingSquare - endingSquare) == 2) || ((startingSquare - endingSquare) == -2)) && startingSquare == 60) {
 					switch (endingSquare) {
 					case 62:
 						this.board[63] = WHITE_ROOK;
@@ -2281,14 +2285,13 @@ public class ChessEngine extends AbstractChessEngine {
 					case 58:
 						this.board[56] = WHITE_ROOK;
 						this.board[59] = EMPTY;
+					default:
 					}
-				}
 			}
 			this.whiteKingSquare = startingSquare;
 			break;
 		case BLACK_KING:
-			if (((startingSquare - endingSquare) == 2) || ((startingSquare - endingSquare) == -2)) {
-				if (startingSquare == 4) {
+			if ((((startingSquare - endingSquare) == 2) || ((startingSquare - endingSquare) == -2)) && startingSquare == 4) {
 					switch (endingSquare) {
 					case 6:
 						this.board[7] = BLACK_ROOK;
@@ -2297,8 +2300,8 @@ public class ChessEngine extends AbstractChessEngine {
 					case 2:
 						this.board[0] = BLACK_ROOK;
 						this.board[3] = EMPTY;
+					default:
 					}
-				}
 			}
 			this.blackKingSquare = startingSquare;
 			break;
@@ -2311,6 +2314,7 @@ public class ChessEngine extends AbstractChessEngine {
 				case -9:
 					this.board[startingSquare - 1] = capturedPiece;
 					break;
+				default:
 				}
 				this.board[endingSquare] = EMPTY;
 			}
@@ -2324,6 +2328,7 @@ public class ChessEngine extends AbstractChessEngine {
 				case -7:
 					this.board[startingSquare - 1] = capturedPiece;
 					break;
+				default:
 				}
 				this.board[endingSquare] = EMPTY;
 			}

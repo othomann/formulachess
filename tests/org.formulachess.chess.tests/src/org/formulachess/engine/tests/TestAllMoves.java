@@ -19,11 +19,12 @@ import junit.framework.TestSuite;
 
 public class TestAllMoves extends TestCase {
 
+	private static final String INITIAL_POSITION = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"; //$NON-NLS-1$
 	private static final String WRONG_MOVES = "Wrong moves"; //$NON-NLS-1$
 	private static final String WRONG_VALUE = "Wrong value"; //$NON-NLS-1$
 	private static Logger myLogger = Logger.getLogger(TestAllMoves.class.getCanonicalName());
 	private static final String WRONG_SIZE = "wrong size"; //$NON-NLS-1$
-	private static final boolean TOTAL = false;
+	private static final boolean TOTAL = true;
 	private static final boolean DEBUG = false;
 
 	public TestAllMoves(String name) {
@@ -266,11 +267,10 @@ public class TestAllMoves extends TestCase {
 	}
 
 	public void test011() {
-		ChessEngine model = new ChessEngine(Locale.getDefault(),
-				"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"); //$NON-NLS-1$
+		ChessEngine model = new ChessEngine(Locale.getDefault(), INITIAL_POSITION);
 		long[] moves = model.allMoves();
 		assertEquals(WRONG_SIZE, 20, moves.length);
-		playAllMoves("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", model, moves); //$NON-NLS-1$
+		playAllMoves(INITIAL_POSITION, model, moves);
 		moves = model.allMoves();
 		assertEquals(WRONG_SIZE, 20, moves.length);
 		StringBuilder builder = new StringBuilder();
@@ -430,64 +430,61 @@ public class TestAllMoves extends TestCase {
 	}
 
 	public void test026() {
-		ChessEngine model = new ChessEngine(Locale.getDefault(),
-				"r2q1r2/p1pb1kpQ/3pR3/1p1n4/4pP2/8/PP2B1PP/6K1 b - f3 0 0"); //$NON-NLS-1$
+		String position = "r2q1r2/p1pb1kpQ/3pR3/1p1n4/4pP2/8/PP2B1PP/6K1 b - f3 0 0"; //$NON-NLS-1$
+		ChessEngine model = new ChessEngine(Locale.getDefault(), position);
 		long[] moves = model.allMoves();
 		assertEquals(WRONG_SIZE, 31, moves.length);
-		playAllMoves("r2q1r2/p1pb1kpQ/3pR3/1p1n4/4pP2/8/PP2B1PP/6K1 b - f3 0 0", model, moves); //$NON-NLS-1$
+		playAllMoves(position, model, moves);
 		display("test026", model, moves, //$NON-NLS-1$
 				"Cb4 Cb6 Cc3 Ce3 Ce7 Cf6 Cxf4 Db8 Dc8 De7 De8 Df6 Dg5 Dh4 Fc6 Fc8 Fe8 Fxe6 Rxe6 Tb8 Tc8 Te8 Tg8 Th8 a5 a6 b4 c5 c6 e3 exf3 "); //$NON-NLS-1$
 	}
 
 	public void test027() {
-		ChessEngine model = new ChessEngine(Locale.getDefault(),
-				"r2q1r2/p1pb1kpQ/3pR3/1p1n4/4pP2/8/PP2B1PP/6K1 b - f3 0 0"); //$NON-NLS-1$
-		assertEquals("different fen notation", "r2q1r2/p1pb1kpQ/3pR3/1p1n4/4pP2/8/PP2B1PP/6K1 b - f3 0 0", //$NON-NLS-1$ //$NON-NLS-2$
+		String position = "r2q1r2/p1pb1kpQ/3pR3/1p1n4/4pP2/8/PP2B1PP/6K1 b - f3 0 0"; //$NON-NLS-1$
+		ChessEngine model = new ChessEngine(Locale.getDefault(), position);
+		assertEquals("different fen notation", position, //$NON-NLS-1$
 				model.toFENNotation());
 	}
 
 	public void test028() {
 		if (TOTAL) {
 			long time = System.currentTimeMillis();
-			assertEquals(WRONG_VALUE, 18, ChessEngine.perft("8/PPP4k/8/8/8/8/4Kppp/8 w - - 0 0", 1)); //$NON-NLS-1$
-			assertEquals(WRONG_VALUE, 290, ChessEngine.perft("8/PPP4k/8/8/8/8/4Kppp/8 w - - 0 0", 2)); //$NON-NLS-1$
-			assertEquals(WRONG_VALUE, 5044, ChessEngine.perft("8/PPP4k/8/8/8/8/4Kppp/8 w - - 0 0", 3)); //$NON-NLS-1$
-			assertEquals(WRONG_VALUE, 89363, ChessEngine.perft("8/PPP4k/8/8/8/8/4Kppp/8 w - - 0 0", 4)); //$NON-NLS-1$
-			assertEquals(WRONG_VALUE, 1745545, ChessEngine.perft("8/PPP4k/8/8/8/8/4Kppp/8 w - - 0 0", 5)); //$NON-NLS-1$
+			String position = "8/PPP4k/8/8/8/8/4Kppp/8 w - - 0 0"; //$NON-NLS-1$
+			assertEquals(WRONG_VALUE, 18, ChessEngine.perft(position, 1));
+			assertEquals(WRONG_VALUE, 290, ChessEngine.perft(position, 2)); 
+			assertEquals(WRONG_VALUE, 5044, ChessEngine.perft(position, 3)); 
+			assertEquals(WRONG_VALUE, 89363, ChessEngine.perft(position, 4)); 
+			assertEquals(WRONG_VALUE, 1745545, ChessEngine.perft(position, 5)); 
 			displayTime(time);
 		}
 	}
 
 	public void test029() {
 		if (TOTAL) {
-			assertEquals(WRONG_VALUE, 20,
-					ChessEngine.perft("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 1)); //$NON-NLS-1$
-			assertEquals(WRONG_VALUE, 400,
-					ChessEngine.perft("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 2)); //$NON-NLS-1$
-			assertEquals(WRONG_VALUE, 8902,
-					ChessEngine.perft("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 3)); //$NON-NLS-1$
-			assertEquals(WRONG_VALUE, 197281,
-					ChessEngine.perft("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 4)); //$NON-NLS-1$
+			assertEquals(WRONG_VALUE, 20, ChessEngine.perft(INITIAL_POSITION, 1));
+			assertEquals(WRONG_VALUE, 400, ChessEngine.perft(INITIAL_POSITION, 2));
+			assertEquals(WRONG_VALUE, 8902, ChessEngine.perft(INITIAL_POSITION, 3));
+			assertEquals(WRONG_VALUE, 197281, ChessEngine.perft(INITIAL_POSITION, 4));
 			long time = System.currentTimeMillis();
-			assertEquals(WRONG_VALUE, 4865609,
-					ChessEngine.perft("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 5)); //$NON-NLS-1$
+			assertEquals(WRONG_VALUE, 4865609, ChessEngine.perft(INITIAL_POSITION, 5));
 			displayTime(time);
 		}
 	}
 
 	public void test030() {
 		if (TOTAL) {
+			String fenNotation = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 0"; //$NON-NLS-1$
 			assertEquals(WRONG_VALUE, 48,
-					ChessEngine.perft("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 0", 1)); //$NON-NLS-1$
+					ChessEngine.perft(fenNotation, 1));
 			assertEquals(WRONG_VALUE, 2039,
-					ChessEngine.perft("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 0", 2)); //$NON-NLS-1$
+					ChessEngine.perft(fenNotation, 2)); 
 			assertEquals(WRONG_VALUE, 97862,
-					ChessEngine.perft("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 0", 3)); //$NON-NLS-1$
+					ChessEngine.perft(fenNotation, 3)); 
 			assertEquals(WRONG_VALUE, 4085603,
-					ChessEngine.perft("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 0", 4)); //$NON-NLS-1$
+					ChessEngine.perft(fenNotation, 4)); 
 			long time = System.currentTimeMillis();
 			assertEquals(WRONG_VALUE, 193690690,
-					ChessEngine.perft("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 0", 5)); //$NON-NLS-1$
+					ChessEngine.perft(fenNotation, 5)); 
 			displayTime(time);
 		}
 	}
@@ -533,11 +530,11 @@ public class TestAllMoves extends TestCase {
 	}
 
 	public void test035() {
-		ChessEngine model = new ChessEngine(Locale.getDefault(),
-				"r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 0"); //$NON-NLS-1$
+		String fenPosition = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 0"; //$NON-NLS-1$
+		ChessEngine model = new ChessEngine(Locale.getDefault(), fenPosition);
 		long[] moves = model.allMoves();
 		assertEquals(WRONG_SIZE, 48, moves.length);
-		playAllMoves("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 0", model, moves); //$NON-NLS-1$
+		playAllMoves(fenPosition, model, moves);
 		display("test035", model, moves, //$NON-NLS-1$
 				"Ca4 Cb1 Cb5 Cc4 Cc6 Cd1 Cd3 Cg4 Cxd7 Cxf7 Cxg6 Dd3 De3 Df4 Df5 Dg3 Dg4 Dh5 Dxf6 Dxh3 Fb5 Fc1 Fc4 Fd1 Fd3 Fe3 Ff1 Ff4 Fg5 Fh6 Fxa6 O-O O-O-O Rd1 Rf1 Tb1 Tc1 Td1 Tf1 Tg1 a3 a4 b3 d6 dxe6 g3 g4 gxh3 "); //$NON-NLS-1$
 	}
@@ -554,13 +551,11 @@ public class TestAllMoves extends TestCase {
 
 	public void test037() {
 		if (TOTAL) {
-			assertEquals(WRONG_VALUE, 1709,
-					ChessEngine.perft("1rb2rk1/p4ppp/1p1qp1n1/3n2N1/2pP4/2P3P1/PPQ2PBP/R1B1R1K1 w - - 0 1", 2)); //$NON-NLS-1$
-			assertEquals(WRONG_VALUE, 73743,
-					ChessEngine.perft("1rb2rk1/p4ppp/1p1qp1n1/3n2N1/2pP4/2P3P1/PPQ2PBP/R1B1R1K1 w - - 0 1", 3)); //$NON-NLS-1$
+			String fenNotation = "1rb2rk1/p4ppp/1p1qp1n1/3n2N1/2pP4/2P3P1/PPQ2PBP/R1B1R1K1 w - - 0 1"; //$NON-NLS-1$
+			assertEquals(WRONG_VALUE, 1709, ChessEngine.perft(fenNotation, 2));
+			assertEquals(WRONG_VALUE, 73743, ChessEngine.perft(fenNotation, 3));
 			long time = System.currentTimeMillis();
-			assertEquals(WRONG_VALUE, 2824658,
-					ChessEngine.perft("1rb2rk1/p4ppp/1p1qp1n1/3n2N1/2pP4/2P3P1/PPQ2PBP/R1B1R1K1 w - - 0 1", 4)); //$NON-NLS-1$
+			assertEquals(WRONG_VALUE, 2824658, ChessEngine.perft(fenNotation, 4));
 			displayTime(time);
 		}
 	}

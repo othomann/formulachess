@@ -8,11 +8,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class Util {
 
+	private static final Logger MY_LOGGER = Logger.getLogger(Util.class.getCanonicalName());
 	private static final char[] NO_CHAR = new char[0];
 	private static final String UTF_8 = "UTF-8"; //$NON-NLS-1$
 	private static final int DEFAULT_READING_SIZE = 4096;
@@ -62,6 +65,7 @@ public class Util {
 					: new BufferedReader(new InputStreamReader(stream, encoding));
 		} catch (UnsupportedEncodingException e) {
 			// encoding is not supported
+			MY_LOGGER.log(Level.INFO, "Invalid encoding name", e);
 			reader = new BufferedReader(new InputStreamReader(stream));
 		}
 		char[] contents;
@@ -180,7 +184,7 @@ public class Util {
 		final int kernIndex = (temp) / 6;
 		int queenColumn = temp % 6;
 		int index = 0;
-		for (int i = 0; index <= queenColumn; i++) {
+		for (int i = 0; index <= queenColumn && i < 8; i++) {
 			if (i != lightSquareBishopColum && i != darkSquaredBishopColum) {
 				index++;
 			}

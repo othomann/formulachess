@@ -8,21 +8,20 @@ import org.eclipse.core.runtime.Plugin;
 public class ChessUIPlugin extends Plugin {
 
 	/**
-	 * The plug-in identifier of the puzzles
-	 * (value <code>"org.formulachess.chess.puzzles"</code>).
+	 * The plug-in identifier of the puzzles (value
+	 * <code>"org.formulachess.chess.puzzles"</code>).
 	 */
-	public static final String PLUGIN_ID = "org.formulachess.chess.ui" ; //$NON-NLS-1$
-	
-	//The shared instance.
+	public static final String PLUGIN_ID = "org.formulachess.chess.ui"; //$NON-NLS-1$
+
+	// The shared instance.
 	private static ChessUIPlugin plugin;
-	
+
 	/**
 	 * The constructor.
 	 */
 	public ChessUIPlugin() {
 		plugin = this;
 	}
-
 
 	/**
 	 * Returns the shared instance.

@@ -9,7 +9,7 @@ import org.formulachess.pgn.engine.PGNMoveContainer;
 public class MateSearch {
 
 	public static final boolean DEBUG = false;
-	
+
 	public static MateMove[] createSearchableMoves(ChessEngine model, long[] moves, boolean sort) {
 		int movesLength = moves.length;
 		PGNMoveContainer container = new PGNMoveContainer(model, moves, Locale.ENGLISH);
@@ -30,7 +30,7 @@ public class MateSearch {
 		}
 		return next;
 	}
-	
+
 	public static boolean searchMate(ChessEngine model, int depth, int maximum, MateNode result) {
 		long[] nextMoves = model.allMoves();
 		int nextMovesLength = nextMoves.length;
@@ -38,14 +38,13 @@ public class MateSearch {
 		loop: for (int i = 0; i < nextMovesLength; i++) {
 			long move = next[i].move;
 			MateNode current = result.add(next[i], model.getTurn(), depth);
-			if ((depth == maximum && ((move & MoveConstants.CHECK_MASK) >> MoveConstants.CHECK_SHIFT != 0))
-					|| depth != maximum) {
+			if ((depth == maximum && MateMove.isCheck(move)) || depth != maximum) {
 				int mobility = next[i].mobility;
 				if (mobility == 0) {
 					if (DEBUG) {
 						debug(next[i], 2 * depth - 1);
 					}
-					if ((move & MoveConstants.CHECK_MASK) >> MoveConstants.CHECK_SHIFT == 0) {
+					if (!MateMove.isCheck(move)) {
 						// stalemate
 						result.remove(next[i], depth);
 						continue loop;
@@ -63,7 +62,7 @@ public class MateSearch {
 					int move_counter = 0;
 					result = current;
 					MateMove[] opponentNextMoves = createSearchableMoves(model, model.allMoves(), true);
-					opponentLoop : for (int j = 0, max = opponentNextMoves.length; j < max; j++) {
+					opponentLoop: for (int j = 0, max = opponentNextMoves.length; j < max; j++) {
 						long opponentMove = opponentNextMoves[j].move;
 						if (DEBUG) {
 							debug(opponentNextMoves[j], 2 * depth);
@@ -99,7 +98,7 @@ public class MateSearch {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * @param result
 	 */
@@ -116,6 +115,6 @@ public class MateSearch {
 		for (int i = 0; i < depth - 1; i++) {
 			System.out.print('\t');
 		}
-  		System.out.println(move);
+		System.out.println(move);
 	}
 }

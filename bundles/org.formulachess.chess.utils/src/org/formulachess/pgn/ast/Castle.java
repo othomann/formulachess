@@ -5,11 +5,11 @@ import java.util.ResourceBundle;
 public class Castle extends Move {
 
 	private boolean isKingSize;
-	
+
 	public Castle(boolean isKingSize) {
 		this.isKingSize = isKingSize;
 	}
-	
+
 	/**
 	 * @see java.lang.Object#toString()
 	 */

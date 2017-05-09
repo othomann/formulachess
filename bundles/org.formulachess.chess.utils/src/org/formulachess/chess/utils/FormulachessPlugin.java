@@ -6,7 +6,7 @@ import org.eclipse.core.runtime.Plugin;
  * The main plugin class to be used in the desktop.
  */
 public class FormulachessPlugin extends Plugin {
-	//The shared instance.
+	// The shared instance.
 	private static FormulachessPlugin plugin;
 
 	/**

@@ -5,7 +5,7 @@ public class PGNDatabase extends ASTNode {
 	private static final int INITIAL_SIZE = 7;
 	private PGNGame[] games = new PGNGame[INITIAL_SIZE];
 	private int gamesCounter;
-	
+
 	public void addPGNGame(PGNGame pgnGame) {
 		if (this.gamesCounter == this.games.length) {
 			System.arraycopy(this.games, 0, this.games = new PGNGame[this.gamesCounter * 2], 0, this.gamesCounter);
@@ -19,15 +19,14 @@ public class PGNDatabase extends ASTNode {
 		}
 		return this.games;
 	}
-	
+
 	public PGNGame getPGNGame(int i) {
 		if (i >= this.gamesCounter) {
 			return null;
 		}
 		return this.games[i];
 	}
-	
-	
+
 	/**
 	 * @see java.lang.Object#toString()
 	 */
@@ -38,6 +37,5 @@ public class PGNDatabase extends ASTNode {
 		}
 		return String.valueOf(builder);
 	}
-
 
 }

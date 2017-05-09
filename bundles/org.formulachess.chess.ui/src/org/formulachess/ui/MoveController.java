@@ -4,8 +4,6 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -22,7 +20,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
-
 import org.formulachess.engine.ChessEngine;
 import org.formulachess.pgn.ast.Comment;
 import org.formulachess.pgn.ast.Move;
@@ -32,8 +29,8 @@ import org.formulachess.pgn.engine.PGNModel;
 public class MoveController extends Composite {
 
 	private static final int COLUMN_COUNT = 3;
-	private static final int[] DIMENSIONS = { 22, 18, 1}; // width of one square, height, gap between squares
-	Display display;
+	private static final int[] DIMENSIONS = { 22, 18, 1 }; // width of one square, height, gap between squares
+	Display localDisplay;
 	boolean initialized;
 	private ChessEngine model;
 	Move[] moves;
@@ -50,9 +47,9 @@ public class MoveController extends Composite {
 		this.currentMessages = new Messages(locale);
 		this.bundle = ResourceBundle.getBundle("org.formulachess.engine.messages", locale); //$NON-NLS-1$
 		this.model = model;
-		this.display = parent.getShell().getDisplay();
-		final Color backgroundColor = this.display.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
-		final Color foregroundColor = this.display.getSystemColor(SWT.COLOR_WIDGET_FOREGROUND);
+		this.localDisplay = parent.getShell().getDisplay();
+		final Color backgroundColor = this.localDisplay.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
+		final Color foregroundColor = this.localDisplay.getSystemColor(SWT.COLOR_WIDGET_FOREGROUND);
 		this.setBackground(backgroundColor);
 
 		// layout the component
@@ -60,9 +57,10 @@ public class MoveController extends Composite {
 		this.setLayout(formLayout);
 
 		Label control = new Label(this, SWT.BORDER);
-		control.setImage(imageFactory.control);
-		control.addListener (SWT.MouseDown, new Listener () {
-			public void handleEvent (Event event) {
+		control.setImage(imageFactory.getControl());
+		control.addListener(SWT.MouseDown, new Listener() {
+			@Override
+			public void handleEvent(Event event) {
 				int x = event.x;
 				int y = event.y;
 				if (insideSquareN(0, x, y)) {
@@ -91,7 +89,6 @@ public class MoveController extends Composite {
 			}
 		});
 
-
 		Group movesGroup = new Group(this, SWT.NONE);
 		movesGroup.setText(this.currentMessages.getString("movecontroller.moves.title")); //$NON-NLS-1$
 		movesGroup.setBackground(backgroundColor);
@@ -101,46 +98,43 @@ public class MoveController extends Composite {
 		this.table = new Table(movesGroup, SWT.BORDER);
 		this.table.setLinesVisible(true);
 		this.table.setHeaderVisible(true);
-		String[] titles =
-			{
-				this.currentMessages.getString("movecontroller.table.header.number"), //$NON-NLS-1$
+		String[] titles = { this.currentMessages.getString("movecontroller.table.header.number"), //$NON-NLS-1$
 				this.currentMessages.getString("movecontroller.table.header.white"), //$NON-NLS-1$
 				this.currentMessages.getString("movecontroller.table.header.black") //$NON-NLS-1$
-			};
+		};
 		for (int i = 0; i < titles.length; i++) {
 			TableColumn column = new TableColumn(this.table, SWT.NONE);
 			column.setText(titles[i]);
 			column.pack();
 		}
 
-		this.table.addListener (SWT.MouseDown, new Listener () {
-			public void handleEvent (Event event) {
-				if (!MoveController.this.initialized) return;
-				Rectangle clientArea = MoveController.this.table.getClientArea ();
-				Point pt = new Point (event.x, event.y);
-				int index = MoveController.this.table.getTopIndex ();
-				while (index < MoveController.this.table.getItemCount ()) {
+		this.table.addListener(SWT.MouseDown, new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				if (!MoveController.this.initialized) {
+					return;
+				}
+				Rectangle clientArea = MoveController.this.table.getClientArea();
+				Point pt = new Point(event.x, event.y);
+				int index = MoveController.this.table.getTopIndex();
+				while (index < MoveController.this.table.getItemCount()) {
 					boolean visible = false;
-					TableItem item = MoveController.this.table.getItem (index);
-					for (int i=0; i < COLUMN_COUNT; i++) {
-						Rectangle rect = item.getBounds (i);
-						if (rect.contains (pt)) {
-							MoveController.this.pgnModel.playMovesTill(MoveController.this.moves, getMoveIndex(index,i));
+					TableItem item = MoveController.this.table.getItem(index);
+					for (int i = 0; i < COLUMN_COUNT; i++) {
+						Rectangle rect = item.getBounds(i);
+						if (rect.contains(pt)) {
+							MoveController.this.pgnModel.playMovesTill(MoveController.this.moves,
+									getMoveIndex(index, i));
 							update();
 						}
-						if (!visible && rect.intersects (clientArea)) {
+						if (!visible && rect.intersects(clientArea)) {
 							visible = true;
 						}
 					}
-					if (!visible) return;
+					if (!visible)
+						return;
 					index++;
 				}
-			}
-		});
-
-		this.table.addMouseMoveListener(new MouseMoveListener() {
-			public void mouseMove(MouseEvent e) {
-//				System.out.println(e);
 			}
 		});
 
@@ -185,25 +179,27 @@ public class MoveController extends Composite {
 		formData5.bottom = new FormAttachment(100, -2);
 		comment.setLayoutData(formData5);
 	}
+
 	int getMoveIndex(int i, int j) {
-		switch(j) {
-			case 0 :
-			case 1 :
-				// white move
-				if (this.moves[0].isWhiteMove()) {
-					return i * 2;
-				}
-				int index = i * 2 - 1;
-				if (index >= 0) {
-					return index;
-				}
-				break;
-			case 2 :
-				// black move
-				if (this.moves[0].isWhiteMove()) {
-					return i * 2 + 1;
-				}
+		switch (j) {
+		case 0:
+		case 1:
+			// white move
+			if (this.moves[0].isWhiteMove()) {
 				return i * 2;
+			}
+			int index = i * 2 - 1;
+			if (index >= 0) {
+				return index;
+			}
+			break;
+		case 2:
+			// black move
+			if (this.moves[0].isWhiteMove()) {
+				return i * 2 + 1;
+			}
+			return i * 2;
+		default:
 		}
 		return 0;
 	}
@@ -215,7 +211,7 @@ public class MoveController extends Composite {
 		if (this.moves[0].isWhiteMove()) {
 			return moveIdx / 2;
 		}
-		return (moveIdx + 1 ) / 2;
+		return (moveIdx + 1) / 2;
 	}
 
 	public void initializeMoveList(PGNGame pgnGame) {
@@ -233,33 +229,33 @@ public class MoveController extends Composite {
 		}
 		if (movesList[0].isWhiteMove()) {
 			for (int i = 0, max = movesList.length; i < max; i += 2) {
-				TableItem item = new TableItem (this.table, SWT.READ_ONLY);
+				TableItem item = new TableItem(this.table, SWT.READ_ONLY);
 				item.setText(0, Integer.toString((i / 2) + 1));
 				item.setText(1, movesList[i].getMoveNotation(this.bundle));
 				if (i + 1 < max) {
 					item.setText(2, movesList[i + 1].getMoveNotation(this.bundle));
 				}
 			}
-			for (int i=0; i< COLUMN_COUNT; i++) {
+			for (int i = 0; i < COLUMN_COUNT; i++) {
 				TableColumn column = this.table.getColumn(i);
 				column.setResizable(false);
 				column.pack();
 			}
 		} else {
-			TableItem item = new TableItem (this.table, SWT.READ_ONLY);
+			TableItem item = new TableItem(this.table, SWT.READ_ONLY);
 			item.setText(0, "1");//$NON-NLS-1$
 			item.setText(1, "...");//$NON-NLS-1$
 			item.setText(2, movesList[0].getMoveNotation(this.bundle));
 
 			for (int i = 1, max = movesList.length; i < max; i += 2) {
-				item = new TableItem (this.table, SWT.READ_ONLY);
+				item = new TableItem(this.table, SWT.READ_ONLY);
 				item.setText(0, Integer.toString(((i + 1) / 2) + 1));
 				item.setText(1, movesList[i].getMoveNotation(this.bundle));
 				if (i + 1 < max) {
 					item.setText(2, movesList[i + 1].getMoveNotation(this.bundle));
 				}
 			}
-			for (int i=0; i< COLUMN_COUNT; i++) {
+			for (int i = 0; i < COLUMN_COUNT; i++) {
 				TableColumn column = this.table.getColumn(i);
 				column.setResizable(false);
 				column.pack();
@@ -269,42 +265,45 @@ public class MoveController extends Composite {
 	}
 
 	boolean insideSquareN(int i, int x, int y) {
-		if (y >= 0 && y <= DIMENSIONS[1]) {
-			if (x >= (i * 22 + 1) && (x <= ((i + 1) * 22 + 1))) {
-				return true;
-			}
+		if (y >= 0 && y <= DIMENSIONS[1] && x >= (i * 22 + 1) && (x <= ((i + 1) * 22 + 1))) {
+			return true;
 		}
 		return false;
 	}
 
 	public boolean isReady() {
-		if (!this.initialized) return false;
+		if (!this.initialized)
+			return false;
 		return this.pgnModel.isReady();
 	}
 
 	public void setIsReady(boolean value) {
-		if (!this.initialized) return;
+		if (!this.initialized)
+			return;
 		this.pgnModel.setIsReady(value);
 	}
 
 	public void restartGame() {
-		if (!this.initialized) return;
+		if (!this.initialized)
+			return;
 		this.pgnModel.playMovesTill(MoveController.this.moves, -1);
 		update();
 	}
 
 	public void goToEndGame() {
-		if (!this.initialized) return;
+		if (!this.initialized)
+			return;
 		if (this.moves != null) {
 			this.pgnModel.playMovesTill(this.moves, this.moves.length - 1);
 		} else {
-			this.pgnModel.playMovesTill(this.moves, - 1);
+			this.pgnModel.playMovesTill(this.moves, -1);
 		}
 		update();
 	}
 
 	public void play5MovesForward() {
-		if (!this.initialized) return;
+		if (!this.initialized)
+			return;
 		if (this.moves != null) {
 			int length = this.moves.length - 1;
 			this.pgnModel.playMovesTill(this.moves, Math.min(this.moveIndex + 10, length));
@@ -313,7 +312,8 @@ public class MoveController extends Composite {
 	}
 
 	public void play5MovesBackward() {
-		if (!this.initialized) return;
+		if (!this.initialized)
+			return;
 		if (this.moves != null) {
 			this.pgnModel.playMovesTill(this.moves, Math.max(this.moveIndex - 10, -1));
 		}
@@ -321,7 +321,8 @@ public class MoveController extends Composite {
 	}
 
 	public void playMoveForward() {
-		if (!this.initialized) return;
+		if (!this.initialized)
+			return;
 		if (this.moves != null) {
 			int length = this.moves.length - 1;
 			this.pgnModel.playMovesTill(this.moves, Math.min(this.moveIndex + 1, length));
@@ -330,13 +331,15 @@ public class MoveController extends Composite {
 	}
 
 	public void playMoveBackward() {
-		if (!this.initialized) return;
+		if (!this.initialized)
+			return;
 		if (this.moves != null) {
 			this.pgnModel.playMovesTill(this.moves, Math.max(this.moveIndex - 1, -1));
 		}
 		update();
 	}
 
+	@Override
 	public void update() {
 		this.moveIndex = MoveController.this.pgnModel.getCurrentMoveCounter();
 		// update the table

@@ -4,7 +4,7 @@ public class MoveKey implements Comparable<MoveKey> {
 
 	MateMove move;
 	int depth;
-	
+
 	public MoveKey(MateMove move, int depth) {
 		this.move = move;
 		this.depth = depth;

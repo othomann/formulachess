@@ -9,15 +9,12 @@ package org.formulachess.ui;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-/**
- * @author Olivier
- *
- * To change this generated comment go to 
- * Window>Preferences>Java>Code Generation>Code Template
- */
 public class Messages {
 
+	private static final Logger MY_LOGGER = Logger.getLogger(Messages.class.getCanonicalName());
 	private static final String BUNDLE_NAME = "org.formulachess.ui.messages"; //$NON-NLS-1$
 
 	private ResourceBundle resourceBundle;
@@ -32,7 +29,7 @@ public class Messages {
 	public void setLocale(Locale newLocale) {
 		this.resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME, newLocale);
 	}
-	
+
 	/**
 	 * @param key
 	 * @return
@@ -41,6 +38,7 @@ public class Messages {
 		try {
 			return this.resourceBundle.getString(key);
 		} catch (MissingResourceException e) {
+			MY_LOGGER.log(Level.SEVERE, "Missing key", e);
 			return '!' + key + '!';
 		}
 	}

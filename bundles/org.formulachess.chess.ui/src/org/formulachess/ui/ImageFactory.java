@@ -16,24 +16,24 @@ public class ImageFactory {
 
 	private static final int TRANSPARENCY = 150;
 
-	public Image board;
-	public Image whiteKing;
-	public Image whiteKingMate;
-	public Image whiteQueen;
-	public Image whiteKnight;
-	public Image whiteRook;
-	public Image whiteBishop;
-	public Image whitePawn;
-	public Image blackKing;
-	public Image blackKingMate;
-	public Image blackQueen;
-	public Image blackKnight;
-	public Image blackRook;
-	public Image blackBishop;
-	public Image blackPawn;
-	public Image switchImage;
-	public Image control;
-	public Image possibleMove;
+	private Image board;
+	private Image whiteKing;
+	private Image whiteKingMate;
+	private Image whiteQueen;
+	private Image whiteKnight;
+	private Image whiteRook;
+	private Image whiteBishop;
+	private Image whitePawn;
+	private Image blackKing;
+	private Image blackKingMate;
+	private Image blackQueen;
+	private Image blackKnight;
+	private Image blackRook;
+	private Image blackBishop;
+	private Image blackPawn;
+	private Image switchImage;
+	private Image control;
+	private Image possibleMove;
 
 	public ImageFactory(Display display) {
 		// init images
@@ -89,5 +89,77 @@ public class ImageFactory {
 		this.control.dispose();
 
 		this.possibleMove.dispose();
+	}
+
+	public Image getWhiteKing() {
+		return whiteKing;
+	}
+
+	public Image getWhiteKingMate() {
+		return whiteKingMate;
+	}
+
+	public Image getWhiteQueen() {
+		return whiteQueen;
+	}
+
+	public Image getWhiteKnight() {
+		return whiteKnight;
+	}
+
+	public Image getWhiteRook() {
+		return whiteRook;
+	}
+
+	public Image getWhiteBishop() {
+		return whiteBishop;
+	}
+
+	public Image getWhitePawn() {
+		return whitePawn;
+	}
+
+	public Image getBlackKing() {
+		return blackKing;
+	}
+
+	public Image getBlackKingMate() {
+		return blackKingMate;
+	}
+
+	public Image getBlackQueen() {
+		return blackQueen;
+	}
+
+	public Image getBlackKnight() {
+		return blackKnight;
+	}
+
+	public Image getBlackRook() {
+		return blackRook;
+	}
+
+	public Image getBlackBishop() {
+		return blackBishop;
+	}
+
+	public Image getBlackPawn() {
+		return blackPawn;
+	}
+
+	public Image getBoard() {
+		return board;
+	}
+
+	public Image getPossibleMove() {
+		return possibleMove;
+	}
+
+	public Image getControl() {
+		return control;
+	}
+
+	public Image getSwitchImage() {
+		return switchImage;
 	}
 }

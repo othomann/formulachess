@@ -11,11 +11,11 @@ public class ChessPuzzleWorkbenchWindowsAdvisor extends WorkbenchWindowAdvisor {
 	public ChessPuzzleWorkbenchWindowsAdvisor(IWorkbenchWindowConfigurer configurer) {
 		super(configurer);
 	}
+
 	@Override
 	public void preWindowOpen() {
 		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
 		configurer.setInitialSize(new Point(850, 670));
-		configurer.setShowFastViewBars(false);
 		configurer.setShowCoolBar(false);
 		configurer.setShowStatusLine(false);
 		configurer.setShowMenuBar(false);

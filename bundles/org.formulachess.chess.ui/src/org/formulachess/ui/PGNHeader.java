@@ -28,21 +28,18 @@ import static org.formulachess.engine.Turn.*;
 public class PGNHeader extends Composite implements Observer {
 
 	class Controller implements PaintListener {
+		@Override
 		public void paintControl(PaintEvent e) {
-			updateBuffer();
-			e.gc.drawImage(
-				PGNHeader.this.doubleBuffer,
-				0,
-				0
-			);
+			updatebuilder();
+			e.gc.drawImage(PGNHeader.this.doublebuilder, 0, 0);
 		}
 	}
 
 	private static final String EMPTY = ""; //$NON-NLS-1$
 	private static final String DEFAULT_DATE = "????.??.??"; //$NON-NLS-1$
 	private static final Point PREFERRED_SIZE = new Point(316, 85);
-	private Font bold_font;
-	private Font normal_font;
+	private Font boldFont;
+	private Font normalFont;
 	private boolean initialized;
 	String eventName;
 	String whiteRating;
@@ -50,7 +47,7 @@ public class PGNHeader extends Composite implements Observer {
 	String blackRating;
 	String blackName;
 	String result;
-	String ECO;
+	String eco;
 	String plyMoves;
 	String date;
 	String round;
@@ -63,11 +60,11 @@ public class PGNHeader extends Composite implements Observer {
 	private ChessEngine model;
 	private Locale locale;
 
-    // double-buffering
-    Image doubleBuffer;
-    
-    private Messages currentMessages;
-		
+	// double-buildering
+	Image doublebuilder;
+
+	private Messages currentMessages;
+
 	public PGNHeader(Composite parent, int style, PGNGame pgnGame, Locale locale, ChessEngine model) {
 		super(parent, style);
 		this.locale = locale;
@@ -76,19 +73,18 @@ public class PGNHeader extends Composite implements Observer {
 		this.model.addObserver(this);
 		Display display = parent.getShell().getDisplay();
 		setBackground(display.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
-		this.bold_font = new Font(display , "Dialog", 8, SWT.BOLD); //$NON-NLS-1$
-		this.normal_font = new Font(display, "SansSerif", 8, SWT.NORMAL); //$NON-NLS-1$
+		this.boldFont = new Font(display, "Dialog", 8, SWT.BOLD); //$NON-NLS-1$
+		this.normalFont = new Font(display, "SansSerif", 8, SWT.NORMAL); //$NON-NLS-1$
 
 		setGame(pgnGame);
-		
-//		int width = AVERAGE_CHAR_SIZE * (this.result.length() + (this.date != null ? this.date.length() : 0) + this.ECO.length() + this.plyMoves.length()) + 100;
+
 		this.preferredSize = PREFERRED_SIZE;
 		setSize(this.preferredSize);
-		// init double buffer
-		this.doubleBuffer = new Image(display, this.preferredSize.x, this.preferredSize.y);
+		// init double builder
+		this.doublebuilder = new Image(display, this.preferredSize.x, this.preferredSize.y);
 		addPaintListener(new Controller());
 	}
-	
+
 	/**
 	 * @param pgnGame
 	 * @param locale
@@ -102,7 +98,7 @@ public class PGNHeader extends Composite implements Observer {
 			this.blackRating = EMPTY;
 			this.blackName = EMPTY;
 			this.result = EMPTY;
-			this.ECO = EMPTY;
+			this.eco = EMPTY;
 			this.plyMoves = EMPTY;
 			this.date = EMPTY;
 			this.round = EMPTY;
@@ -119,7 +115,7 @@ public class PGNHeader extends Composite implements Observer {
 			if (this.result.equals(TagSection.TAG_UNFINISHED)) {
 				this.result = this.currentMessages.getString("pgnheader.game.result"); //$NON-NLS-1$
 			}
-			this.ECO = getTag(tagSection, TagSection.TAG_ECO);
+			this.eco = getTag(tagSection, TagSection.TAG_ECO);
 			this.plyMoves = getTag(tagSection, TagSection.TAG_PLYCOUNT);
 			if (this.plyMoves == null || this.plyMoves.length() == 0) {
 				Move[] moves = pgnGame.getMoveText().getMoves();
@@ -144,106 +140,109 @@ public class PGNHeader extends Composite implements Observer {
 		}
 	}
 
+	@Override
 	public void dispose() {
-		this.normal_font.dispose();
-		this.bold_font.dispose();
-		this.doubleBuffer.dispose();
+		this.normalFont.dispose();
+		this.boldFont.dispose();
+		this.doublebuilder.dispose();
 	}
+
 	private String getTag(TagSection tagSection, String key) {
 		String value = tagSection.getTag(key);
 		return value == null ? EMPTY : value.substring(1, value.length() - 1);
 	}
 
-	public void updateBuffer() {
-		GC gc = new GC(this.doubleBuffer);
+	public void updatebuilder() {
+		GC gc = new GC(this.doublebuilder);
 		Display display = getDisplay();
 		if (!this.initialized) {
 			gc.setBackground(display.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
-			gc.fillRectangle(0,0,this.preferredSize.x, this.preferredSize.y);
+			gc.fillRectangle(0, 0, this.preferredSize.x, this.preferredSize.y);
 		} else {
 			gc.setBackground(display.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
-			gc.fillRectangle(0,0,this.preferredSize.x, this.preferredSize.y);
-			gc.setFont(this.normal_font);
+			gc.fillRectangle(0, 0, this.preferredSize.x, this.preferredSize.y);
+			gc.setFont(this.normalFont);
 			FontMetrics plainFontMetrics = gc.getFontMetrics();
-			gc.setFont(this.bold_font);
+			gc.setFont(this.boldFont);
 			FontMetrics boldFontMetrics = gc.getFontMetrics();
-			StringBuffer buffer = new StringBuffer();
-			appendToBuffer(buffer, this.whiteRating, "    "); //$NON-NLS-1$
-			appendToBuffer(buffer, "  "); //$NON-NLS-1$
-			this.whitePrefix = buffer.toString();
-			buffer = new StringBuffer();
-			appendToBuffer(buffer, this.blackRating, "    "); //$NON-NLS-1$
-			appendToBuffer(buffer, "  "); //$NON-NLS-1$
-			this.blackPrefix = buffer.toString();
-			this.prefixOffset = Math.max(plainFontMetrics.getAverageCharWidth() * this.whitePrefix.length(), plainFontMetrics.getAverageCharWidth() * this.blackPrefix.length());
+			StringBuilder builder = new StringBuilder();
+			appendTobuilder(builder, this.whiteRating, "    "); //$NON-NLS-1$
+			appendTobuilder(builder, "  "); //$NON-NLS-1$
+			this.whitePrefix = builder.toString();
+			builder = new StringBuilder();
+			appendTobuilder(builder, this.blackRating, "    "); //$NON-NLS-1$
+			appendTobuilder(builder, "  "); //$NON-NLS-1$
+			this.blackPrefix = builder.toString();
+			this.prefixOffset = Math.max(plainFontMetrics.getAverageCharWidth() * this.whitePrefix.length(),
+					plainFontMetrics.getAverageCharWidth() * this.blackPrefix.length());
 			this.resultOffset = boldFontMetrics.getAverageCharWidth() * this.result.length();
-	
-			buffer = new StringBuffer();		
-			appendToBuffer(buffer, this.eventName);
-			appendToBuffer(buffer, ", "); //$NON-NLS-1$
-			appendToBuffer(buffer, this.site);
-			appendToBuffer(buffer, " ("); //$NON-NLS-1$
-			appendToBuffer(buffer, this.round);		
-			appendToBuffer(buffer, ")"); //$NON-NLS-1$
-			gc.setFont(this.bold_font);
-			gc.drawString(buffer.toString(), 5, 5, true);
+
+			builder = new StringBuilder();
+			appendTobuilder(builder, this.eventName);
+			appendTobuilder(builder, ", "); //$NON-NLS-1$
+			appendTobuilder(builder, this.site);
+			appendTobuilder(builder, " ("); //$NON-NLS-1$
+			appendTobuilder(builder, this.round);
+			appendTobuilder(builder, ")"); //$NON-NLS-1$
+			gc.setFont(this.boldFont);
+			gc.drawString(builder.toString(), 5, 5, true);
 			gc.drawRectangle(15, 25, 15, 15);
 			gc.setBackground(display.getSystemColor(SWT.COLOR_WHITE));
 			gc.fillRectangle(16, 26, 13, 13);
-			gc.setFont(this.normal_font);
+			gc.setFont(this.normalFont);
 			gc.drawString(this.whitePrefix, 39, 24, true);
-			buffer = new StringBuffer();
-			appendToBuffer(buffer, this.whiteName);
-			gc.setFont(this.bold_font);
+			builder = new StringBuilder();
+			appendTobuilder(builder, this.whiteName);
+			gc.setFont(this.boldFont);
 			if (this.model.getTurn() == WHITE_TURN) {
 				gc.drawString(">", 8, 25, true); //$NON-NLS-1$
 			}
-			gc.drawString(buffer.toString(), 39 + this.prefixOffset, 24, true);
+			gc.drawString(builder.toString(), 39 + this.prefixOffset, 24, true);
 			gc.setBackground(display.getSystemColor(SWT.COLOR_BLACK));
 			gc.fillRectangle(15, 45, 15, 15);
-			gc.setFont(this.normal_font);
+			gc.setFont(this.normalFont);
 			gc.drawString(this.blackPrefix, 39, 43, true);
-			gc.setFont(this.bold_font);
+			gc.setFont(this.boldFont);
 			if (this.model.getTurn() == BLACK_TURN) {
 				gc.drawString(">", 8, 45, true); //$NON-NLS-1$
 			}
-			buffer = new StringBuffer();
-			appendToBuffer(buffer, this.blackName);
-			gc.drawString(buffer.toString(), 39 + this.prefixOffset, 43, true);
-			gc.setFont(this.bold_font);
+			builder = new StringBuilder();
+			appendTobuilder(builder, this.blackName);
+			gc.drawString(builder.toString(), 39 + this.prefixOffset, 43, true);
+			gc.setFont(this.boldFont);
 			gc.drawString(this.result, 5, 60, true);
-			gc.setFont(this.normal_font);
-			buffer = new StringBuffer();
-			appendToBuffer(buffer, this.plyMoves, "   "); //$NON-NLS-1$
-			gc.drawString(buffer.toString(), 25 + this.resultOffset, 60, true);
-			buffer = new StringBuffer();
-			appendToBuffer(buffer, this.ECO, "   "); //$NON-NLS-1$
-			gc.drawString(buffer.toString(), 65 + this.resultOffset, 60, true);
+			gc.setFont(this.normalFont);
+			builder = new StringBuilder();
+			appendTobuilder(builder, this.plyMoves, "   "); //$NON-NLS-1$
+			gc.drawString(builder.toString(), 25 + this.resultOffset, 60, true);
+			builder = new StringBuilder();
+			appendTobuilder(builder, this.eco, "   "); //$NON-NLS-1$
+			gc.drawString(builder.toString(), 65 + this.resultOffset, 60, true);
 			gc.drawString(this.date, 115 + this.resultOffset, 60, true);
 		}
 		gc.dispose();
 	}
 
-	private void appendToBuffer(StringBuffer buffer, String value, String subsitute) {
+	private void appendTobuilder(StringBuilder builder, String value, String subsitute) {
 		if (value != null && value.length() != 0) {
-			buffer.append(value);
+			builder.append(value);
 		} else {
-			buffer.append(subsitute);
+			builder.append(subsitute);
 		}
 	}
 
-	private void appendToBuffer(StringBuffer buffer, String value) {
+	private void appendTobuilder(StringBuilder builder, String value) {
 		if (value != null) {
-			buffer.append(value);
+			builder.append(value);
 		}
 	}
-		
+
+	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
 		return this.preferredSize;
 	}
-	/* (non-Javadoc)
-	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
-	 */
+
+	@Override
 	public void update(Observable o, Object arg) {
 		if (o == this.model) {
 			this.redraw();

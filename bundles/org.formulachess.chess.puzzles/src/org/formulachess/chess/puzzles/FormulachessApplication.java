@@ -12,8 +12,7 @@ public class FormulachessApplication implements IApplication {
 		WorkbenchAdvisor workbenchAdvisor = new ChessPuzzleWorkbenchAdvisor();
 		Display display = PlatformUI.createDisplay();
 		try {
-			int returnCode = PlatformUI.createAndRunWorkbench(display,
-					workbenchAdvisor);
+			int returnCode = PlatformUI.createAndRunWorkbench(display, workbenchAdvisor);
 			if (returnCode == PlatformUI.RETURN_RESTART) {
 				return IApplication.EXIT_RESTART;
 			}
@@ -22,6 +21,7 @@ public class FormulachessApplication implements IApplication {
 			display.dispose();
 		}
 	}
+
 	public void stop() {
 		// do nothing
 	}

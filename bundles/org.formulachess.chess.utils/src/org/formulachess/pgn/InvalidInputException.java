@@ -13,9 +13,12 @@ public class InvalidInputException extends Exception {
 	public InvalidInputException() {
 		super();
 	}
+
 	/**
 	 * InvalidInputException constructor comment.
-	 * @param s java.lang.String
+	 * 
+	 * @param s
+	 *            java.lang.String
 	 */
 	public InvalidInputException(String s) {
 		super(s);

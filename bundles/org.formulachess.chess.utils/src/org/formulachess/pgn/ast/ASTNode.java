@@ -6,12 +6,13 @@ import java.util.List;
 public abstract class ASTNode {
 
 	public static final String LINE_SEPARATOR = System.getProperty("line.separator"); //$NON-NLS-1$
-	
+
 	private ASTNode parent;
 	private List<Comment> comments;
 
 	/**
 	 * Returns the parent.
+	 * 
 	 * @return ASTNode
 	 */
 	public ASTNode getParent() {
@@ -20,7 +21,9 @@ public abstract class ASTNode {
 
 	/**
 	 * Sets the parent.
-	 * @param parent The parent to set
+	 * 
+	 * @param parent
+	 *            The parent to set
 	 */
 	public void setParent(ASTNode parent) {
 		this.parent = parent;

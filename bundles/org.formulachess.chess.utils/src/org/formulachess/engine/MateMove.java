@@ -5,7 +5,7 @@ public class MateMove implements Comparable<MateMove> {
 	private static final int DEFAULT = 0x01;
 	private static final int CAPTURE = 0x100;
 	private static final int CHECK = 0x10;
-	
+
 	public long move;
 	public int mobility;
 	public String notation;
@@ -16,14 +16,20 @@ public class MateMove implements Comparable<MateMove> {
 		this.notation = notation;
 	}
 
-	/* (non-Javadoc)
+	public static boolean isCheck(long move) {
+		return (move & MoveConstants.CHECK_MASK) >> MoveConstants.CHECK_SHIFT != 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	public int compareTo(MateMove o) {
 		MateMove otherMove = o;
 		int category = category(this);
 		int otherCategory = category(otherMove);
-		
+
 		if (category == otherCategory) {
 			return this.mobility - otherMove.mobility;
 		}
@@ -39,7 +45,7 @@ public class MateMove implements Comparable<MateMove> {
 		if (((moveValue & MoveConstants.CAPTURE_PIECE_MASK) >> MoveConstants.CAPTURE_PIECE_SHIFT) != 0) {
 			return CAPTURE;
 		}
-		if (((moveValue & MoveConstants.CHECK_MASK) >> MoveConstants.CHECK_SHIFT) != 0) {
+		if (MateMove.isCheck(moveValue)) {
 			return CHECK;
 		}
 		return DEFAULT;
@@ -74,4 +80,3 @@ public class MateMove implements Comparable<MateMove> {
 		return true;
 	}
 }
-

@@ -8,30 +8,30 @@ import org.formulachess.util.Util;
 import static org.formulachess.engine.Turn.*;
 
 public class MateNode implements Comparable<MateNode> {
-	
+
 	static Comparator<MateNode> MateNodeComparator = new Comparator<MateNode>() {
 		public int compare(MateNode o1, MateNode o2) {
 			return o1.compareTo(o2);
 		}
 	};
-	
+
 	public static MateNode newRoot(Turn turn) {
 		return new MateNode(null, null, turn, 0);
 	}
-	
+
 	ArrayList<MateNode> children;
 	Turn turn;
 	int depth;
 	MateMove move;
 	MateNode parent;
-	
+
 	public MateNode(MateNode parent, MateMove move, Turn turn, int depth) {
 		this.parent = parent;
 		this.move = move;
 		this.depth = depth;
 		this.turn = turn;
 	}
-	
+
 	public MateNode add(MateMove moveArg, Turn turn, int depthArg) {
 		if (this.children == null) {
 			this.children = new ArrayList<MateNode>();
@@ -46,7 +46,7 @@ public class MateNode implements Comparable<MateNode> {
 	public int compareTo(MateNode o) {
 		return o.depth - this.depth;
 	}
-	
+
 	public boolean contains(MateMove _move, int _depth) {
 		if (this.children == null) {
 			return false;
@@ -55,10 +55,11 @@ public class MateNode implements Comparable<MateNode> {
 	}
 
 	public boolean equals(Object obj) {
-		if (!(obj instanceof MateNode)) return false;
+		if (!(obj instanceof MateNode))
+			return false;
 		return this.move.equals(((MateNode) obj).move);
 	}
-	
+
 	private void generarePGNForSingleNode(int number, Turn rootTurn, boolean detailFirst, StringBuilder buffer) {
 		if (this.move != null) {
 			if (rootTurn == WHITE_TURN) {
@@ -67,9 +68,9 @@ public class MateNode implements Comparable<MateNode> {
 					buffer.append(" "); //$NON-NLS-1$
 				}
 				if (this.turn == WHITE_TURN) {
-					buffer.append(moveNumber + ". "); //$NON-NLS-1$ 
+					buffer.append(moveNumber + ". "); //$NON-NLS-1$
 				} else if (detailFirst) {
-					buffer.append(moveNumber + "..."); //$NON-NLS-1$ 
+					buffer.append(moveNumber + "..."); //$NON-NLS-1$
 				}
 			} else {
 				final int moveNumber = ((number + 1) / 2) + 1;
@@ -77,13 +78,13 @@ public class MateNode implements Comparable<MateNode> {
 					buffer.append(" "); //$NON-NLS-1$
 				}
 				if (this.turn == WHITE_TURN) {
-					buffer.append(moveNumber + ". "); //$NON-NLS-1$ 
+					buffer.append(moveNumber + ". "); //$NON-NLS-1$
 				} else if (detailFirst) {
-					buffer.append(moveNumber + "..."); //$NON-NLS-1$ 
+					buffer.append(moveNumber + "..."); //$NON-NLS-1$
 				}
 			}
 			buffer.append(this.move.notation);
-			if (((this.move.move & MoveConstants.CHECK_MASK) >> MoveConstants.CHECK_SHIFT) != 0)  {
+			if (MateMove.isCheck(this.move.move)) {
 				if (this.children == null) {
 					buffer.append('#');
 				} else {
@@ -91,14 +92,14 @@ public class MateNode implements Comparable<MateNode> {
 				}
 			}
 		}
-	}	
-	
+	}
+
 	public String generatePGN() {
 		StringBuilder buffer = new StringBuilder();
 		generatePGN(-1, this.turn, true, buffer);
 		return String.valueOf(buffer);
 	}
-	
+
 	public void generatePGN(int number, Turn rootTurn, boolean detailFirst, StringBuilder buffer) {
 		ArrayList<MateNode> siblings = this.parent != null ? this.parent.children : this.children;
 		boolean hasSibling = siblings.size() != 1;
@@ -120,7 +121,8 @@ public class MateNode implements Comparable<MateNode> {
 		}
 	}
 
-	public void generatePGNForChildren(ArrayList<MateNode> subNodes, int number, Turn rootTurn, boolean detailFirst, StringBuilder buffer) {
+	public void generatePGNForChildren(ArrayList<MateNode> subNodes, int number, Turn rootTurn, boolean detailFirst,
+			StringBuilder buffer) {
 		if (subNodes != null) {
 			for (int i = 0, max = subNodes.size(); i < max; i++) {
 				MateNode nextNode = subNodes.get(i);
@@ -129,19 +131,19 @@ public class MateNode implements Comparable<MateNode> {
 		}
 	}
 
-	public void generatePGNForSiblings(ArrayList<MateNode> subNodes, MateNode currentNode, int number, Turn rootTurn, StringBuilder buffer) {
+	public void generatePGNForSiblings(ArrayList<MateNode> subNodes, MateNode currentNode, int number, Turn rootTurn,
+			StringBuilder buffer) {
 		if (subNodes != null) {
 			int i = 0;
 			MateNode nextNode = subNodes.get(i);
-			while(!nextNode.equals(currentNode)) {
+			while (!nextNode.equals(currentNode)) {
 				i++;
 				nextNode = subNodes.get(i);
 			}
 			i++;
-			buffer
-				.append(Util.LINE_SEPARATOR);
+			buffer.append(Util.LINE_SEPARATOR);
 			for (int max = subNodes.size(); i < max; i++) {
-				nextNode =subNodes.get(i);
+				nextNode = subNodes.get(i);
 				buffer.append('(');
 				nextNode.printSingleNode(number, rootTurn, true, buffer);
 				if (nextNode.children.size() != 0) {
@@ -149,9 +151,7 @@ public class MateNode implements Comparable<MateNode> {
 						nextNode.children.get(j).generatePGN(number + 1, rootTurn, false, buffer);
 					}
 				}
-				buffer
-					.append(')')
-					.append(Util.LINE_SEPARATOR);
+				buffer.append(')').append(Util.LINE_SEPARATOR);
 			}
 		}
 	}
@@ -159,7 +159,7 @@ public class MateNode implements Comparable<MateNode> {
 	public int hashCode() {
 		return this.move.hashCode();
 	}
-	
+
 	public boolean isRoot() {
 		return this.parent == null;
 	}
@@ -174,7 +174,7 @@ public class MateNode implements Comparable<MateNode> {
 				if (this.turn == WHITE_TURN) {
 					buffer.append(moveNumber + ". "); //$NON-NLS-1$
 				} else if (detailFirst) {
-					buffer.append(moveNumber + "..."); //$NON-NLS-1$ 
+					buffer.append(moveNumber + "..."); //$NON-NLS-1$
 				}
 			} else {
 				final int moveNumber = ((number + 1) / 2) + 1;
@@ -182,13 +182,13 @@ public class MateNode implements Comparable<MateNode> {
 					buffer.append(" "); //$NON-NLS-1$
 				}
 				if (this.turn == WHITE_TURN) {
-					buffer.append(moveNumber + ". "); //$NON-NLS-1$ 
+					buffer.append(moveNumber + ". "); //$NON-NLS-1$
 				} else if (detailFirst) {
 					buffer.append(moveNumber + "..."); //$NON-NLS-1$
 				}
 			}
 			buffer.append(this.move.notation);
-			if (((this.move.move & MoveConstants.CHECK_MASK) >> MoveConstants.CHECK_SHIFT) != 0)  {
+			if (MateMove.isCheck(this.move.move)) {
 				if (this.children == null) {
 					buffer.append('#');
 				} else {
@@ -214,13 +214,13 @@ public class MateNode implements Comparable<MateNode> {
 	 */
 	private void setDepth(int depth) {
 		MateNode node = this.parent;
-		while(node != null) {
+		while (node != null) {
 			node.depth = depth;
 			Collections.sort(node.children, MateNodeComparator);
 			node = node.parent;
 		}
 	}
-	
+
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();
 		printSingleNode(1, this.turn, true, buffer);

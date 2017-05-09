@@ -17,16 +17,17 @@ import java.util.NoSuchElementException;
  * Hashtable of {String --> long}
  */
 public final class HashtableOfLong implements Iterable<String> {
-	
+
 	class Enumerator implements Iterator<String> {
 		String entry;
 		int index;
 		String[] keys;
-		
+
 		public Enumerator(String[] keys) {
 			this.keys = keys;
 			this.index = keys.length;
 		}
+
 		@Override
 		public boolean hasNext() {
 			String currentEntry = this.entry;
@@ -39,6 +40,7 @@ public final class HashtableOfLong implements Iterable<String> {
 			this.index = i;
 			return currentEntry != null;
 		}
+
 		@Override
 		public String next() {
 			String currentEntry = this.entry;
@@ -56,11 +58,11 @@ public final class HashtableOfLong implements Iterable<String> {
 			throw new NoSuchElementException();
 		}
 	}
-	
+
 	public static final long NO_VALUE = Long.MIN_VALUE;
 
 	private int elementSize; // number of elements in the table
-	
+
 	// to avoid using Enumerations, walk the individual tables skipping nulls
 	private String[] keyTable;
 	private int threshold;
@@ -116,7 +118,7 @@ public final class HashtableOfLong implements Iterable<String> {
 		}
 		return NO_VALUE;
 	}
-	
+
 	@Override
 	public Iterator<String> iterator() {
 		return new Enumerator(this.keyTable);
@@ -141,7 +143,8 @@ public final class HashtableOfLong implements Iterable<String> {
 
 	private void rehash() {
 
-		HashtableOfLong newHashtable = new HashtableOfLong(this.elementSize * 2);		// double the number of expected elements
+		HashtableOfLong newHashtable = new HashtableOfLong(this.elementSize * 2); // double the number of expected
+																					// elements
 		String currentKey;
 		for (int i = this.keyTable.length; --i >= 0;)
 			if ((currentKey = this.keyTable[i]) != null)
@@ -190,7 +193,7 @@ public final class HashtableOfLong implements Iterable<String> {
 		String key;
 		for (int i = 0, length = this.valueTable.length; i < length; i++)
 			if ((key = this.keyTable[i]) != null)
-				s += new String(key) + " -> " + this.valueTable[i] + "\n"; 	//$NON-NLS-2$ //$NON-NLS-1$
+				s += new String(key) + " -> " + this.valueTable[i] + "\n"; //$NON-NLS-2$ //$NON-NLS-1$
 		return s;
 	}
 }

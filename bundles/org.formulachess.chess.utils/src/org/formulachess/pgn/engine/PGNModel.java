@@ -7,11 +7,11 @@ import org.formulachess.pgn.ast.Move;
 import org.formulachess.pgn.ast.PGNGame;
 
 public class PGNModel {
-	
+
 	private String fenNotation;
 	private ChessEngine model;
 	private int currentMoveCounter;
-	
+
 	public PGNModel(PGNGame pgnGame, ChessEngine model) {
 		if (pgnGame != null) {
 			this.fenNotation = pgnGame.getTagSection().getTag("[FEN"); //$NON-NLS-1$
@@ -33,8 +33,8 @@ public class PGNModel {
 
 	public boolean isReady() {
 		return this.model.isReady();
-	}	
-	
+	}
+
 	public void playMovesTill(Move[] moves, int index) {
 		if (index == -1) {
 			if (this.fenNotation != null) {
@@ -51,7 +51,8 @@ public class PGNModel {
 				this.model.initializeToStartingPosition();
 			}
 			for (int i = 0; i <= index; i++) {
-				PGNMoveContainer container = new PGNMoveContainer(this.model, this.model.allMoves(), Locale.getDefault());
+				PGNMoveContainer container = new PGNMoveContainer(this.model, this.model.allMoves(),
+						Locale.getDefault());
 				String trimmedMoveNotation = trimmedMoveNotation(moves[i]);
 				long move = container.get(trimmedMoveNotation);
 				if (move != -1) {
@@ -62,7 +63,7 @@ public class PGNModel {
 			this.model.update();
 		}
 	}
-	
+
 	private String trimmedMoveNotation(Move move) {
 		String moveNotation = move.getMoveNotation();
 		int index = moveNotation.indexOf('+');

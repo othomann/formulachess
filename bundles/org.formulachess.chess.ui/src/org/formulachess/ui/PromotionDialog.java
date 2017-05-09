@@ -1,11 +1,12 @@
 package org.formulachess.ui;
 
+import static org.formulachess.engine.Turn.WHITE_TURN;
+
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -14,15 +15,11 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
-
 import org.formulachess.engine.Piece;
 import org.formulachess.engine.Turn;
 
-import static org.formulachess.engine.Turn.*;
-
 public class PromotionDialog {
 	private static final Logger MyLogger = Logger.getLogger(PromotionDialog.class.getCanonicalName());
-	public Rectangle screenSize;
 	private Piece promotionCode;
 	private ImageFactory imageFactory;
 	private Shell dialog;
@@ -49,14 +46,15 @@ public class PromotionDialog {
 		this.dialog.close();
 		this.dialog.dispose();
 	}
-	
+
 	public void initImageButtons(Shell shell, final Turn color) {
 		Button queen = new Button(shell, SWT.PUSH);
 		Button rook = new Button(shell, SWT.PUSH);
 		Button knight = new Button(shell, SWT.PUSH);
 		Button bishop = new Button(shell, SWT.PUSH);
-		queen.addListener (SWT.Selection, new Listener () {
-			public void handleEvent (Event e) {
+		queen.addListener(SWT.Selection, new Listener() {
+			@Override
+			public void handleEvent(Event e) {
 				if (color == WHITE_TURN) {
 					setPromotionCode(Piece.WHITE_QUEEN);
 				} else {
@@ -65,8 +63,9 @@ public class PromotionDialog {
 				close();
 			}
 		});
-		rook.addListener (SWT.Selection, new Listener () {
-			public void handleEvent (Event e) {
+		rook.addListener(SWT.Selection, new Listener() {
+			@Override
+			public void handleEvent(Event e) {
 				if (color == WHITE_TURN) {
 					setPromotionCode(Piece.WHITE_ROOK);
 				} else {
@@ -75,8 +74,9 @@ public class PromotionDialog {
 				close();
 			}
 		});
-		knight.addListener (SWT.Selection, new Listener () {
-			public void handleEvent (Event e) {
+		knight.addListener(SWT.Selection, new Listener() {
+			@Override
+			public void handleEvent(Event e) {
 				if (color == WHITE_TURN) {
 					setPromotionCode(Piece.WHITE_KNIGHT);
 				} else {
@@ -85,8 +85,8 @@ public class PromotionDialog {
 				close();
 			}
 		});
-		bishop.addListener (SWT.Selection, new Listener () {
-			public void handleEvent (Event e) {
+		bishop.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event e) {
 				if (color == WHITE_TURN) {
 					setPromotionCode(Piece.WHITE_BISHOP);
 				} else {
@@ -96,19 +96,18 @@ public class PromotionDialog {
 			}
 		});
 
-		
 		if (color == WHITE_TURN) {
-			queen.setImage(this.imageFactory.whiteQueen);
-			rook.setImage(this.imageFactory.whiteRook);
-			knight.setImage(this.imageFactory.whiteKnight);
-			bishop.setImage(this.imageFactory.whiteBishop);
+			queen.setImage(this.imageFactory.getWhiteQueen());
+			rook.setImage(this.imageFactory.getWhiteRook());
+			knight.setImage(this.imageFactory.getWhiteKnight());
+			bishop.setImage(this.imageFactory.getWhiteBishop());
 		} else {
-			queen.setImage(this.imageFactory.blackQueen);
-			rook.setImage(this.imageFactory.blackRook);
-			knight.setImage(this.imageFactory.blackKnight);
-			bishop.setImage(this.imageFactory.blackBishop);
+			queen.setImage(this.imageFactory.getBlackQueen());
+			rook.setImage(this.imageFactory.getBlackRook());
+			knight.setImage(this.imageFactory.getBlackKnight());
+			bishop.setImage(this.imageFactory.getBlackBishop());
 		}
-		
+
 		FormData formData = new FormData();
 		formData.left = new FormAttachment(0, 2);
 		formData.top = new FormAttachment(0, 5);
@@ -138,14 +137,16 @@ public class PromotionDialog {
 	public Piece getPromotionCode() {
 		return this.promotionCode;
 	}
+
 	/**
 	 * Runs the event loop for the given shell.
 	 *
-	 * @param shell the shell
+	 * @param shell
+	 *            the shell
 	 */
 	private void runEventLoop() {
-		
-		while (this.dialog != null && ! this.dialog.isDisposed()) {
+
+		while (this.dialog != null && !this.dialog.isDisposed()) {
 			try {
 				if (!this.display.readAndDispatch())
 					this.display.sleep();
@@ -154,5 +155,5 @@ public class PromotionDialog {
 			}
 		}
 		this.display.update();
-	}	
+	}
 }

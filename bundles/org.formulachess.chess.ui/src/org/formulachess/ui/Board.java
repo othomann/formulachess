@@ -12,14 +12,14 @@ import org.eclipse.swt.widgets.Composite;
 import org.formulachess.engine.ChessEngine;
 
 public class Board extends Composite {
-	
+
 	static class SwitchMouseAdapter extends MouseAdapter {
 		private Board board;
-		
+
 		public SwitchMouseAdapter(Board board) {
 			this.board = board;
 		}
-		
+
 		@Override
 		public void mouseDown(MouseEvent e) {
 			this.board.boardCanvas.switchSide();
@@ -31,19 +31,22 @@ public class Board extends Composite {
 			this.board.rowCoordsCanvas.redraw();
 		}
 	}
+
 	// layout management
 	private Point preferredSize;
 	RowCoordsCanvas rowCoordsCanvas;
 	BoardCanvas boardCanvas;
 	ColCoordsCanvas colCoordsCanvas;
 	SwitchCanvas switchCanvas;
-	
-	public Board(Composite parent, ChessEngine chessEngine, int[] settings, int whitePosition, ImageFactory imageFactory, int style) {
+
+	public Board(Composite parent, ChessEngine chessEngine, int[] settings, int whitePosition,
+			ImageFactory imageFactory, int style) {
 		super(parent, style);
-		this.preferredSize = new Point(settings[Sets.BOARD_WIDTH_INDEX] + settings[Sets.SWITCH_BUTTON_WIDTH_SIZE_INDEX], settings[Sets.BOARD_HEIGHT_INDEX] + settings[Sets.SWITCH_BUTTON_HEIGHT_SIZE_INDEX]);
+		this.preferredSize = new Point(settings[Sets.BOARD_WIDTH_INDEX] + settings[Sets.SWITCH_BUTTON_WIDTH_SIZE_INDEX],
+				settings[Sets.BOARD_HEIGHT_INDEX] + settings[Sets.SWITCH_BUTTON_HEIGHT_SIZE_INDEX]);
 		final Color backgroundColor = getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
 		this.setBackground(backgroundColor);
-		
+
 		this.rowCoordsCanvas = new RowCoordsCanvas(this, settings);
 		this.boardCanvas = new BoardCanvas(chessEngine, this, whitePosition, imageFactory, settings);
 		this.colCoordsCanvas = new ColCoordsCanvas(this, settings);
@@ -76,12 +79,12 @@ public class Board extends Composite {
 		formData3.right = new FormAttachment(100, 0);
 		formData3.bottom = new FormAttachment(100, 0);
 		this.colCoordsCanvas.setLayoutData(formData3);
-		
+
 		pack();
 	}
-	
+
 	@Override
-	public Point computeSize (int wHint, int hHint, boolean changed) {
+	public Point computeSize(int wHint, int hHint, boolean changed) {
 		return this.preferredSize;
 	}
 

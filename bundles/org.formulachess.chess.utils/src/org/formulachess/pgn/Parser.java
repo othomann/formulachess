@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-
 import org.formulachess.pgn.ast.ASTNode;
 import org.formulachess.pgn.ast.Castle;
 import org.formulachess.pgn.ast.GameTermination;
@@ -24,19 +23,19 @@ import org.formulachess.util.Util;
 /**
  * @author oliviert
  *
- * To change this generated comment edit the template variable "typecomment":
- * Window>Preferences>Java>Templates.
- * To enable and disable the creation of type comments go to
- * Window>Preferences>Java>Code Generation.
+ *         To change this generated comment edit the template variable
+ *         "typecomment": Window>Preferences>Java>Templates. To enable and
+ *         disable the creation of type comments go to
+ *         Window>Preferences>Java>Code Generation.
  */
 public class Parser implements ParserBasicInformation, TerminalSymbols {
 	private static final Logger MyLogger = Logger.getLogger(Parser.class.getCanonicalName());
 	private static final boolean DEBUG = false;
-	//internal data for the automat 
+	// internal data for the automat
 	protected final static int StackIncrement = 255;
 	protected int stateStackTop;
 	protected int[] stack = new int[StackIncrement];
-	public int lastAct ; //handle for multiple parsing goals
+	public int lastAct; // handle for multiple parsing goals
 
 	// AST management
 	private ASTNode[] nodeStack = new ASTNode[StackIncrement];
@@ -47,8 +46,8 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 	private int[] variationMovesNumber = new int[StackIncrement];
 	private int currentMoveIndication;
 	private PGNDatabase pgnDatabase;
-	
-	//scanner token 
+
+	// scanner token
 	public Scanner scanner;
 
 	public int currentToken;
@@ -58,76 +57,37 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 	protected int lastErrorEndPosition;
 
 	// internal tables for the automaton.
-    private final static byte rhs[] =  {0,
-        2,2,0,3,3,0,5,1,2,2,2,0,3,5,3,
-        2,3,3,3,4,4,3,1,2,4,3,4,5,5,6,
-        3,4,4,4,5,5,6,1,1,2,1,1,1,1,1,
-        1,0,3,5,1,0,1,1,1,1
-    };
+	private final static byte[] rhs = { 0, 2, 2, 0, 3, 3, 0, 5, 1, 2, 2, 2, 0, 3, 5, 3, 2, 3, 3, 3, 4, 4, 3, 1, 2, 4, 3,
+			4, 5, 5, 6, 3, 4, 4, 4, 5, 5, 6, 1, 1, 2, 1, 1, 1, 1, 1, 1, 0, 3, 5, 1, 0, 1, 1, 1, 1 };
 
-    private final static short check_table[] = {
-        -8,-16,-17,1,0,-3,4,-5,7,8,
-        9,10,11,12,0,-6,14,2,0,19,
-        20,-4,21,22,-10,1,0,0,0,5,
-        -29,1,0,0,34,35,36,37,31,15,
-        16,17,0,-22,14,24,0,0,-33,-24,
-        1,0,0,0,5,7,8,9,10,11,
-        12,0,-11,0,0,16,17,0,0,21,
-        22,-55,-25,0,0,0,5,15,0,7,
-        8,9,10,11,12,0,-7,0,2,0,
-        -9,-26,2,0,23,-1,0,0,7,8,
-        9,10,11,12,0,-48,-19,1,-28,1,
-        39,5,7,8,9,10,11,12,0,-49,
-        -35,-20,16,17,0,-13,7,8,9,10,
-        11,12,0,38,0,0,15,-30,1,19,
-        20,4,-12,0,2,0,0,0,0,-18,
-        -2,14,32,4,-14,30,2,0,-15,-36,
-        2,0,-21,14,2,0,-23,-32,2,0,
-        0,0,5,-34,24,2,0,-37,0,2,
-        0,-51,-27,2,0,-31,1,-38,6,-39,
-        23,-45,33,6,-40,6,-41,1,4,-42,
-        -43,1,-44,4,-46,14,4,-47,4,-50,
-        -52,0,5,-53,4,6,-56,4,-54,1,
-        -57,-58,6,-59,0,4,6,0,5,0,
-        0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0
-    };
+	private final static short[] check_table = { -8, -16, -17, 1, 0, -3, 4, -5, 7, 8, 9, 10, 11, 12, 0, -6, 14, 2, 0,
+			19, 20, -4, 21, 22, -10, 1, 0, 0, 0, 5, -29, 1, 0, 0, 34, 35, 36, 37, 31, 15, 16, 17, 0, -22, 14, 24, 0, 0,
+			-33, -24, 1, 0, 0, 0, 5, 7, 8, 9, 10, 11, 12, 0, -11, 0, 0, 16, 17, 0, 0, 21, 22, -55, -25, 0, 0, 0, 5, 15,
+			0, 7, 8, 9, 10, 11, 12, 0, -7, 0, 2, 0, -9, -26, 2, 0, 23, -1, 0, 0, 7, 8, 9, 10, 11, 12, 0, -48, -19, 1,
+			-28, 1, 39, 5, 7, 8, 9, 10, 11, 12, 0, -49, -35, -20, 16, 17, 0, -13, 7, 8, 9, 10, 11, 12, 0, 38, 0, 0, 15,
+			-30, 1, 19, 20, 4, -12, 0, 2, 0, 0, 0, 0, -18, -2, 14, 32, 4, -14, 30, 2, 0, -15, -36, 2, 0, -21, 14, 2, 0,
+			-23, -32, 2, 0, 0, 0, 5, -34, 24, 2, 0, -37, 0, 2, 0, -51, -27, 2, 0, -31, 1, -38, 6, -39, 23, -45, 33, 6,
+			-40, 6, -41, 1, 4, -42, -43, 1, -44, 4, -46, 14, 4, -47, 4, -50, -52, 0, 5, -53, 4, 6, -56, 4, -54, 1, -57,
+			-58, 6, -59, 0, 4, 6, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-    private final static char lhs[] = {0,
-        40,41,41,42,43,43,45,46,44,25,25,25,26,26,26,
-        29,29,29,49,49,49,50,48,18,18,18,18,18,18,18,
-        18,18,18,18,18,18,18,18,18,13,13,13,13,13,13,
-        13,13,28,27,3,3,47,47,47,47,
+	private final static char[] lhs = { 0, 40, 41, 41, 42, 43, 43, 45, 46, 44, 25, 25, 25, 26, 26, 26, 29, 29, 29, 49,
+			49, 49, 50, 48, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 13, 13, 13, 13, 13, 13, 13,
+			13, 28, 27, 3, 3, 47, 47, 47, 47,
 
-        281,47,281,193,281,3,86,12,322,323,
-        324,325,326,327,238,51,164,331,5,118,
-        198,6,147,128,281,205,10,11,80,58,
-        281,255,56,281,333,334,335,336,146,177,
-        319,320,57,12,252,1,77,9,47,50,
-        205,142,71,214,58,322,323,324,325,326,
-        327,265,281,2,63,319,320,57,176,175,
-        161,27,47,210,162,281,310,218,23,322,
-        323,324,325,326,327,243,51,281,331,4,
-        51,47,331,181,279,281,281,233,322,323,
-        324,325,326,327,245,47,281,205,281,250,
-        309,58,322,323,324,325,326,327,272,47,
-        281,281,319,320,104,281,322,323,324,325,
-        326,327,276,61,281,206,229,281,258,118,
-        198,247,51,281,331,99,10,11,80,281,
-        281,256,237,223,51,222,331,15,51,281,
-        105,13,51,241,331,48,51,24,331,215,
-        281,222,307,51,280,331,22,51,281,331,
-        14,51,16,331,49,281,260,18,321,17,
-        263,31,288,321,281,321,281,266,315,281,
-        281,269,281,314,281,274,313,281,127,19,
-        281,281,306,281,317,321,21,316,281,277,
-        20,281,321,281,281,318,321,281,311
-    };
-    
-    private final static char action[] = lhs;
+			281, 47, 281, 193, 281, 3, 86, 12, 322, 323, 324, 325, 326, 327, 238, 51, 164, 331, 5, 118, 198, 6, 147,
+			128, 281, 205, 10, 11, 80, 58, 281, 255, 56, 281, 333, 334, 335, 336, 146, 177, 319, 320, 57, 12, 252, 1,
+			77, 9, 47, 50, 205, 142, 71, 214, 58, 322, 323, 324, 325, 326, 327, 265, 281, 2, 63, 319, 320, 57, 176, 175,
+			161, 27, 47, 210, 162, 281, 310, 218, 23, 322, 323, 324, 325, 326, 327, 243, 51, 281, 331, 4, 51, 47, 331,
+			181, 279, 281, 281, 233, 322, 323, 324, 325, 326, 327, 245, 47, 281, 205, 281, 250, 309, 58, 322, 323, 324,
+			325, 326, 327, 272, 47, 281, 281, 319, 320, 104, 281, 322, 323, 324, 325, 326, 327, 276, 61, 281, 206, 229,
+			281, 258, 118, 198, 247, 51, 281, 331, 99, 10, 11, 80, 281, 281, 256, 237, 223, 51, 222, 331, 15, 51, 281,
+			105, 13, 51, 241, 331, 48, 51, 24, 331, 215, 281, 222, 307, 51, 280, 331, 22, 51, 281, 331, 14, 51, 16, 331,
+			49, 281, 260, 18, 321, 17, 263, 31, 288, 321, 281, 321, 281, 266, 315, 281, 281, 269, 281, 314, 281, 274,
+			313, 281, 127, 19, 281, 281, 306, 281, 317, 321, 21, 316, 281, 277, 20, 281, 321, 281, 281, 318, 321, 281,
+			311 };
+
+	private final static char[] action = lhs;
 
 	public final int getFirstToken() {
 		// Goal ::= '++' PGNDatabase
@@ -146,10 +106,12 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 		return action[state + sym];
 	}
 
-	/*main loop of the automat
-	When a rule is reduced, the method consumeRule(int) is called with the number
-	of the consumed rule. When a terminal is consumed, the method consumeToken(int) is 
-	called in order to remember (when needed) the consumed token */
+	/*
+	 * main loop of the automat When a rule is reduced, the method consumeRule(int)
+	 * is called with the number of the consumed rule. When a terminal is consumed,
+	 * the method consumeToken(int) is called in order to remember (when needed) the
+	 * consumed token
+	 */
 	// (int)asr[asi(act)]
 	// name[symbol_index[currentKind]]
 	protected void parse() {
@@ -158,7 +120,7 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 			this.hasReportedError = false;
 			this.stateStackTop = -1;
 			this.currentToken = getFirstToken();
-			ProcessTerminals : for (;;) {
+			ProcessTerminals: for (;;) {
 				try {
 					this.stack[++this.stateStackTop] = act;
 				} catch (IndexOutOfBoundsException e) {
@@ -168,9 +130,9 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 					System.arraycopy(oldStack, 0, this.stack, 0, oldStackLength);
 					this.stack[this.stateStackTop] = act;
 				}
-	
+
 				act = tAction(act, this.currentToken);
-	
+
 				if (act == ERROR_ACTION) {
 					break ProcessTerminals;
 				}
@@ -196,7 +158,7 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 					continue ProcessTerminals;
 				} else
 					break ProcessTerminals;
-	
+
 				do { /* reduce */
 					consumeRule(act);
 					this.stateStackTop -= (rhs[act] - 1);
@@ -207,19 +169,19 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 			endParse(act);
 		}
 	}
-	
+
 	protected void reportSyntaxError(int actValue, int currentKindValue, int stateStackTopValue) {
 		// nothing to do
-	}	
+	}
 
 	/*
-	 * Syntax error was detected. Will attempt to perform some recovery action in order
-	 * to resume to the regular parse loop.
+	 * Syntax error was detected. Will attempt to perform some recovery action in
+	 * order to resume to the regular parse loop.
 	 */
 	protected boolean resumeOnSyntaxError() {
 		return false;
 	}
-	
+
 	protected void consumeToken(int type) throws InvalidInputException {
 		// attach comments to node
 		if (!this.scanner.getComments().isEmpty()) {
@@ -229,217 +191,315 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 			this.nodeStack[this.nodeStackPointer - 1].setComments(this.scanner.getComments());
 			this.scanner.clearComments();
 		}
-		switch(type) {
-			case TokenNameStart_Tag_Section :
-			case TokenNameStringLiteral :
-			case TokenNamePieceIdentification :
-			case TokenNameBAD_MOVE :
-			case TokenNameEXCELLENT_MOVE :
-			case TokenNameVERY_BAD_MOVE :
-			case TokenNameSUSPICIOUS_MOVE :
-			case TokenNameINTERESTING_MOVE :
-			case TokenNameStart_nag :
-			case TokenNameGOOD_MOVE :
-			case TokenNameFileName :
-			case TokenNameRankName :
-				pushOnNodeInformationStack(this.scanner.getCurrentTokenSource());
-				break;
-			case TokenNameIntegerLiteral :
-				try {
-					this.currentMoveIndication = Integer.parseInt(new String(this.scanner.getCurrentTokenSource()));
-				} catch(NumberFormatException e) {
-					this.currentMoveIndication = -1;
-				}
-				break;
-			case TokenNameSTART_VARIATION :
-				this.variationCounter++;
-				break;
-			case TokenNameEND_VARIATION :
-				this.variationCounter--;
-				break;			
-			/*			case TokenNameEND_TAG_SECTION :
-			case TokenNameBLACK_VICTORY :
-			case TokenNamePROMOTE :
-			case TokenNameCAPTURE :
-			case TokenNameCASTLE_KING_SIDE :
-			case TokenNameCASTLE_QUEEN_SIDE :
-			case TokenNameCHECK :
-			case TokenNameCHECKMATE :
-
-			case TokenNameDOT :
-			case TokenNameDRAW :
-
-			case TokenNameStart_Tag_Section :
-
-			case TokenNameStringLiteral :
-			case TokenNameUNKNOWN :
-			case TokenNameWHITE_VICTORY :*/
+		switch (type) {
+		case TokenNameStart_Tag_Section:
+		case TokenNameStringLiteral:
+		case TokenNamePieceIdentification:
+		case TokenNameBAD_MOVE:
+		case TokenNameEXCELLENT_MOVE:
+		case TokenNameVERY_BAD_MOVE:
+		case TokenNameSUSPICIOUS_MOVE:
+		case TokenNameINTERESTING_MOVE:
+		case TokenNameStart_nag:
+		case TokenNameGOOD_MOVE:
+		case TokenNameFileName:
+		case TokenNameRankName:
+			pushOnNodeInformationStack(this.scanner.getCurrentTokenSource());
+			break;
+		case TokenNameIntegerLiteral:
+			try {
+				this.currentMoveIndication = Integer.parseInt(new String(this.scanner.getCurrentTokenSource()));
+			} catch (NumberFormatException e) {
+				this.currentMoveIndication = -1;
+			}
+			break;
+		case TokenNameSTART_VARIATION:
+			this.variationCounter++;
+			break;
+		case TokenNameEND_VARIATION:
+			this.variationCounter--;
+			break;
+		/*
+		 * case TokenNameEND_TAG_SECTION : case TokenNameBLACK_VICTORY : case
+		 * TokenNamePROMOTE : case TokenNameCAPTURE : case TokenNameCASTLE_KING_SIDE :
+		 * case TokenNameCASTLE_QUEEN_SIDE : case TokenNameCHECK : case
+		 * TokenNameCHECKMATE :
+		 * 
+		 * case TokenNameDOT : case TokenNameDRAW :
+		 * 
+		 * case TokenNameStart_Tag_Section :
+		 * 
+		 * case TokenNameStringLiteral : case TokenNameUNKNOWN : case
+		 * TokenNameWHITE_VICTORY :
+		 */
 		}
 	}
 
- 	// This method is part of an automatic generation : do NOT edit-modify  
+	// This method is part of an automatic generation : do NOT edit-modify
 	protected void consumeRule(int act) {
-	  switch ( act ) {
-	    case 1 : if (DEBUG) System.out.println("Goal ::= GREATER_THAN PGN-database");  //$NON-NLS-1$
-			 consumeGoal(); 			
-			break; 
-	    case 2 : if (DEBUG) System.out.println("PGN-database ::= PGN-database PGN-game");  //$NON-NLS-1$
-			 consumePGNDatabase(); 			
-			break; 
-	    case 3 : if (DEBUG) System.out.println("PGN-database ::=");  //$NON-NLS-1$
-			 consumeEmptyPGNDatabase(); 			
-			break; 
-	    case 4 : if (DEBUG) System.out.println("PGN-game ::= tag-section movetext-section space");  //$NON-NLS-1$
-			 consumePGNGame(); 			
-			break; 
-	    case 5 : if (DEBUG) System.out.println("tag-section ::= tag-section tag-pair space");  //$NON-NLS-1$
-			 consumeTagSection(); 			
-			break; 
-	    case 6 : if (DEBUG) System.out.println("tag-section ::=");  //$NON-NLS-1$
-			 consumeEmptyTagSection(); 			
-			break; 
-	    case 7 : if (DEBUG) System.out.println("tag-pair ::= Start_Tag_Section space tag-value space...");  //$NON-NLS-1$
-			 consumeTagPair(); 			
-			break; 
-	    case 9 : if (DEBUG) System.out.println("movetext-section ::= element-sequence game-termination");  //$NON-NLS-1$
-			 consumeMoveTextSection(); 			
-			break; 
-	    case 10 : if (DEBUG) System.out.println("element-sequence ::= element-sequence element");  //$NON-NLS-1$
-			 consumeElementSequence(); 			
-			break; 
-	    case 11 : if (DEBUG) System.out.println("element-sequence ::= element-sequence recursive-variation");  //$NON-NLS-1$
-			 consumeElementSequenceWithRecursiveVariation(); 			
-			break; 
-	    case 12 : if (DEBUG) System.out.println("element-sequence ::=");  //$NON-NLS-1$
-			 consumeEmptyElementSequence(); 			
-			break; 
-	    case 13 : if (DEBUG) System.out.println("element ::= move-number-indication WhiteMove space");  //$NON-NLS-1$
-			 consumeElementSingleMove(); 			
-			break; 
-	    case 14 : if (DEBUG) System.out.println("element ::= move-number-indication WhiteMove WHITESPACE...");  //$NON-NLS-1$
-			 consumeElementTwoMoves(); 			
-			break; 
-	    case 15 : if (DEBUG) System.out.println("element ::= move-number-indication BlackMove space");  //$NON-NLS-1$
-			 consumeElementBlackMove(); 			
-			break; 
-	    case 16 : if (DEBUG) System.out.println("WhiteMove ::= InnerSANMove numeric-annotation-glyph");  //$NON-NLS-1$
-			 consumeWhiteMove(); 			
-			break; 
-	    case 17 : if (DEBUG) System.out.println("WhiteMove ::= InnerSANMove CHECK numeric-annotation-glyph");  //$NON-NLS-1$
-			 consumeWhiteMoveWithCheck(); 			
-			break; 
-	    case 18 : if (DEBUG) System.out.println("WhiteMove ::= InnerSANMove CHECKMATE...");  //$NON-NLS-1$
-			 consumeWhiteMoveWithCheckMate(); 			
-			break; 
-	    case 19 : if (DEBUG) System.out.println("BlackMove ::= BlackDots InnerSANMove...");  //$NON-NLS-1$
-			 consumeBlackMove(); 			
-			break; 
-	    case 20 : if (DEBUG) System.out.println("BlackMove ::= BlackDots InnerSANMove CHECK...");  //$NON-NLS-1$
-			 consumeBlackMoveWithCheck(); 			
-			break; 
-	    case 21 : if (DEBUG) System.out.println("BlackMove ::= BlackDots InnerSANMove CHECKMATE...");  //$NON-NLS-1$
-			 consumeBlackMoveWithCheckMate(); 			
-			break; 
-	    case 23 : if (DEBUG) System.out.println("BlackMoveFollowingWhiteMove ::= WhiteMove");  //$NON-NLS-1$
-			 consumeBlackMoveFollowingWhiteMove(); 			
-			break; 
-	    case 24 : if (DEBUG) System.out.println("InnerSANMove ::= FileName RankName");  //$NON-NLS-1$
-			 consumePawnMove(); 			
-			break; 
-	    case 25 : if (DEBUG) System.out.println("InnerSANMove ::= FileName RankName PROMOTE...");  //$NON-NLS-1$
-			 consumePawnMoveWithPromotion(); 			
-			break; 
-	    case 26 : if (DEBUG) System.out.println("InnerSANMove ::= FileName RankName PieceIdentification");  //$NON-NLS-1$
-			 consumePawnMoveWithPromotion(); 			
-			break; 
-	    case 27 : if (DEBUG) System.out.println("InnerSANMove ::= FileName CAPTURE FileName RankName");  //$NON-NLS-1$
-			 consumePawnMoveWithCapture(); 			
-			break; 
-	    case 28 : if (DEBUG) System.out.println("InnerSANMove ::= FileName CAPTURE FileName RankName...");  //$NON-NLS-1$
-			 consumePawnMoveWithCapture(); 			
-			break; 
-	    case 29 : if (DEBUG) System.out.println("InnerSANMove ::= FileName CAPTURE FileName RankName...");  //$NON-NLS-1$
-			 consumePawnMoveWithCaptureAndPromotion(); 			
-			break; 
-	    case 30 : if (DEBUG) System.out.println("InnerSANMove ::= FileName CAPTURE FileName RankName PROMOTE");  //$NON-NLS-1$
-			 consumePawnMoveWithCaptureAndPromotion(); 			
-			break; 
-	    case 31 : if (DEBUG) System.out.println("InnerSANMove ::= PieceIdentification FileName RankName");  //$NON-NLS-1$
-			 consumePieceMove(); 			
-			break; 
-	    case 32 : if (DEBUG) System.out.println("InnerSANMove ::= PieceIdentification FileName FileName...");  //$NON-NLS-1$
-			 consumePieceMoveWithFileNameAmbiguity(); 			
-			break; 
-	    case 33 : if (DEBUG) System.out.println("InnerSANMove ::= PieceIdentification RankName FileName...");  //$NON-NLS-1$
-			 consumePieceMoveWithRankNameAmbiguity(); 			
-			break; 
-	    case 34 : if (DEBUG) System.out.println("InnerSANMove ::= PieceIdentification CAPTURE FileName...");  //$NON-NLS-1$
-			 consumePieceMoveWithCapture(); 			
-			break; 
-	    case 35 : if (DEBUG) System.out.println("InnerSANMove ::= PieceIdentification FileName CAPTURE...");  //$NON-NLS-1$
-			 consumePieceMoveWithCaptureAndFileNameAmbiguity(); 			
-			break; 
-	    case 36 : if (DEBUG) System.out.println("InnerSANMove ::= PieceIdentification RankName CAPTURE...");  //$NON-NLS-1$
-			 consumePieceMoveWithCaptureAndRankNameAmbiguity(); 			
-			break; 
-	    case 37 : if (DEBUG) System.out.println("InnerSANMove ::= PieceIdentification FileName RankName...");  //$NON-NLS-1$
-			 consumePieceMoveWithCaptureAndDoubleAmbiguity(); 			
-			break; 
-	    case 38 : if (DEBUG) System.out.println("InnerSANMove ::= CASTLE_KING_SIDE");  //$NON-NLS-1$
-			 consumeCastleKingSide(); 			
-			break; 
-	    case 39 : if (DEBUG) System.out.println("InnerSANMove ::= CASTLE_QUEEN_SIDE");  //$NON-NLS-1$
-			 consumeCastleQueenSide(); 			
-			break; 
-	    case 40 : if (DEBUG) System.out.println("numeric-annotation-glyph ::= numeric-annotation-glyph...");  //$NON-NLS-1$
-			 consumeNAG(); 			
-			break; 
-	    case 41 : if (DEBUG) System.out.println("numeric-annotation-glyph ::= EXCELLENT_MOVE");  //$NON-NLS-1$
-			 consumeExcellentMoveNAG(); 			
-			break; 
-	    case 42 : if (DEBUG) System.out.println("numeric-annotation-glyph ::= VERY_BAD_MOVE");  //$NON-NLS-1$
-			 consumeVeryBadMoveNAG(); 			
-			break; 
-	    case 43 : if (DEBUG) System.out.println("numeric-annotation-glyph ::= BAD_MOVE");  //$NON-NLS-1$
-			 consumeBadMoveNAG(); 			
-			break; 
-	    case 44 : if (DEBUG) System.out.println("numeric-annotation-glyph ::= GOOD_MOVE");  //$NON-NLS-1$
-			 consumeGoodMoveMoveNAG(); 			
-			break; 
-	    case 45 : if (DEBUG) System.out.println("numeric-annotation-glyph ::= INTERESTING_MOVE");  //$NON-NLS-1$
-			 consumeInterestingMoveNAG(); 			
-			break; 
-	    case 46 : if (DEBUG) System.out.println("numeric-annotation-glyph ::= SUSPICIOUS_MOVE");  //$NON-NLS-1$
-			 consumeSuspiciousMoveNAG(); 			
-			break; 
-	    case 47 : if (DEBUG) System.out.println("numeric-annotation-glyph ::=");  //$NON-NLS-1$
-			 consumeEmptyNAG(); 			
-			break; 
-	    case 48 : if (DEBUG) System.out.println("move-number-indication ::= IntegerLiteral DOT space");  //$NON-NLS-1$
-			 consumeMoveIndication(); 			
-			break; 
-	    case 49 : if (DEBUG) System.out.println("recursive-variation ::= START_VARIATION space...");  //$NON-NLS-1$
-			 consumeRecursiveVariation(); 			
-			break; 
-	    case 52 : if (DEBUG) System.out.println("game-termination ::= WHITE_VICTORY");  //$NON-NLS-1$
-			 consumeWhiteVictory(); 			
-			break; 
-	    case 53 : if (DEBUG) System.out.println("game-termination ::= BLACK_VICTORY");  //$NON-NLS-1$
-			 consumeBlackVictory(); 			
-			break; 
-	    case 54 : if (DEBUG) System.out.println("game-termination ::= DRAW");  //$NON-NLS-1$
-			 consumeDraw(); 			
-			break; 
-	    case 55 : if (DEBUG) System.out.println("game-termination ::= UNKNOWN");  //$NON-NLS-1$
-			 consumeUnknownResult(); 			
-			break; 
+		switch (act) {
+		case 1:
+			if (DEBUG)
+				System.out.println("Goal ::= GREATER_THAN PGN-database"); //$NON-NLS-1$
+			consumeGoal();
+			break;
+		case 2:
+			if (DEBUG)
+				System.out.println("PGN-database ::= PGN-database PGN-game"); //$NON-NLS-1$
+			consumePGNDatabase();
+			break;
+		case 3:
+			if (DEBUG)
+				System.out.println("PGN-database ::="); //$NON-NLS-1$
+			consumeEmptyPGNDatabase();
+			break;
+		case 4:
+			if (DEBUG)
+				System.out.println("PGN-game ::= tag-section movetext-section space"); //$NON-NLS-1$
+			consumePGNGame();
+			break;
+		case 5:
+			if (DEBUG)
+				System.out.println("tag-section ::= tag-section tag-pair space"); //$NON-NLS-1$
+			consumeTagSection();
+			break;
+		case 6:
+			if (DEBUG)
+				System.out.println("tag-section ::="); //$NON-NLS-1$
+			consumeEmptyTagSection();
+			break;
+		case 7:
+			if (DEBUG)
+				System.out.println("tag-pair ::= Start_Tag_Section space tag-value space..."); //$NON-NLS-1$
+			consumeTagPair();
+			break;
+		case 9:
+			if (DEBUG)
+				System.out.println("movetext-section ::= element-sequence game-termination"); //$NON-NLS-1$
+			consumeMoveTextSection();
+			break;
+		case 10:
+			if (DEBUG)
+				System.out.println("element-sequence ::= element-sequence element"); //$NON-NLS-1$
+			consumeElementSequence();
+			break;
+		case 11:
+			if (DEBUG)
+				System.out.println("element-sequence ::= element-sequence recursive-variation"); //$NON-NLS-1$
+			consumeElementSequenceWithRecursiveVariation();
+			break;
+		case 12:
+			if (DEBUG)
+				System.out.println("element-sequence ::="); //$NON-NLS-1$
+			consumeEmptyElementSequence();
+			break;
+		case 13:
+			if (DEBUG)
+				System.out.println("element ::= move-number-indication WhiteMove space"); //$NON-NLS-1$
+			consumeElementSingleMove();
+			break;
+		case 14:
+			if (DEBUG)
+				System.out.println("element ::= move-number-indication WhiteMove WHITESPACE..."); //$NON-NLS-1$
+			consumeElementTwoMoves();
+			break;
+		case 15:
+			if (DEBUG)
+				System.out.println("element ::= move-number-indication BlackMove space"); //$NON-NLS-1$
+			consumeElementBlackMove();
+			break;
+		case 16:
+			if (DEBUG)
+				System.out.println("WhiteMove ::= InnerSANMove numeric-annotation-glyph"); //$NON-NLS-1$
+			consumeWhiteMove();
+			break;
+		case 17:
+			if (DEBUG)
+				System.out.println("WhiteMove ::= InnerSANMove CHECK numeric-annotation-glyph"); //$NON-NLS-1$
+			consumeWhiteMoveWithCheck();
+			break;
+		case 18:
+			if (DEBUG)
+				System.out.println("WhiteMove ::= InnerSANMove CHECKMATE..."); //$NON-NLS-1$
+			consumeWhiteMoveWithCheckMate();
+			break;
+		case 19:
+			if (DEBUG)
+				System.out.println("BlackMove ::= BlackDots InnerSANMove..."); //$NON-NLS-1$
+			consumeBlackMove();
+			break;
+		case 20:
+			if (DEBUG)
+				System.out.println("BlackMove ::= BlackDots InnerSANMove CHECK..."); //$NON-NLS-1$
+			consumeBlackMoveWithCheck();
+			break;
+		case 21:
+			if (DEBUG)
+				System.out.println("BlackMove ::= BlackDots InnerSANMove CHECKMATE..."); //$NON-NLS-1$
+			consumeBlackMoveWithCheckMate();
+			break;
+		case 23:
+			if (DEBUG)
+				System.out.println("BlackMoveFollowingWhiteMove ::= WhiteMove"); //$NON-NLS-1$
+			consumeBlackMoveFollowingWhiteMove();
+			break;
+		case 24:
+			if (DEBUG)
+				System.out.println("InnerSANMove ::= FileName RankName"); //$NON-NLS-1$
+			consumePawnMove();
+			break;
+		case 25:
+			if (DEBUG)
+				System.out.println("InnerSANMove ::= FileName RankName PROMOTE..."); //$NON-NLS-1$
+			consumePawnMoveWithPromotion();
+			break;
+		case 26:
+			if (DEBUG)
+				System.out.println("InnerSANMove ::= FileName RankName PieceIdentification"); //$NON-NLS-1$
+			consumePawnMoveWithPromotion();
+			break;
+		case 27:
+			if (DEBUG)
+				System.out.println("InnerSANMove ::= FileName CAPTURE FileName RankName"); //$NON-NLS-1$
+			consumePawnMoveWithCapture();
+			break;
+		case 28:
+			if (DEBUG)
+				System.out.println("InnerSANMove ::= FileName CAPTURE FileName RankName..."); //$NON-NLS-1$
+			consumePawnMoveWithCapture();
+			break;
+		case 29:
+			if (DEBUG)
+				System.out.println("InnerSANMove ::= FileName CAPTURE FileName RankName..."); //$NON-NLS-1$
+			consumePawnMoveWithCaptureAndPromotion();
+			break;
+		case 30:
+			if (DEBUG)
+				System.out.println("InnerSANMove ::= FileName CAPTURE FileName RankName PROMOTE"); //$NON-NLS-1$
+			consumePawnMoveWithCaptureAndPromotion();
+			break;
+		case 31:
+			if (DEBUG)
+				System.out.println("InnerSANMove ::= PieceIdentification FileName RankName"); //$NON-NLS-1$
+			consumePieceMove();
+			break;
+		case 32:
+			if (DEBUG)
+				System.out.println("InnerSANMove ::= PieceIdentification FileName FileName..."); //$NON-NLS-1$
+			consumePieceMoveWithFileNameAmbiguity();
+			break;
+		case 33:
+			if (DEBUG)
+				System.out.println("InnerSANMove ::= PieceIdentification RankName FileName..."); //$NON-NLS-1$
+			consumePieceMoveWithRankNameAmbiguity();
+			break;
+		case 34:
+			if (DEBUG)
+				System.out.println("InnerSANMove ::= PieceIdentification CAPTURE FileName..."); //$NON-NLS-1$
+			consumePieceMoveWithCapture();
+			break;
+		case 35:
+			if (DEBUG)
+				System.out.println("InnerSANMove ::= PieceIdentification FileName CAPTURE..."); //$NON-NLS-1$
+			consumePieceMoveWithCaptureAndFileNameAmbiguity();
+			break;
+		case 36:
+			if (DEBUG)
+				System.out.println("InnerSANMove ::= PieceIdentification RankName CAPTURE..."); //$NON-NLS-1$
+			consumePieceMoveWithCaptureAndRankNameAmbiguity();
+			break;
+		case 37:
+			if (DEBUG)
+				System.out.println("InnerSANMove ::= PieceIdentification FileName RankName..."); //$NON-NLS-1$
+			consumePieceMoveWithCaptureAndDoubleAmbiguity();
+			break;
+		case 38:
+			if (DEBUG)
+				System.out.println("InnerSANMove ::= CASTLE_KING_SIDE"); //$NON-NLS-1$
+			consumeCastleKingSide();
+			break;
+		case 39:
+			if (DEBUG)
+				System.out.println("InnerSANMove ::= CASTLE_QUEEN_SIDE"); //$NON-NLS-1$
+			consumeCastleQueenSide();
+			break;
+		case 40:
+			if (DEBUG)
+				System.out.println("numeric-annotation-glyph ::= numeric-annotation-glyph..."); //$NON-NLS-1$
+			consumeNAG();
+			break;
+		case 41:
+			if (DEBUG)
+				System.out.println("numeric-annotation-glyph ::= EXCELLENT_MOVE"); //$NON-NLS-1$
+			consumeExcellentMoveNAG();
+			break;
+		case 42:
+			if (DEBUG)
+				System.out.println("numeric-annotation-glyph ::= VERY_BAD_MOVE"); //$NON-NLS-1$
+			consumeVeryBadMoveNAG();
+			break;
+		case 43:
+			if (DEBUG)
+				System.out.println("numeric-annotation-glyph ::= BAD_MOVE"); //$NON-NLS-1$
+			consumeBadMoveNAG();
+			break;
+		case 44:
+			if (DEBUG)
+				System.out.println("numeric-annotation-glyph ::= GOOD_MOVE"); //$NON-NLS-1$
+			consumeGoodMoveMoveNAG();
+			break;
+		case 45:
+			if (DEBUG)
+				System.out.println("numeric-annotation-glyph ::= INTERESTING_MOVE"); //$NON-NLS-1$
+			consumeInterestingMoveNAG();
+			break;
+		case 46:
+			if (DEBUG)
+				System.out.println("numeric-annotation-glyph ::= SUSPICIOUS_MOVE"); //$NON-NLS-1$
+			consumeSuspiciousMoveNAG();
+			break;
+		case 47:
+			if (DEBUG)
+				System.out.println("numeric-annotation-glyph ::="); //$NON-NLS-1$
+			consumeEmptyNAG();
+			break;
+		case 48:
+			if (DEBUG)
+				System.out.println("move-number-indication ::= IntegerLiteral DOT space"); //$NON-NLS-1$
+			consumeMoveIndication();
+			break;
+		case 49:
+			if (DEBUG)
+				System.out.println("recursive-variation ::= START_VARIATION space..."); //$NON-NLS-1$
+			consumeRecursiveVariation();
+			break;
+		case 52:
+			if (DEBUG)
+				System.out.println("game-termination ::= WHITE_VICTORY"); //$NON-NLS-1$
+			consumeWhiteVictory();
+			break;
+		case 53:
+			if (DEBUG)
+				System.out.println("game-termination ::= BLACK_VICTORY"); //$NON-NLS-1$
+			consumeBlackVictory();
+			break;
+		case 54:
+			if (DEBUG)
+				System.out.println("game-termination ::= DRAW"); //$NON-NLS-1$
+			consumeDraw();
+			break;
+		case 55:
+			if (DEBUG)
+				System.out.println("game-termination ::= UNKNOWN"); //$NON-NLS-1$
+			consumeUnknownResult();
+			break;
 		}
 	}
 
 	protected void endParse(int act) {
-	
+
 		this.lastAct = act;
-		
+
 		if (act == ERROR_ACTION || this.hasReportedError) {
 			if (DEBUG) {
 				System.out.println("ERROR"); //$NON-NLS-1$
@@ -448,15 +508,15 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 			this.pgnDatabase = null;
 		}
 	}
-	
+
 	public void initialize() {
 		// nothing to do
 	}
-	
+
 	private void goForPGNDatabase() {
 		this.firstToken = TokenNameGREATER_THAN;
 	}
-	
+
 	public PGNDatabase parse(char[] source) {
 		/* automaton initialization */
 		initialize();
@@ -478,7 +538,7 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 		parse();
 		return this.pgnDatabase;
 	}
-	
+
 	public PGNDatabase parseZipFile(ZipFile zipFile) {
 		try {
 			/* automaton initialization */
@@ -492,30 +552,33 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 			this.scanner = new Scanner();
 			this.scanner.resetTo(0, source.length);
 			this.scanner.setSource(source);
-	
+
 			parse();
-		} catch(java.io.IOException e) {
+		} catch (java.io.IOException e) {
 			MyLogger.log(Level.SEVERE, "IOException", e);
 		}
 		return this.pgnDatabase;
 	}
-	
+
 	private void consumePGNDatabase() {
-		((PGNDatabase)this.nodeStack[this.nodeStackPointer-2]).addPGNGame((PGNGame) this.nodeStack[--this.nodeStackPointer]);
+		((PGNDatabase) this.nodeStack[this.nodeStackPointer - 2])
+				.addPGNGame((PGNGame) this.nodeStack[--this.nodeStackPointer]);
 	}
-	
+
 	private void consumeEmptyPGNDatabase() {
 		pushOnNodeStack(this.pgnDatabase = new PGNDatabase());
 	}
-	
+
 	private void consumePGNGame() {
-		pushOnNodeStack(new PGNGame((MoveText) this.nodeStack[--this.nodeStackPointer], (TagSection) this.nodeStack[--this.nodeStackPointer]));
+		pushOnNodeStack(new PGNGame((MoveText) this.nodeStack[--this.nodeStackPointer],
+				(TagSection) this.nodeStack[--this.nodeStackPointer]));
 	}
-	
+
 	private void consumeTagSection() {
-		((TagSection)this.nodeStack[this.nodeStackPointer-2]).addTagPair((TagPair) this.nodeStack[--this.nodeStackPointer]);
+		((TagSection) this.nodeStack[this.nodeStackPointer - 2])
+				.addTagPair((TagPair) this.nodeStack[--this.nodeStackPointer]);
 	}
-	
+
 	private void consumeEmptyTagSection() {
 		pushOnNodeStack(new TagSection());
 	}
@@ -523,15 +586,16 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 	private void consumeEmptyNAG() {
 		// nothing to do
 	}
-	
+
 	/**
 	 * tag-pair ::= Start_Tag_Section tag-value END_TAG_SECTION
 	 */
 	private void consumeTagPair() {
-		pushOnNodeStack(new TagPair(this.nodeInformation[this.nodeInformationPointer-2], this.nodeInformation[this.nodeInformationPointer-1]));
+		pushOnNodeStack(new TagPair(this.nodeInformation[this.nodeInformationPointer - 2],
+				this.nodeInformation[this.nodeInformationPointer - 1]));
 		this.nodeInformationPointer -= 2;
 	}
-	
+
 	private void consumeMoveTextSection() {
 		GameTermination gameTermination = (GameTermination) this.nodeStack[--this.nodeStackPointer];
 		Move[] moves = null;
@@ -547,7 +611,7 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 		initializeParents(moves);
 		moveText.setGameTermination(gameTermination);
 	}
-	
+
 	private void initializeParents(Move[] moves) {
 		if (moves == null) {
 			return;
@@ -556,15 +620,15 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 			moves[i].setParent(moves[i - 1]);
 		}
 	}
-	
+
 	private void consumeElementSequence() {
 		// nothing to do
 	}
-	
+
 	private void consumeElementSequenceWithRecursiveVariation() {
 		// nothing to do
 	}
-	
+
 	/**
 	 * Method consumeCastleKingSide.
 	 */
@@ -573,14 +637,12 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 		this.variationMovesNumber[this.variationCounter]++;
 	}
 
-
 	/**
 	 * Method consumeUnknownResult.
 	 */
 	private void consumeUnknownResult() {
 		pushOnNodeStack(GameTermination.UNKNOWN);
 	}
-
 
 	/**
 	 * Method consumeDraw.
@@ -589,7 +651,6 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 		pushOnNodeStack(GameTermination.DRAW);
 	}
 
-
 	/**
 	 * Method consumeBlackVictory.
 	 */
@@ -597,14 +658,12 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 		pushOnNodeStack(GameTermination.BLACK_VICTORY);
 	}
 
-
 	/**
 	 * Method consumeWhiteVictory.
 	 */
 	private void consumeWhiteVictory() {
 		pushOnNodeStack(GameTermination.WHITE_VICTORY);
 	}
-
 
 	/**
 	 * Method consumeRecursiveVariation.
@@ -644,14 +703,13 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 	private void consumeGoal() {
 		this.nodeStackPointer--;
 	}
-	
+
 	/**
 	 * Method consumeGoodMoveMoveNAG.
 	 */
 	private void consumeGoodMoveMoveNAG() {
 		((Move) this.nodeStack[this.nodeStackPointer - 1]).setNag(this.nodeInformation[--this.nodeInformationPointer]);
 	}
-
 
 	/**
 	 * Method consumeBadMoveNAG.
@@ -660,14 +718,12 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 		((Move) this.nodeStack[this.nodeStackPointer - 1]).setNag(this.nodeInformation[--this.nodeInformationPointer]);
 	}
 
-
 	/**
 	 * Method consumeVeryBadMoveNAG.
 	 */
 	private void consumeVeryBadMoveNAG() {
 		((Move) this.nodeStack[this.nodeStackPointer - 1]).setNag(this.nodeInformation[--this.nodeInformationPointer]);
 	}
-
 
 	/**
 	 * Method consumeExcellentMoveNAG.
@@ -676,14 +732,12 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 		((Move) this.nodeStack[this.nodeStackPointer - 1]).setNag(this.nodeInformation[--this.nodeInformationPointer]);
 	}
 
-
 	/**
 	 * Method consumeNAG.
 	 */
 	private void consumeNAG() {
 		((Move) this.nodeStack[this.nodeStackPointer - 1]).setNag(this.nodeInformation[--this.nodeInformationPointer]);
 	}
-
 
 	/**
 	 * Method consumeCastleQueenSide.
@@ -692,7 +746,6 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 		pushOnNodeStack(new Castle(false));
 		this.variationMovesNumber[this.variationCounter]++;
 	}
-
 
 	/**
 	 * Method consumePieceMoveWithCaptureAndDoubleAmbiguity.
@@ -708,7 +761,6 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 		pushOnNodeStack(pieceMove);
 	}
 
-
 	/**
 	 * Method consumePieceMoveWithCaptureAndRankNameAmbiguity.
 	 */
@@ -722,7 +774,6 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 		this.variationMovesNumber[this.variationCounter]++;
 		pushOnNodeStack(pieceMove);
 	}
-
 
 	/**
 	 * Method consumePieceMoveWithCaptureAndFileNameAmbiguity.
@@ -738,7 +789,6 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 		pushOnNodeStack(pieceMove);
 	}
 
-
 	/**
 	 * Method consumePieceMoveWithCapture.
 	 */
@@ -751,7 +801,6 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 		this.variationMovesNumber[this.variationCounter]++;
 		pushOnNodeStack(pieceMove);
 	}
-
 
 	/**
 	 * Method consumePieceMoveWithRankNameAmbiguity.
@@ -766,7 +815,6 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 		pushOnNodeStack(pieceMove);
 	}
 
-
 	/**
 	 * Method consumePieceMoveWithFileNameAmbiguity.
 	 */
@@ -780,7 +828,6 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 		pushOnNodeStack(pieceMove);
 	}
 
-
 	/**
 	 * Method consumePieceMove.
 	 */
@@ -792,7 +839,6 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 		this.variationMovesNumber[this.variationCounter]++;
 		pushOnNodeStack(pieceMove);
 	}
-
 
 	/**
 	 * Method consumePawnMoveWithCaptureAndPromotion.
@@ -809,7 +855,6 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 		pushOnNodeStack(pawnMove);
 	}
 
-
 	/**
 	 * Method consumePawnMoveWithCapture.
 	 */
@@ -822,7 +867,6 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 		this.variationMovesNumber[this.variationCounter]++;
 		pushOnNodeStack(pawnMove);
 	}
-
 
 	/**
 	 * Method consumePawnMoveWithPromotion.
@@ -837,7 +881,6 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 		pushOnNodeStack(pawnMove);
 	}
 
-
 	/**
 	 * Method consumePawnMove.
 	 */
@@ -849,14 +892,12 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 		pushOnNodeStack(pawnMove);
 	}
 
-
 	/**
 	 * Method consumeBlackMoveFollowingWhiteMove.
 	 */
 	private void consumeBlackMoveFollowingWhiteMove() {
 		// nothing to do
 	}
-
 
 	/**
 	 * Method consumeBlackMoveWithCheckMate.
@@ -865,14 +906,12 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 		((Move) this.nodeStack[this.nodeStackPointer - 1]).setIsCheckMate(true);
 	}
 
-
 	/**
 	 * Method consumeBlackMoveWithCheck.
 	 */
 	private void consumeBlackMoveWithCheck() {
 		((Move) this.nodeStack[this.nodeStackPointer - 1]).setIsCheck(true);
 	}
-
 
 	/**
 	 * Method consumeBlackMove.
@@ -881,14 +920,12 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 		// nothing to do
 	}
 
-
 	/**
 	 * Method consumeWhiteMoveWithCheckMate.
 	 */
 	private void consumeWhiteMoveWithCheckMate() {
-		((Move) this.nodeStack[this.nodeStackPointer - 1]).setIsCheckMate(true);	
+		((Move) this.nodeStack[this.nodeStackPointer - 1]).setIsCheckMate(true);
 	}
-
 
 	/**
 	 * Method consumeWhiteMoveWithCheck.
@@ -913,7 +950,6 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 		move.setIsWhiteMove(false);
 	}
 
-
 	/**
 	 * Method consumeElementTwoMoves.
 	 */
@@ -925,7 +961,6 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 		move.setMoveIndication(this.currentMoveIndication);
 		move.setIsWhiteMove(true);
 	}
-
 
 	/**
 	 * Method consumeEmptyElementSequence.
@@ -945,14 +980,17 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 
 	private void pushOnNodeStack(ASTNode astNode) {
 		if (this.nodeStackPointer == this.nodeStack.length) {
-			System.arraycopy(this.nodeStack, 0, (this.nodeStack = new ASTNode[this.nodeStackPointer + StackIncrement]), 0, this.nodeStackPointer);
+			System.arraycopy(this.nodeStack, 0, (this.nodeStack = new ASTNode[this.nodeStackPointer + StackIncrement]),
+					0, this.nodeStackPointer);
 		}
 		this.nodeStack[this.nodeStackPointer++] = astNode;
 	}
-	
+
 	private void pushOnNodeInformationStack(char[] info) {
 		if (this.nodeInformationPointer == this.nodeInformation.length) {
-			System.arraycopy(this.nodeInformation, 0, (this.nodeInformation = new char[this.nodeInformationPointer + StackIncrement][]), 0, this.nodeInformationPointer);
+			System.arraycopy(this.nodeInformation, 0,
+					(this.nodeInformation = new char[this.nodeInformationPointer + StackIncrement][]), 0,
+					this.nodeInformationPointer);
 		}
 		this.nodeInformation[this.nodeInformationPointer++] = info;
 	}

@@ -18,7 +18,7 @@ public class PGNMoveContainer implements MoveConstants {
 	private HashtableOfLong currentLocaleContainer;
 	private HashMap<Locale, ResourceBundle> bundles;
 	private long[] moves;
-	
+
 	public PGNMoveContainer(ChessEngine model, long[] moves, Locale currentLocale) {
 		this.bundles = new HashMap<>();
 		this.moves = moves;
@@ -48,7 +48,8 @@ public class PGNMoveContainer implements MoveConstants {
 				} else {
 					this.pgnNotationContainer.put(oldNotation, conflictMove);
 					this.pgnNotationContainer.put(notation, moves[i]);
-					this.currentLocaleContainer.put(getColumnNotation(model, conflictMove, currentLocale), conflictMove);
+					this.currentLocaleContainer.put(getColumnNotation(model, conflictMove, currentLocale),
+							conflictMove);
 					this.currentLocaleContainer.put(currentLocalNotation, moves[i]);
 				}
 			} else {
@@ -57,7 +58,7 @@ public class PGNMoveContainer implements MoveConstants {
 			}
 		}
 	}
-	
+
 	public boolean contains(String moveNotation) {
 		return this.pgnNotationContainer.containsKey(moveNotation);
 	}
@@ -83,20 +84,21 @@ public class PGNMoveContainer implements MoveConstants {
 		}
 		return null;
 	}
-		
+
 	private String getShortNotation(ChessEngine model, long move, Locale locale) {
 		return moveToString(model, move, locale, false, false);
 	}
-		
+
 	private String getColumnNotation(ChessEngine model, long move, Locale locale) {
 		return moveToString(model, move, locale, true, false);
 	}
-	
+
 	private String getRowNotation(ChessEngine model, long move, Locale locale) {
 		return moveToString(model, move, locale, false, true);
 	}
-	
-	private String moveToString(ChessEngine model, long move, Locale locale, boolean columnAmbiguity, boolean rowAmbiguity) {
+
+	private String moveToString(ChessEngine model, long move, Locale locale, boolean columnAmbiguity,
+			boolean rowAmbiguity) {
 		ResourceBundle bundle = this.bundles.get(locale);
 		StringBuilder builder = new StringBuilder();
 		long info = move;
@@ -104,39 +106,39 @@ public class PGNMoveContainer implements MoveConstants {
 		int endingPosition = (int) ((info & ENDING_SQUARE_MASK) >> ENDING_SQUARE_SHIFT);
 		Piece capturePiece = Piece.getPiece((int) ((info & CAPTURE_PIECE_MASK) >> CAPTURE_PIECE_SHIFT));
 		Piece promotion = Piece.getPiece((int) ((info & PROMOTION_PIECE_MASK) >> PROMOTION_PIECE_SHIFT));
-		switch(model.getBoard(startingPosition)) {
-			case WHITE_BISHOP :
-			case BLACK_BISHOP :
-				builder.append(bundle.getString("piece.bishop")); //$NON-NLS-1$
-				break;
-			case WHITE_ROOK :
-			case BLACK_ROOK :
-				builder.append(bundle.getString("piece.rook")); //$NON-NLS-1$
-				break;
-			case WHITE_QUEEN :
-			case BLACK_QUEEN :
-				builder.append(bundle.getString("piece.queen")); //$NON-NLS-1$
-				break;
-			case WHITE_KING :
-			case BLACK_KING :
-				if (Math.abs(startingPosition - endingPosition) == 2) {
-					if (endingPosition > startingPosition) {
-						return "O-O"; //$NON-NLS-1$
-					}
-					return "O-O-O"; //$NON-NLS-1$
+		switch (model.getBoard(startingPosition)) {
+		case WHITE_BISHOP:
+		case BLACK_BISHOP:
+			builder.append(bundle.getString("piece.bishop")); //$NON-NLS-1$
+			break;
+		case WHITE_ROOK:
+		case BLACK_ROOK:
+			builder.append(bundle.getString("piece.rook")); //$NON-NLS-1$
+			break;
+		case WHITE_QUEEN:
+		case BLACK_QUEEN:
+			builder.append(bundle.getString("piece.queen")); //$NON-NLS-1$
+			break;
+		case WHITE_KING:
+		case BLACK_KING:
+			if (Math.abs(startingPosition - endingPosition) == 2) {
+				if (endingPosition > startingPosition) {
+					return "O-O"; //$NON-NLS-1$
 				}
-				builder.append(bundle.getString("piece.king")); //$NON-NLS-1$
-				break;
-			case WHITE_KNIGHT :
-			case BLACK_KNIGHT :
-				builder.append(bundle.getString("piece.knight")); //$NON-NLS-1$
-				break;
-			case WHITE_PAWN :
-			case BLACK_PAWN :
-				if (capturePiece != EMPTY) {
-					builder.append((char) ((startingPosition % 8) + 'a'));
-				}
-			default:
+				return "O-O-O"; //$NON-NLS-1$
+			}
+			builder.append(bundle.getString("piece.king")); //$NON-NLS-1$
+			break;
+		case WHITE_KNIGHT:
+		case BLACK_KNIGHT:
+			builder.append(bundle.getString("piece.knight")); //$NON-NLS-1$
+			break;
+		case WHITE_PAWN:
+		case BLACK_PAWN:
+			if (capturePiece != EMPTY) {
+				builder.append((char) ((startingPosition % 8) + 'a'));
+			}
+		default:
 		}
 		if (columnAmbiguity) {
 			builder.append((char) ((startingPosition % 8) + 'a'));
@@ -151,33 +153,34 @@ public class PGNMoveContainer implements MoveConstants {
 		builder.append(8 - (endingPosition / 8));
 		if (promotion != UNDEFINED) {
 			builder.append("="); //$NON-NLS-1$
-			switch(promotion) {
-				case WHITE_BISHOP :
-				case BLACK_BISHOP :
-					builder.append(bundle.getString("piece.bishop")); //$NON-NLS-1$
-					break;
-				case WHITE_ROOK :
-				case BLACK_ROOK :
-					builder.append(bundle.getString("piece.rook")); //$NON-NLS-1$
-					break;
-				case WHITE_QUEEN :
-				case BLACK_QUEEN :
-					builder.append(bundle.getString("piece.queen")); //$NON-NLS-1$
-					break;
-				case WHITE_KNIGHT :
-				case BLACK_KNIGHT :
-					builder.append(bundle.getString("piece.knight")); //$NON-NLS-1$
-					break;
-				default:
+			switch (promotion) {
+			case WHITE_BISHOP:
+			case BLACK_BISHOP:
+				builder.append(bundle.getString("piece.bishop")); //$NON-NLS-1$
+				break;
+			case WHITE_ROOK:
+			case BLACK_ROOK:
+				builder.append(bundle.getString("piece.rook")); //$NON-NLS-1$
+				break;
+			case WHITE_QUEEN:
+			case BLACK_QUEEN:
+				builder.append(bundle.getString("piece.queen")); //$NON-NLS-1$
+				break;
+			case WHITE_KNIGHT:
+			case BLACK_KNIGHT:
+				builder.append(bundle.getString("piece.knight")); //$NON-NLS-1$
+				break;
+			default:
 			}
 		}
 		return String.valueOf(builder);
 	}
+
 	@Override
 	public String toString() {
 		return toString(true);
 	}
-	
+
 	public String toString(boolean sort) {
 		StringBuilder builder = new StringBuilder();
 		if (sort) {
@@ -190,18 +193,14 @@ public class PGNMoveContainer implements MoveConstants {
 			java.util.Arrays.sort(movesNotations);
 			i = 0;
 			for (int max = movesNotations.length; i < max; i++) {
-				builder
-					.append(movesNotations[i])
-					.append(" "); //$NON-NLS-1$
+				builder.append(movesNotations[i]).append(" "); //$NON-NLS-1$
 			}
 		} else if (this.moves != null) {
 			for (int i = 0, max = this.moves.length; i < max; i++) {
-				builder
-					.append(getMoveNotation(this.moves[i]))
-					.append(" "); //$NON-NLS-1$
+				builder.append(getMoveNotation(this.moves[i])).append(" "); //$NON-NLS-1$
 			}
 		}
 		return String.valueOf(builder);
 	}
-	
+
 }

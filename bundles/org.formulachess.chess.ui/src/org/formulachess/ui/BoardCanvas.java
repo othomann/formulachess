@@ -40,6 +40,7 @@ public class BoardCanvas extends Canvas implements Observer {
 		/**
 		 * @see org.eclipse.swt.events.MouseListener#mouseDoubleClick(org.eclipse.swt.events.MouseEvent)
 		 */
+		@Override
 		public void mouseDoubleClick(MouseEvent e) {
 			// nothing to do
 		}
@@ -47,6 +48,7 @@ public class BoardCanvas extends Canvas implements Observer {
 		/**
 		 * @see org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events.MouseEvent)
 		 */
+		@Override
 		public void mouseDown(MouseEvent e) {
 			if (e.button != 1) {
 				return;
@@ -102,6 +104,7 @@ public class BoardCanvas extends Canvas implements Observer {
 		/**
 		 * @see org.eclipse.swt.events.MouseTrackListener#mouseEnter(org.eclipse.swt.events.MouseEvent)
 		 */
+		@Override
 		public void mouseEnter(MouseEvent e) {
 			if (BoardCanvas.this.drag) {
 				BoardCanvas.this.xImage = e.x;
@@ -115,6 +118,7 @@ public class BoardCanvas extends Canvas implements Observer {
 		/**
 		 * @see org.eclipse.swt.events.MouseTrackListener#mouseExit(org.eclipse.swt.events.MouseEvent)
 		 */
+		@Override
 		public void mouseExit(MouseEvent e) {
 			if (BoardCanvas.this.drag) {
 				int oldX = BoardCanvas.this.xImage;
@@ -130,10 +134,12 @@ public class BoardCanvas extends Canvas implements Observer {
 		/**
 		 * @see org.eclipse.swt.events.MouseTrackListener#mouseHover(org.eclipse.swt.events.MouseEvent)
 		 */
+		@Override
 		public void mouseHover(MouseEvent e) {
 			// nothing to do
 		}
 
+		@Override
 		public void mouseMove(MouseEvent e) {
 			if (BoardCanvas.this.drag) {
 				BoardCanvas.this.redraw(BoardCanvas.this.xImage + BoardCanvas.this.xOffset,
@@ -151,6 +157,7 @@ public class BoardCanvas extends Canvas implements Observer {
 		/**
 		 * @see org.eclipse.swt.events.MouseListener#mouseUp(org.eclipse.swt.events.MouseEvent)
 		 */
+		@Override
 		public void mouseUp(MouseEvent e) {
 			BoardCanvas.this.possibleNextMoves = null;
 			if (!BoardCanvas.this.model.isReady()) {
@@ -229,6 +236,7 @@ public class BoardCanvas extends Canvas implements Observer {
 			updateBuffer();
 		}
 
+		@Override
 		public void paintControl(PaintEvent e) {
 			e.gc.drawImage(BoardCanvas.this.doubleBuffer, 0, 0);
 		}
@@ -303,23 +311,23 @@ public class BoardCanvas extends Canvas implements Observer {
 		this.model.addObserver(this);
 
 		// init images
-		this.board = imageFactory.board;
-		this.blackBishop = imageFactory.blackBishop;
-		this.blackKing = imageFactory.blackKing;
-		this.blackKingMate = imageFactory.blackKingMate;
-		this.blackKnight = imageFactory.blackKnight;
-		this.blackPawn = imageFactory.blackPawn;
-		this.blackQueen = imageFactory.blackQueen;
-		this.blackRook = imageFactory.blackRook;
+		this.board = imageFactory.getBoard();
+		this.blackBishop = imageFactory.getBlackBishop();
+		this.blackKing = imageFactory.getBlackKing();
+		this.blackKingMate = imageFactory.getBlackKingMate();
+		this.blackKnight = imageFactory.getBlackKnight();
+		this.blackPawn = imageFactory.getBlackPawn();
+		this.blackQueen = imageFactory.getBlackQueen();
+		this.blackRook = imageFactory.getBlackRook();
 
-		this.whiteBishop = imageFactory.whiteBishop;
-		this.whiteKing = imageFactory.whiteKing;
-		this.whiteKingMate = imageFactory.whiteKingMate;
-		this.whiteKnight = imageFactory.whiteKnight;
-		this.whitePawn = imageFactory.whitePawn;
-		this.whiteQueen = imageFactory.whiteQueen;
-		this.whiteRook = imageFactory.whiteRook;
-		this.possibleMove = imageFactory.possibleMove;
+		this.whiteBishop = imageFactory.getWhiteBishop();
+		this.whiteKing = imageFactory.getWhiteKing();
+		this.whiteKingMate = imageFactory.getWhiteKingMate();
+		this.whiteKnight = imageFactory.getWhiteKnight();
+		this.whitePawn = imageFactory.getWhitePawn();
+		this.whiteQueen = imageFactory.getWhiteQueen();
+		this.whiteRook = imageFactory.getWhiteRook();
+		this.possibleMove = imageFactory.getPossibleMove();
 
 		this.boardSize = this.board.getBounds();
 
@@ -413,8 +421,8 @@ public class BoardCanvas extends Canvas implements Observer {
 			}
 		}
 
-		int row = 8;
-		int col = 0;
+		int row;
+		int col;
 
 		if (this.possibleNextMoves != null) {
 			for (int i = 0, max = this.possibleNextMoves.length; i < max; i++) {
@@ -494,6 +502,7 @@ public class BoardCanvas extends Canvas implements Observer {
 				break;
 			case UNDEFINED:
 			case EMPTY:
+			default:
 			}
 			if (currentImage != null) {
 				gc.drawImage(currentImage, 0, 0, this.settings[SQUARE_WIDTH_INDEX], this.settings[SQUARE_HEIGHT_INDEX],

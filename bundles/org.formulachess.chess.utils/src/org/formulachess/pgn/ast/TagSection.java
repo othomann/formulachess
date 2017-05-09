@@ -21,14 +21,15 @@ public class TagSection extends ASTNode {
 	private TagPair[] tagPairs = new TagPair[INITIAL_SIZE];
 	private int tagPairCounter = 0;
 	private HashMap<String, String> tags;
-	
+
 	public TagSection() {
 		this.tags = new HashMap<>(INITIAL_SIZE);
 	}
-	
+
 	public void addTagPair(TagPair tagPair) {
 		if (this.tagPairCounter == this.tagPairs.length) {
-			System.arraycopy(this.tagPairs, 0, this.tagPairs = new TagPair[this.tagPairCounter * 2], 0, this.tagPairCounter);
+			System.arraycopy(this.tagPairs, 0, this.tagPairs = new TagPair[this.tagPairCounter * 2], 0,
+					this.tagPairCounter);
 		}
 		this.tagPairs[this.tagPairCounter++] = tagPair;
 		this.tags.put(new String(tagPair.getName()).trim(), new String(tagPair.getValue()).trim());
@@ -36,19 +37,22 @@ public class TagSection extends ASTNode {
 
 	public TagPair[] getTagPairs() {
 		if (this.tagPairCounter != this.tagPairs.length) {
-			System.arraycopy(this.tagPairs, 0, this.tagPairs = new TagPair[this.tagPairCounter], 0, this.tagPairCounter);
+			System.arraycopy(this.tagPairs, 0, this.tagPairs = new TagPair[this.tagPairCounter], 0,
+					this.tagPairCounter);
 		}
 		return this.tagPairs;
 	}
 
 	/**
 	 * This method was created by a SmartGuide.
-	 * @param key java.lang.String
+	 * 
+	 * @param key
+	 *            java.lang.String
 	 * @return java.lang.String
 	 */
 	public String getTag(String key) {
 		return this.tags.get(key);
-	}	
+	}
 
 	/**
 	 * @see java.lang.Object#toString()

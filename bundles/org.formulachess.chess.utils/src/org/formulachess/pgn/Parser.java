@@ -60,7 +60,7 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 	private final static byte[] rhs = { 0, 2, 2, 0, 3, 3, 0, 5, 1, 2, 2, 2, 0, 3, 5, 3, 2, 3, 3, 3, 4, 4, 3, 1, 2, 4, 3,
 			4, 5, 5, 6, 3, 4, 4, 4, 5, 5, 6, 1, 1, 2, 1, 1, 1, 1, 1, 1, 0, 3, 5, 1, 0, 1, 1, 1, 1 };
 
-	private final static short[] check_table = { -8, -16, -17, 1, 0, -3, 4, -5, 7, 8, 9, 10, 11, 12, 0, -6, 14, 2, 0,
+	private static final short[] check_table = { -8, -16, -17, 1, 0, -3, 4, -5, 7, 8, 9, 10, 11, 12, 0, -6, 14, 2, 0,
 			19, 20, -4, 21, 22, -10, 1, 0, 0, 0, 5, -29, 1, 0, 0, 34, 35, 36, 37, 31, 15, 16, 17, 0, -22, 14, 24, 0, 0,
 			-33, -24, 1, 0, 0, 0, 5, 7, 8, 9, 10, 11, 12, 0, -11, 0, 0, 16, 17, 0, 0, 21, 22, -55, -25, 0, 0, 0, 5, 15,
 			0, 7, 8, 9, 10, 11, 12, 0, -7, 0, 2, 0, -9, -26, 2, 0, 23, -1, 0, 0, 7, 8, 9, 10, 11, 12, 0, -48, -19, 1,
@@ -71,7 +71,7 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 			-58, 6, -59, 0, 4, 6, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-	private final static char[] lhs = { 0, 40, 41, 41, 42, 43, 43, 45, 46, 44, 25, 25, 25, 26, 26, 26, 29, 29, 29, 49,
+	private static final char[] lhs = { 0, 40, 41, 41, 42, 43, 43, 45, 46, 44, 25, 25, 25, 26, 26, 26, 29, 29, 29, 49,
 			49, 49, 50, 48, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 13, 13, 13, 13, 13, 13, 13,
 			13, 28, 27, 3, 3, 47, 47, 47, 47,
 
@@ -87,10 +87,9 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 			313, 281, 127, 19, 281, 281, 306, 281, 317, 321, 21, 316, 281, 277, 20, 281, 321, 281, 281, 318, 321, 281,
 			311 };
 
-	private final static char[] action = lhs;
+	private static final char[] action = lhs;
 
 	public final int getFirstToken() {
-		// Goal ::= '++' PGNDatabase
 		return this.firstToken;
 	}
 
@@ -219,19 +218,7 @@ public class Parser implements ParserBasicInformation, TerminalSymbols {
 		case TokenNameEND_VARIATION:
 			this.variationCounter--;
 			break;
-		/*
-		 * case TokenNameEND_TAG_SECTION : case TokenNameBLACK_VICTORY : case
-		 * TokenNamePROMOTE : case TokenNameCAPTURE : case TokenNameCASTLE_KING_SIDE :
-		 * case TokenNameCASTLE_QUEEN_SIDE : case TokenNameCHECK : case
-		 * TokenNameCHECKMATE :
-		 * 
-		 * case TokenNameDOT : case TokenNameDRAW :
-		 * 
-		 * case TokenNameStart_Tag_Section :
-		 * 
-		 * case TokenNameStringLiteral : case TokenNameUNKNOWN : case
-		 * TokenNameWHITE_VICTORY :
-		 */
+		default:
 		}
 	}
 

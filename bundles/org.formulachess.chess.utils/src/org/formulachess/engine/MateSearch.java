@@ -3,12 +3,18 @@ package org.formulachess.engine;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.formulachess.pgn.engine.PGNMoveContainer;
 
 public class MateSearch {
-
+	private static final Logger MY_LOGGER = Logger.getLogger(MateSearch.class.getCanonicalName());
 	public static final boolean DEBUG = false;
+	
+	private MateSearch() {
+		// default constructor
+	}
 
 	public static MateMove[] createSearchableMoves(ChessEngine model, long[] moves, boolean sort) {
 		int movesLength = moves.length;
@@ -36,10 +42,10 @@ public class MateSearch {
 		int nextMovesLength = nextMoves.length;
 		MateMove[] next = createSearchableMoves(model, nextMoves, true);
 		loop: for (int i = 0; i < nextMovesLength; i++) {
-			long move = next[i].move;
+			long move = next[i].getMove();
 			MateNode current = result.add(next[i], model.getTurn(), depth);
 			if ((depth == maximum && MateMove.isCheck(move)) || depth != maximum) {
-				int mobility = next[i].mobility;
+				int mobility = next[i].getMobility();
 				if (mobility == 0) {
 					if (DEBUG) {
 						debug(next[i], 2 * depth - 1);
@@ -63,7 +69,7 @@ public class MateSearch {
 					result = current;
 					MateMove[] opponentNextMoves = createSearchableMoves(model, model.allMoves(), true);
 					opponentLoop: for (int j = 0, max = opponentNextMoves.length; j < max; j++) {
-						long opponentMove = opponentNextMoves[j].move;
+						long opponentMove = opponentNextMoves[j].getMove();
 						if (DEBUG) {
 							debug(opponentNextMoves[j], 2 * depth);
 						}
@@ -99,22 +105,15 @@ public class MateSearch {
 		return false;
 	}
 
-	/**
-	 * @param result
-	 */
-	static void displayResult(MateMove[] result) {
-		System.out.print("["); //$NON-NLS-1$
-		for (int i = 0, max = result.length; i < max; i++) {
-			System.out.print(result[i]);
-			System.out.print(", "); //$NON-NLS-1$
-		}
-		System.out.println("]"); //$NON-NLS-1$
-	}
-
 	static void debug(MateMove move, int depth) {
-		for (int i = 0; i < depth - 1; i++) {
-			System.out.print('\t');
+		if (!DEBUG) {
+			return;
 		}
-		System.out.println(move);
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < depth - 1; i++) {
+			builder.append('\t');
+		}
+		builder.append(move).append("\n");
+		MY_LOGGER.log(Level.INFO, String.valueOf(builder));
 	}
 }

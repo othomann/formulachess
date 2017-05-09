@@ -54,7 +54,7 @@ public class Board extends Composite {
 		this.rowCoordsCanvas.init(true);
 
 		this.switchCanvas = new SwitchCanvas(this, imageFactory);
-		this.switchCanvas.switchButton.addMouseListener(new SwitchMouseAdapter(this));
+		this.switchCanvas.getSwitchButton().addMouseListener(new SwitchMouseAdapter(this));
 
 		this.setLayout(new FormLayout());
 		FormData formData = new FormData();

@@ -6,9 +6,9 @@ public class MateMove implements Comparable<MateMove> {
 	private static final int CAPTURE = 0x100;
 	private static final int CHECK = 0x10;
 
-	public long move;
-	public int mobility;
-	public String notation;
+	private long move;
+	private int mobility;
+	private String notation;
 
 	public MateMove(long move, int mobility, String notation) {
 		this.move = move;
@@ -51,8 +51,9 @@ public class MateMove implements Comparable<MateMove> {
 		return DEFAULT;
 	}
 
+	@Override
 	public String toString() {
-		return this.notation; // + " mobility = " + this.mobility;
+		return this.notation;
 	}
 
 	@Override
@@ -78,5 +79,17 @@ public class MateMove implements Comparable<MateMove> {
 		if (move != other.move)
 			return false;
 		return true;
+	}
+	
+	public int getMobility() {
+		return this.mobility;
+	}
+	
+	public String getNotation() {
+		return this.notation;
+	}
+	
+	public long getMove() {
+		return this.move;
 	}
 }

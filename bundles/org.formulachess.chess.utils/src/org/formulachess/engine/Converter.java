@@ -7,6 +7,9 @@ import java.util.ResourceBundle;
 
 public class Converter implements MoveConstants {
 
+	private Converter() {
+		// default constructor
+	}
 
 	public static String moveToString(Piece[] board, long move) {
 		return moveToString(board, move, Locale.FRENCH);

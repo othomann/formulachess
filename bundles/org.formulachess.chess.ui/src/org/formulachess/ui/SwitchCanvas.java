@@ -21,7 +21,7 @@ public class SwitchCanvas extends Canvas {
 		}
 	}
 
-	public Button switchButton;
+	private Button switchButton;
 
 	// double-buffering
 	Image doubleBuffer;
@@ -48,6 +48,10 @@ public class SwitchCanvas extends Canvas {
 		this.doubleBuffer = new Image(display, 30, 30);
 
 		addPaintListener(new Controller());
+	}
+
+	public Button getSwitchButton() {
+		return this.switchButton;
 	}
 
 	@Override

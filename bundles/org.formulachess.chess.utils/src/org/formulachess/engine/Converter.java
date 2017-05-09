@@ -2,43 +2,45 @@ package org.formulachess.engine;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class Converter implements MoveConstants {
 
+
 	public static String moveToString(Piece[] board, long move) {
-		/*
-		 * buffer.append((char) ((this.endingPosition % 8) + 'a')); buffer.append(8 -
-		 * (this.endingPosition / 8));
-		 */
+		return moveToString(board, move, Locale.FRENCH);
+	}
+
+	public static String moveToString(Piece[] board, long move, Locale locale) {
+		ResourceBundle bundle = ResourceBundle.getBundle("org.formulachess.engine.messages", locale); //$NON-NLS-1$
 		StringBuilder buffer = new StringBuilder();
-		long info = move;
-		int startingPosition = (int) (info & STARTING_SQUARE_MASK);
-		int endingPosition = (int) ((info & ENDING_SQUARE_MASK) >> ENDING_SQUARE_SHIFT);
+		int startingPosition = (int) (move & STARTING_SQUARE_MASK);
+		int endingPosition = (int) ((move & ENDING_SQUARE_MASK) >> ENDING_SQUARE_SHIFT);
 		switch (board[startingPosition]) {
 		case WHITE_BISHOP:
 		case BLACK_BISHOP:
-			buffer.append('F');
+			buffer.append(bundle.getString("piece.bishop")); //$NON-NLS-1$
 			break;
 		case WHITE_ROOK:
 		case BLACK_ROOK:
-			buffer.append('T');
+			buffer.append(bundle.getString("piece.rook")); //$NON-NLS-1$
 			break;
 		case WHITE_QUEEN:
 		case BLACK_QUEEN:
-			buffer.append('D');
+			buffer.append(bundle.getString("piece.queen")); //$NON-NLS-1$
 			break;
 		case WHITE_KING:
 		case BLACK_KING:
-			buffer.append('R');
+			buffer.append(bundle.getString("piece.king")); //$NON-NLS-1$
 			break;
 		case WHITE_KNIGHT:
 		case BLACK_KNIGHT:
-			buffer.append('C');
+			buffer.append(bundle.getString("piece.knight")); //$NON-NLS-1$
 			break;
 		default:
 		}
-		buffer.append((char) ((endingPosition % 8) + 'a'));
-		buffer.append(8 - (endingPosition / 8));
+		buffer.append(intToSquare(endingPosition));
 		return String.valueOf(buffer);
 	}
 
@@ -50,8 +52,8 @@ public class Converter implements MoveConstants {
 	}
 
 	public static String intToSquare(int squareNumber) {
-		if (squareNumber == 0) {
-			return "-";
+		if (squareNumber == -1) {
+			return "-";  //$NON-NLS-1$
 		}
 		StringBuilder buffer = new StringBuilder();
 		buffer.append((char) ((squareNumber % 8) + 'a'));
@@ -59,18 +61,12 @@ public class Converter implements MoveConstants {
 		return String.valueOf(buffer);
 	}
 
-	public static String allNextMoves(ChessEngine model, long[] moves) {
-		StringWriter stringWriter = null;
-		try {
-			stringWriter = new StringWriter();
+	public static String allNextMoves(ChessEngine model, long[] moves) throws IOException {
+		try (StringWriter stringWriter = new StringWriter()) {
 			for (int i = 0; i < moves.length; i++) {
 				stringWriter.write(Converter.moveToString(model.getBoard(), moves[i]) + " "); //$NON-NLS-1$
 			}
-			stringWriter.flush();
-			stringWriter.close();
-		} catch (IOException e) {
-			return "Could not retrieve all moves"; //$NON-NLS-1$
+			return String.valueOf(stringWriter);
 		}
-		return stringWriter.toString();
 	}
 }

@@ -461,7 +461,7 @@ public class ChessEngine extends AbstractChessEngine {
 
 			String enPassantCoords = FENdecoder.nextToken();
 			if ("-".equals(enPassantCoords)) { //$NON-NLS-1$
-				this.enPassantSquare = 0;
+				this.enPassantSquare = -1;
 			} else {
 				this.enPassantSquare = Converter.squareToInt(enPassantCoords);
 			}
@@ -1282,7 +1282,7 @@ public class ChessEngine extends AbstractChessEngine {
 				this.board[endingSquare] = Piece
 						.getPiece((int) ((move & PROMOTION_PIECE_MASK) >> PROMOTION_PIECE_SHIFT));
 			}
-			if (this.enPassantSquare != 0 && endingSquare == this.enPassantSquare) {
+			if (endingSquare == this.enPassantSquare) {
 				switch (endingSquare - startingSquare) {
 				case -7:
 					this.board[startingSquare + 1] = EMPTY;
@@ -1369,7 +1369,7 @@ public class ChessEngine extends AbstractChessEngine {
 			this.blackKingSquare = startingSquare;
 			break;
 		case WHITE_PAWN:
-			if (this.enPassantSquare != 0 && endingSquare == this.enPassantSquare) {
+			if (endingSquare == this.enPassantSquare) {
 				switch (endingSquare - startingSquare) {
 				case -7:
 					this.board[startingSquare + 1] = capturedPiece;
@@ -1826,7 +1826,7 @@ public class ChessEngine extends AbstractChessEngine {
 			this.whiteKingSquare = endingSquare;
 			this.whiteCanCastleKingSide = false;
 			this.whiteCanCastleQueenSide = false;
-			this.enPassantSquare = 0;
+			this.enPassantSquare = -1;
 			break;
 		case BLACK_KING:
 			if (((startingSquare - endingSquare) == 2) || ((startingSquare - endingSquare) == -2)) {
@@ -1844,7 +1844,7 @@ public class ChessEngine extends AbstractChessEngine {
 			}
 			this.blackCanCastleKingSide = false;
 			this.blackCanCastleQueenSide = false;
-			this.enPassantSquare = 0;
+			this.enPassantSquare = -1;
 			this.blackKingSquare = endingSquare;
 			break;
 		case WHITE_PAWN:
@@ -1866,7 +1866,7 @@ public class ChessEngine extends AbstractChessEngine {
 			if (startingSquare - endingSquare == 16) {
 				this.enPassantSquare = startingSquare - 8;
 			} else {
-				this.enPassantSquare = 0;
+				this.enPassantSquare = -1;
 			}
 			break;
 		case BLACK_PAWN:
@@ -1888,7 +1888,7 @@ public class ChessEngine extends AbstractChessEngine {
 			if (endingSquare - startingSquare == 16) {
 				this.enPassantSquare = endingSquare - 8;
 			} else {
-				this.enPassantSquare = 0;
+				this.enPassantSquare = -1;
 			}
 			break;
 		case WHITE_ROOK:
@@ -1897,7 +1897,7 @@ public class ChessEngine extends AbstractChessEngine {
 			} else if (startingSquare == 56) {
 				this.whiteCanCastleQueenSide = false;
 			}
-			this.enPassantSquare = 0;
+			this.enPassantSquare = -1;
 			break;
 		case BLACK_ROOK:
 			if (startingSquare == 7) {
@@ -1905,10 +1905,10 @@ public class ChessEngine extends AbstractChessEngine {
 			} else if (startingSquare == 0) {
 				this.blackCanCastleQueenSide = false;
 			}
-			this.enPassantSquare = 0;
+			this.enPassantSquare = -1;
 			break;
 		default:
-			this.enPassantSquare = 0;
+			this.enPassantSquare = -1;
 		}
 	}
 
@@ -2265,7 +2265,7 @@ public class ChessEngine extends AbstractChessEngine {
 			this.enPassantSquare = fakeEnPassantSquare + 31;
 			break;
 		default:
-			this.enPassantSquare = 0;
+			this.enPassantSquare = -1;
 		}
 
 		// detect castling and update the this.board

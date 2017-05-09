@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import org.formulachess.engine.AbstractChessEngine;
 import org.formulachess.engine.ChessEngine;
+import org.formulachess.engine.Converter;
 import org.formulachess.engine.Piece;
 import org.formulachess.pgn.engine.PGNMoveContainer;
 

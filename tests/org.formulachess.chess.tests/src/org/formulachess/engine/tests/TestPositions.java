@@ -1,5 +1,7 @@
 package org.formulachess.engine.tests;
 
+import org.formulachess.engine.Converter;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

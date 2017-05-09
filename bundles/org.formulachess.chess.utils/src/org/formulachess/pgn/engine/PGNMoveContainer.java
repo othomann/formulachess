@@ -107,38 +107,38 @@ public class PGNMoveContainer implements MoveConstants {
 		Piece capturePiece = Piece.getPiece((int) ((info & CAPTURE_PIECE_MASK) >> CAPTURE_PIECE_SHIFT));
 		Piece promotion = Piece.getPiece((int) ((info & PROMOTION_PIECE_MASK) >> PROMOTION_PIECE_SHIFT));
 		switch (model.getBoard(startingPosition)) {
-		case WHITE_BISHOP:
-		case BLACK_BISHOP:
-			builder.append(bundle.getString("piece.bishop")); //$NON-NLS-1$
-			break;
-		case WHITE_ROOK:
-		case BLACK_ROOK:
-			builder.append(bundle.getString("piece.rook")); //$NON-NLS-1$
-			break;
-		case WHITE_QUEEN:
-		case BLACK_QUEEN:
-			builder.append(bundle.getString("piece.queen")); //$NON-NLS-1$
-			break;
-		case WHITE_KING:
-		case BLACK_KING:
-			if (Math.abs(startingPosition - endingPosition) == 2) {
-				if (endingPosition > startingPosition) {
-					return "O-O"; //$NON-NLS-1$
+			case WHITE_BISHOP:
+			case BLACK_BISHOP:
+				builder.append(bundle.getString("piece.bishop")); //$NON-NLS-1$
+				break;
+			case WHITE_ROOK:
+			case BLACK_ROOK:
+				builder.append(bundle.getString("piece.rook")); //$NON-NLS-1$
+				break;
+			case WHITE_QUEEN:
+			case BLACK_QUEEN:
+				builder.append(bundle.getString("piece.queen")); //$NON-NLS-1$
+				break;
+			case WHITE_KING:
+			case BLACK_KING:
+				if (Math.abs(startingPosition - endingPosition) == 2) {
+					if (endingPosition > startingPosition) {
+						return "O-O"; //$NON-NLS-1$
+					}
+					return "O-O-O"; //$NON-NLS-1$
 				}
-				return "O-O-O"; //$NON-NLS-1$
-			}
-			builder.append(bundle.getString("piece.king")); //$NON-NLS-1$
-			break;
-		case WHITE_KNIGHT:
-		case BLACK_KNIGHT:
-			builder.append(bundle.getString("piece.knight")); //$NON-NLS-1$
-			break;
-		case WHITE_PAWN:
-		case BLACK_PAWN:
-			if (capturePiece != EMPTY) {
-				builder.append((char) ((startingPosition % 8) + 'a'));
-			}
-		default:
+				builder.append(bundle.getString("piece.king")); //$NON-NLS-1$
+				break;
+			case WHITE_KNIGHT:
+			case BLACK_KNIGHT:
+				builder.append(bundle.getString("piece.knight")); //$NON-NLS-1$
+				break;
+			case WHITE_PAWN:
+			case BLACK_PAWN:
+				if (capturePiece != EMPTY) {
+					builder.append((char) ((startingPosition % 8) + 'a'));
+				}
+			default:
 		}
 		if (columnAmbiguity) {
 			builder.append((char) ((startingPosition % 8) + 'a'));
@@ -154,23 +154,23 @@ public class PGNMoveContainer implements MoveConstants {
 		if (promotion != UNDEFINED) {
 			builder.append("="); //$NON-NLS-1$
 			switch (promotion) {
-			case WHITE_BISHOP:
-			case BLACK_BISHOP:
-				builder.append(bundle.getString("piece.bishop")); //$NON-NLS-1$
-				break;
-			case WHITE_ROOK:
-			case BLACK_ROOK:
-				builder.append(bundle.getString("piece.rook")); //$NON-NLS-1$
-				break;
-			case WHITE_QUEEN:
-			case BLACK_QUEEN:
-				builder.append(bundle.getString("piece.queen")); //$NON-NLS-1$
-				break;
-			case WHITE_KNIGHT:
-			case BLACK_KNIGHT:
-				builder.append(bundle.getString("piece.knight")); //$NON-NLS-1$
-				break;
-			default:
+				case WHITE_BISHOP:
+				case BLACK_BISHOP:
+					builder.append(bundle.getString("piece.bishop")); //$NON-NLS-1$
+					break;
+				case WHITE_ROOK:
+				case BLACK_ROOK:
+					builder.append(bundle.getString("piece.rook")); //$NON-NLS-1$
+					break;
+				case WHITE_QUEEN:
+				case BLACK_QUEEN:
+					builder.append(bundle.getString("piece.queen")); //$NON-NLS-1$
+					break;
+				case WHITE_KNIGHT:
+				case BLACK_KNIGHT:
+					builder.append(bundle.getString("piece.knight")); //$NON-NLS-1$
+					break;
+				default:
 			}
 		}
 		return String.valueOf(builder);

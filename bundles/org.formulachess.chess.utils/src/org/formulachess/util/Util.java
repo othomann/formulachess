@@ -136,19 +136,19 @@ public class Util {
 		final int whiteStartIndex = fenNotation.indexOf("1"); //$NON-NLS-1$
 		int lightSquareBishopColum = number % 4;
 		switch (lightSquareBishopColum) {
-		case 0:
-			lightSquareBishopColum = 1;
-			break;
-		case 1:
-			lightSquareBishopColum = 3;
-			break;
-		case 2:
-			lightSquareBishopColum = 5;
-			break;
-		case 3:
-			lightSquareBishopColum = 7;
-			break;
-		default:
+			case 0:
+				lightSquareBishopColum = 1;
+				break;
+			case 1:
+				lightSquareBishopColum = 3;
+				break;
+			case 2:
+				lightSquareBishopColum = 5;
+				break;
+			case 3:
+				lightSquareBishopColum = 7;
+				break;
+			default:
 		}
 		fenNotation.replace(blackStartIndex + lightSquareBishopColum, blackStartIndex + lightSquareBishopColum + 1,
 				"b"); //$NON-NLS-1$
@@ -157,19 +157,19 @@ public class Util {
 
 		int darkSquaredBishopColum = (number / 4) % 4;
 		switch (darkSquaredBishopColum) {
-		case 0:
-			darkSquaredBishopColum = 0;
-			break;
-		case 1:
-			darkSquaredBishopColum = 2;
-			break;
-		case 2:
-			darkSquaredBishopColum = 4;
-			break;
-		case 3:
-			darkSquaredBishopColum = 6;
-			break;
-		default:
+			case 0:
+				darkSquaredBishopColum = 0;
+				break;
+			case 1:
+				darkSquaredBishopColum = 2;
+				break;
+			case 2:
+				darkSquaredBishopColum = 4;
+				break;
+			case 3:
+				darkSquaredBishopColum = 6;
+				break;
+			default:
 		}
 		fenNotation.replace(blackStartIndex + darkSquaredBishopColum, blackStartIndex + darkSquaredBishopColum + 1,
 				"b"); //$NON-NLS-1$
@@ -186,42 +186,42 @@ public class Util {
 			}
 		}
 
-		fenNotation.replace(blackStartIndex + index, blackStartIndex + index + 1, "q"); //$NON-NLS-1$
-		fenNotation.replace(whiteStartIndex + index, whiteStartIndex + index + 1, "Q"); //$NON-NLS-1$
+		fenNotation.setCharAt(blackStartIndex + index, 'q');
+		fenNotation.setCharAt(whiteStartIndex + index, 'Q');
 
 		String remainingPieces = null;
 		switch (kernIndex) {
-		case 0:
-			remainingPieces = "NNRKR"; //$NON-NLS-1$
-			break;
-		case 1:
-			remainingPieces = "NRNKR"; //$NON-NLS-1$
-			break;
-		case 2:
-			remainingPieces = "NRKNR"; //$NON-NLS-1$
-			break;
-		case 3:
-			remainingPieces = "NRKRN"; //$NON-NLS-1$
-			break;
-		case 4:
-			remainingPieces = "RNNKR"; //$NON-NLS-1$
-			break;
-		case 5:
-			remainingPieces = "RNKNR"; //$NON-NLS-1$
-			break;
-		case 6:
-			remainingPieces = "RNKRN"; //$NON-NLS-1$
-			break;
-		case 7:
-			remainingPieces = "RKNNR"; //$NON-NLS-1$
-			break;
-		case 8:
-			remainingPieces = "RKNRN"; //$NON-NLS-1$
-			break;
-		case 9:
-			remainingPieces = "RKRNN"; //$NON-NLS-1$
-			break;
-		default:
+			case 0:
+				remainingPieces = "NNRKR"; //$NON-NLS-1$
+				break;
+			case 1:
+				remainingPieces = "NRNKR"; //$NON-NLS-1$
+				break;
+			case 2:
+				remainingPieces = "NRKNR"; //$NON-NLS-1$
+				break;
+			case 3:
+				remainingPieces = "NRKRN"; //$NON-NLS-1$
+				break;
+			case 4:
+				remainingPieces = "RNNKR"; //$NON-NLS-1$
+				break;
+			case 5:
+				remainingPieces = "RNKNR"; //$NON-NLS-1$
+				break;
+			case 6:
+				remainingPieces = "RNKRN"; //$NON-NLS-1$
+				break;
+			case 7:
+				remainingPieces = "RKNNR"; //$NON-NLS-1$
+				break;
+			case 8:
+				remainingPieces = "RKNRN"; //$NON-NLS-1$
+				break;
+			case 9:
+				remainingPieces = "RKRNN"; //$NON-NLS-1$
+				break;
+			default:
 		}
 		if (remainingPieces == null) {
 			return null;

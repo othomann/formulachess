@@ -104,27 +104,27 @@ public class ChessEngine extends AbstractChessEngine {
 		info |= capturePieceType.getValue() << CAPTURE_PIECE_SHIFT;
 		info |= promotedPiece.getValue() << PROMOTION_PIECE_SHIFT;
 		switch (this.enPassantSquare) {
-		case 16:
-		case 17:
-		case 18:
-		case 19:
-		case 20:
-		case 21:
-		case 22:
-		case 23:
-			info |= (this.enPassantSquare - 15) << EN_PASSANT_SQUARE_SHIFT;
-			break;
-		case 40:
-		case 41:
-		case 42:
-		case 43:
-		case 44:
-		case 45:
-		case 46:
-		case 47:
-			info |= (this.enPassantSquare - 31) << EN_PASSANT_SQUARE_SHIFT;
-			break;
-		default:
+			case 16:
+			case 17:
+			case 18:
+			case 19:
+			case 20:
+			case 21:
+			case 22:
+			case 23:
+				info |= (this.enPassantSquare - 15) << EN_PASSANT_SQUARE_SHIFT;
+				break;
+			case 40:
+			case 41:
+			case 42:
+			case 43:
+			case 44:
+			case 45:
+			case 46:
+			case 47:
+				info |= (this.enPassantSquare - 31) << EN_PASSANT_SQUARE_SHIFT;
+				break;
+			default:
 		}
 		info |= (this.whiteCanCastleKingSide ? 1 : 0) << CASTLING_SHIFT;
 		info |= (this.whiteCanCastleQueenSide ? 1 : 0) << (CASTLING_SHIFT + 1);
@@ -164,8 +164,7 @@ public class ChessEngine extends AbstractChessEngine {
 			this.nextMoves = new long[3];
 		}
 		if (this.movesCounter == this.nextMoves.length) {
-			System.arraycopy(this.nextMoves, 0, this.nextMoves = new long[this.movesCounter * 2], 0,
-					this.movesCounter);
+			System.arraycopy(this.nextMoves, 0, this.nextMoves = new long[this.movesCounter * 2], 0, this.movesCounter);
 		}
 		this.nextMoves[this.movesCounter++] = info;
 	}
@@ -176,25 +175,25 @@ public class ChessEngine extends AbstractChessEngine {
 			Piece currentPiece = this.board[i];
 			if (currentPiece.isBlack()) {
 				switch (currentPiece) {
-				case BLACK_BISHOP:
-					moveBishop(i, false);
-					break;
-				case BLACK_KNIGHT:
-					moveKnight(i, false);
-					break;
-				case BLACK_ROOK:
-					moveRook(i, false);
-					break;
-				case BLACK_QUEEN:
-					moveQueen(i, false);
-					break;
-				case BLACK_KING:
-					moveBlackKing(i);
-					break;
-				case BLACK_PAWN:
-					moveBlackPawn(i);
-					break;
-				default:
+					case BLACK_BISHOP:
+						moveBishop(i, false);
+						break;
+					case BLACK_KNIGHT:
+						moveKnight(i, false);
+						break;
+					case BLACK_ROOK:
+						moveRook(i, false);
+						break;
+					case BLACK_QUEEN:
+						moveQueen(i, false);
+						break;
+					case BLACK_KING:
+						moveBlackKing(i);
+						break;
+					case BLACK_PAWN:
+						moveBlackPawn(i);
+						break;
+					default:
 				}
 			}
 		}
@@ -210,25 +209,25 @@ public class ChessEngine extends AbstractChessEngine {
 			Piece currentPiece = this.board[i];
 			if (currentPiece == searchPieceType) {
 				switch (currentPiece) {
-				case BLACK_BISHOP:
-					moveBishop(i, false);
-					break;
-				case BLACK_KNIGHT:
-					moveKnight(i, false);
-					break;
-				case BLACK_ROOK:
-					moveRook(i, false);
-					break;
-				case BLACK_QUEEN:
-					moveQueen(i, false);
-					break;
-				case BLACK_KING:
-					moveBlackKing(i);
-					break;
-				case BLACK_PAWN:
-					moveBlackPawn(i);
-					break;
-				default:
+					case BLACK_BISHOP:
+						moveBishop(i, false);
+						break;
+					case BLACK_KNIGHT:
+						moveKnight(i, false);
+						break;
+					case BLACK_ROOK:
+						moveRook(i, false);
+						break;
+					case BLACK_QUEEN:
+						moveQueen(i, false);
+						break;
+					case BLACK_KING:
+						moveBlackKing(i);
+						break;
+					case BLACK_PAWN:
+						moveBlackPawn(i);
+						break;
+					default:
 				}
 			}
 		}
@@ -238,25 +237,25 @@ public class ChessEngine extends AbstractChessEngine {
 	private final long[] allBlackMoves(Piece searchPieceType, int startingSquare) {
 		this.movesCounter = 0;
 		switch (searchPieceType) {
-		case BLACK_BISHOP:
-			moveBishop(startingSquare, false);
-			break;
-		case BLACK_KNIGHT:
-			moveKnight(startingSquare, false);
-			break;
-		case BLACK_ROOK:
-			moveRook(startingSquare, false);
-			break;
-		case BLACK_QUEEN:
-			moveQueen(startingSquare, false);
-			break;
-		case BLACK_KING:
-			moveBlackKing(startingSquare);
-			break;
-		case BLACK_PAWN:
-			moveBlackPawn(startingSquare);
-			break;
-		default:
+			case BLACK_BISHOP:
+				moveBishop(startingSquare, false);
+				break;
+			case BLACK_KNIGHT:
+				moveKnight(startingSquare, false);
+				break;
+			case BLACK_ROOK:
+				moveRook(startingSquare, false);
+				break;
+			case BLACK_QUEEN:
+				moveQueen(startingSquare, false);
+				break;
+			case BLACK_KING:
+				moveBlackKing(startingSquare);
+				break;
+			case BLACK_PAWN:
+				moveBlackPawn(startingSquare);
+				break;
+			default:
 		}
 		return getNextMoves();
 	}
@@ -283,25 +282,25 @@ public class ChessEngine extends AbstractChessEngine {
 			Piece currentPiece = this.board[i];
 			if (currentPiece != EMPTY) {
 				switch (currentPiece) {
-				case WHITE_BISHOP:
-					moveBishop(i, true);
-					break;
-				case WHITE_KNIGHT:
-					moveKnight(i, true);
-					break;
-				case WHITE_ROOK:
-					moveRook(i, true);
-					break;
-				case WHITE_QUEEN:
-					moveQueen(i, true);
-					break;
-				case WHITE_KING:
-					moveWhiteKing(i);
-					break;
-				case WHITE_PAWN:
-					moveWhitePawn(i);
-					break;
-				default:
+					case WHITE_BISHOP:
+						moveBishop(i, true);
+						break;
+					case WHITE_KNIGHT:
+						moveKnight(i, true);
+						break;
+					case WHITE_ROOK:
+						moveRook(i, true);
+						break;
+					case WHITE_QUEEN:
+						moveQueen(i, true);
+						break;
+					case WHITE_KING:
+						moveWhiteKing(i);
+						break;
+					case WHITE_PAWN:
+						moveWhitePawn(i);
+						break;
+					default:
 				}
 			}
 		}
@@ -314,25 +313,25 @@ public class ChessEngine extends AbstractChessEngine {
 			Piece currentPiece = this.board[i];
 			if (currentPiece == searchPieceType) {
 				switch (currentPiece) {
-				case WHITE_BISHOP:
-					moveBishop(i, true);
-					break;
-				case WHITE_KNIGHT:
-					moveKnight(i, true);
-					break;
-				case WHITE_ROOK:
-					moveRook(i, true);
-					break;
-				case WHITE_QUEEN:
-					moveQueen(i, true);
-					break;
-				case WHITE_KING:
-					moveWhiteKing(i);
-					break;
-				case WHITE_PAWN:
-					moveWhitePawn(i);
-					break;
-				default:
+					case WHITE_BISHOP:
+						moveBishop(i, true);
+						break;
+					case WHITE_KNIGHT:
+						moveKnight(i, true);
+						break;
+					case WHITE_ROOK:
+						moveRook(i, true);
+						break;
+					case WHITE_QUEEN:
+						moveQueen(i, true);
+						break;
+					case WHITE_KING:
+						moveWhiteKing(i);
+						break;
+					case WHITE_PAWN:
+						moveWhitePawn(i);
+						break;
+					default:
 				}
 			}
 		}
@@ -342,25 +341,25 @@ public class ChessEngine extends AbstractChessEngine {
 	private final long[] allWhiteMoves(Piece searchPieceType, int startingSquare) {
 		this.movesCounter = 0;
 		switch (searchPieceType) {
-		case WHITE_BISHOP:
-			moveBishop(startingSquare, true);
-			break;
-		case WHITE_KNIGHT:
-			moveKnight(startingSquare, true);
-			break;
-		case WHITE_ROOK:
-			moveRook(startingSquare, true);
-			break;
-		case WHITE_QUEEN:
-			moveQueen(startingSquare, true);
-			break;
-		case WHITE_KING:
-			moveWhiteKing(startingSquare);
-			break;
-		case WHITE_PAWN:
-			moveWhitePawn(startingSquare);
-			break;
-		default:
+			case WHITE_BISHOP:
+				moveBishop(startingSquare, true);
+				break;
+			case WHITE_KNIGHT:
+				moveKnight(startingSquare, true);
+				break;
+			case WHITE_ROOK:
+				moveRook(startingSquare, true);
+				break;
+			case WHITE_QUEEN:
+				moveQueen(startingSquare, true);
+				break;
+			case WHITE_KING:
+				moveWhiteKing(startingSquare);
+				break;
+			case WHITE_PAWN:
+				moveWhitePawn(startingSquare);
+				break;
+			default:
 		}
 		return getNextMoves();
 	}
@@ -381,63 +380,63 @@ public class ChessEngine extends AbstractChessEngine {
 				for (int index = 0; index < temp.length(); index++) {
 					char token = temp.charAt(index);
 					switch (token) {
-					case 'r':
-						this.board[row * 8 + col] = BLACK_ROOK;
-						col++;
-						break;
-					case 'n':
-						this.board[row * 8 + col] = BLACK_KNIGHT;
-						col++;
-						break;
-					case 'b':
-						this.board[row * 8 + col] = BLACK_BISHOP;
-						col++;
-						break;
-					case 'q':
-						this.board[row * 8 + col] = BLACK_QUEEN;
-						col++;
-						break;
-					case 'k':
-						this.board[row * 8 + col] = BLACK_KING;
-						this.blackKingSquare = row * 8 + col;
-						col++;
-						break;
-					case 'p':
-						this.board[row * 8 + col] = BLACK_PAWN;
-						col++;
-						break;
-					case 'R':
-						this.board[row * 8 + col] = WHITE_ROOK;
-						col++;
-						break;
-					case 'N':
-						this.board[row * 8 + col] = WHITE_KNIGHT;
-						col++;
-						break;
-					case 'B':
-						this.board[row * 8 + col] = WHITE_BISHOP;
-						col++;
-						break;
-					case 'Q':
-						this.board[row * 8 + col] = WHITE_QUEEN;
-						col++;
-						break;
-					case 'K':
-						this.board[row * 8 + col] = WHITE_KING;
-						this.whiteKingSquare = row * 8 + col;
-						col++;
-						break;
-					case 'P':
-						this.board[row * 8 + col] = WHITE_PAWN;
-						col++;
-						break;
-					default:
-						int blank = Character.getNumericValue(token);
-						for (int i = 0; i < blank; i++) {
-							this.board[row * 8 + i + col] = EMPTY;
-						}
-						col += blank;
-						break;
+						case 'r':
+							this.board[row * 8 + col] = BLACK_ROOK;
+							col++;
+							break;
+						case 'n':
+							this.board[row * 8 + col] = BLACK_KNIGHT;
+							col++;
+							break;
+						case 'b':
+							this.board[row * 8 + col] = BLACK_BISHOP;
+							col++;
+							break;
+						case 'q':
+							this.board[row * 8 + col] = BLACK_QUEEN;
+							col++;
+							break;
+						case 'k':
+							this.board[row * 8 + col] = BLACK_KING;
+							this.blackKingSquare = row * 8 + col;
+							col++;
+							break;
+						case 'p':
+							this.board[row * 8 + col] = BLACK_PAWN;
+							col++;
+							break;
+						case 'R':
+							this.board[row * 8 + col] = WHITE_ROOK;
+							col++;
+							break;
+						case 'N':
+							this.board[row * 8 + col] = WHITE_KNIGHT;
+							col++;
+							break;
+						case 'B':
+							this.board[row * 8 + col] = WHITE_BISHOP;
+							col++;
+							break;
+						case 'Q':
+							this.board[row * 8 + col] = WHITE_QUEEN;
+							col++;
+							break;
+						case 'K':
+							this.board[row * 8 + col] = WHITE_KING;
+							this.whiteKingSquare = row * 8 + col;
+							col++;
+							break;
+						case 'P':
+							this.board[row * 8 + col] = WHITE_PAWN;
+							col++;
+							break;
+						default:
+							int blank = Character.getNumericValue(token);
+							for (int i = 0; i < blank; i++) {
+								this.board[row * 8 + i + col] = EMPTY;
+							}
+							col += blank;
+							break;
 					}
 				}
 				row++;
@@ -547,18 +546,18 @@ public class ChessEngine extends AbstractChessEngine {
 				final Piece nextSquare = this.board[nextPosition];
 				if (nextSquare.isWhiteOrEmpty()) {
 					switch (nextSquare) {
-					case WHITE_QUEEN:
-					case WHITE_BISHOP:
-						return true;
-					case WHITE_KING:
-						if (firstSquare) {
+						case WHITE_QUEEN:
+						case WHITE_BISHOP:
 							return true;
-						}
-						break;
-					case EMPTY:
-						firstSquare = false;
-						continue north_west_next;
-					default:
+						case WHITE_KING:
+							if (firstSquare) {
+								return true;
+							}
+							break;
+						case EMPTY:
+							firstSquare = false;
+							continue north_west_next;
+						default:
 					}
 				}
 			}
@@ -573,23 +572,23 @@ public class ChessEngine extends AbstractChessEngine {
 				final Piece nextSquare = this.board[nextPosition];
 				if (nextSquare.isWhiteOrEmpty()) {
 					switch (nextSquare) {
-					case WHITE_QUEEN:
-					case WHITE_BISHOP:
-						return true;
-					case WHITE_KING:
-						if (firstSquare) {
+						case WHITE_QUEEN:
+						case WHITE_BISHOP:
 							return true;
-						}
-						break;
-					case WHITE_PAWN:
-						if (firstSquare) {
-							return true;
-						}
-						break;
-					case EMPTY:
-						firstSquare = false;
-						continue south_west_next;
-					default:
+						case WHITE_KING:
+							if (firstSquare) {
+								return true;
+							}
+							break;
+						case WHITE_PAWN:
+							if (firstSquare) {
+								return true;
+							}
+							break;
+						case EMPTY:
+							firstSquare = false;
+							continue south_west_next;
+						default:
 					}
 				}
 			}
@@ -603,18 +602,18 @@ public class ChessEngine extends AbstractChessEngine {
 				final Piece nextSquare = this.board[nextPosition];
 				if (nextSquare.isWhiteOrEmpty()) {
 					switch (nextSquare) {
-					case WHITE_QUEEN:
-					case WHITE_BISHOP:
-						return true;
-					case WHITE_KING:
-						if (firstSquare) {
+						case WHITE_QUEEN:
+						case WHITE_BISHOP:
 							return true;
-						}
-						break;
-					case EMPTY:
-						firstSquare = false;
-						continue north_east_next;
-					default:
+						case WHITE_KING:
+							if (firstSquare) {
+								return true;
+							}
+							break;
+						case EMPTY:
+							firstSquare = false;
+							continue north_east_next;
+						default:
 					}
 				}
 			}
@@ -628,23 +627,23 @@ public class ChessEngine extends AbstractChessEngine {
 				final Piece nextSquare = this.board[nextPosition];
 				if (nextSquare.isWhiteOrEmpty()) {
 					switch (nextSquare) {
-					case WHITE_QUEEN:
-					case WHITE_BISHOP:
-						return true;
-					case WHITE_KING:
-						if (firstSquare) {
+						case WHITE_QUEEN:
+						case WHITE_BISHOP:
 							return true;
-						}
-						break;
-					case WHITE_PAWN:
-						if (firstSquare) {
-							return true;
-						}
-						break;
-					case EMPTY:
-						firstSquare = false;
-						continue south_east_next;
-					default:
+						case WHITE_KING:
+							if (firstSquare) {
+								return true;
+							}
+							break;
+						case WHITE_PAWN:
+							if (firstSquare) {
+								return true;
+							}
+							break;
+						case EMPTY:
+							firstSquare = false;
+							continue south_east_next;
+						default:
 					}
 				}
 			}
@@ -659,18 +658,18 @@ public class ChessEngine extends AbstractChessEngine {
 				final Piece nextSquare = this.board[nextPosition];
 				if (nextSquare.isWhiteOrEmpty()) {
 					switch (nextSquare) {
-					case WHITE_QUEEN:
-					case WHITE_ROOK:
-						return true;
-					case WHITE_KING:
-						if (firstSquare) {
+						case WHITE_QUEEN:
+						case WHITE_ROOK:
 							return true;
-						}
-						break;
-					case EMPTY:
-						firstSquare = false;
-						continue north_next;
-					default:
+						case WHITE_KING:
+							if (firstSquare) {
+								return true;
+							}
+							break;
+						case EMPTY:
+							firstSquare = false;
+							continue north_next;
+						default:
 					}
 				}
 			}
@@ -684,18 +683,18 @@ public class ChessEngine extends AbstractChessEngine {
 				final Piece nextSquare = this.board[nextPosition];
 				if (nextSquare.isWhiteOrEmpty()) {
 					switch (nextSquare) {
-					case WHITE_QUEEN:
-					case WHITE_ROOK:
-						return true;
-					case WHITE_KING:
-						if (firstSquare) {
+						case WHITE_QUEEN:
+						case WHITE_ROOK:
 							return true;
-						}
-						break;
-					case EMPTY:
-						firstSquare = false;
-						continue south_next;
-					default:
+						case WHITE_KING:
+							if (firstSquare) {
+								return true;
+							}
+							break;
+						case EMPTY:
+							firstSquare = false;
+							continue south_next;
+						default:
 					}
 				}
 			}
@@ -709,18 +708,18 @@ public class ChessEngine extends AbstractChessEngine {
 				final Piece nextSquare = this.board[nextPosition];
 				if (nextSquare.isWhiteOrEmpty()) {
 					switch (nextSquare) {
-					case WHITE_QUEEN:
-					case WHITE_ROOK:
-						return true;
-					case WHITE_KING:
-						if (firstSquare) {
+						case WHITE_QUEEN:
+						case WHITE_ROOK:
 							return true;
-						}
-						break;
-					case EMPTY:
-						firstSquare = false;
-						continue west_next;
-					default:
+						case WHITE_KING:
+							if (firstSquare) {
+								return true;
+							}
+							break;
+						case EMPTY:
+							firstSquare = false;
+							continue west_next;
+						default:
 					}
 				}
 			}
@@ -734,18 +733,18 @@ public class ChessEngine extends AbstractChessEngine {
 				final Piece nextSquare = this.board[nextPosition];
 				if (nextSquare.isWhiteOrEmpty()) {
 					switch (nextSquare) {
-					case WHITE_QUEEN:
-					case WHITE_ROOK:
-						return true;
-					case WHITE_KING:
-						if (firstSquare) {
+						case WHITE_QUEEN:
+						case WHITE_ROOK:
 							return true;
-						}
-						break;
-					case EMPTY:
-						firstSquare = false;
-						continue east_next;
-					default:
+						case WHITE_KING:
+							if (firstSquare) {
+								return true;
+							}
+							break;
+						case EMPTY:
+							firstSquare = false;
+							continue east_next;
+						default:
 					}
 				}
 			}
@@ -757,11 +756,11 @@ public class ChessEngine extends AbstractChessEngine {
 				final Piece nextSquare = this.board[nextPosition];
 				if (nextSquare.isWhiteOrEmpty()) {
 					switch (nextSquare) {
-					case WHITE_KNIGHT:
-						return true;
-					case EMPTY:
-						continue knight_check;
-					default:
+						case WHITE_KNIGHT:
+							return true;
+						case EMPTY:
+							continue knight_check;
+						default:
 					}
 				}
 			}
@@ -802,23 +801,23 @@ public class ChessEngine extends AbstractChessEngine {
 				final Piece nextSquare = this.board[nextPosition];
 				if (nextSquare.isBlackOrEmpty()) {
 					switch (nextSquare) {
-					case BLACK_QUEEN:
-					case BLACK_BISHOP:
-						return true;
-					case BLACK_KING:
-						if (firstSquare) {
+						case BLACK_QUEEN:
+						case BLACK_BISHOP:
 							return true;
-						}
-						break;
-					case BLACK_PAWN:
-						if (firstSquare) {
-							return true;
-						}
-						break;
-					case EMPTY:
-						firstSquare = false;
-						continue north_west_next;
-					default:
+						case BLACK_KING:
+							if (firstSquare) {
+								return true;
+							}
+							break;
+						case BLACK_PAWN:
+							if (firstSquare) {
+								return true;
+							}
+							break;
+						case EMPTY:
+							firstSquare = false;
+							continue north_west_next;
+						default:
 					}
 				}
 			}
@@ -833,18 +832,18 @@ public class ChessEngine extends AbstractChessEngine {
 				final Piece nextSquare = this.board[nextPosition];
 				if (nextSquare.isBlackOrEmpty()) {
 					switch (nextSquare) {
-					case BLACK_QUEEN:
-					case BLACK_BISHOP:
-						return true;
-					case BLACK_KING:
-						if (firstSquare) {
+						case BLACK_QUEEN:
+						case BLACK_BISHOP:
 							return true;
-						}
-						break;
-					case EMPTY:
-						firstSquare = false;
-						continue south_west_next;
-					default:
+						case BLACK_KING:
+							if (firstSquare) {
+								return true;
+							}
+							break;
+						case EMPTY:
+							firstSquare = false;
+							continue south_west_next;
+						default:
 					}
 				}
 			}
@@ -858,23 +857,23 @@ public class ChessEngine extends AbstractChessEngine {
 				final Piece nextSquare = this.board[nextPosition];
 				if (nextSquare.isBlackOrEmpty()) {
 					switch (nextSquare) {
-					case BLACK_QUEEN:
-					case BLACK_BISHOP:
-						return true;
-					case BLACK_KING:
-						if (firstSquare) {
+						case BLACK_QUEEN:
+						case BLACK_BISHOP:
 							return true;
-						}
-						break;
-					case BLACK_PAWN:
-						if (firstSquare) {
-							return true;
-						}
-						break;
-					case EMPTY:
-						firstSquare = false;
-						continue north_east_next;
-					default:
+						case BLACK_KING:
+							if (firstSquare) {
+								return true;
+							}
+							break;
+						case BLACK_PAWN:
+							if (firstSquare) {
+								return true;
+							}
+							break;
+						case EMPTY:
+							firstSquare = false;
+							continue north_east_next;
+						default:
 					}
 				}
 			}
@@ -888,18 +887,18 @@ public class ChessEngine extends AbstractChessEngine {
 				final Piece nextSquare = this.board[nextPosition];
 				if (nextSquare.isBlackOrEmpty()) {
 					switch (nextSquare) {
-					case BLACK_QUEEN:
-					case BLACK_BISHOP:
-						return true;
-					case BLACK_KING:
-						if (firstSquare) {
+						case BLACK_QUEEN:
+						case BLACK_BISHOP:
 							return true;
-						}
-						break;
-					case EMPTY:
-						firstSquare = false;
-						continue south_east_next;
-					default:
+						case BLACK_KING:
+							if (firstSquare) {
+								return true;
+							}
+							break;
+						case EMPTY:
+							firstSquare = false;
+							continue south_east_next;
+						default:
 					}
 				}
 			}
@@ -914,18 +913,18 @@ public class ChessEngine extends AbstractChessEngine {
 				final Piece nextSquare = this.board[nextPosition];
 				if (nextSquare.isBlackOrEmpty()) {
 					switch (nextSquare) {
-					case BLACK_QUEEN:
-					case BLACK_ROOK:
-						return true;
-					case BLACK_KING:
-						if (firstSquare) {
+						case BLACK_QUEEN:
+						case BLACK_ROOK:
 							return true;
-						}
-						break;
-					case EMPTY:
-						firstSquare = false;
-						continue north_next;
-					default:
+						case BLACK_KING:
+							if (firstSquare) {
+								return true;
+							}
+							break;
+						case EMPTY:
+							firstSquare = false;
+							continue north_next;
+						default:
 					}
 				}
 			}
@@ -939,18 +938,18 @@ public class ChessEngine extends AbstractChessEngine {
 				final Piece nextSquare = this.board[nextPosition];
 				if (nextSquare.isBlackOrEmpty()) {
 					switch (nextSquare) {
-					case BLACK_QUEEN:
-					case BLACK_ROOK:
-						return true;
-					case BLACK_KING:
-						if (firstSquare) {
+						case BLACK_QUEEN:
+						case BLACK_ROOK:
 							return true;
-						}
-						break;
-					case EMPTY:
-						firstSquare = false;
-						continue south_next;
-					default:
+						case BLACK_KING:
+							if (firstSquare) {
+								return true;
+							}
+							break;
+						case EMPTY:
+							firstSquare = false;
+							continue south_next;
+						default:
 					}
 				}
 			}
@@ -964,18 +963,18 @@ public class ChessEngine extends AbstractChessEngine {
 				final Piece nextSquare = this.board[nextPosition];
 				if (nextSquare.isBlackOrEmpty()) {
 					switch (nextSquare) {
-					case BLACK_QUEEN:
-					case BLACK_ROOK:
-						return true;
-					case BLACK_KING:
-						if (firstSquare) {
+						case BLACK_QUEEN:
+						case BLACK_ROOK:
 							return true;
-						}
-						break;
-					case EMPTY:
-						firstSquare = false;
-						continue west_next;
-					default:
+						case BLACK_KING:
+							if (firstSquare) {
+								return true;
+							}
+							break;
+						case EMPTY:
+							firstSquare = false;
+							continue west_next;
+						default:
 					}
 				}
 			}
@@ -989,18 +988,18 @@ public class ChessEngine extends AbstractChessEngine {
 				final Piece nextSquare = this.board[nextPosition];
 				if (nextSquare.isBlackOrEmpty()) {
 					switch (nextSquare) {
-					case BLACK_QUEEN:
-					case BLACK_ROOK:
-						return true;
-					case BLACK_KING:
-						if (firstSquare) {
+						case BLACK_QUEEN:
+						case BLACK_ROOK:
 							return true;
-						}
-						break;
-					case EMPTY:
-						firstSquare = false;
-						continue east_next;
-					default:
+						case BLACK_KING:
+							if (firstSquare) {
+								return true;
+							}
+							break;
+						case EMPTY:
+							firstSquare = false;
+							continue east_next;
+						default:
 					}
 				}
 			}
@@ -1012,11 +1011,11 @@ public class ChessEngine extends AbstractChessEngine {
 				final Piece nextSquare = this.board[nextPosition];
 				if (nextSquare.isBlackOrEmpty()) {
 					switch (nextSquare) {
-					case BLACK_KNIGHT:
-						return true;
-					case EMPTY:
-						continue knight_check;
-					default:
+						case BLACK_KNIGHT:
+							return true;
+						case EMPTY:
+							continue knight_check;
+						default:
 					}
 				}
 			}
@@ -1133,23 +1132,13 @@ public class ChessEngine extends AbstractChessEngine {
 				}
 			}
 		}
-		if (this.blackCanCastleKingSide
-				&& !isBlackInCheck()
-				&& this.board[i + 2] == EMPTY
-				&& this.board[i + 1] == EMPTY
-				&& !isBlackInCheck(i + 2)
-				&& !isBlackInCheck(i + 1)
-				&& this.board[i + 3] == BLACK_ROOK) {
+		if (this.blackCanCastleKingSide && !isBlackInCheck() && this.board[i + 2] == EMPTY && this.board[i + 1] == EMPTY
+				&& !isBlackInCheck(i + 2) && !isBlackInCheck(i + 1) && this.board[i + 3] == BLACK_ROOK) {
 			addMove(i, i + 2, EMPTY);
 		}
-		if (this.blackCanCastleQueenSide
-				&& !isBlackInCheck()
-				&& this.board[i - 3] == EMPTY
-				&& this.board[i - 2] == EMPTY
-				&& this.board[i - 1] == EMPTY
-				&& !isBlackInCheck(i - 2)
-				&& !isBlackInCheck(i - 1)
-				&& this.board[i - 4] == BLACK_ROOK) {
+		if (this.blackCanCastleQueenSide && !isBlackInCheck() && this.board[i - 3] == EMPTY
+				&& this.board[i - 2] == EMPTY && this.board[i - 1] == EMPTY && !isBlackInCheck(i - 2)
+				&& !isBlackInCheck(i - 1) && this.board[i - 4] == BLACK_ROOK) {
 			addMove(i, i - 2, EMPTY);
 		}
 	}
@@ -1244,76 +1233,77 @@ public class ChessEngine extends AbstractChessEngine {
 		this.board[startingSquare] = EMPTY;
 		this.board[endingSquare] = pieceType;
 		switch (pieceType) {
-		case WHITE_KING:
-			if ((((startingSquare - endingSquare) == 2) || ((startingSquare - endingSquare) == -2)) 
-					&& startingSquare == 60) {
-				switch (endingSquare) {
-					case 62:
-						this.board[61] = WHITE_ROOK;
-						this.board[63] = EMPTY;
-						break;
-					case 58:
-						this.board[59] = WHITE_ROOK;
-						this.board[56] = EMPTY;
-						break;
-					default:
+			case WHITE_KING:
+				if ((((startingSquare - endingSquare) == 2) || ((startingSquare - endingSquare) == -2))
+						&& startingSquare == 60) {
+					switch (endingSquare) {
+						case 62:
+							this.board[61] = WHITE_ROOK;
+							this.board[63] = EMPTY;
+							break;
+						case 58:
+							this.board[59] = WHITE_ROOK;
+							this.board[56] = EMPTY;
+							break;
+						default:
+					}
 				}
-			}
-			this.whiteKingSquare = endingSquare;
-			break;
-		case BLACK_KING:
-			if ((((startingSquare - endingSquare) == 2) || ((startingSquare - endingSquare) == -2)) && startingSquare == 4) {
-				switch (endingSquare) {
-					case 6:
-						this.board[5] = BLACK_ROOK;
-						this.board[7] = EMPTY;
-						break;
-					case 2:
-						this.board[3] = BLACK_ROOK;
-						this.board[0] = EMPTY;
-						break;
-					default:
+				this.whiteKingSquare = endingSquare;
+				break;
+			case BLACK_KING:
+				if ((((startingSquare - endingSquare) == 2) || ((startingSquare - endingSquare) == -2))
+						&& startingSquare == 4) {
+					switch (endingSquare) {
+						case 6:
+							this.board[5] = BLACK_ROOK;
+							this.board[7] = EMPTY;
+							break;
+						case 2:
+							this.board[3] = BLACK_ROOK;
+							this.board[0] = EMPTY;
+							break;
+						default:
+					}
 				}
-			}
-			this.blackKingSquare = endingSquare;
-			break;
-		case WHITE_PAWN:
-			if ((move & PROMOTION_PIECE_MASK) != 0) {
-				// promotion
-				this.board[endingSquare] = Piece
-						.getPiece((int) ((move & PROMOTION_PIECE_MASK) >> PROMOTION_PIECE_SHIFT));
-			}
-			if (endingSquare == this.enPassantSquare) {
-				switch (endingSquare - startingSquare) {
-					case -7:
-						this.board[startingSquare + 1] = EMPTY;
-						break;
-					case -9:
-						this.board[startingSquare - 1] = EMPTY;
-						break;
-					default:
+				this.blackKingSquare = endingSquare;
+				break;
+			case WHITE_PAWN:
+				if ((move & PROMOTION_PIECE_MASK) != 0) {
+					// promotion
+					this.board[endingSquare] = Piece
+							.getPiece((int) ((move & PROMOTION_PIECE_MASK) >> PROMOTION_PIECE_SHIFT));
 				}
-			}
-			break;
-		case BLACK_PAWN:
-			if ((move & PROMOTION_PIECE_MASK) != 0) {
-				// promotion
-				this.board[endingSquare] = Piece
-						.getPiece((int) ((move & PROMOTION_PIECE_MASK) >> PROMOTION_PIECE_SHIFT));
-			}
-			if (endingSquare == this.enPassantSquare) {
-				switch (endingSquare - startingSquare) {
-					case 9:
-						this.board[startingSquare + 1] = EMPTY;
-						break;
-					case 7:
-						this.board[startingSquare - 1] = EMPTY;
-						break;
-					default:
+				if (endingSquare == this.enPassantSquare) {
+					switch (endingSquare - startingSquare) {
+						case -7:
+							this.board[startingSquare + 1] = EMPTY;
+							break;
+						case -9:
+							this.board[startingSquare - 1] = EMPTY;
+							break;
+						default:
+					}
 				}
-			}
-			break;
-		default:
+				break;
+			case BLACK_PAWN:
+				if ((move & PROMOTION_PIECE_MASK) != 0) {
+					// promotion
+					this.board[endingSquare] = Piece
+							.getPiece((int) ((move & PROMOTION_PIECE_MASK) >> PROMOTION_PIECE_SHIFT));
+				}
+				if (endingSquare == this.enPassantSquare) {
+					switch (endingSquare - startingSquare) {
+						case 9:
+							this.board[startingSquare + 1] = EMPTY;
+							break;
+						case 7:
+							this.board[startingSquare - 1] = EMPTY;
+							break;
+						default:
+					}
+				}
+				break;
+			default:
 		}
 	}
 
@@ -1339,65 +1329,67 @@ public class ChessEngine extends AbstractChessEngine {
 
 		// detect castling and update the this.board
 		switch (pieceType) {
-		case WHITE_KING:
-			if ((((startingSquare - endingSquare) == 2) || ((startingSquare - endingSquare) == -2)) && startingSquare == 60) {
-				switch (endingSquare) {
-					case 62:
-						this.board[63] = WHITE_ROOK;
-						this.board[61] = EMPTY;
-						break;
-					case 58:
-						this.board[56] = WHITE_ROOK;
-						this.board[59] = EMPTY;
-					default:
+			case WHITE_KING:
+				if ((((startingSquare - endingSquare) == 2) || ((startingSquare - endingSquare) == -2))
+						&& startingSquare == 60) {
+					switch (endingSquare) {
+						case 62:
+							this.board[63] = WHITE_ROOK;
+							this.board[61] = EMPTY;
+							break;
+						case 58:
+							this.board[56] = WHITE_ROOK;
+							this.board[59] = EMPTY;
+						default:
+					}
 				}
-			}
-			this.whiteKingSquare = startingSquare;
-			break;
-		case BLACK_KING:
-			if ((((startingSquare - endingSquare) == 2) || ((startingSquare - endingSquare) == -2)) && startingSquare == 4) {
-				switch (endingSquare) {
-					case 6:
-						this.board[7] = BLACK_ROOK;
-						this.board[5] = EMPTY;
-						break;
-					case 2:
-						this.board[0] = BLACK_ROOK;
-						this.board[3] = EMPTY;
-					default:
+				this.whiteKingSquare = startingSquare;
+				break;
+			case BLACK_KING:
+				if ((((startingSquare - endingSquare) == 2) || ((startingSquare - endingSquare) == -2))
+						&& startingSquare == 4) {
+					switch (endingSquare) {
+						case 6:
+							this.board[7] = BLACK_ROOK;
+							this.board[5] = EMPTY;
+							break;
+						case 2:
+							this.board[0] = BLACK_ROOK;
+							this.board[3] = EMPTY;
+						default:
+					}
 				}
-			}
-			this.blackKingSquare = startingSquare;
-			break;
-		case WHITE_PAWN:
-			if (endingSquare == this.enPassantSquare) {
-				switch (endingSquare - startingSquare) {
-				case -7:
-					this.board[startingSquare + 1] = capturedPiece;
-					break;
-				case -9:
-					this.board[startingSquare - 1] = capturedPiece;
-					break;
-				default:
+				this.blackKingSquare = startingSquare;
+				break;
+			case WHITE_PAWN:
+				if (endingSquare == this.enPassantSquare) {
+					switch (endingSquare - startingSquare) {
+						case -7:
+							this.board[startingSquare + 1] = capturedPiece;
+							break;
+						case -9:
+							this.board[startingSquare - 1] = capturedPiece;
+							break;
+						default:
+					}
+					this.board[endingSquare] = EMPTY;
 				}
-				this.board[endingSquare] = EMPTY;
-			}
-			break;
-		case BLACK_PAWN:
-			if (endingSquare == this.enPassantSquare) {
-				switch (endingSquare - startingSquare) {
-				case 9:
-					this.board[startingSquare + 1] = capturedPiece;
-					break;
-				case 7:
-					this.board[startingSquare - 1] = capturedPiece;
-					break;
-				default:
+				break;
+			case BLACK_PAWN:
+				if (endingSquare == this.enPassantSquare) {
+					switch (endingSquare - startingSquare) {
+						case 9:
+							this.board[startingSquare + 1] = capturedPiece;
+							break;
+						case 7:
+							this.board[startingSquare - 1] = capturedPiece;
+							break;
+						default:
+					}
+					this.board[endingSquare] = EMPTY;
 				}
-				this.board[endingSquare] = EMPTY;
-			}
-			break;
-		default:
+				break;
+			default:
 		}
 	}
 
@@ -1700,23 +1692,13 @@ public class ChessEngine extends AbstractChessEngine {
 				}
 			}
 		}
-		if (this.whiteCanCastleKingSide
-				&& !isWhiteInCheck()
-				&& this.board[i + 2] == EMPTY
-				&& this.board[i + 1] == EMPTY
-				&& !isWhiteInCheck(i + 2)
-				&& !isWhiteInCheck(i + 1)
-				&& this.board[i + 3] == WHITE_ROOK) {
+		if (this.whiteCanCastleKingSide && !isWhiteInCheck() && this.board[i + 2] == EMPTY && this.board[i + 1] == EMPTY
+				&& !isWhiteInCheck(i + 2) && !isWhiteInCheck(i + 1) && this.board[i + 3] == WHITE_ROOK) {
 			addMove(i, i + 2, EMPTY);
 		}
-		if (this.whiteCanCastleQueenSide
-				&& !isWhiteInCheck()
-				&& this.board[i - 3] == EMPTY
-				&& this.board[i - 2] == EMPTY
-				&& this.board[i - 1] == EMPTY
-				&& !isWhiteInCheck(i - 2)
-				&& !isWhiteInCheck(i - 1)
-				&& this.board[i - 4] == WHITE_ROOK) {
+		if (this.whiteCanCastleQueenSide && !isWhiteInCheck() && this.board[i - 3] == EMPTY
+				&& this.board[i - 2] == EMPTY && this.board[i - 1] == EMPTY && !isWhiteInCheck(i - 2)
+				&& !isWhiteInCheck(i - 1) && this.board[i - 4] == WHITE_ROOK) {
 			addMove(i, i - 2, EMPTY);
 		}
 	}
@@ -1797,8 +1779,7 @@ public class ChessEngine extends AbstractChessEngine {
 			System.arraycopy(this.history, 0, this.history = new long[this.history.length + HISTORY_DEFAULT_SIZE], 0,
 					this.moveNumber + 1);
 			System.arraycopy(this.moveHistory, 0,
-					this.moveHistory = new String[this.history.length + HISTORY_DEFAULT_SIZE], 0,
-					this.moveNumber + 1);
+					this.moveHistory = new String[this.history.length + HISTORY_DEFAULT_SIZE], 0, this.moveNumber + 1);
 		}
 		++this.moveNumber;
 		this.history[this.moveNumber] = move;
@@ -1821,107 +1802,109 @@ public class ChessEngine extends AbstractChessEngine {
 
 		// detect castling and update the this.board
 		switch (pieceType) {
-		case WHITE_KING:
-			if ((((startingSquare - endingSquare) == 2) || ((startingSquare - endingSquare) == -2))  && startingSquare == 60) {
-				switch (endingSquare) {
-					case 62:
-						this.board[61] = WHITE_ROOK;
-						this.board[63] = EMPTY;
-						break;
-					case 58:
-						this.board[59] = WHITE_ROOK;
-						this.board[56] = EMPTY;
-					default:
+			case WHITE_KING:
+				if ((((startingSquare - endingSquare) == 2) || ((startingSquare - endingSquare) == -2))
+						&& startingSquare == 60) {
+					switch (endingSquare) {
+						case 62:
+							this.board[61] = WHITE_ROOK;
+							this.board[63] = EMPTY;
+							break;
+						case 58:
+							this.board[59] = WHITE_ROOK;
+							this.board[56] = EMPTY;
+						default:
+					}
 				}
-			}
-			this.whiteKingSquare = endingSquare;
-			this.whiteCanCastleKingSide = false;
-			this.whiteCanCastleQueenSide = false;
-			this.enPassantSquare = -1;
-			break;
-		case BLACK_KING:
-			if ((((startingSquare - endingSquare) == 2) || ((startingSquare - endingSquare) == -2))  && startingSquare == 4) {
-				switch (endingSquare) {
-					case 6:
-						this.board[5] = BLACK_ROOK;
-						this.board[7] = EMPTY;
-						break;
-					case 2:
-						this.board[3] = BLACK_ROOK;
-						this.board[0] = EMPTY;
-						break;
-					default:
-				}
-			}
-			this.blackCanCastleKingSide = false;
-			this.blackCanCastleQueenSide = false;
-			this.enPassantSquare = -1;
-			this.blackKingSquare = endingSquare;
-			break;
-		case WHITE_PAWN:
-			if ((info & PROMOTION_PIECE_MASK) != 0) {
-				// promotion
-				this.board[endingSquare] = Piece
-						.getPiece((int) ((info & PROMOTION_PIECE_MASK) >> PROMOTION_PIECE_SHIFT));
-			}
-			if (endingSquare == this.enPassantSquare) {
-				switch (endingSquare - startingSquare) {
-				case -7:
-					this.board[startingSquare + 1] = EMPTY;
-					break;
-				case -9:
-					this.board[startingSquare - 1] = EMPTY;
-					break;
-				default:
-				}
-			}
-			if (startingSquare - endingSquare == 16) {
-				this.enPassantSquare = startingSquare - 8;
-			} else {
-				this.enPassantSquare = -1;
-			}
-			break;
-		case BLACK_PAWN:
-			if ((info & PROMOTION_PIECE_MASK) != 0) {
-				// promotion
-				this.board[endingSquare] = Piece
-						.getPiece((int) ((info & PROMOTION_PIECE_MASK) >> PROMOTION_PIECE_SHIFT));
-			}
-			if (endingSquare == this.enPassantSquare) {
-				switch (endingSquare - startingSquare) {
-				case 9:
-					this.board[startingSquare + 1] = EMPTY;
-					break;
-				case 7:
-					this.board[startingSquare - 1] = EMPTY;
-					break;
-				default:
-				}
-			}
-			if (endingSquare - startingSquare == 16) {
-				this.enPassantSquare = endingSquare - 8;
-			} else {
-				this.enPassantSquare = -1;
-			}
-			break;
-		case WHITE_ROOK:
-			if (startingSquare == 63) {
+				this.whiteKingSquare = endingSquare;
 				this.whiteCanCastleKingSide = false;
-			} else if (startingSquare == 56) {
 				this.whiteCanCastleQueenSide = false;
-			}
-			this.enPassantSquare = -1;
-			break;
-		case BLACK_ROOK:
-			if (startingSquare == 7) {
+				this.enPassantSquare = -1;
+				break;
+			case BLACK_KING:
+				if ((((startingSquare - endingSquare) == 2) || ((startingSquare - endingSquare) == -2))
+						&& startingSquare == 4) {
+					switch (endingSquare) {
+						case 6:
+							this.board[5] = BLACK_ROOK;
+							this.board[7] = EMPTY;
+							break;
+						case 2:
+							this.board[3] = BLACK_ROOK;
+							this.board[0] = EMPTY;
+							break;
+						default:
+					}
+				}
 				this.blackCanCastleKingSide = false;
-			} else if (startingSquare == 0) {
 				this.blackCanCastleQueenSide = false;
-			}
-			this.enPassantSquare = -1;
-			break;
-		default:
-			this.enPassantSquare = -1;
+				this.enPassantSquare = -1;
+				this.blackKingSquare = endingSquare;
+				break;
+			case WHITE_PAWN:
+				if ((info & PROMOTION_PIECE_MASK) != 0) {
+					// promotion
+					this.board[endingSquare] = Piece
+							.getPiece((int) ((info & PROMOTION_PIECE_MASK) >> PROMOTION_PIECE_SHIFT));
+				}
+				if (endingSquare == this.enPassantSquare) {
+					switch (endingSquare - startingSquare) {
+						case -7:
+							this.board[startingSquare + 1] = EMPTY;
+							break;
+						case -9:
+							this.board[startingSquare - 1] = EMPTY;
+							break;
+						default:
+					}
+				}
+				if (startingSquare - endingSquare == 16) {
+					this.enPassantSquare = startingSquare - 8;
+				} else {
+					this.enPassantSquare = -1;
+				}
+				break;
+			case BLACK_PAWN:
+				if ((info & PROMOTION_PIECE_MASK) != 0) {
+					// promotion
+					this.board[endingSquare] = Piece
+							.getPiece((int) ((info & PROMOTION_PIECE_MASK) >> PROMOTION_PIECE_SHIFT));
+				}
+				if (endingSquare == this.enPassantSquare) {
+					switch (endingSquare - startingSquare) {
+						case 9:
+							this.board[startingSquare + 1] = EMPTY;
+							break;
+						case 7:
+							this.board[startingSquare - 1] = EMPTY;
+							break;
+						default:
+					}
+				}
+				if (endingSquare - startingSquare == 16) {
+					this.enPassantSquare = endingSquare - 8;
+				} else {
+					this.enPassantSquare = -1;
+				}
+				break;
+			case WHITE_ROOK:
+				if (startingSquare == 63) {
+					this.whiteCanCastleKingSide = false;
+				} else if (startingSquare == 56) {
+					this.whiteCanCastleQueenSide = false;
+				}
+				this.enPassantSquare = -1;
+				break;
+			case BLACK_ROOK:
+				if (startingSquare == 7) {
+					this.blackCanCastleKingSide = false;
+				} else if (startingSquare == 0) {
+					this.blackCanCastleQueenSide = false;
+				}
+				this.enPassantSquare = -1;
+				break;
+			default:
+				this.enPassantSquare = -1;
 		}
 	}
 
@@ -1939,12 +1922,12 @@ public class ChessEngine extends AbstractChessEngine {
 		}
 		this.board[i] = piece;
 		switch (piece) {
-		case WHITE_KING:
-			this.whiteKingSquare = i;
-			break;
-		case BLACK_KING:
-			this.blackKingSquare = i;
-		default:
+			case WHITE_KING:
+				this.whiteKingSquare = i;
+				break;
+			case BLACK_KING:
+				this.blackKingSquare = i;
+			default:
 		}
 	}
 
@@ -1989,95 +1972,95 @@ public class ChessEngine extends AbstractChessEngine {
 				buffer.append("/"); //$NON-NLS-1$
 			}
 			switch (this.board[i]) {
-			case WHITE_BISHOP:
-				if (empty != 0) {
-					buffer.append(empty);
-					empty = 0;
-				}
-				buffer.append('B');
-				break;
-			case WHITE_KING:
-				if (empty != 0) {
-					buffer.append(empty);
-					empty = 0;
-				}
-				buffer.append('K');
-				break;
-			case WHITE_KNIGHT:
-				if (empty != 0) {
-					buffer.append(empty);
-					empty = 0;
-				}
-				buffer.append('N');
-				break;
-			case WHITE_PAWN:
-				if (empty != 0) {
-					buffer.append(empty);
-					empty = 0;
-				}
-				buffer.append('P');
-				break;
-			case WHITE_QUEEN:
-				if (empty != 0) {
-					buffer.append(empty);
-					empty = 0;
-				}
-				buffer.append('Q');
-				break;
-			case WHITE_ROOK:
-				if (empty != 0) {
-					buffer.append(empty);
-					empty = 0;
-				}
-				buffer.append('R');
-				break;
-			case BLACK_BISHOP:
-				if (empty != 0) {
-					buffer.append(empty);
-					empty = 0;
-				}
-				buffer.append('b');
-				break;
-			case BLACK_KING:
-				if (empty != 0) {
-					buffer.append(empty);
-					empty = 0;
-				}
-				buffer.append('k');
-				break;
-			case BLACK_KNIGHT:
-				if (empty != 0) {
-					buffer.append(empty);
-					empty = 0;
-				}
-				buffer.append('n');
-				break;
-			case BLACK_PAWN:
-				if (empty != 0) {
-					buffer.append(empty);
-					empty = 0;
-				}
-				buffer.append('p');
-				break;
-			case BLACK_QUEEN:
-				if (empty != 0) {
-					buffer.append(empty);
-					empty = 0;
-				}
-				buffer.append('q');
-				break;
-			case BLACK_ROOK:
-				if (empty != 0) {
-					buffer.append(empty);
-					empty = 0;
-				}
-				buffer.append('r');
-				break;
-			case EMPTY:
-				empty++;
-				break;
-			case UNDEFINED:
-			default:
+				case WHITE_BISHOP:
+					if (empty != 0) {
+						buffer.append(empty);
+						empty = 0;
+					}
+					buffer.append('B');
+					break;
+				case WHITE_KING:
+					if (empty != 0) {
+						buffer.append(empty);
+						empty = 0;
+					}
+					buffer.append('K');
+					break;
+				case WHITE_KNIGHT:
+					if (empty != 0) {
+						buffer.append(empty);
+						empty = 0;
+					}
+					buffer.append('N');
+					break;
+				case WHITE_PAWN:
+					if (empty != 0) {
+						buffer.append(empty);
+						empty = 0;
+					}
+					buffer.append('P');
+					break;
+				case WHITE_QUEEN:
+					if (empty != 0) {
+						buffer.append(empty);
+						empty = 0;
+					}
+					buffer.append('Q');
+					break;
+				case WHITE_ROOK:
+					if (empty != 0) {
+						buffer.append(empty);
+						empty = 0;
+					}
+					buffer.append('R');
+					break;
+				case BLACK_BISHOP:
+					if (empty != 0) {
+						buffer.append(empty);
+						empty = 0;
+					}
+					buffer.append('b');
+					break;
+				case BLACK_KING:
+					if (empty != 0) {
+						buffer.append(empty);
+						empty = 0;
+					}
+					buffer.append('k');
+					break;
+				case BLACK_KNIGHT:
+					if (empty != 0) {
+						buffer.append(empty);
+						empty = 0;
+					}
+					buffer.append('n');
+					break;
+				case BLACK_PAWN:
+					if (empty != 0) {
+						buffer.append(empty);
+						empty = 0;
+					}
+					buffer.append('p');
+					break;
+				case BLACK_QUEEN:
+					if (empty != 0) {
+						buffer.append(empty);
+						empty = 0;
+					}
+					buffer.append('q');
+					break;
+				case BLACK_ROOK:
+					if (empty != 0) {
+						buffer.append(empty);
+						empty = 0;
+					}
+					buffer.append('r');
+					break;
+				case EMPTY:
+					empty++;
+					break;
+				case UNDEFINED:
+				default:
 			}
 		}
 		if (empty != 0) {
@@ -2128,47 +2111,47 @@ public class ChessEngine extends AbstractChessEngine {
 			buffer.append("|"); //$NON-NLS-1$
 			char pieceType;
 			switch (this.board[i]) {
-			case WHITE_BISHOP:
-				pieceType = 'F';
-				break;
-			case WHITE_KING:
-				pieceType = 'R';
-				break;
-			case WHITE_KNIGHT:
-				pieceType = 'C';
-				break;
-			case WHITE_PAWN:
-				pieceType = 'P';
-				break;
-			case WHITE_QUEEN:
-				pieceType = 'D';
-				break;
-			case WHITE_ROOK:
-				pieceType = 'T';
-				break;
-			case BLACK_BISHOP:
-				pieceType = 'f';
-				break;
-			case BLACK_KING:
-				pieceType = 'r';
-				break;
-			case BLACK_KNIGHT:
-				pieceType = 'c';
-				break;
-			case BLACK_PAWN:
-				pieceType = 'p';
-				break;
-			case BLACK_QUEEN:
-				pieceType = 'd';
-				break;
-			case BLACK_ROOK:
-				pieceType = 't';
-				break;
-			case EMPTY:
-				pieceType = ' ';
-				break;
-			default:
-				pieceType = 'X';
+				case WHITE_BISHOP:
+					pieceType = 'F';
+					break;
+				case WHITE_KING:
+					pieceType = 'R';
+					break;
+				case WHITE_KNIGHT:
+					pieceType = 'C';
+					break;
+				case WHITE_PAWN:
+					pieceType = 'P';
+					break;
+				case WHITE_QUEEN:
+					pieceType = 'D';
+					break;
+				case WHITE_ROOK:
+					pieceType = 'T';
+					break;
+				case BLACK_BISHOP:
+					pieceType = 'f';
+					break;
+				case BLACK_KING:
+					pieceType = 'r';
+					break;
+				case BLACK_KNIGHT:
+					pieceType = 'c';
+					break;
+				case BLACK_PAWN:
+					pieceType = 'p';
+					break;
+				case BLACK_QUEEN:
+					pieceType = 'd';
+					break;
+				case BLACK_ROOK:
+					pieceType = 't';
+					break;
+				case EMPTY:
+					pieceType = ' ';
+					break;
+				default:
+					pieceType = 'X';
 			}
 			buffer.append(pieceType);
 		}
@@ -2263,91 +2246,93 @@ public class ChessEngine extends AbstractChessEngine {
 
 		int fakeEnPassantSquare = (int) ((info & EN_PASSANT_SQUARE_MASK) >> EN_PASSANT_SQUARE_SHIFT);
 		switch (fakeEnPassantSquare) {
-		case 1:
-		case 2:
-		case 3:
-		case 4:
-		case 5:
-		case 6:
-		case 7:
-		case 8:
-			this.enPassantSquare = fakeEnPassantSquare + 15;
-			break;
-		case 9:
-		case 10:
-		case 11:
-		case 12:
-		case 13:
-		case 14:
-		case 15:
-		case 16:
-			this.enPassantSquare = fakeEnPassantSquare + 31;
-			break;
-		default:
-			this.enPassantSquare = -1;
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+			case 5:
+			case 6:
+			case 7:
+			case 8:
+				this.enPassantSquare = fakeEnPassantSquare + 15;
+				break;
+			case 9:
+			case 10:
+			case 11:
+			case 12:
+			case 13:
+			case 14:
+			case 15:
+			case 16:
+				this.enPassantSquare = fakeEnPassantSquare + 31;
+				break;
+			default:
+				this.enPassantSquare = -1;
 		}
 
 		// detect castling and update the this.board
 		switch (pieceType) {
-		case WHITE_KING:
-			if ((((startingSquare - endingSquare) == 2) || ((startingSquare - endingSquare) == -2)) && startingSquare == 60) {
+			case WHITE_KING:
+				if ((((startingSquare - endingSquare) == 2) || ((startingSquare - endingSquare) == -2))
+						&& startingSquare == 60) {
 					switch (endingSquare) {
-					case 62:
-						this.board[63] = WHITE_ROOK;
-						this.board[61] = EMPTY;
-						break;
-					case 58:
-						this.board[56] = WHITE_ROOK;
-						this.board[59] = EMPTY;
-					default:
+						case 62:
+							this.board[63] = WHITE_ROOK;
+							this.board[61] = EMPTY;
+							break;
+						case 58:
+							this.board[56] = WHITE_ROOK;
+							this.board[59] = EMPTY;
+						default:
 					}
-			}
-			this.whiteKingSquare = startingSquare;
-			break;
-		case BLACK_KING:
-			if ((((startingSquare - endingSquare) == 2) || ((startingSquare - endingSquare) == -2)) && startingSquare == 4) {
+				}
+				this.whiteKingSquare = startingSquare;
+				break;
+			case BLACK_KING:
+				if ((((startingSquare - endingSquare) == 2) || ((startingSquare - endingSquare) == -2))
+						&& startingSquare == 4) {
 					switch (endingSquare) {
-					case 6:
-						this.board[7] = BLACK_ROOK;
-						this.board[5] = EMPTY;
-						break;
-					case 2:
-						this.board[0] = BLACK_ROOK;
-						this.board[3] = EMPTY;
-					default:
+						case 6:
+							this.board[7] = BLACK_ROOK;
+							this.board[5] = EMPTY;
+							break;
+						case 2:
+							this.board[0] = BLACK_ROOK;
+							this.board[3] = EMPTY;
+						default:
 					}
-			}
-			this.blackKingSquare = startingSquare;
-			break;
-		case WHITE_PAWN:
-			if (endingSquare == this.enPassantSquare) {
-				switch (endingSquare - startingSquare) {
-				case -7:
-					this.board[startingSquare + 1] = capturedPiece;
-					break;
-				case -9:
-					this.board[startingSquare - 1] = capturedPiece;
-					break;
-				default:
 				}
-				this.board[endingSquare] = EMPTY;
-			}
-			break;
-		case BLACK_PAWN:
-			if (endingSquare == this.enPassantSquare) {
-				switch (startingSquare - endingSquare) {
-				case -9:
-					this.board[startingSquare + 1] = capturedPiece;
-					break;
-				case -7:
-					this.board[startingSquare - 1] = capturedPiece;
-					break;
-				default:
+				this.blackKingSquare = startingSquare;
+				break;
+			case WHITE_PAWN:
+				if (endingSquare == this.enPassantSquare) {
+					switch (endingSquare - startingSquare) {
+						case -7:
+							this.board[startingSquare + 1] = capturedPiece;
+							break;
+						case -9:
+							this.board[startingSquare - 1] = capturedPiece;
+							break;
+						default:
+					}
+					this.board[endingSquare] = EMPTY;
 				}
-				this.board[endingSquare] = EMPTY;
-			}
-			break;
-		default:
+				break;
+			case BLACK_PAWN:
+				if (endingSquare == this.enPassantSquare) {
+					switch (startingSquare - endingSquare) {
+						case -9:
+							this.board[startingSquare + 1] = capturedPiece;
+							break;
+						case -7:
+							this.board[startingSquare - 1] = capturedPiece;
+							break;
+						default:
+					}
+					this.board[endingSquare] = EMPTY;
+				}
+				break;
+			default:
 		}
 		this.moveNumber--;
 		this.startingMoveNumber--;

@@ -158,7 +158,7 @@ public class MateNode implements Comparable<MateNode> {
 			}
 		}
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return this.move.hashCode();

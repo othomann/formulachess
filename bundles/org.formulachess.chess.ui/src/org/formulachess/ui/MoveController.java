@@ -182,24 +182,24 @@ public class MoveController extends Composite {
 
 	int getMoveIndex(int i, int j) {
 		switch (j) {
-		case 0:
-		case 1:
-			// white move
-			if (this.moves[0].isWhiteMove()) {
+			case 0:
+			case 1:
+				// white move
+				if (this.moves[0].isWhiteMove()) {
+					return i * 2;
+				}
+				int index = i * 2 - 1;
+				if (index >= 0) {
+					return index;
+				}
+				break;
+			case 2:
+				// black move
+				if (this.moves[0].isWhiteMove()) {
+					return i * 2 + 1;
+				}
 				return i * 2;
-			}
-			int index = i * 2 - 1;
-			if (index >= 0) {
-				return index;
-			}
-			break;
-		case 2:
-			// black move
-			if (this.moves[0].isWhiteMove()) {
-				return i * 2 + 1;
-			}
-			return i * 2;
-		default:
+			default:
 		}
 		return 0;
 	}

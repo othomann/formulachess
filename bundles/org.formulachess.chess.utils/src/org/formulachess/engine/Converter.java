@@ -21,27 +21,27 @@ public class Converter implements MoveConstants {
 		int startingPosition = (int) (move & STARTING_SQUARE_MASK);
 		int endingPosition = (int) ((move & ENDING_SQUARE_MASK) >> ENDING_SQUARE_SHIFT);
 		switch (board[startingPosition]) {
-		case WHITE_BISHOP:
-		case BLACK_BISHOP:
-			buffer.append(bundle.getString("piece.bishop")); //$NON-NLS-1$
-			break;
-		case WHITE_ROOK:
-		case BLACK_ROOK:
-			buffer.append(bundle.getString("piece.rook")); //$NON-NLS-1$
-			break;
-		case WHITE_QUEEN:
-		case BLACK_QUEEN:
-			buffer.append(bundle.getString("piece.queen")); //$NON-NLS-1$
-			break;
-		case WHITE_KING:
-		case BLACK_KING:
-			buffer.append(bundle.getString("piece.king")); //$NON-NLS-1$
-			break;
-		case WHITE_KNIGHT:
-		case BLACK_KNIGHT:
-			buffer.append(bundle.getString("piece.knight")); //$NON-NLS-1$
-			break;
-		default:
+			case WHITE_BISHOP:
+			case BLACK_BISHOP:
+				buffer.append(bundle.getString("piece.bishop")); //$NON-NLS-1$
+				break;
+			case WHITE_ROOK:
+			case BLACK_ROOK:
+				buffer.append(bundle.getString("piece.rook")); //$NON-NLS-1$
+				break;
+			case WHITE_QUEEN:
+			case BLACK_QUEEN:
+				buffer.append(bundle.getString("piece.queen")); //$NON-NLS-1$
+				break;
+			case WHITE_KING:
+			case BLACK_KING:
+				buffer.append(bundle.getString("piece.king")); //$NON-NLS-1$
+				break;
+			case WHITE_KNIGHT:
+			case BLACK_KNIGHT:
+				buffer.append(bundle.getString("piece.knight")); //$NON-NLS-1$
+				break;
+			default:
 		}
 		buffer.append(intToSquare(endingPosition));
 		return String.valueOf(buffer);
@@ -56,7 +56,7 @@ public class Converter implements MoveConstants {
 
 	public static String intToSquare(int squareNumber) {
 		if (squareNumber == -1) {
-			return "-";  //$NON-NLS-1$
+			return "-"; //$NON-NLS-1$
 		}
 		StringBuilder buffer = new StringBuilder();
 		buffer.append((char) ((squareNumber % 8) + 'a'));

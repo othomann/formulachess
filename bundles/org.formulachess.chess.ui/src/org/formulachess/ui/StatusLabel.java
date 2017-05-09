@@ -77,9 +77,8 @@ public class StatusLabel extends Composite implements Observer {
 	public void update() {
 		// check if it is mate or stalemate
 		long[] nextMoves = this.model.allMoves();
-		if (nextMoves.length == 0
-				&& ((this.model.getTurn() == WHITE_TURN && !this.model.isWhiteInCheck())
-						|| (this.model.getTurn() == BLACK_TURN && !this.model.isBlackInCheck()))) {
+		if (nextMoves.length == 0 && ((this.model.getTurn() == WHITE_TURN && !this.model.isWhiteInCheck())
+				|| (this.model.getTurn() == BLACK_TURN && !this.model.isBlackInCheck()))) {
 			this.status.setText(this.currentMessages.getString("statuslabel.status.stalemate")); //$NON-NLS-1$
 			return;
 		}

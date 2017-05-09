@@ -20,34 +20,34 @@ public enum Piece {
 
 	public static Piece getPiece(int i) {
 		switch (i) {
-		case 1:
-			return WHITE_KING;
-		case 2:
-			return WHITE_QUEEN;
-		case 3:
-			return WHITE_ROOK;
-		case 4:
-			return WHITE_BISHOP;
-		case 5:
-			return WHITE_KNIGHT;
-		case 6:
-			return WHITE_PAWN;
-		case 7:
-			return EMPTY;
-		case 9:
-			return BLACK_KING;
-		case 10:
-			return BLACK_QUEEN;
-		case 11:
-			return BLACK_ROOK;
-		case 12:
-			return BLACK_BISHOP;
-		case 13:
-			return BLACK_KNIGHT;
-		case 14:
-			return BLACK_PAWN;
-		default:
-			return UNDEFINED;
+			case 1:
+				return WHITE_KING;
+			case 2:
+				return WHITE_QUEEN;
+			case 3:
+				return WHITE_ROOK;
+			case 4:
+				return WHITE_BISHOP;
+			case 5:
+				return WHITE_KNIGHT;
+			case 6:
+				return WHITE_PAWN;
+			case 7:
+				return EMPTY;
+			case 9:
+				return BLACK_KING;
+			case 10:
+				return BLACK_QUEEN;
+			case 11:
+				return BLACK_ROOK;
+			case 12:
+				return BLACK_BISHOP;
+			case 13:
+				return BLACK_KNIGHT;
+			case 14:
+				return BLACK_PAWN;
+			default:
+				return UNDEFINED;
 		}
 	}
 

@@ -48,19 +48,19 @@ public class PawnMove extends Move {
 				buffer.append(this.promotedPiece);
 			} else {
 				switch (this.promotedPiece) {
-				case 'B':
-					buffer.append(bundle.getString("piece.bishop")); //$NON-NLS-1$
-					break;
-				case 'N':
-					buffer.append(bundle.getString("piece.knight")); //$NON-NLS-1$
-					break;
-				case 'R':
-					buffer.append(bundle.getString("piece.rook")); //$NON-NLS-1$
-					break;
-				case 'Q':
-					buffer.append(bundle.getString("piece.queen")); //$NON-NLS-1$
-					break;
-				default:
+					case 'B':
+						buffer.append(bundle.getString("piece.bishop")); //$NON-NLS-1$
+						break;
+					case 'N':
+						buffer.append(bundle.getString("piece.knight")); //$NON-NLS-1$
+						break;
+					case 'R':
+						buffer.append(bundle.getString("piece.rook")); //$NON-NLS-1$
+						break;
+					case 'Q':
+						buffer.append(bundle.getString("piece.queen")); //$NON-NLS-1$
+						break;
+					default:
 				}
 			}
 		}

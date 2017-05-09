@@ -11,7 +11,7 @@ import org.formulachess.pgn.engine.PGNMoveContainer;
 public class MateSearch {
 	private static final Logger MY_LOGGER = Logger.getLogger(MateSearch.class.getCanonicalName());
 	public static final boolean DEBUG = false;
-	
+
 	private MateSearch() {
 		// default constructor
 	}

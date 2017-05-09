@@ -359,32 +359,32 @@ public class BoardCanvas extends Canvas implements Observer {
 
 	Image getSelectedPieceImage() {
 		switch (this.model.getBoard(this.selectedPieceIndex)) {
-		case WHITE_BISHOP:
-			return this.whiteBishop;
-		case WHITE_KING:
-			return this.whiteKing;
-		case WHITE_KNIGHT:
-			return this.whiteKnight;
-		case WHITE_PAWN:
-			return this.whitePawn;
-		case WHITE_QUEEN:
-			return this.whiteQueen;
-		case WHITE_ROOK:
-			return this.whiteRook;
-		case BLACK_BISHOP:
-			return this.blackBishop;
-		case BLACK_KING:
-			return this.blackKing;
-		case BLACK_KNIGHT:
-			return this.blackKnight;
-		case BLACK_PAWN:
-			return this.blackPawn;
-		case BLACK_QUEEN:
-			return this.blackQueen;
-		case BLACK_ROOK:
-			return this.blackRook;
-		default:
-			return null;
+			case WHITE_BISHOP:
+				return this.whiteBishop;
+			case WHITE_KING:
+				return this.whiteKing;
+			case WHITE_KNIGHT:
+				return this.whiteKnight;
+			case WHITE_PAWN:
+				return this.whitePawn;
+			case WHITE_QUEEN:
+				return this.whiteQueen;
+			case WHITE_ROOK:
+				return this.whiteRook;
+			case BLACK_BISHOP:
+				return this.blackBishop;
+			case BLACK_KING:
+				return this.blackKing;
+			case BLACK_KNIGHT:
+				return this.blackKnight;
+			case BLACK_PAWN:
+				return this.blackPawn;
+			case BLACK_QUEEN:
+				return this.blackQueen;
+			case BLACK_ROOK:
+				return this.blackRook;
+			default:
+				return null;
 		}
 	}
 
@@ -456,53 +456,53 @@ public class BoardCanvas extends Canvas implements Observer {
 			}
 			Image currentImage = null;
 			switch (this.model.getBoard(i)) {
-			case WHITE_BISHOP:
-				currentImage = this.whiteBishop;
-				break;
-			case WHITE_KING:
-				if (isMate && this.model.getTurn() == Turn.WHITE_TURN) {
-					currentImage = this.whiteKingMate;
-				} else {
-					currentImage = this.whiteKing;
-				}
-				break;
-			case WHITE_KNIGHT:
-				currentImage = this.whiteKnight;
-				break;
-			case WHITE_PAWN:
-				currentImage = this.whitePawn;
-				break;
-			case WHITE_QUEEN:
-				currentImage = this.whiteQueen;
-				break;
-			case WHITE_ROOK:
-				currentImage = this.whiteRook;
-				break;
-			case BLACK_BISHOP:
-				currentImage = this.blackBishop;
-				break;
-			case BLACK_KING:
-				if (isMate && this.model.getTurn() == Turn.BLACK_TURN) {
-					currentImage = this.blackKingMate;
-				} else {
-					currentImage = this.blackKing;
-				}
-				break;
-			case BLACK_KNIGHT:
-				currentImage = this.blackKnight;
-				break;
-			case BLACK_PAWN:
-				currentImage = this.blackPawn;
-				break;
-			case BLACK_QUEEN:
-				currentImage = this.blackQueen;
-				break;
-			case BLACK_ROOK:
-				currentImage = this.blackRook;
-				break;
-			case UNDEFINED:
-			case EMPTY:
-			default:
+				case WHITE_BISHOP:
+					currentImage = this.whiteBishop;
+					break;
+				case WHITE_KING:
+					if (isMate && this.model.getTurn() == Turn.WHITE_TURN) {
+						currentImage = this.whiteKingMate;
+					} else {
+						currentImage = this.whiteKing;
+					}
+					break;
+				case WHITE_KNIGHT:
+					currentImage = this.whiteKnight;
+					break;
+				case WHITE_PAWN:
+					currentImage = this.whitePawn;
+					break;
+				case WHITE_QUEEN:
+					currentImage = this.whiteQueen;
+					break;
+				case WHITE_ROOK:
+					currentImage = this.whiteRook;
+					break;
+				case BLACK_BISHOP:
+					currentImage = this.blackBishop;
+					break;
+				case BLACK_KING:
+					if (isMate && this.model.getTurn() == Turn.BLACK_TURN) {
+						currentImage = this.blackKingMate;
+					} else {
+						currentImage = this.blackKing;
+					}
+					break;
+				case BLACK_KNIGHT:
+					currentImage = this.blackKnight;
+					break;
+				case BLACK_PAWN:
+					currentImage = this.blackPawn;
+					break;
+				case BLACK_QUEEN:
+					currentImage = this.blackQueen;
+					break;
+				case BLACK_ROOK:
+					currentImage = this.blackRook;
+					break;
+				case UNDEFINED:
+				case EMPTY:
+				default:
 			}
 			if (currentImage != null) {
 				gc.drawImage(currentImage, 0, 0, this.settings[SQUARE_WIDTH_INDEX], this.settings[SQUARE_HEIGHT_INDEX],

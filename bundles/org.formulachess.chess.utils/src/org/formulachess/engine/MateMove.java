@@ -80,15 +80,15 @@ public class MateMove implements Comparable<MateMove> {
 			return false;
 		return true;
 	}
-	
+
 	public int getMobility() {
 		return this.mobility;
 	}
-	
+
 	public String getNotation() {
 		return this.notation;
 	}
-	
+
 	public long getMove() {
 		return this.move;
 	}

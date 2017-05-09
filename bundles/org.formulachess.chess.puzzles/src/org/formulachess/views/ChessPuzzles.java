@@ -510,22 +510,22 @@ public class ChessPuzzles {
 								return;
 							}
 							switch (data.getType()) {
-							case DatabaseElementData.PROBLEM:
-								initializeProblemsTable();
-								createProblemsTab(ChessPuzzles.this.subTabFolders);
-								createSolutionTab(ChessPuzzles.this.subTabFolders);
-								ChessPuzzles.this.internalProblemComposite.setVisible(true);
-								ChessPuzzles.this.internalSolutionComposite.setVisible(true);
-								folders.setSelection(1);
-								break;
-							case DatabaseElementData.PGN_GAME:
-								createPGNViewerTab(ChessPuzzles.this.subTabFolders);
-								ChessPuzzles.this.internalPGNViewerComposite.setVisible(true);
-								ChessPuzzles.this.backButton.setVisible(false);
-								ChessPuzzles.this.resetButton.setVisible(false);
-								folders.setSelection(1);
-								break;
-							default:
+								case DatabaseElementData.PROBLEM:
+									initializeProblemsTable();
+									createProblemsTab(ChessPuzzles.this.subTabFolders);
+									createSolutionTab(ChessPuzzles.this.subTabFolders);
+									ChessPuzzles.this.internalProblemComposite.setVisible(true);
+									ChessPuzzles.this.internalSolutionComposite.setVisible(true);
+									folders.setSelection(1);
+									break;
+								case DatabaseElementData.PGN_GAME:
+									createPGNViewerTab(ChessPuzzles.this.subTabFolders);
+									ChessPuzzles.this.internalPGNViewerComposite.setVisible(true);
+									ChessPuzzles.this.backButton.setVisible(false);
+									ChessPuzzles.this.resetButton.setVisible(false);
+									folders.setSelection(1);
+									break;
+								default:
 							}
 						}
 						if (!visible && rect.intersects(clientArea)) {
@@ -670,25 +670,25 @@ public class ChessPuzzles {
 		TagSection tagSection = game.getTagSection();
 		String tag = null;
 		switch (result.getFilterId()) {
-		case FilterDialog.BLACK_NAME:
-			tag = getTag(tagSection, TagSection.TAG_BLACK);
-			break;
-		case FilterDialog.ECO:
-			tag = getTag(tagSection, TagSection.TAG_ECO);
-			break;
-		case FilterDialog.EVENT:
-			tag = getTag(tagSection, TagSection.TAG_EVENT);
-			break;
-		case FilterDialog.RESULT:
-			tag = getTag(tagSection, TagSection.TAG_RESULT);
-			break;
-		case FilterDialog.ROUND:
-			tag = getTag(tagSection, TagSection.TAG_ROUND);
-			break;
-		case FilterDialog.WHITE_NAME:
-			tag = getTag(tagSection, TagSection.TAG_WHITE);
-			break;
-		default:
+			case FilterDialog.BLACK_NAME:
+				tag = getTag(tagSection, TagSection.TAG_BLACK);
+				break;
+			case FilterDialog.ECO:
+				tag = getTag(tagSection, TagSection.TAG_ECO);
+				break;
+			case FilterDialog.EVENT:
+				tag = getTag(tagSection, TagSection.TAG_EVENT);
+				break;
+			case FilterDialog.RESULT:
+				tag = getTag(tagSection, TagSection.TAG_RESULT);
+				break;
+			case FilterDialog.ROUND:
+				tag = getTag(tagSection, TagSection.TAG_ROUND);
+				break;
+			case FilterDialog.WHITE_NAME:
+				tag = getTag(tagSection, TagSection.TAG_WHITE);
+				break;
+			default:
 		}
 		if (tag == null) {
 			return false;

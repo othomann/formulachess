@@ -60,143 +60,143 @@ public class Scanner implements TerminalSymbols {
 				// ---------Identify the next token-------------
 
 				switch (this.currentCharacter) {
-				case '(':
-					return TokenNameSTART_VARIATION;
-				case ')':
-					return TokenNameEND_VARIATION;
-				case '[':
-					return consumeTagSection();
-				case ']':
-					return TokenNameEND_TAG_SECTION;
-				case '.':
-					return TokenNameDOT;
-				case '+':
-					return TokenNameCHECK;
-				case '#':
-					return TokenNameCHECKMATE;
-				case 'x':
-				case 'X':
-					return TokenNameCAPTURE;
-				case '*':
-					return TokenNameUNKNOWN;
-				case '=':
-					return TokenNamePROMOTE;
-				case '?':
-					if (checkQuestionMark()) {
-						this.currentCharacter = this.source[this.currentPosition++];
-						return TokenNameVERY_BAD_MOVE;
-					}
-					if (checkExclamationPoint()) {
-						this.currentCharacter = this.source[this.currentPosition++];
-						return TokenNameSUSPICIOUS_MOVE;
-					}
-					return TokenNameBAD_MOVE;
-				case '!':
-					if (checkQuestionMark()) {
-						this.currentCharacter = this.source[this.currentPosition++];
-						return TokenNameINTERESTING_MOVE;
-					}
-					if (checkExclamationPoint()) {
-						this.currentCharacter = this.source[this.currentPosition++];
-						return TokenNameEXCELLENT_MOVE;
-					}
-					return TokenNameGOOD_MOVE;
-				case '"':
-					return consumeStringLiteral();
-				case '{':
-					consumeComment();
-					break;
-				case 'a':
-				case 'b':
-				case 'c':
-				case 'd':
-				case 'e':
-					if (getNextChar('p')) {
-						return TokenNameEN_PASSANT;
-					}
-					return TokenNameFileName;
-				case 'f':
-				case 'g':
-				case 'h':
-					return TokenNameFileName;
-				case '$':
-					return consumeNag();
-				case 'O':
-					this.currentCharacter = this.source[this.currentPosition++];
-					if (checkDash()) {
-						this.currentCharacter = this.source[this.currentPosition++];
-						if (this.currentCharacter == 'O') {
+					case '(':
+						return TokenNameSTART_VARIATION;
+					case ')':
+						return TokenNameEND_VARIATION;
+					case '[':
+						return consumeTagSection();
+					case ']':
+						return TokenNameEND_TAG_SECTION;
+					case '.':
+						return TokenNameDOT;
+					case '+':
+						return TokenNameCHECK;
+					case '#':
+						return TokenNameCHECKMATE;
+					case 'x':
+					case 'X':
+						return TokenNameCAPTURE;
+					case '*':
+						return TokenNameUNKNOWN;
+					case '=':
+						return TokenNamePROMOTE;
+					case '?':
+						if (checkQuestionMark()) {
 							this.currentCharacter = this.source[this.currentPosition++];
-							if (checkDash()) {
+							return TokenNameVERY_BAD_MOVE;
+						}
+						if (checkExclamationPoint()) {
+							this.currentCharacter = this.source[this.currentPosition++];
+							return TokenNameSUSPICIOUS_MOVE;
+						}
+						return TokenNameBAD_MOVE;
+					case '!':
+						if (checkQuestionMark()) {
+							this.currentCharacter = this.source[this.currentPosition++];
+							return TokenNameINTERESTING_MOVE;
+						}
+						if (checkExclamationPoint()) {
+							this.currentCharacter = this.source[this.currentPosition++];
+							return TokenNameEXCELLENT_MOVE;
+						}
+						return TokenNameGOOD_MOVE;
+					case '"':
+						return consumeStringLiteral();
+					case '{':
+						consumeComment();
+						break;
+					case 'a':
+					case 'b':
+					case 'c':
+					case 'd':
+					case 'e':
+						if (getNextChar('p')) {
+							return TokenNameEN_PASSANT;
+						}
+						return TokenNameFileName;
+					case 'f':
+					case 'g':
+					case 'h':
+						return TokenNameFileName;
+					case '$':
+						return consumeNag();
+					case 'O':
+						this.currentCharacter = this.source[this.currentPosition++];
+						if (checkDash()) {
+							this.currentCharacter = this.source[this.currentPosition++];
+							if (this.currentCharacter == 'O') {
 								this.currentCharacter = this.source[this.currentPosition++];
-								if (this.currentCharacter == 'O') {
-									return TokenNameCASTLE_QUEEN_SIDE;
+								if (checkDash()) {
+									this.currentCharacter = this.source[this.currentPosition++];
+									if (this.currentCharacter == 'O') {
+										return TokenNameCASTLE_QUEEN_SIDE;
+									}
+								} else {
+									this.currentPosition--;
+									return TokenNameCASTLE_KING_SIDE;
 								}
-							} else {
-								this.currentPosition--;
-								return TokenNameCASTLE_KING_SIDE;
 							}
 						}
-					}
-					return TokenNameERROR;
-				case ';':
-					consumeLineComment();
-					break;
-				default:
-					if (this.isPieceIndentification()) {
-						return TokenNamePieceIdentification;
-					}
-					if (Character.isDigit(this.currentCharacter)) {
-						try {
-							// consume next character
-							this.currentCharacter = this.source[this.currentPosition++];
-
-							while (Character.isDigit(this.currentCharacter)) {
+						return TokenNameERROR;
+					case ';':
+						consumeLineComment();
+						break;
+					default:
+						if (this.isPieceIndentification()) {
+							return TokenNamePieceIdentification;
+						}
+						if (Character.isDigit(this.currentCharacter)) {
+							try {
 								// consume next character
 								this.currentCharacter = this.source[this.currentPosition++];
+
+								while (Character.isDigit(this.currentCharacter)) {
+									// consume next character
+									this.currentCharacter = this.source[this.currentPosition++];
+								}
+							} catch (IndexOutOfBoundsException e) {
+								return TokenNameEOF;
 							}
-						} catch (IndexOutOfBoundsException e) {
-							return TokenNameEOF;
-						}
-						if (checkDot()) {
-							this.currentPosition--;
-							return TokenNameIntegerLiteral;
-						} else if (checkDash()) {
-							this.currentCharacter = this.source[this.currentPosition];
-							switch (this.currentCharacter) {
-							case '0':
+							if (checkDot()) {
+								this.currentPosition--;
+								return TokenNameIntegerLiteral;
+							} else if (checkDash()) {
+								this.currentCharacter = this.source[this.currentPosition];
+								switch (this.currentCharacter) {
+									case '0':
+										if (this.source[this.currentPosition - 2] != '1') {
+											return TokenNameERROR;
+										}
+										this.currentPosition++;
+										return TokenNameWHITE_VICTORY;
+									case '1':
+										if (this.source[this.currentPosition - 2] != '0') {
+											return TokenNameERROR;
+										}
+										this.currentPosition++;
+										return TokenNameBLACK_VICTORY;
+									default:
+										return TokenNameERROR;
+								}
+							} else if (checkSlash()) {
 								if (this.source[this.currentPosition - 2] != '1') {
 									return TokenNameERROR;
 								}
-								this.currentPosition++;
-								return TokenNameWHITE_VICTORY;
-							case '1':
-								if (this.source[this.currentPosition - 2] != '0') {
-									return TokenNameERROR;
+								if ((this.source[this.currentPosition] == '2')
+										&& (this.source[this.currentPosition + 1] == '-')
+										&& (this.source[this.currentPosition + 2] == '1')
+										&& (this.source[this.currentPosition + 3] == '/')
+										&& (this.source[this.currentPosition + 4] == '2')) {
+									this.currentPosition += 5;
+									return TokenNameDRAW;
 								}
-								this.currentPosition++;
-								return TokenNameBLACK_VICTORY;
-							default:
-								return TokenNameERROR;
+							} else {
+								this.currentPosition--;
+								return TokenNameRankName;
 							}
-						} else if (checkSlash()) {
-							if (this.source[this.currentPosition - 2] != '1') {
-								return TokenNameERROR;
-							}
-							if ((this.source[this.currentPosition] == '2')
-									&& (this.source[this.currentPosition + 1] == '-')
-									&& (this.source[this.currentPosition + 2] == '1')
-									&& (this.source[this.currentPosition + 3] == '/')
-									&& (this.source[this.currentPosition + 4] == '2')) {
-								this.currentPosition += 5;
-								return TokenNameDRAW;
-							}
-						} else {
-							this.currentPosition--;
-							return TokenNameRankName;
 						}
-					}
-					return TokenNameERROR;
+						return TokenNameERROR;
 				}
 			}
 		} // -----------------end switch while try--------------------

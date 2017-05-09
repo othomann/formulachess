@@ -29,22 +29,22 @@ public class PieceMove extends Move {
 			buffer.append(this.pieceIdentification);
 		} else {
 			switch (this.pieceIdentification) {
-			case 'B':
-				buffer.append(bundle.getString("piece.bishop")); //$NON-NLS-1$
-				break;
-			case 'N':
-				buffer.append(bundle.getString("piece.knight")); //$NON-NLS-1$
-				break;
-			case 'R':
-				buffer.append(bundle.getString("piece.rook")); //$NON-NLS-1$
-				break;
-			case 'Q':
-				buffer.append(bundle.getString("piece.queen")); //$NON-NLS-1$
-				break;
-			case 'K':
-				buffer.append(bundle.getString("piece.king")); //$NON-NLS-1$
-				break;
-			default:
+				case 'B':
+					buffer.append(bundle.getString("piece.bishop")); //$NON-NLS-1$
+					break;
+				case 'N':
+					buffer.append(bundle.getString("piece.knight")); //$NON-NLS-1$
+					break;
+				case 'R':
+					buffer.append(bundle.getString("piece.rook")); //$NON-NLS-1$
+					break;
+				case 'Q':
+					buffer.append(bundle.getString("piece.queen")); //$NON-NLS-1$
+					break;
+				case 'K':
+					buffer.append(bundle.getString("piece.king")); //$NON-NLS-1$
+					break;
+				default:
 			}
 		}
 	}

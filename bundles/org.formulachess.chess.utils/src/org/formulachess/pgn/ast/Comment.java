@@ -11,6 +11,7 @@ public class Comment extends ASTNode {
 		return this.contents != null && this.contents[0] == ';';
 	}
 
+	@Override
 	public String toString() {
 		if (isLineComment()) {
 			return new String(this.contents, 1, this.contents.length - 1);

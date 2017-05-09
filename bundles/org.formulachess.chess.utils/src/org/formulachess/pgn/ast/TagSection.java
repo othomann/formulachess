@@ -57,6 +57,7 @@ public class TagSection extends ASTNode {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		for (int i = 0, max = this.tagPairCounter; i < max; i++) {

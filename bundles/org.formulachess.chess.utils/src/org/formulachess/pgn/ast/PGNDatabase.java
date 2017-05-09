@@ -30,6 +30,7 @@ public class PGNDatabase extends ASTNode {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		for (int i = 0, max = this.gamesCounter; i < max; i++) {

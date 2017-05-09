@@ -8,6 +8,7 @@ public class Variation extends ASTNode {
 		this.moves = moves;
 	}
 
+	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append('(');

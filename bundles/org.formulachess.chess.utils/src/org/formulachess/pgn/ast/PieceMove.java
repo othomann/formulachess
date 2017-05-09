@@ -54,4 +54,26 @@ public class PieceMove extends Move {
 		// nothing to do
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + pieceIdentification;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PieceMove other = (PieceMove) obj;
+		if (pieceIdentification != other.pieceIdentification)
+			return false;
+		return super.equals(obj);
+	}
+
 }

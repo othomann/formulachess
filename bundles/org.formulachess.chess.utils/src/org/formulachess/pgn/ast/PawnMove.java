@@ -66,4 +66,29 @@ public class PawnMove extends Move {
 		}
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + (isPromotion ? 1231 : 1237);
+		result = prime * result + promotedPiece;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PawnMove other = (PawnMove) obj;
+		if (isPromotion != other.isPromotion)
+			return false;
+		if (promotedPiece != other.promotedPiece)
+			return false;
+		return super.equals(obj);
+	}
+
 }

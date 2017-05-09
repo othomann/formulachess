@@ -37,6 +37,7 @@ public class MoveText extends ASTNode {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		if (this.comment != null) {

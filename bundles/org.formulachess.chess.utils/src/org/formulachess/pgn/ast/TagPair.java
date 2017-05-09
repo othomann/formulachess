@@ -27,6 +27,7 @@ public class TagPair extends ASTNode {
 		return this.value;
 	}
 
+	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append(this.name).append(this.value).append(']');

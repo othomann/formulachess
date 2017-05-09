@@ -68,4 +68,26 @@ public class Castle extends Move {
 		// nothing to do
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + (isKingSize ? 1231 : 1237);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Castle other = (Castle) obj;
+		if (isKingSize != other.isKingSize)
+			return false;
+		return super.equals(obj);
+	}
+
 }

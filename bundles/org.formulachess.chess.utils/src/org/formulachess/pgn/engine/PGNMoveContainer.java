@@ -12,7 +12,7 @@ import org.formulachess.engine.MoveConstants;
 import org.formulachess.engine.Piece;
 import org.formulachess.util.HashtableOfLong;
 
-public class PGNMoveContainer implements MoveConstants {
+public class PGNMoveContainer {
 
 	private HashtableOfLong pgnNotationContainer;
 	private HashtableOfLong currentLocaleContainer;
@@ -97,15 +97,18 @@ public class PGNMoveContainer implements MoveConstants {
 		return moveToString(model, move, locale, false, true);
 	}
 
-	private String moveToString(ChessEngine model, long move, Locale locale, boolean columnAmbiguity,
+	private String moveToString(
+			ChessEngine model,
+			final long move,
+			Locale locale,
+			boolean columnAmbiguity,
 			boolean rowAmbiguity) {
 		ResourceBundle bundle = this.bundles.get(locale);
 		StringBuilder builder = new StringBuilder();
-		long info = move;
-		int startingPosition = (int) (info & STARTING_SQUARE_MASK);
-		int endingPosition = (int) ((info & ENDING_SQUARE_MASK) >> ENDING_SQUARE_SHIFT);
-		Piece capturePiece = Piece.getPiece((int) ((info & CAPTURE_PIECE_MASK) >> CAPTURE_PIECE_SHIFT));
-		Piece promotion = Piece.getPiece((int) ((info & PROMOTION_PIECE_MASK) >> PROMOTION_PIECE_SHIFT));
+		int startingPosition = MoveConstants.getStartingSquare(move);
+		int endingPosition = MoveConstants.getEndingSquare(move);
+		Piece capturePiece = Piece.getPiece(MoveConstants.getCaptureValue(move));
+		Piece promotion = Piece.getPiece(MoveConstants.getPromotionValue(move));
 		switch (model.getBoard(startingPosition)) {
 			case WHITE_BISHOP:
 			case BLACK_BISHOP:
@@ -141,16 +144,16 @@ public class PGNMoveContainer implements MoveConstants {
 			default:
 		}
 		if (columnAmbiguity) {
-			builder.append((char) ((startingPosition % 8) + 'a'));
+			builder.append(MoveConstants.getColumn(startingPosition));
 		}
 		if (rowAmbiguity) {
-			builder.append(8 - (startingPosition / 8));
+			builder.append(MoveConstants.getRow(startingPosition));
 		}
 		if (capturePiece != EMPTY) {
 			builder.append("x"); //$NON-NLS-1$
 		}
-		builder.append((char) ((endingPosition % 8) + 'a'));
-		builder.append(8 - (endingPosition / 8));
+		builder.append(MoveConstants.getColumn(endingPosition));
+		builder.append(MoveConstants.getRow(endingPosition));
 		if (promotion != UNDEFINED) {
 			builder.append("="); //$NON-NLS-1$
 			switch (promotion) {

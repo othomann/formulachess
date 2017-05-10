@@ -1,5 +1,22 @@
 package org.formulachess.pgn;
 
+import static org.formulachess.pgn.Scanner.TokenNameBAD_MOVE;
+import static org.formulachess.pgn.Scanner.TokenNameEND_VARIATION;
+import static org.formulachess.pgn.Scanner.TokenNameEXCELLENT_MOVE;
+import static org.formulachess.pgn.Scanner.TokenNameFileName;
+import static org.formulachess.pgn.Scanner.TokenNameGOOD_MOVE;
+import static org.formulachess.pgn.Scanner.TokenNameGREATER_THAN;
+import static org.formulachess.pgn.Scanner.TokenNameINTERESTING_MOVE;
+import static org.formulachess.pgn.Scanner.TokenNameIntegerLiteral;
+import static org.formulachess.pgn.Scanner.TokenNamePieceIdentification;
+import static org.formulachess.pgn.Scanner.TokenNameRankName;
+import static org.formulachess.pgn.Scanner.TokenNameSTART_VARIATION;
+import static org.formulachess.pgn.Scanner.TokenNameSUSPICIOUS_MOVE;
+import static org.formulachess.pgn.Scanner.TokenNameStart_Tag_Section;
+import static org.formulachess.pgn.Scanner.TokenNameStart_nag;
+import static org.formulachess.pgn.Scanner.TokenNameStringLiteral;
+import static org.formulachess.pgn.Scanner.TokenNameVERY_BAD_MOVE;
+
 import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,15 +37,27 @@ import org.formulachess.pgn.ast.TagSection;
 import org.formulachess.pgn.ast.Variation;
 import org.formulachess.util.Util;
 
-/**
- * @author oliviert
- *
- *         To change this generated comment edit the template variable
- *         "typecomment": Window>Preferences>Java>Templates. To enable and
- *         disable the creation of type comments go to
- *         Window>Preferences>Java>Code Generation.
- */
-public class Parser implements ParserBasicInformation, TerminalSymbols {
+public class Parser {
+	
+	// ParserBasicInformation
+	public static final int ERROR_SYMBOL = 51;
+	public static final int MAX_NAME_LENGTH = 27;
+	public static final int NUM_STATES = 59;
+	public static final int NT_OFFSET = 52;
+	public static final int SCOPE_UBOUND = -1;
+	public static final int SCOPE_SIZE = 0;
+	public static final int LA_STATE_OFFSET = 281;
+	public static final int MAX_LA = 1;
+	public static final int NUM_RULES = 55;
+	public static final int NUM_TERMINALS = 32;
+	public static final int NUM_NON_TERMINALS = 20;
+	public static final int NUM_SYMBOLS = 52;
+	public static final int START_STATE = 151;
+	public static final int EOFT_SYMBOL = 24;
+	public static final int EOLT_SYMBOL = 24;
+	public static final int ACCEPT_ACTION = 280;
+	public static final int ERROR_ACTION = 281;
+
 	private static final Logger MyLogger = Logger.getLogger(Parser.class.getCanonicalName());
 	private static final boolean DEBUG = false;
 	// internal data for the automat

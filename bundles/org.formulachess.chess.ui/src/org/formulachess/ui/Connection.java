@@ -183,7 +183,7 @@ public class Connection extends Composite implements Observer {
 		if (lastMove != -1) {
 			this.model.undoMoveWithoutNotification(lastMove);
 
-			int startingSquare = (int) (lastMove & MoveConstants.STARTING_SQUARE_MASK);
+			int startingSquare = MoveConstants.getStartingSquare(lastMove);
 
 			long[] moves = this.model.allMoves(this.model.getBoard(startingSquare));
 

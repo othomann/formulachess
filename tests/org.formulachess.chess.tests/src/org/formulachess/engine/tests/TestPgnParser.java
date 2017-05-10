@@ -3,7 +3,6 @@ package org.formulachess.engine.tests;
 import org.formulachess.pgn.InvalidInputException;
 import org.formulachess.pgn.Parser;
 import org.formulachess.pgn.Scanner;
-import org.formulachess.pgn.TerminalSymbols;
 import org.formulachess.pgn.ast.PGNDatabase;
 
 import junit.framework.Test;
@@ -35,7 +34,7 @@ public class TestPgnParser extends TestCase {
 		Scanner scanner = new Scanner();
 		scanner.setSource(source.toCharArray());
 		scanner.resetTo(0, source.length() - 1);
-		while (scanner.getNextToken() != TerminalSymbols.TokenNameEOF) {
+		while (scanner.getNextToken() != Scanner.TokenNameEOF) {
 			scanner.getCurrentTokenSource();
 		}
 	}

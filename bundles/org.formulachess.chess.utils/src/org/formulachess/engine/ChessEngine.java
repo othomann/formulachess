@@ -98,38 +98,16 @@ public class ChessEngine extends AbstractChessEngine {
 	}
 
 	void addMove(int startingPosition, int endingPosition, Piece capturePieceType, Piece promotedPiece) {
-		long info = 0;
-		info |= startingPosition;
-		info |= endingPosition << ENDING_SQUARE_SHIFT;
-		info |= capturePieceType.getValue() << CAPTURE_PIECE_SHIFT;
-		info |= promotedPiece.getValue() << PROMOTION_PIECE_SHIFT;
-		switch (this.enPassantSquare) {
-			case 16:
-			case 17:
-			case 18:
-			case 19:
-			case 20:
-			case 21:
-			case 22:
-			case 23:
-				info |= (this.enPassantSquare - 15) << EN_PASSANT_SQUARE_SHIFT;
-				break;
-			case 40:
-			case 41:
-			case 42:
-			case 43:
-			case 44:
-			case 45:
-			case 46:
-			case 47:
-				info |= (this.enPassantSquare - 31) << EN_PASSANT_SQUARE_SHIFT;
-				break;
-			default:
-		}
-		info |= (this.whiteCanCastleKingSide ? 1 : 0) << CASTLING_SHIFT;
-		info |= (this.whiteCanCastleQueenSide ? 1 : 0) << (CASTLING_SHIFT + 1);
-		info |= (this.blackCanCastleKingSide ? 1 : 0) << (CASTLING_SHIFT + 2);
-		info |= (this.blackCanCastleQueenSide ? 1 : 0) << (CASTLING_SHIFT + 3);
+		long info = MoveConstants.getMoveValue(
+				startingPosition,
+				endingPosition,
+				capturePieceType,
+				promotedPiece,
+				this.enPassantSquare,
+				this.whiteCanCastleKingSide,
+				this.whiteCanCastleQueenSide,
+				this.blackCanCastleKingSide,
+				this.blackCanCastleQueenSide);
 
 		try {
 			movePiece(info);
@@ -142,7 +120,7 @@ public class ChessEngine extends AbstractChessEngine {
 					return;
 				}
 				if (isBlackInCheck(this.blackKingSquare)) {
-					info |= 1 << CHECK_SHIFT;
+					info = MoveConstants.tagAsCheck(info);
 				}
 			}
 			if (this.getTurn() == BLACK_TURN) {
@@ -154,7 +132,7 @@ public class ChessEngine extends AbstractChessEngine {
 					return;
 				}
 				if (isWhiteInCheck(this.whiteKingSquare)) {
-					info |= 1 << CHECK_SHIFT;
+					info = MoveConstants.tagAsCheck(info);
 				}
 			}
 		} finally {
@@ -1225,8 +1203,8 @@ public class ChessEngine extends AbstractChessEngine {
 	}
 
 	private final void movePiece(long move) {
-		int startingSquare = (int) (move & STARTING_SQUARE_MASK);
-		int endingSquare = (int) ((move & ENDING_SQUARE_MASK) >> ENDING_SQUARE_SHIFT);
+		int startingSquare = MoveConstants.getStartingSquare(move);
+		int endingSquare = MoveConstants.getEndingSquare(move);
 		Piece pieceType = this.board[startingSquare];
 
 		// common behavior
@@ -1268,10 +1246,9 @@ public class ChessEngine extends AbstractChessEngine {
 				this.blackKingSquare = endingSquare;
 				break;
 			case WHITE_PAWN:
-				if ((move & PROMOTION_PIECE_MASK) != 0) {
+				if (MoveConstants.isPromotion(move)) {
 					// promotion
-					this.board[endingSquare] = Piece
-							.getPiece((int) ((move & PROMOTION_PIECE_MASK) >> PROMOTION_PIECE_SHIFT));
+					this.board[endingSquare] = Piece.getPiece(MoveConstants.getPromotionValue(move));
 				}
 				if (endingSquare == this.enPassantSquare) {
 					switch (endingSquare - startingSquare) {
@@ -1286,10 +1263,9 @@ public class ChessEngine extends AbstractChessEngine {
 				}
 				break;
 			case BLACK_PAWN:
-				if ((move & PROMOTION_PIECE_MASK) != 0) {
+				if (MoveConstants.isPromotion(move)) {
 					// promotion
-					this.board[endingSquare] = Piece
-							.getPiece((int) ((move & PROMOTION_PIECE_MASK) >> PROMOTION_PIECE_SHIFT));
+					this.board[endingSquare] = Piece.getPiece(MoveConstants.getPromotionValue(move));
 				}
 				if (endingSquare == this.enPassantSquare) {
 					switch (endingSquare - startingSquare) {
@@ -1308,17 +1284,17 @@ public class ChessEngine extends AbstractChessEngine {
 	}
 
 	private final void movePieceBack(long move) {
-		int startingSquare = (int) (move & STARTING_SQUARE_MASK);
-		int endingSquare = (int) ((move & ENDING_SQUARE_MASK) >> ENDING_SQUARE_SHIFT);
+		int startingSquare = MoveConstants.getStartingSquare(move);
+		int endingSquare = MoveConstants.getEndingSquare(move);
 		Piece pieceType = this.board[endingSquare];
-		Piece capturedPiece = Piece.getPiece((int) ((move & CAPTURE_PIECE_MASK) >> CAPTURE_PIECE_SHIFT));
+		Piece capturedPiece = Piece.getPiece(MoveConstants.getCaptureValue(move));
 
 		// common behavior
 		this.board[startingSquare] = pieceType;
 		this.board[endingSquare] = capturedPiece;
 
 		// handle promotion
-		Piece promotedPiece = Piece.getPiece((int) ((move & PROMOTION_PIECE_MASK) >> PROMOTION_PIECE_SHIFT));
+		Piece promotedPiece = Piece.getPiece(MoveConstants.getPromotionValue(move));
 		if (promotedPiece != UNDEFINED) {
 			if (promotedPiece.getValue() < EMPTY.getValue()) {
 				this.board[startingSquare] = WHITE_PAWN;
@@ -1792,8 +1768,8 @@ public class ChessEngine extends AbstractChessEngine {
 			this.turn = WHITE_TURN;
 		}
 		final long info = move;
-		int startingSquare = (int) (info & STARTING_SQUARE_MASK);
-		int endingSquare = (int) ((info & ENDING_SQUARE_MASK) >> ENDING_SQUARE_SHIFT);
+		int startingSquare = MoveConstants.getStartingSquare(info);
+		int endingSquare = MoveConstants.getEndingSquare(info);
 		Piece pieceType = this.board[startingSquare];
 
 		// common behavior
@@ -1842,10 +1818,9 @@ public class ChessEngine extends AbstractChessEngine {
 				this.blackKingSquare = endingSquare;
 				break;
 			case WHITE_PAWN:
-				if ((info & PROMOTION_PIECE_MASK) != 0) {
+				if (MoveConstants.isPromotion(info)) {
 					// promotion
-					this.board[endingSquare] = Piece
-							.getPiece((int) ((info & PROMOTION_PIECE_MASK) >> PROMOTION_PIECE_SHIFT));
+					this.board[endingSquare] = Piece.getPiece(MoveConstants.getPromotionValue(info));
 				}
 				if (endingSquare == this.enPassantSquare) {
 					switch (endingSquare - startingSquare) {
@@ -1865,10 +1840,9 @@ public class ChessEngine extends AbstractChessEngine {
 				}
 				break;
 			case BLACK_PAWN:
-				if ((info & PROMOTION_PIECE_MASK) != 0) {
+				if (MoveConstants.isPromotion(info)) {
 					// promotion
-					this.board[endingSquare] = Piece
-							.getPiece((int) ((info & PROMOTION_PIECE_MASK) >> PROMOTION_PIECE_SHIFT));
+					this.board[endingSquare] = Piece.getPiece(MoveConstants.getPromotionValue(info));
 				}
 				if (endingSquare == this.enPassantSquare) {
 					switch (endingSquare - startingSquare) {
@@ -2220,17 +2194,17 @@ public class ChessEngine extends AbstractChessEngine {
 			this.turn = WHITE_TURN;
 		}
 		final long info = move;
-		int startingSquare = (int) (info & STARTING_SQUARE_MASK);
-		int endingSquare = (int) ((info & ENDING_SQUARE_MASK) >> ENDING_SQUARE_SHIFT);
+		int startingSquare = MoveConstants.getStartingSquare(info);
+		int endingSquare = MoveConstants.getEndingSquare(info);
 		Piece pieceType = this.board[endingSquare];
-		Piece capturedPiece = Piece.getPiece((int) ((info & CAPTURE_PIECE_MASK) >> CAPTURE_PIECE_SHIFT));
+		Piece capturedPiece = Piece.getPiece(MoveConstants.getCaptureValue(info));
 
 		// common behavior
 		this.board[startingSquare] = pieceType;
 		this.board[endingSquare] = capturedPiece;
 
 		// handle promotion
-		int promotedPiece = (int) ((info & PROMOTION_PIECE_MASK) >> PROMOTION_PIECE_SHIFT);
+		int promotedPiece = MoveConstants.getPromotionValue(info);
 		if (promotedPiece != 0) {
 			if (promotedPiece < 7) {
 				this.board[startingSquare] = WHITE_PAWN;
@@ -2239,12 +2213,12 @@ public class ChessEngine extends AbstractChessEngine {
 			}
 		}
 
-		this.whiteCanCastleKingSide = (((info & CASTLING_MASK) >> CASTLING_SHIFT) & 0x1) == 1 ? true : false;
-		this.whiteCanCastleQueenSide = (((info & CASTLING_MASK) >> CASTLING_SHIFT) & 0x2) == 2 ? true : false;
-		this.blackCanCastleKingSide = (((info & CASTLING_MASK) >> CASTLING_SHIFT) & 0x4) == 4 ? true : false;
-		this.blackCanCastleQueenSide = (((info & CASTLING_MASK) >> CASTLING_SHIFT) & 0x8) == 8 ? true : false;
+		this.whiteCanCastleKingSide = MoveConstants.isWhiteCanCastleKingSide(info);
+		this.whiteCanCastleQueenSide = MoveConstants.isWhiteCanCastleQueenSide(info);
+		this.blackCanCastleKingSide = MoveConstants.isBlackCanCastleKingSide(info);
+		this.blackCanCastleQueenSide = MoveConstants.isBlackCanCastleQueenSide(info);
 
-		int fakeEnPassantSquare = (int) ((info & EN_PASSANT_SQUARE_MASK) >> EN_PASSANT_SQUARE_SHIFT);
+		int fakeEnPassantSquare = MoveConstants.getEnPassantSquare(info);
 		switch (fakeEnPassantSquare) {
 			case 1:
 			case 2:

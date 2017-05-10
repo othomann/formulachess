@@ -5,7 +5,7 @@ import java.io.StringWriter;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class Converter implements MoveConstants {
+public class Converter {
 
 	private Converter() {
 		// default constructor
@@ -18,8 +18,8 @@ public class Converter implements MoveConstants {
 	public static String moveToString(Piece[] board, long move, Locale locale) {
 		ResourceBundle bundle = ResourceBundle.getBundle("org.formulachess.engine.messages", locale); //$NON-NLS-1$
 		StringBuilder buffer = new StringBuilder();
-		int startingPosition = (int) (move & STARTING_SQUARE_MASK);
-		int endingPosition = (int) ((move & ENDING_SQUARE_MASK) >> ENDING_SQUARE_SHIFT);
+		int startingPosition = MoveConstants.getStartingSquare(move);
+		int endingPosition = MoveConstants.getEndingSquare(move);
 		switch (board[startingPosition]) {
 			case WHITE_BISHOP:
 			case BLACK_BISHOP:
@@ -59,8 +59,8 @@ public class Converter implements MoveConstants {
 			return "-"; //$NON-NLS-1$
 		}
 		StringBuilder buffer = new StringBuilder();
-		buffer.append((char) ((squareNumber % 8) + 'a'));
-		buffer.append(8 - (squareNumber / 8));
+		buffer.append(MoveConstants.getColumn(squareNumber));
+		buffer.append(MoveConstants.getRow(squareNumber));
 		return String.valueOf(buffer);
 	}
 

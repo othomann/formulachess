@@ -86,7 +86,7 @@ public class StatusLabel extends Composite implements Observer {
 		if (lastMove != -1) {
 			this.model.undoMoveWithoutNotification(lastMove);
 
-			int startingSquare = (int) (lastMove & MoveConstants.STARTING_SQUARE_MASK);
+			int startingSquare = MoveConstants.getStartingSquare(lastMove);
 			final Piece piece = this.model.getBoard(startingSquare);
 
 			long[] moves = this.model.allMoves(piece);

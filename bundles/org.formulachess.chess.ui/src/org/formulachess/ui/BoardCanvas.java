@@ -82,8 +82,7 @@ public class BoardCanvas extends Canvas implements Observer {
 				int row;
 				int col;
 				for (int i = 0, max = BoardCanvas.this.possibleNextMoves.length; i < max; i++) {
-					int endingSquare = (int) ((BoardCanvas.this.possibleNextMoves[i]
-							& MoveConstants.ENDING_SQUARE_MASK) >> MoveConstants.ENDING_SQUARE_SHIFT);
+					int endingSquare = MoveConstants.getEndingSquare(BoardCanvas.this.possibleNextMoves[i]);
 					if (BoardCanvas.this.orientation == WHITE_BOTTOM) {
 						row = endingSquare % 8;
 						col = endingSquare / 8;
@@ -192,10 +191,10 @@ public class BoardCanvas extends Canvas implements Observer {
 			long[] selectedMoves = new long[4];
 			int selectedMoveIndex = 0;
 			loop: for (int i = 0, max = moves.length; i < max; i++) {
-				final long info = moves[i];
-				if (((info & MoveConstants.STARTING_SQUARE_MASK) == BoardCanvas.this.selectedPieceIndex) && (((info
-						& MoveConstants.ENDING_SQUARE_MASK) >> MoveConstants.ENDING_SQUARE_SHIFT) == BoardCanvas.this.endingSquareIndex)) {
-					if ((info & MoveConstants.PROMOTION_PIECE_MASK) >> MoveConstants.PROMOTION_PIECE_SHIFT != 0) {
+				final long move = moves[i];
+				if ((MoveConstants.getStartingSquare(move) == BoardCanvas.this.selectedPieceIndex)
+						&& (MoveConstants.getEndingSquare(move) == BoardCanvas.this.endingSquareIndex)) {
+					if (MoveConstants.isPromotion(move)) {
 						selectedMoves[selectedMoveIndex++] = moves[i];
 					} else {
 						selectedMoves[selectedMoveIndex++] = moves[i];
@@ -213,9 +212,7 @@ public class BoardCanvas extends Canvas implements Observer {
 					dialog.open();
 					Piece code = dialog.getPromotionCode();
 					for (int i = 0; i < selectedMoveIndex; i++) {
-						if (((selectedMoves[i]
-								& MoveConstants.PROMOTION_PIECE_MASK) >> MoveConstants.PROMOTION_PIECE_SHIFT) == code
-										.getValue()) {
+						if (MoveConstants.getPromotionValue(selectedMoves[i]) == code.getValue()) {
 							BoardCanvas.this.model.playMove(selectedMoves[i]);
 						}
 					}
@@ -426,8 +423,7 @@ public class BoardCanvas extends Canvas implements Observer {
 
 		if (this.possibleNextMoves != null) {
 			for (int i = 0, max = this.possibleNextMoves.length; i < max; i++) {
-				int endingSquare = (int) ((this.possibleNextMoves[i]
-						& MoveConstants.ENDING_SQUARE_MASK) >> MoveConstants.ENDING_SQUARE_SHIFT);
+				int endingSquare = MoveConstants.getEndingSquare(this.possibleNextMoves[i]);
 				if (this.orientation == WHITE_BOTTOM) {
 					row = endingSquare % 8;
 					col = endingSquare / 8;

@@ -17,7 +17,7 @@ public class MateMove implements Comparable<MateMove> {
 	}
 
 	public static boolean isCheck(long move) {
-		return (move & MoveConstants.CHECK_MASK) >> MoveConstants.CHECK_SHIFT != 0;
+		return MoveConstants.isCheck(move);
 	}
 
 	/*
@@ -42,7 +42,7 @@ public class MateMove implements Comparable<MateMove> {
 	 */
 	private int category(MateMove moveArg) {
 		long moveValue = moveArg.move;
-		if (((moveValue & MoveConstants.CAPTURE_PIECE_MASK) >> MoveConstants.CAPTURE_PIECE_SHIFT) != 0) {
+		if (MoveConstants.getCaptureValue(moveValue) != 0) {
 			return CAPTURE;
 		}
 		if (MateMove.isCheck(moveValue)) {

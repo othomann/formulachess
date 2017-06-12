@@ -13996,3 +13996,17 @@
 4. Qf7+ Kd8 5. Ne6#
 1-0
 
+[Event "Position747"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "?"]
+[Black "?"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "2q5/2pp4/3pr3/4pb2/K1p2pn1/2bn1kp1/3pr1R1/6BB w - - 0 1"]
+
+1. Rf2+ Ke3 2. Rf3+ Ke4 3. Re3+ Kd4 4. Re4+ Kd5 5. Rd4+ Kc5 6. Rd5+ Kc6 7. Rc5+ Kb6 8. Rc6+ Kb7 9. Rb6+ Ka7 10. Rb7+ Ka8
+(10...Ka6 11. Ra7#)
+11. Ra7+ Kb8 12. Ra8#
+1-0

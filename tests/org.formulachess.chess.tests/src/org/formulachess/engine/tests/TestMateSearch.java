@@ -3056,4 +3056,8 @@ public class TestMateSearch extends TestCase {
 	public void test747() {
 		checkMate("Position747", "2q5/2pp4/3pr3/4pb2/K1p2pn1/2bn1kp1/3pr1R1/6BB w - - 0 1", 12); //$NON-NLS-1$ //$NON-NLS-2$
 	}
+
+	public void test748() {
+		checkMate("Position748", "1q2r1k1/2p1bpp1/8/1r6/8/1B6/1B6/1K2Q2R w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
 }

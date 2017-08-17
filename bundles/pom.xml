@@ -1,20 +1,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <artifactId>org.formulachess.tycho.bundles</artifactId>
-    <packaging>pom</packaging>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>org.formulachess.tycho.bundles</artifactId>
+	<packaging>pom</packaging>
 
-    <parent>
-        <groupId>org.formulachess.tycho</groupId>
-        <artifactId>org.formulachess.tycho.root</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-    </parent>
+	<parent>
+		<groupId>org.formulachess.tycho</groupId>
+		<artifactId>org.formulachess.tycho.root</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
 
-    <modules>
-        <module>org.formulachess.chess.utils</module>
-        <module>org.formulachess.chess.ui</module>
-        <module>org.formulachess.chess.puzzles</module>
-        <module>org.formulachess.chess.puzzles.problems</module>
-    </modules>
-
+	<modules>
+		<module>org.formulachess.chess.utils</module>
+		<module>org.formulachess.chess.ui</module>
+		<module>org.formulachess.chess.puzzles</module>
+		<module>org.formulachess.chess.puzzles.problems</module>
+	</modules>
 </project>

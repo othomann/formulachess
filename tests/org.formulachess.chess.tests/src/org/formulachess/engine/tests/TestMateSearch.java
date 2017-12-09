@@ -78,9 +78,7 @@ public class TestMateSearch extends TestCase {
 		if (DEBUG) {
 			MyLogger.log(Level.INFO, String.valueOf(buffer));
 		}
-		try (PrintWriter writer = new PrintWriter(new FileWriter(
-				"/Users/olivier/Documents/workspaces/echecs/org.formulachess.chess.tests/src/org/formulachess/engine/tests/solutions2.pgn", //$NON-NLS-1$
-				true))) {
+		try (PrintWriter writer = new PrintWriter(new FileWriter("solutions2.pgn", true))) //$NON-NLS-1$
 			writer.println(String.valueOf(buffer));
 			writer.flush();
 		} catch (IOException e) {

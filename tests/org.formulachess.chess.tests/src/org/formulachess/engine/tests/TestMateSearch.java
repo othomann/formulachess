@@ -78,7 +78,7 @@ public class TestMateSearch extends TestCase {
 		if (DEBUG) {
 			MyLogger.log(Level.INFO, String.valueOf(buffer));
 		}
-		try (PrintWriter writer = new PrintWriter(new FileWriter("solutions2.pgn", true))) //$NON-NLS-1$
+		try (PrintWriter writer = new PrintWriter(new FileWriter("solutions2.pgn", true))) { //$NON-NLS-1$
 			writer.println(String.valueOf(buffer));
 			writer.flush();
 		} catch (IOException e) {

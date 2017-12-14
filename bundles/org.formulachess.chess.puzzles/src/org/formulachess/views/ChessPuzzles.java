@@ -428,7 +428,7 @@ public class ChessPuzzles {
 			Object[] arguments = new Object[] { null };
 			for (int i = 0, max = this.games.length; i < max; i++) {
 				TableItem item = new TableItem(this.problemsTable, SWT.NONE);
-				arguments[0] = new Integer(i + 1);
+				arguments[0] = Integer.valueOf(i + 1);
 				item.setText(form.format(arguments));
 			}
 		}

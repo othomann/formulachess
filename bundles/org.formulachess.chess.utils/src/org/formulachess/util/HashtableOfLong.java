@@ -189,11 +189,11 @@ public final class HashtableOfLong implements Iterable<String> {
 
 	@Override
 	public String toString() {
-		String s = ""; //$NON-NLS-1$
+		StringBuilder builder = new StringBuilder();
 		String key;
 		for (int i = 0, length = this.valueTable.length; i < length; i++)
 			if ((key = this.keyTable[i]) != null)
-				s += new String(key) + " -> " + this.valueTable[i] + "\n"; //$NON-NLS-2$ //$NON-NLS-1$
-		return s;
+				builder.append(key).append(" -> ").append(this.valueTable[i]).append("\n"); //$NON-NLS-2$ //$NON-NLS-1$
+		return String.valueOf(builder);
 	}
 }

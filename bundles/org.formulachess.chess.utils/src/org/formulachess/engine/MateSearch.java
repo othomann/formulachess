@@ -109,6 +109,6 @@ public class MateSearch {
 			builder.append('\t');
 		}
 		builder.append(move).append("\n");
-		MY_LOGGER.log(Level.INFO, String.valueOf(builder));
+		MY_LOGGER.log(Level.INFO, () -> String.valueOf(builder));
 	}
 }

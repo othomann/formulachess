@@ -76,7 +76,7 @@ public class TestMateSearch extends TestCase {
 			buffer.append("0-1").append(LINE_SEPARATOR); //$NON-NLS-1$
 		}
 		if (DEBUG) {
-			MyLogger.log(Level.INFO, String.valueOf(buffer));
+			MyLogger.log(Level.INFO, () -> String.valueOf(buffer));
 		}
 		try (PrintWriter writer = new PrintWriter(new FileWriter("solutions2.pgn", true))) { //$NON-NLS-1$
 			writer.println(String.valueOf(buffer));

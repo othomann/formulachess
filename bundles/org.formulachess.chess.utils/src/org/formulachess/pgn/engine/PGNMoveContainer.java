@@ -141,6 +141,7 @@ public class PGNMoveContainer {
 				if (capturePiece != EMPTY) {
 					builder.append((char) ((startingPosition % 8) + 'a'));
 				}
+				break;
 			default:
 		}
 		if (columnAmbiguity) {

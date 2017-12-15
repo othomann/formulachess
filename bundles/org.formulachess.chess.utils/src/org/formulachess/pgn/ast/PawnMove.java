@@ -79,9 +79,7 @@ public class PawnMove extends Move {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof PawnMove))
 			return false;
 		PawnMove other = (PawnMove) obj;
 		if (isPromotion != other.isPromotion)

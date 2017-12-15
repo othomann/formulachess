@@ -82,7 +82,7 @@ public class TestMateSearch extends TestCase {
 			writer.println(String.valueOf(buffer));
 			writer.flush();
 		} catch (IOException e) {
-			MyLogger.log(Level.SEVERE, "Could not save mate", e); //$NON-NLS-1$
+			MyLogger.log(Level.SEVERE, e, () -> "Could not save mate"); //$NON-NLS-1$
 		}
 	}
 
@@ -3062,9 +3062,6 @@ public class TestMateSearch extends TestCase {
 	public void test749() {
 		checkMate("Position749", "3r2k1/1b3p1p/p4PpQ/2q1P3/2p5/8/P1r2RPP/5RK1 b - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
 	}
-	/*public void test750() {
-		checkMate("Position750", "r3rbnk/p2bq1np/2p1p2B/6N1/PppPPN1Q/8/1P4BP/3R2RK b - - 0 1", 5); //$NON-NLS-1$ //$NON-NLS-2$
-	}*/
 	public void test750() {
 		checkMate("Position750", "2r4k/p5p1/3Qq2p/4N3/Pp3n2/6P1/PK5P/3R4 b - - 0 1", 3); //$NON-NLS-1$ //$NON-NLS-2$
 	}

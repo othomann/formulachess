@@ -1316,6 +1316,7 @@ public class ChessEngine extends AbstractChessEngine {
 						case 58:
 							this.board[56] = WHITE_ROOK;
 							this.board[59] = EMPTY;
+							break;
 						default:
 					}
 				}
@@ -1332,6 +1333,7 @@ public class ChessEngine extends AbstractChessEngine {
 						case 2:
 							this.board[0] = BLACK_ROOK;
 							this.board[3] = EMPTY;
+							break;
 						default:
 					}
 				}
@@ -1901,6 +1903,7 @@ public class ChessEngine extends AbstractChessEngine {
 				break;
 			case BLACK_KING:
 				this.blackKingSquare = i;
+				break;
 			default:
 		}
 	}

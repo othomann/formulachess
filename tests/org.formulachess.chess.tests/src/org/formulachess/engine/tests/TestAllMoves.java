@@ -42,7 +42,7 @@ public class TestAllMoves extends TestCase {
 			moves = model.allMoves();
 		}
 		if (DEBUG) {
-			myLogger.log(Level.INFO, "spent " + (System.currentTimeMillis() - time) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
+			myLogger.log(Level.SEVERE, () -> "spent " + (System.currentTimeMillis() - time) + "ms");//$NON-NLS-1$//$NON-NLS-2$
 		}
 		return moves;
 	}
@@ -50,13 +50,13 @@ public class TestAllMoves extends TestCase {
 	public void display(String testName, ChessEngine model, long[] moves, String expectedMoves) {
 		PGNMoveContainer pgnMoveContainer = new PGNMoveContainer(model, moves, Locale.FRANCE);
 		if (DEBUG) {
-			myLogger.log(Level.INFO, "================ START " + testName + " ===================================="); //$NON-NLS-1$ //$NON-NLS-2$
+			myLogger.log(Level.INFO, () -> "================ START " + testName + " ===================================="); //$NON-NLS-1$ //$NON-NLS-2$
 			myLogger.log(Level.INFO, model.toString());
 			myLogger.log(Level.INFO, pgnMoveContainer.toString());
 		}
 		assertEquals(WRONG_MOVES, expectedMoves, pgnMoveContainer.toString());
 		if (DEBUG) {
-			myLogger.log(Level.INFO, "================ END " + testName + " ===================================="); //$NON-NLS-1$ //$NON-NLS-2$
+			myLogger.log(Level.INFO, () -> "================ END " + testName + " ===================================="); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
@@ -70,7 +70,7 @@ public class TestAllMoves extends TestCase {
 
 	private void displayTime(long time) {
 		if (DEBUG) {
-			myLogger.log(Level.INFO, "spent " + (System.currentTimeMillis() - time) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
+			myLogger.log(Level.INFO, () -> "spent " + (System.currentTimeMillis() - time) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 

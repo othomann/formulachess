@@ -66,9 +66,7 @@ public class PieceMove extends Move {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof PieceMove))
 			return false;
 		PieceMove other = (PieceMove) obj;
 		if (pieceIdentification != other.pieceIdentification)

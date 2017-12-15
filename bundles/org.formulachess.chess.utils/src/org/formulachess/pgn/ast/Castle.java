@@ -80,9 +80,7 @@ public class Castle extends Move {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof Castle))
 			return false;
 		Castle other = (Castle) obj;
 		if (isKingSize != other.isKingSize)

@@ -3065,4 +3065,19 @@ public class TestMateSearch extends TestCase {
 	public void test750() {
 		checkMate("Position750", "2r4k/p5p1/3Qq2p/4N3/Pp3n2/6P1/PK5P/3R4 b - - 0 1", 3); //$NON-NLS-1$ //$NON-NLS-2$
 	}
+	public void test751() {
+		checkMate("Position751", "k1r5/p6r/1b6/1N3n2/5Qp1/3B1pBq/5P2/R5K1 w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test752() {
+		checkMate("Position752", "5rk1/ppp2ppp/2nr4/5Q2/2B5/5N2/PqPB1PPP/2RKR3 w - - 0 1", 2); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test753() {
+		checkMate("Position753", "1q2r1k1/2p1bpp1/8/1r6/8/1B6/1B6/1K2Q2R w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test754() {
+		checkMate("Position754", "5rk1/4Rp1p/5QpB/q4n2/8/1P7/r5PP/3R3K w - - 0 1", 3); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test755() {
+		checkMate("Position755", "8/6B1/8/4p3/3P4/PKP5/1PB5/k7 w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
 }

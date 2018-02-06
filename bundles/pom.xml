@@ -11,6 +11,7 @@
 	</parent>
 
 	<modules>
+		<module>org.formulachess.chess.pgn</module>
 		<module>org.formulachess.chess.utils</module>
 		<module>org.formulachess.chess.ui</module>
 		<module>org.formulachess.chess.puzzles</module>

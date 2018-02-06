@@ -1,5 +1,7 @@
 package org.formulachess.pgn.ast;
 
+import org.formulachess.pgn.ASTVisitor;
+
 public class Variation extends ASTNode {
 
 	private Move[] moves;
@@ -12,8 +14,8 @@ public class Variation extends ASTNode {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append('(');
-		for (int i = 0, max = this.moves.length; i < max; i++) {
-			Move move = this.moves[i];
+		int i= 0 ;
+		for (Move move : this.getMoves()) {
 			if (i == 0 && !move.isWhiteMove()) {
 				builder.append(move.getMoveIndication()).append("...") //$NON-NLS-1$
 						.append(move);
@@ -21,6 +23,7 @@ public class Variation extends ASTNode {
 				builder.append(move);
 			}
 			builder.append(' ');
+			i++;
 		}
 		builder.append(')');
 		return String.valueOf(builder);
@@ -42,4 +45,13 @@ public class Variation extends ASTNode {
 		return this.moves;
 	}
 
+	@Override
+	public void accept(ASTVisitor visitor) {
+		if (visitor.visit(this)) {
+			for (Move move : this.getMoves()) {
+				move.accept(visitor);
+			}
+		}
+		visitor.endVisit(this);
+	}
 }

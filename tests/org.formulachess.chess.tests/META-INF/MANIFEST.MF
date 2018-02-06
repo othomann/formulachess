@@ -11,6 +11,7 @@ Eclipse-LazyStart: true
 Require-Bundle: org.eclipse.core.runtime,
  org.formulachess.chess.utils,
  org.junit,
- org.eclipse.swt
+ org.formulachess.chess.pgn;bundle-version="1.0.0",
+ org.antlr.runtime;bundle-version="4.7.1"
 Export-Package: org.formulachess.engine.tests
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

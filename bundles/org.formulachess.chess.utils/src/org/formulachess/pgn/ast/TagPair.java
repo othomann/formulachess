@@ -1,5 +1,7 @@
 package org.formulachess.pgn.ast;
 
+import org.formulachess.pgn.ASTVisitor;
+
 public class TagPair extends ASTNode {
 	private char[] name;
 	private char[] value;
@@ -30,7 +32,13 @@ public class TagPair extends ASTNode {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append(this.name).append(this.value).append(']');
+		builder.append('[').append(this.getName()).append(this.getValue()).append(']');
 		return String.valueOf(builder);
+	}
+
+	@Override
+	public void accept(ASTVisitor visitor) {
+		visitor.visit(this);
+		visitor.endVisit(this);
 	}
 }

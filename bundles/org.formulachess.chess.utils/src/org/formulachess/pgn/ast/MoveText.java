@@ -1,5 +1,7 @@
 package org.formulachess.pgn.ast;
 
+import org.formulachess.pgn.ASTVisitor;
+
 public class MoveText extends ASTNode {
 
 	private Move[] moves;
@@ -21,6 +23,15 @@ public class MoveText extends ASTNode {
 	}
 
 	/**
+	 * Returns the gameTermination.
+	 * 
+	 * return the gameTermination
+	 */
+	public GameTermination getGameTermination() {
+		return this.gameTermination;
+	}
+
+	/**
 	 * Sets the moves.
 	 * 
 	 * @param moves
@@ -30,6 +41,20 @@ public class MoveText extends ASTNode {
 		this.moves = moves;
 	}
 
+	/**
+	 * Returns the comment
+	 * 
+	 * @return the comment
+	 */
+	public Comment getComment() {
+		return this.comment;
+	}
+
+	/**
+	 * Set the comment
+	 *
+	 * @param the given comment
+	 */
 	public void setComment(Comment comment) {
 		this.comment = comment;
 	}
@@ -40,15 +65,16 @@ public class MoveText extends ASTNode {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		if (this.comment != null) {
-			builder.append(this.comment);
+		Comment currentComment = this.getComment();
+		if (currentComment != null) {
+			builder.append(currentComment);
 			builder.append(LINE_SEPARATOR);
 		}
-		for (int i = 0, max = this.moves == null ? 0 : this.moves.length; i < max; i++) {
-			builder.append(this.moves[i]).append(' ');
+		for (Move move: this.getMoves()) {
+			builder.append(move).append(' ');
 		}
 		builder.append(LINE_SEPARATOR);
-		builder.append(this.gameTermination);
+		builder.append(this.getGameTermination());
 		return String.valueOf(builder);
 	}
 
@@ -68,4 +94,24 @@ public class MoveText extends ASTNode {
 		return this.moves;
 	}
 
+	@Override
+	public void accept(ASTVisitor visitor) {
+		if (visitor.visit(this)) {
+			Comment comment = this.getComment();
+			if (comment != null) {
+				comment.accept(visitor);
+			}
+			Move[] moves = this.getMoves();
+			if (moves != null) {
+				for (Move move : moves) {
+					move.accept(visitor);
+				}
+			}
+			GameTermination termination = this.getGameTermination();
+			if (termination != null) {
+				termination.accept(visitor);
+			}
+		}
+		visitor.endVisit(this);
+	}
 }

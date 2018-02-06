@@ -1,5 +1,7 @@
 package org.formulachess.pgn.ast;
 
+import org.formulachess.pgn.ASTVisitor;
+
 public class PGNDatabase extends ASTNode {
 
 	private static final int INITIAL_SIZE = 7;
@@ -27,14 +29,24 @@ public class PGNDatabase extends ASTNode {
 		return this.games[i];
 	}
 
+	@Override
+	public void accept(ASTVisitor visitor) {
+		if (visitor.visit(this)) {
+			for (PGNGame game : this.getPGNGames()) {
+				game.accept(visitor);
+			}
+		}
+		visitor.endVisit(this);
+	}
+
 	/**
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		for (int i = 0, max = this.gamesCounter; i < max; i++) {
-			builder.append(this.games[i]).append(LINE_SEPARATOR).append(LINE_SEPARATOR);
+		for (PGNGame game : this.getPGNGames()) {
+			builder.append(game).append(LINE_SEPARATOR).append(LINE_SEPARATOR);
 		}
 		return String.valueOf(builder);
 	}

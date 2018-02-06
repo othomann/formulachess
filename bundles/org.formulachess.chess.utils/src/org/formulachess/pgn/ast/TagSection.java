@@ -2,6 +2,8 @@ package org.formulachess.pgn.ast;
 
 import java.util.HashMap;
 
+import org.formulachess.pgn.ASTVisitor;
+
 public class TagSection extends ASTNode {
 
 	public static final String TAG_SITE = "[Site"; //$NON-NLS-1$
@@ -60,10 +62,19 @@ public class TagSection extends ASTNode {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		for (int i = 0, max = this.tagPairCounter; i < max; i++) {
-			builder.append(this.tagPairs[i]).append(LINE_SEPARATOR);
+		for (TagPair tagPair : this.getTagPairs()) {
+			builder.append(tagPair).append(LINE_SEPARATOR);
 		}
 		return String.valueOf(builder);
 	}
 
+	@Override
+	public void accept(ASTVisitor visitor) {
+		if (visitor.visit(this)) {
+			for (TagPair pair : this.getTagPairs()) {
+				pair.accept(visitor);
+			}
+		}
+		visitor.endVisit(this);
+	}
 }

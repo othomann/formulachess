@@ -110,30 +110,36 @@ public class ChessEngine extends AbstractChessEngine {
 				this.blackCanCastleQueenSide);
 
 		try {
-			movePiece(info);
-			if (this.turn == WHITE_TURN) {
-				if (startingPosition == this.whiteKingSquare) {
-					if (isWhiteInCheck(endingPosition)) {
-						return;
+			switch(this.getTurn()) {
+				case WHITE_TURN :
+					if (startingPosition == this.whiteKingSquare && Math.abs(startingPosition - endingPosition) == 2) {
+						info = MoveConstants.tagAsCastle(info);
 					}
-				} else if (isWhiteInCheck(this.whiteKingSquare)) {
-					return;
-				}
-				if (isBlackInCheck(this.blackKingSquare)) {
-					info = MoveConstants.tagAsCheck(info);
-				}
+					else;
+				case BLACK_TURN :
+					if (startingPosition == this.blackKingSquare && Math.abs(startingPosition - endingPosition) == 2) {
+						info = MoveConstants.tagAsCastle(info);
+					}
+					else;
 			}
-			if (this.getTurn() == BLACK_TURN) {
-				if (startingPosition == this.blackKingSquare) {
-					if (isBlackInCheck(endingPosition)) {
+			movePiece(info);
+			switch(this.getTurn()) {
+				case WHITE_TURN :
+					if (isWhiteInCheck(this.whiteKingSquare)) {
 						return;
 					}
-				} else if (isBlackInCheck(this.blackKingSquare)) {
-					return;
-				}
-				if (isWhiteInCheck(this.whiteKingSquare)) {
-					info = MoveConstants.tagAsCheck(info);
-				}
+					if (isBlackInCheck(this.blackKingSquare)) {
+						info = MoveConstants.tagAsCheck(info);
+					}
+					else;
+				case BLACK_TURN :
+					if (isBlackInCheck(this.blackKingSquare)) {
+						return;
+					}
+					if (isWhiteInCheck(this.whiteKingSquare)) {
+						info = MoveConstants.tagAsCheck(info);
+					}
+					else;
 			}
 		} finally {
 			movePieceBack(info);

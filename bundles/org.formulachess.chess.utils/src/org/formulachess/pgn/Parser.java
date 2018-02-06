@@ -60,7 +60,7 @@ public class Parser {
 
 	private static final Logger MyLogger = Logger.getLogger(Parser.class.getCanonicalName());
 	private static final boolean DEBUG = false;
-	// internal data for the automat
+	// internal data for the automaton
 	protected static final int StackIncrement = 255;
 	protected int stateStackTop;
 	protected int[] stack = new int[StackIncrement];
@@ -220,7 +220,6 @@ public class Parser {
 			this.scanner.clearComments();
 		}
 		switch (type) {
-			case TokenNameStart_Tag_Section:
 			case TokenNameStringLiteral:
 			case TokenNamePieceIdentification:
 			case TokenNameBAD_MOVE:
@@ -232,6 +231,9 @@ public class Parser {
 			case TokenNameGOOD_MOVE:
 			case TokenNameFileName:
 			case TokenNameRankName:
+				pushOnNodeInformationStack(this.scanner.getCurrentTokenSource());
+				break;
+			case TokenNameStart_Tag_Section:
 				pushOnNodeInformationStack(this.scanner.getCurrentTokenSource());
 				break;
 			case TokenNameIntegerLiteral:

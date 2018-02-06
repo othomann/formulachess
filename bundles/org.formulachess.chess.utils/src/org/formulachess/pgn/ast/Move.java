@@ -3,6 +3,8 @@ package org.formulachess.pgn.ast;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import org.formulachess.pgn.ASTVisitor;
+
 public abstract class Move extends ASTNode {
 	private static final Variation[] EMPTY_VARIATIONS = new Variation[0];
 
@@ -182,8 +184,8 @@ public abstract class Move extends ASTNode {
 	@Override
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();
-		if (this.isWhiteMove) {
-			buffer.append(this.moveIndication).append('.').append(' ');
+		if (this.isWhiteMove()) {
+			buffer.append(this.getMoveIndication()).append('.').append(' ');
 		}
 		buffer.append(getMoveNotation(null));
 		return String.valueOf(buffer);
@@ -297,4 +299,9 @@ public abstract class Move extends ASTNode {
 		return this.comment;
 	}
 
+	@Override
+	public void accept(ASTVisitor visitor) {
+		visitor.visit(this);
+		visitor.endVisit(this);
+	}
 }

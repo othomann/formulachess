@@ -3,6 +3,8 @@ package org.formulachess.pgn.ast;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.formulachess.pgn.ASTVisitor;
+
 public abstract class ASTNode {
 
 	public static final String LINE_SEPARATOR = System.getProperty("line.separator"); //$NON-NLS-1$
@@ -41,4 +43,5 @@ public abstract class ASTNode {
 		}
 	}
 
+	public abstract void accept(ASTVisitor visitor);
 }

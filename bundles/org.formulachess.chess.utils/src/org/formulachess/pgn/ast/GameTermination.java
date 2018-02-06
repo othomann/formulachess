@@ -1,5 +1,7 @@
 package org.formulachess.pgn.ast;
 
+import org.formulachess.pgn.ASTVisitor;
+
 public class GameTermination extends ASTNode {
 
 	public static final GameTermination BLACK_VICTORY = new GameTermination("0-1"); //$NON-NLS-1$
@@ -13,6 +15,12 @@ public class GameTermination extends ASTNode {
 		this.result = result;
 	}
 
+	@Override
+	public void accept(ASTVisitor visitor) {
+		visitor.visit(this);
+		visitor.endVisit(this);
+	}
+
 	/**
 	 * @see java.lang.Object#toString()
 	 */
@@ -20,5 +28,4 @@ public class GameTermination extends ASTNode {
 	public String toString() {
 		return this.result;
 	}
-
 }

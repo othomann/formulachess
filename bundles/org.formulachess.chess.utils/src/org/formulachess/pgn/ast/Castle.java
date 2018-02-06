@@ -2,6 +2,8 @@ package org.formulachess.pgn.ast;
 
 import java.util.ResourceBundle;
 
+import org.formulachess.pgn.ASTVisitor;
+
 public class Castle extends Move {
 
 	private boolean isKingSize;
@@ -88,4 +90,9 @@ public class Castle extends Move {
 		return super.equals(obj);
 	}
 
+	@Override
+	public void accept(ASTVisitor visitor) {
+		visitor.visit(this);
+		visitor.endVisit(this);
+	}
 }

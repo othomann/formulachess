@@ -1,8 +1,38 @@
 package org.formulachess.engine;
 
 /**
- * 31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4
- * 3 2 1 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1
+ *  1: starting square
+ *  2: starting square
+ *  3: starting square
+ *  4: starting square
+ *  5: starting square
+ *  6: starting square
+ *  7: ending square
+ *  8: ending square
+ *  9: ending square
+ * 10: ending square
+ * 11: ending square
+ * 12: ending square
+ * 13: capture piece
+ * 14: capture piece
+ * 15: capture piece
+ * 16: capture piece
+ * 17: promotion piece
+ * 18: promotion piece
+ * 19: promotion piece
+ * 20: promotion piece
+ * 21: en passant square
+ * 22: en passant square
+ * 23: en passant square
+ * 24: en passant square
+ * 25: en passant square
+ * 26: castling
+ * 27: castling
+ * 28: castling
+ * 29: castling
+ * 30: check
+ * 31: castle
+ * 32:
  */
 public class MoveConstants {
 	private static final int STARTING_SQUARE_MASK = 0x3F;
@@ -18,6 +48,8 @@ public class MoveConstants {
 	private static final int CASTLING_MASK = 0xF << CASTLING_SHIFT;
 	private static final int CHECK_SHIFT = 0x1D;
 	private static final int CHECK_MASK = 0x1 << CHECK_SHIFT;
+	private static final int CASTLE_SHIFT = 0x1E;
+	private static final int CASTLE_MASK = 0x1 << CASTLE_SHIFT;
 
 	private MoveConstants() {
 		// default constructor
@@ -61,10 +93,6 @@ public class MoveConstants {
 
 	public static boolean isPromotion(long move) {
 		return (move & PROMOTION_PIECE_MASK) != 0;
-	}
-
-	public static long setStartingSquare(int startingPosition) {
-		return startingPosition;
 	}
 
 	public static long getMoveValue(
@@ -116,6 +144,10 @@ public class MoveConstants {
 		return info | 1 << CHECK_SHIFT;
 	}
 
+	public static long tagAsCastle(long info) {
+		return info | 1 << CASTLE_SHIFT;
+	}
+
 	public static Object getColumn(int squareNumber) {
 		return (char) ((squareNumber % 8) + 'a');
 	}
@@ -126,5 +158,9 @@ public class MoveConstants {
 
 	public static boolean isCheck(long move) {
 		return (move & MoveConstants.CHECK_MASK) >> MoveConstants.CHECK_SHIFT != 0;
+	}
+
+	public static boolean isCastle(long move) {
+		return (move & MoveConstants.CASTLE_MASK) >> MoveConstants.CASTLE_SHIFT != 0;
 	}
 }

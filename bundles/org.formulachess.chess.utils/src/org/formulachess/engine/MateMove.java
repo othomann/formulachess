@@ -2,9 +2,10 @@ package org.formulachess.engine;
 
 public class MateMove implements Comparable<MateMove> {
 
-	private static final int DEFAULT = 0x01;
-	private static final int CAPTURE = 0x100;
-	private static final int CHECK = 0x10;
+	private static final int DEFAULT = 0x1;
+	private static final int CAPTURE = 0x1000;
+	private static final int CHECK = 0x100;
+	private static final int CASTLE = 0x10;
 
 	private long move;
 	private int mobility;
@@ -20,6 +21,10 @@ public class MateMove implements Comparable<MateMove> {
 		return MoveConstants.isCheck(move);
 	}
 
+	public static boolean isCastle(long move) {
+		return MoveConstants.isCastle(move);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -31,7 +36,7 @@ public class MateMove implements Comparable<MateMove> {
 		int otherCategory = category(otherMove);
 
 		if (category == otherCategory) {
-			return this.mobility - otherMove.mobility;
+			return otherMove.mobility - this.mobility ;
 		}
 		return category - otherCategory;
 	}
@@ -42,13 +47,20 @@ public class MateMove implements Comparable<MateMove> {
 	 */
 	private int category(MateMove moveArg) {
 		long moveValue = moveArg.move;
-		if (MoveConstants.getCaptureValue(moveValue) != 0) {
+		if (MateMove.isCapture(moveValue)) {
 			return CAPTURE;
 		}
 		if (MateMove.isCheck(moveValue)) {
 			return CHECK;
 		}
+		if (MateMove.isCastle(moveValue)) {
+			return CASTLE;
+		}
 		return DEFAULT;
+	}
+
+	private static boolean isCapture(long moveValue) {
+		return MoveConstants.getCaptureValue(moveValue) != Piece.EMPTY.getValue();
 	}
 
 	@Override

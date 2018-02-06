@@ -1,5 +1,7 @@
 package org.formulachess.pgn.ast;
 
+import org.formulachess.pgn.ASTVisitor;
+
 public class Comment extends ASTNode {
 	private char[] contents;
 
@@ -9,6 +11,12 @@ public class Comment extends ASTNode {
 
 	public boolean isLineComment() {
 		return this.contents != null && this.contents[0] == ';';
+	}
+
+	@Override
+	public void accept(ASTVisitor visitor) {
+		visitor.visit(this);
+		visitor.endVisit(this);
 	}
 
 	@Override

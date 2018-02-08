@@ -30,7 +30,7 @@ public class MateSearch {
 		if (sort && next.length > 1) {
 			Arrays.sort(next, new Comparator<MateMove>() {
 				public int compare(MateMove o1, MateMove o2) {
-					return -o1.compareTo(o2);
+					return o1.compareTo(o2);
 				}
 			});
 		}

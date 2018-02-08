@@ -3,8 +3,8 @@ package org.formulachess.engine;
 public class MateMove implements Comparable<MateMove> {
 
 	private static final int DEFAULT = 0x1;
-	private static final int CAPTURE = 0x1000;
-	private static final int CHECK = 0x100;
+	private static final int CAPTURE = 0x100;
+	private static final int CHECK = 0x1000;
 	private static final int CASTLE = 0x10;
 
 	private long move;
@@ -35,8 +35,17 @@ public class MateMove implements Comparable<MateMove> {
 		int category = category(this);
 		int otherCategory = category(otherMove);
 
-		if (category == otherCategory) {
-			return otherMove.mobility - this.mobility ;
+		if (this.mobility == 0) {
+			if (otherMove.mobility == 0) {
+				return category - otherCategory;
+			}
+			return -1;
+		} else if (otherMove.mobility == 0) {
+			return 1;
+		}
+
+		if (this.mobility != otherMove.mobility) {
+			return this.mobility - otherMove.mobility;
 		}
 		return category - otherCategory;
 	}
@@ -47,16 +56,17 @@ public class MateMove implements Comparable<MateMove> {
 	 */
 	private int category(MateMove moveArg) {
 		long moveValue = moveArg.move;
+		int value = DEFAULT;
 		if (MateMove.isCapture(moveValue)) {
-			return CAPTURE;
+			value |= CAPTURE;
 		}
 		if (MateMove.isCheck(moveValue)) {
-			return CHECK;
+			value |= CHECK;
 		}
 		if (MateMove.isCastle(moveValue)) {
-			return CASTLE;
+			value |= CASTLE;
 		}
-		return DEFAULT;
+		return value;
 	}
 
 	private static boolean isCapture(long moveValue) {

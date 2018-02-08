@@ -115,37 +115,39 @@ public class ChessEngine extends AbstractChessEngine {
 					if (startingPosition == this.whiteKingSquare && Math.abs(startingPosition - endingPosition) == 2) {
 						info = MoveConstants.tagAsCastle(info);
 					}
-					else;
+					break;
 				case BLACK_TURN :
 					if (startingPosition == this.blackKingSquare && Math.abs(startingPosition - endingPosition) == 2) {
 						info = MoveConstants.tagAsCastle(info);
 					}
-					else;
+					break;
 			}
 			movePiece(info);
-			if (this.turn == WHITE_TURN) {
-				if (startingPosition == this.whiteKingSquare) {
-					if (isWhiteInCheck(endingPosition)) {
+			switch(this.getTurn()) {
+				case WHITE_TURN :
+					if (startingPosition == this.whiteKingSquare) {
+						if (isWhiteInCheck(endingPosition)) {
+							return;
+						}
+					} else if (isWhiteInCheck(this.whiteKingSquare)) {
 						return;
 					}
-				} else if (isWhiteInCheck(this.whiteKingSquare)) {
-					return;
-				}
-				if (isBlackInCheck(this.blackKingSquare)) {
-					info = MoveConstants.tagAsCheck(info);
-				}
-			}
-			if (this.getTurn() == BLACK_TURN) {
-				if (startingPosition == this.blackKingSquare) {
-					if (isBlackInCheck(endingPosition)) {
+					if (isBlackInCheck(this.blackKingSquare)) {
+						info = MoveConstants.tagAsCheck(info);
+					}
+					break;
+				case BLACK_TURN :
+					if (startingPosition == this.blackKingSquare) {
+						if (isBlackInCheck(endingPosition)) {
+							return;
+						}
+					} else if (isBlackInCheck(this.blackKingSquare)) {
 						return;
 					}
-				} else if (isBlackInCheck(this.blackKingSquare)) {
-					return;
-				}
-				if (isWhiteInCheck(this.whiteKingSquare)) {
-					info = MoveConstants.tagAsCheck(info);
-				}
+					if (isWhiteInCheck(this.whiteKingSquare)) {
+						info = MoveConstants.tagAsCheck(info);
+					}
+					break;
 			}
 		} finally {
 			movePieceBack(info);

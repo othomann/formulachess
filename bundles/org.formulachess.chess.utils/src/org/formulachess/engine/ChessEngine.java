@@ -123,23 +123,29 @@ public class ChessEngine extends AbstractChessEngine {
 					else;
 			}
 			movePiece(info);
-			switch(this.getTurn()) {
-				case WHITE_TURN :
-					if (isWhiteInCheck(this.whiteKingSquare)) {
+			if (this.turn == WHITE_TURN) {
+				if (startingPosition == this.whiteKingSquare) {
+					if (isWhiteInCheck(endingPosition)) {
 						return;
 					}
-					if (isBlackInCheck(this.blackKingSquare)) {
-						info = MoveConstants.tagAsCheck(info);
-					}
-					else;
-				case BLACK_TURN :
-					if (isBlackInCheck(this.blackKingSquare)) {
+				} else if (isWhiteInCheck(this.whiteKingSquare)) {
+					return;
+				}
+				if (isBlackInCheck(this.blackKingSquare)) {
+					info = MoveConstants.tagAsCheck(info);
+				}
+			}
+			if (this.getTurn() == BLACK_TURN) {
+				if (startingPosition == this.blackKingSquare) {
+					if (isBlackInCheck(endingPosition)) {
 						return;
 					}
-					if (isWhiteInCheck(this.whiteKingSquare)) {
-						info = MoveConstants.tagAsCheck(info);
-					}
-					else;
+				} else if (isBlackInCheck(this.blackKingSquare)) {
+					return;
+				}
+				if (isWhiteInCheck(this.whiteKingSquare)) {
+					info = MoveConstants.tagAsCheck(info);
+				}
 			}
 		} finally {
 			movePieceBack(info);

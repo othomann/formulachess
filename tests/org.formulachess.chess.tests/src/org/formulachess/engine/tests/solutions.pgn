@@ -14211,3 +14211,27 @@
 (2...Qa6 3. Rc8#)
 3. Rc8#
 1-0
+
+[Event "Position758"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "?"]
+[Black "?"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "1k1r3r/1b1q1ppp/1R1b1n2/8/8/2R3P1/1PP3BP/2BQ2K1 w Q - 0 1"]
+
+1. Qxd6+ Qxd6
+(1...Qc7 2. Rxb7+ Ka8
+(2...Kc8 3. Qxc7#)
+3. Qa6#)
+(1...Ka7 2. Ra6+ Bxa6 3. Be3#)
+(1...Ka8 2. Ra6#)
+2. Rxb7+ Ka8 3. Rb4+ Ka7
+(3...Ne4 4. Ra3+ Qa6 5. Rxa6#)
+(3...Nd5 4. Ra3+ Qa6 5. Rxa6#)
+(3...Qc6 4. Ra3#)
+(3...Qd5 4. Ra3#)
+4. Ra3+ Qa6 5. Rb7+ Ka8 6. Rxa6#
+1-0

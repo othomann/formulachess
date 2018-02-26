@@ -22,6 +22,7 @@ public class TestMateSearch extends TestCase {
 	static int counter = 1;
 
 	private static final boolean DEBUG = true;
+	private static final boolean IGNORE_LONG_RUN = true;
 	public static final String LINE_SEPARATOR = System.getProperty("line.separator");//$NON-NLS-1$
 	public static final String NEW_PGN_HEADER = "[Site \"?\"]\r\n" + //$NON-NLS-1$
 			"[Date \"????.??.??\"]\n" + //$NON-NLS-1$
@@ -29,6 +30,13 @@ public class TestMateSearch extends TestCase {
 			"[White \"?\"]\n" + //$NON-NLS-1$
 			"[Black \"?\"]"; //$NON-NLS-1$
 
+	static boolean ignoreLongTest() {
+		String longRunProperty = System.getProperty("LONG_RUN"); //$NON-NLS-1$
+		if (longRunProperty == null || !Boolean.getBoolean(longRunProperty)) {
+			return IGNORE_LONG_RUN;
+		}
+		return true;
+	}
 	static String display(int i) {
 		if (i < 10) {
 			return "00" + i; //$NON-NLS-1$
@@ -3083,7 +3091,11 @@ public class TestMateSearch extends TestCase {
 	public void test756() {
 		checkMate("Position756", "2r1kbr1/p4p1p/1qN1pB2/1Q2P1p1/3P4/4P3/PP4PP/2R2RK1 w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
 	}
-//	public void test757() {
-//		checkMate("Position757", "k7/P7/P7/P7/P7/P7/P7/R3K3 w Q - 0 1", 8); //$NON-NLS-1$ //$NON-NLS-2$
-//	}
+	public void test757() {
+		if (ignoreLongTest()) return;
+		checkMate("Position757", "k7/P7/P7/P7/P7/P7/P7/R3K3 w Q - 0 1", 8); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test758() {
+		checkMate("Position758", "1k1r3r/1b1q1ppp/1R1b1n2/8/8/2R3P1/1PP3BP/2BQ2K1 w Q - 0 1", 6); //$NON-NLS-1$ //$NON-NLS-2$
+	}
 }

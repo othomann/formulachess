@@ -56,6 +56,10 @@ public class TestMateSearch extends TestCase {
 	}
 
 	public void checkMate(String testName, String fenNotation, int maxDepth) {
+		if (ignoreLongTest() && maxDepth >= 5) {
+			MyLogger.log(Level.INFO, () -> "Skipping test: " + testName); //$NON-NLS-1$
+			return;
+		}
 		ChessEngine model = new ChessEngine(Locale.getDefault(), fenNotation);
 		long time = System.currentTimeMillis();
 		MateNode root = MateNode.newRoot(model.getTurn());

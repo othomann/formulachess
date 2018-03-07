@@ -14235,3 +14235,29 @@
 (3...Qd5 4. Ra3#)
 4. Ra3+ Qa6 5. Rb7+ Ka8 6. Rxa6#
 1-0
+
+[Event "Position759"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "?"]
+[Black "?"]
+[Result "0-1"]
+[SetUp "1"]
+[FEN "3r1rk1/pbp3bp/1p2p3/n3Pp2/P2P1P1q/2PBK1N1/1B2Q2P/R5R1 b Q - 0 1"]
+
+1...Qxf4+ 2. Kxf4 Bh6#
+0-1
+
+[Event "Position760"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "?"]
+[Black "?"]
+[Result "0-1"]
+[SetUp "1"]
+[FEN "8/6p1/2p3Pp/4q2P/P1Q5/5p2/2P2k2/2K5 b Q - 0 1"]
+
+1...Qa1+ 2. Kd2 Qe1+ 3. Kd3 Qe3#
+0-1

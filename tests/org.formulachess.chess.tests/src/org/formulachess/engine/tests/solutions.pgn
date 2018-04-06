@@ -14261,3 +14261,72 @@
 
 1...Qa1+ 2. Kd2 Qe1+ 3. Kd3 Qe3#
 0-1
+
+[Event "Position762"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "?"]
+[Black "?"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "r4rk1/1Np1b1pp/1n3p2/1q4N1/1p1nB3/P5P1/bRQPPP1P/2B2RK1 w - - 0 1"]
+
+1. Bd5+ Rf7
+(1...Qxd5 2. Qxh7#)
+(1...Bxd5 2. Qxh7#)
+(1...Nxd5 2. Qxh7#)
+(1...Ne6 2. Qxh7#)
+(1...Kh8 2. Qxh7#)
+2. Qxh7+ Kf8 3. Qh8#
+1-0
+
+[Event "Position763"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "?"]
+[Black "?"]
+[Result "0-1"]
+[SetUp "1"]
+[FEN "6k1/1p3pp1/p6p/P3P3/1P3P1K/3p1qP1/3B4/5bQ1 b - - 0 1"]
+
+1...g6 2. Qb6
+(2. Qg2 Qh5#)
+(2. Qxf1 Qh5#)
+(2. Qc5 Qh5#)
+(2. b5 Qh5#)
+(2. g4 Qh3#)
+(2. Qf2 Qh5#)
+(2. Qe3 Qh5#)
+(2. Qd4 Qh5#)
+(2. Qa7 Qh5#)
+(2. Qh2 Qh5#)
+(2. Qh1 Qh5#)
+(2. e6 Qh5#)
+(2. f5 Qh5#)
+(2. Bc3 Qh5#)
+(2. Bc1 Qh5#)
+(2. Be3 Qh5#)
+(2. Be1 Qh5#)
+2...Qh5#
+0-1
+
+[Event "Position764"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "?"]
+[Black "?"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "3R1rk1/p3n2p/4p2P/1p6/2p2Bq1/P1Q1p3/KPP5/8 w - - 0 1"]
+
+1. Qh8+ Kxh8
+(1...Kf7 2. Qxh7+ Qg7
+(2...Kf6 3. Rxf8#)
+3. Qxg7#)
+2. Rxf8+ Ng8
+(2...Qg8 3. Be5#)
+3. Be5+ Qg7 4. hxg7#
+1-0

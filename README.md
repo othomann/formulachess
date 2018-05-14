@@ -1,2 +1,3 @@
 # formulachess
-Chess client
+
+Chess engin written in Java.

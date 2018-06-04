@@ -231,8 +231,6 @@ public class Parser {
 			case TokenNameGOOD_MOVE:
 			case TokenNameFileName:
 			case TokenNameRankName:
-				pushOnNodeInformationStack(this.scanner.getCurrentTokenSource());
-				break;
 			case TokenNameStart_Tag_Section:
 				pushOnNodeInformationStack(this.scanner.getCurrentTokenSource());
 				break;

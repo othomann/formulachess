@@ -51,8 +51,8 @@ public class TestAllMoves extends TestCase {
 		PGNMoveContainer pgnMoveContainer = new PGNMoveContainer(model, moves, Locale.FRANCE);
 		if (DEBUG) {
 			myLogger.log(Level.INFO, () -> "================ START " + testName + " ===================================="); //$NON-NLS-1$ //$NON-NLS-2$
-			myLogger.log(Level.INFO, model.toString());
-			myLogger.log(Level.INFO, pgnMoveContainer.toString());
+			myLogger.log(Level.INFO, () -> model.toString());
+			myLogger.log(Level.INFO, () -> pgnMoveContainer.toString());
 		}
 		assertEquals(WRONG_MOVES, expectedMoves, pgnMoveContainer.toString());
 		if (DEBUG) {
@@ -63,8 +63,8 @@ public class TestAllMoves extends TestCase {
 	public void display(ChessEngine model, long[] moves) {
 		if (DEBUG) {
 			PGNMoveContainer pgnMoveContainer = new PGNMoveContainer(model, moves, Locale.FRANCE);
-			myLogger.log(Level.INFO, model.toString());
-			myLogger.log(Level.INFO, pgnMoveContainer.toString(false));
+			myLogger.log(Level.INFO, () -> model.toString());
+			myLogger.log(Level.INFO, () -> pgnMoveContainer.toString(false));
 		}
 	}
 

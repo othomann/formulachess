@@ -14373,3 +14373,16 @@
 (2...Ne7 3. Bxe7#)
 3. Be7#
 1-0
+
+[Event "Position768"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "?"]
+[Black "?"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "r1bq3k/ppp2r1p/2np1p1Q/2bNpp2/2B1P2N/3P4/PPP2PPP/R3K2R w QK - 0 1"]
+
+1. Ng6+ Kg8 2. Nxf6+ Qxf6 3. Qf8#
+1-0

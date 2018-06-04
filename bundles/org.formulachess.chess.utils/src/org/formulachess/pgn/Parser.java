@@ -518,8 +518,8 @@ public class Parser {
 	protected void endParse(int act) {
 		if (act == ERROR_ACTION || this.hasReportedError) {
 			if (DEBUG) {
-				MyLogger.log(Level.INFO, "ERROR"); //$NON-NLS-1$
-				MyLogger.log(Level.INFO, String.valueOf(this.scanner));
+				MyLogger.log(Level.INFO, () -> "ERROR"); //$NON-NLS-1$
+				MyLogger.log(Level.INFO, () -> String.valueOf(this.scanner));
 			}
 			this.pgnDatabase = null;
 		}

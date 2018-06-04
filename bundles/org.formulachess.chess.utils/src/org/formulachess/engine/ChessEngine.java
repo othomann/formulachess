@@ -568,10 +568,6 @@ public class ChessEngine extends AbstractChessEngine {
 						case WHITE_BISHOP:
 							return true;
 						case WHITE_KING:
-							if (firstSquare) {
-								return true;
-							}
-							break;
 						case WHITE_PAWN:
 							if (firstSquare) {
 								return true;
@@ -623,10 +619,6 @@ public class ChessEngine extends AbstractChessEngine {
 						case WHITE_BISHOP:
 							return true;
 						case WHITE_KING:
-							if (firstSquare) {
-								return true;
-							}
-							break;
 						case WHITE_PAWN:
 							if (firstSquare) {
 								return true;
@@ -797,10 +789,6 @@ public class ChessEngine extends AbstractChessEngine {
 						case BLACK_BISHOP:
 							return true;
 						case BLACK_KING:
-							if (firstSquare) {
-								return true;
-							}
-							break;
 						case BLACK_PAWN:
 							if (firstSquare) {
 								return true;
@@ -852,12 +840,8 @@ public class ChessEngine extends AbstractChessEngine {
 						case BLACK_QUEEN:
 						case BLACK_BISHOP:
 							return true;
-						case BLACK_KING:
-							if (firstSquare) {
-								return true;
-							}
-							break;
 						case BLACK_PAWN:
+						case BLACK_KING:
 							if (firstSquare) {
 								return true;
 							}

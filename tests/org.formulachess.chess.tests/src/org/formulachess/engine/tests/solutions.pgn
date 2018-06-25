@@ -14386,3 +14386,16 @@
 
 1. Ng6+ Kg8 2. Nxf6+ Qxf6 3. Qf8#
 1-0
+
+[Event "Position769"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "?"]
+[Black "?"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "2r1k3/ppp2r1p/3pqB2/7Q/4P3/1P5P/P1P4K/6R1 w QK - 0 1"]
+
+1. Rg8+ Kd7 2. Qb5+ c6 3. Qxb7+ Rc7 4. Rd8#
+1-0

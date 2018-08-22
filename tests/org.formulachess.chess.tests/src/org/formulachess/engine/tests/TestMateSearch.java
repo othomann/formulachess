@@ -35,7 +35,7 @@ public class TestMateSearch extends TestCase {
 		if (longRunProperty == null || !Boolean.getBoolean(longRunProperty)) {
 			return IGNORE_LONG_RUN;
 		}
-		return true;
+		return false;
 	}
 	static String display(int i) {
 		if (i < 10) {

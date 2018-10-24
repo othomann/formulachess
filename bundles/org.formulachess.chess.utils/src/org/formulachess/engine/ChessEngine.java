@@ -272,7 +272,7 @@ public class ChessEngine extends AbstractChessEngine {
 		this.movesCounter = 0;
 		for (int i = 0; i < 64; i++) {
 			Piece currentPiece = this.board[i];
-			if (currentPiece != EMPTY) {
+			if (currentPiece.isWhite()) {
 				switch (currentPiece) {
 					case WHITE_BISHOP:
 						moveBishop(i, true);

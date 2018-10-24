@@ -80,7 +80,7 @@ public class ColCoordsCanvas extends Canvas {
 				coord = String.valueOf((char) ('A' + 7 - j));
 			}
 			gc.drawString(coord, (j * this.settings[SQUARE_WIDTH_INDEX]) + (this.settings[SQUARE_WIDTH_INDEX] / 2)
-					- (metrics.getAverageCharWidth() / 2), this.settings[FONT_HEIGHT_DELTA_INDEX], true);
+					- (((int) metrics.getAverageCharacterWidth()) / 2), this.settings[FONT_HEIGHT_DELTA_INDEX], true);
 		}
 		gc.dispose();
 		font.dispose();

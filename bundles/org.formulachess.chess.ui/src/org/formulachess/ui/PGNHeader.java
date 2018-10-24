@@ -173,9 +173,9 @@ public class PGNHeader extends Composite implements Observer {
 			appendTobuilder(builder, this.blackRating, "    "); //$NON-NLS-1$
 			appendTobuilder(builder, "  "); //$NON-NLS-1$
 			this.blackPrefix = builder.toString();
-			this.prefixOffset = Math.max(plainFontMetrics.getAverageCharWidth() * this.whitePrefix.length(),
-					plainFontMetrics.getAverageCharWidth() * this.blackPrefix.length());
-			this.resultOffset = boldFontMetrics.getAverageCharWidth() * this.result.length();
+			this.prefixOffset = Math.max(((int)plainFontMetrics.getAverageCharacterWidth()) * this.whitePrefix.length(),
+					((int) plainFontMetrics.getAverageCharacterWidth()) * this.blackPrefix.length());
+			this.resultOffset = ((int) boldFontMetrics.getAverageCharacterWidth()) * this.result.length();
 
 			builder = new StringBuilder();
 			appendTobuilder(builder, this.eventName);

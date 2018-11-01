@@ -8,9 +8,7 @@ import java.io.StringWriter;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.formulachess.pgn.InvalidInputException;
 import org.formulachess.pgn.Parser;
-import org.formulachess.pgn.Scanner;
 import org.formulachess.pgn.ast.PGNDatabase;
 
 import junit.framework.Test;
@@ -35,14 +33,14 @@ public class TestPgnParser extends TestCase {
 		parseSource(source);
 	}
 
-	public void test002() throws InvalidInputException {
+	public void test002() {
 		final String source = "[Event \"Sicilian Polugaevsky Tournament\"]\n" + //$NON-NLS-1$
 				"\n" + //$NON-NLS-1$
 				"1. e4 c5 { comment } 2. Nf3 {(1:39/2:01)} 1-0"; //$NON-NLS-1$
 		parseSource(source);
 	}
 
-	public void test003() throws InvalidInputException {
+	public void test003() {
 		StringBuffer buffer = new StringBuffer();
 		try (InputStream stream = TestPgnParser.class.getResourceAsStream("database.pgn"); //$NON-NLS-1$
 				BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
@@ -80,7 +78,7 @@ public class TestPgnParser extends TestCase {
 		}
 	}
 
-	private void parseSource(String source) throws InvalidInputException {
+	private void parseSource(String source) {
 		Parser parser = new Parser();
 		PGNDatabase pgnDatabase = parser.parse(source.toCharArray());
 		assertNotNull("Should not be null", pgnDatabase); //$NON-NLS-1$

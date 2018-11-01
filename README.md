@@ -1,3 +1,3 @@
 # formulachess
 
-Chess engin written in Java.
+Chess engin written in Java with regression tests.

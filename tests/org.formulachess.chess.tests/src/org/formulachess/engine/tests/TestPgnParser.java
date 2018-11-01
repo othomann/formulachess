@@ -55,6 +55,21 @@ public class TestPgnParser extends TestCase {
 		parseSource(source);
 	}
 
+	public void _test005() {
+		StringBuffer buffer = new StringBuffer();
+		try (InputStream stream = TestPgnParser.class.getResourceAsStream("database/morkai_2012.pgn"); //$NON-NLS-1$
+				BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				buffer.append(line).append(LINE_SEPARATOR);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		String source = String.valueOf(buffer);
+		parseSource(source);
+	}
+
 	public void test004() {
 		byte[] buffer = new byte[2048];
 
@@ -63,14 +78,16 @@ public class TestPgnParser extends TestCase {
 		) {
 			ZipEntry nextEntry;
 			while ((nextEntry = zipStream.getNextEntry()) != null) {
-				StringWriter writer = new StringWriter();
-				int len;
-				while ((len = zipStream.read(buffer)) > 0) {
-					String contents = new String(buffer, 0, len);
-					writer.write(contents);
+				if (nextEntry.getName().endsWith(".pgn")) { //$NON-NLS-1$
+					StringWriter writer = new StringWriter();
+					int len;
+					while ((len = zipStream.read(buffer)) > 0) {
+						String contents = new String(buffer, 0, len);
+						writer.write(contents);
+					}
+					System.out.println("parse : " + nextEntry.getName()); //$NON-NLS-1$
+					parseSource(writer.toString());
 				}
-				System.out.println("parse : " + nextEntry.getName()); //$NON-NLS-1$
-				parseSource(writer.toString());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

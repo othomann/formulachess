@@ -37,13 +37,6 @@ public class TestPgnParser extends TestCase {
 	}
 
 	public void test002() {
-		final String source = "[Event \"Sicilian Polugaevsky Tournament\"]\n" + //$NON-NLS-1$
-				"\n" + //$NON-NLS-1$
-				"1. e4 c5 { comment } 2. Nf3 {(1:39/2:01)} 1-0"; //$NON-NLS-1$
-		parseSource(source);
-	}
-
-	public void test003() {
 		StringBuilder buffer = new StringBuilder();
 		try (InputStream stream = TestPgnParser.class.getResourceAsStream("database.pgn"); //$NON-NLS-1$
 				BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
@@ -58,7 +51,7 @@ public class TestPgnParser extends TestCase {
 		parseSource(source);
 	}
 
-	public void test004() {
+	public void test003() {
 		byte[] buffer = new byte[2048];
 
 		try (ZipInputStream zipStream = new ZipInputStream(

@@ -22,7 +22,6 @@ public class TestMateSearch extends TestCase {
 	static int counter = 1;
 
 	private static final boolean DEBUG = true;
-	private static final boolean IGNORE_LONG_RUN = true;
 	public static final String LINE_SEPARATOR = System.getProperty("line.separator");//$NON-NLS-1$
 	public static final String NEW_PGN_HEADER = "[Site \"?\"]\r\n" + //$NON-NLS-1$
 			"[Date \"????.??.??\"]\n" + //$NON-NLS-1$
@@ -31,11 +30,12 @@ public class TestMateSearch extends TestCase {
 			"[Black \"?\"]"; //$NON-NLS-1$
 
 	static boolean ignoreLongTest() {
-		String longRunProperty = System.getProperty("LONG_RUN"); //$NON-NLS-1$
-		if (longRunProperty == null || !Boolean.getBoolean(longRunProperty)) {
-			return IGNORE_LONG_RUN;
+		String longRunProperty = System.getProperty("IGNORE_LONG_RUN"); //$NON-NLS-1$
+		if (longRunProperty != null) {
+			return Boolean.getBoolean(longRunProperty);
 		}
-		return false;
+		// default is to ignore mate that needs more than 5 moves
+		return true;
 	}
 	static String display(int i) {
 		if (i < 10) {
@@ -3169,5 +3169,20 @@ public class TestMateSearch extends TestCase {
 	}
 	public void test781() {
 		checkMate("Position781", "4r1k1/rp2Bppp/p1b5/1q2Q3/R7/1P5P/P4PP1/3R2K1 w - - 0 1", 10); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test782() {
+		checkMate("Position782", "r1b2r2/3pNpkp/3pn1p1/2pN3P/2PnP3/q3QP2/4BKP1/1R5R w - - 0 1", 11); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test783() {
+		checkMate("Position783", "1r4r1/5Q2/3q4/3pk3/4p1p1/6P1/PP4BP/4RR1K w - - 0 1", 3); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test784() {
+		checkMate("Position784", "3k1r2/2pb4/2p3P1/2Np1p2/1P6/4nN1R/2P1q3/Q5K1 w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test785() {
+		checkMate("Position785", "2k5/p1p1q3/2P3p1/3QP3/7p/7P/1PK3P1/8 w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test786() {
+		checkMate("Position786", "4r2k/pp2q2b/2p2p1Q/4rP2/P7/1B5P/1P2R1R1/7K w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

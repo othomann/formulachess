@@ -3185,4 +3185,40 @@ public class TestMateSearch extends TestCase {
 	public void test786() {
 		checkMate("Position786", "4r2k/pp2q2b/2p2p1Q/4rP2/P7/1B5P/1P2R1R1/7K w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
 	}
+	public void test787() {
+		checkMate("Position787", "q5k1/1b2R1pp/1p3n2/4BQ2/8/7P/5PPK/4r3 w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test788() {
+		checkMate("Position788", "r1bq3Q/pppnk1p1/2n1p1P1/3pPr2/1b1P4/1NP5/PP3PP1/R1B1K3 w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test789() {
+		checkMate("Position789", "5nk1/2N2p2/2b2Qp1/p3PpNp/2qP3P/6P1/5P1K/8 w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test790() {
+		checkMate("Position790", "2r1rk2/1p2qp1R/4p1p1/1b1pP1N1/p2P4/nBP1Q3/P4PPP/R5K1 w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test791() {
+		checkMate("Position791", "r4rk1/p4pp1/7P/2pp4/3Bn3/8/qPP1QP1P/2KR2R1 w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test792() {
+		checkMate("Position792", "5r1k/1p1b1p1p/p2ppb2/5P1B/1q6/1Pr3R1/2PQ2PP/5R1K w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test793() {
+		checkMate("Position793", "3rkb2/pp3R1R/8/2p1P3/3pKB2/6P1/PrP2P2/8 w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test794() {
+		checkMate("Position794", "4r2k/4R1pp/7N/p6n/qp6/6QP/5PPK/8 w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test795() {
+		checkMate("Position795", "r1b1r1k1/pp3pp1/1np5/4q3/2B4N/4P3/PP3PP1/2R2K1R w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test796() {
+		checkMate("Position796", "3r2k1/5p2/2b2Bp1/7p/4p3/5PP1/P3Bq1P/Q3R2K b - - 0 1", 3); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test797() {
+		checkMate("Position797", "1qr2bk1/pb3pp1/1pn3np/3N2NQ/8/P7/BP3PPP/2B1R1K1 w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test798() {
+		checkMate("Position798", "4rk2/pb1Q1p2/6p1/3p2p1/2pP4/2q1PPK1/Pr4P1/1B2R2R w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
 }

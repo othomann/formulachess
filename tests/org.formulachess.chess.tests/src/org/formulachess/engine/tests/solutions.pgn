@@ -18260,3 +18260,778 @@
 (2...Qa3 3. Qg7#)
 3. Qg7+ Qxg7 4. fxg7#
 1-0
+
+[Event "Position787"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "?"]
+[Black "?"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "q5k1/1b2R1pp/1p3n2/4BQ2/8/7P/5PPK/4r3 w - - 0 1"]
+
+1. Rxg7+ Kh8
+(1...Kxg7 2. Qxf6+ Kg8 3. Qg7#)
+(1...Kf8 2. Qxf6+ Ke8 3. Qe7#)
+2. Rxh7+ Kg8 3. Qg6+ Kf8 4. Qf7#
+1-0
+
+[Event "Position788"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "?"]
+[Black "?"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "r1bq3Q/pppnk1p1/2n1p1P1/3pPr2/1b1P4/1NP5/PP3PP1/R1B1K3 w - - 0 1"]
+
+1. Bg5+ Rf6
+(1...Rxg5 2. Qxg7+ Ke8 3. Qf7#)
+(1...Nf6 2. Qxg7+ Ke8 3. Qf7#)
+2. Bxf6+ Nxf6
+(2...gxf6 3. Qg7+ Ke8 4. Qf7#)
+3. Qxg7+ Ke8 4. Qf7#
+1-0
+
+[Event "Position789"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "?"]
+[Black "?"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "5nk1/2N2p2/2b2Qp1/p3PpNp/2qP3P/6P1/5P1K/8 w - - 0 1"]
+
+1. e6 Bf3
+(1...Qa2 2. exf7+ Qxf7 3. Qxf7+ Kh8 4. Qxf8#)
+(1...Qd5 2. exf7+ Qxf7 3. Qxf7+ Kh8 4. Qxf8#)
+(1...Bb7 2. exf7+ Qxf7 3. Qxf7+ Kh8 4. Qxf8#)
+(1...Ba8 2. exf7+ Qxf7 3. Qxf7+ Kh8 4. Qxf8#)
+(1...Be4 2. exf7+ Qxf7 3. Qxf7+ Kh8 4. Qxf8#)
+(1...Bg2 2. exf7+ Qxf7 3. Qxf7+ Kh8 4. Qxf8#)
+(1...a4 2. exf7+ Qxf7 3. Qxf7+ Kh8 4. Qxf8#)
+(1...Qb3 2. exf7+ Qxf7 3. Qxf7+ Kh8 4. Qxf8#)
+(1...Bh1 2. exf7+ Qxf7 3. Qxf7+ Kh8 4. Qxf8#)
+(1...f4 2. exf7+ Qxf7 3. Qxf7+ Kh8 4. Qxf8#)
+(1...Bb5 2. exf7+ Qxf7 3. Qxf7+ Kh8 4. Qxf8#)
+(1...Ba4 2. exf7+ Qxf7 3. Qxf7+ Kh8 4. Qxf8#)
+(1...Bd7 2. exf7+ Qxf7 3. Qxf7+ Kh8 4. Qxf8#)
+(1...Bd5 2. Qxf7+ Kh8 3. Qxf8#)
+(1...Nh7 2. Qxf7+ Kh8 3. Qxh7#)
+(1...Nd7 2. Qxf7+ Kh8 3. Qh7#)
+(1...Nxe6 2. Qxf7+ Kh8 3. Qh7#)
+(1...Qxe6 2. Ncxe6 Nxe6
+(2...fxe6 3. Qf7+ Kh8 4. Qxf8#)
+(2...Bf3 3. Qg7#)
+(2...Bd5 3. Qg7#)
+(2...Nh7 3. Qg7#)
+(2...Nd7 3. Qg7#)
+(2...Bb7 3. Qg7#)
+(2...Ba8 3. Qg7#)
+(2...Be4 3. Qg7#)
+(2...Bg2 3. Qg7#)
+(2...a4 3. Qg7#)
+(2...Bh1 3. Qg7#)
+(2...f4 3. Qg7#)
+(2...Bb5 3. Qg7#)
+(2...Ba4 3. Qg7#)
+(2...Bd7 3. Qg7#)
+(2...Be8 3. Qg7#)
+3. Qxf7+ Kh8 4. Qh7#)
+(1...Be8 2. Nxe8 Nxe6
+(2...Qf1 3. Qg7#)
+(2...Qd5 3. Qg7#)
+(2...Qa2 3. Qg7#)
+(2...Qe2 3. Qg7#)
+(2...Qc6 3. Qg7#)
+(2...Qc2 3. Qg7#)
+(2...Qc1 3. Qg7#)
+(2...Qc7 3. Qg7#)
+(2...Nh7 3. Qg7#)
+(2...a4 3. Qg7#)
+(2...Qb5 3. Qg7#)
+(2...Qa6 3. Qg7#)
+(2...Qb3 3. Qg7#)
+(2...Qd3 3. Qg7#)
+(2...Qc8 3. Qg7#)
+(2...Qc3 3. Qg7#)
+(2...Qb4 3. Qg7#)
+(2...Qa4 3. Qg7#)
+(2...Qxe6 3. Qg7#)
+(2...Qxd4 3. exf7#)
+(2...Nd7 3. Qg7#)
+(2...f4 3. Qg7#)
+(2...Qc5 3. Qg7#)
+(2...fxe6 3. Qg7#)
+3. Qxf7+ Kh8 4. Qh7#)
+(1...fxe6 2. Qf7+ Kh8 3. Qxf8#)
+(1...Qe2 2. exf7#)
+(1...Qf1 2. exf7#)
+(1...Qc2 2. exf7#)
+(1...Qc1 2. exf7#)
+(1...Qb5 2. exf7#)
+(1...Qa6 2. exf7#)
+(1...Qd3 2. exf7#)
+(1...Qc3 2. exf7#)
+(1...Qb4 2. exf7#)
+(1...Qa4 2. exf7#)
+(1...Qxd4 2. exf7#)
+(1...Qc5 2. exf7#)
+2. exf7+ Qxf7 3. Qxf7+ Kh8 4. Qxf8#
+1-0
+
+[Event "Position790"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "?"]
+[Black "?"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "2r1rk2/1p2qp1R/4p1p1/1b1pP1N1/p2P4/nBP1Q3/P4PPP/R5K1 w - - 0 1"]
+
+1. Rh8+ Kg7 2. Nxe6+ Kxh8
+(2...fxe6 3. Qh6+ Kf7 4. Qh7#)
+(2...Qxe6 3. Qh6#)
+3. Qh6+ Kg8 4. Qg7#
+1-0
+
+[Event "Position791"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "?"]
+[Black "?"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "r4rk1/p4pp1/7P/2pp4/3Bn3/8/qPP1QP1P/2KR2R1 w - - 0 1"]
+
+1. h7+ Kh8
+(1...Kxh7 2. Qh5+ Kg8 3. Rxg7#)
+2. Bxg7+ Kxh7 3. Qh5+ Kg8 4. Qh8#
+1-0
+
+[Event "Position792"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "?"]
+[Black "?"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "5r1k/1p1b1p1p/p2ppb2/5P1B/1q6/1Pr3R1/2PQ2PP/5R1K w - - 0 1"]
+
+1. Qh6 Rxg3
+(1...Qg4 2. Qxf8+ Qg8 3. Qxg8#)
+(1...Rg8 2. Qxf6+ Rg7 3. Qxg7#)
+(1...Bg5 2. Qxf8#)
+(1...Rf3 2. Qxf8#)
+(1...Qf4 2. Qxf8#)
+(1...Re3 2. Qxf8#)
+(1...e5 2. Qxf8#)
+(1...Re8 2. Qxf6#)
+(1...Rd8 2. Qxf6#)
+(1...Rfc8 2. Qxf6#)
+(1...Rb8 2. Qxf6#)
+(1...Ra8 2. Qxf6#)
+(1...b6 2. Qxf8#)
+(1...b5 2. Qxf8#)
+(1...Bc8 2. Qxf8#)
+(1...Bc6 2. Qxf8#)
+(1...Bb5 2. Qxf8#)
+(1...Be8 2. Qxf8#)
+(1...a5 2. Qxf8#)
+(1...d5 2. Qxf6#)
+(1...Bg7 2. Qxg7#)
+(1...Qc5 2. Qxf8#)
+(1...Qb6 2. Qxf8#)
+(1...Qd4 2. Qxf8#)
+(1...Qh4 2. Qxf8#)
+(1...exf5 2. Qxf8#)
+(1...Rxc2 2. Qxf8#)
+(1...Ba4 2. Qxf8#)
+(1...Bd4 2. Qxf8#)
+(1...Bh4 2. Qg7#)
+(1...Qa5 2. Qxf8#)
+(1...Qa3 2. Qxf8#)
+(1...Qb5 2. Qxf8#)
+(1...Qe4 2. Qxf8#)
+(1...Qxb3 2. Qxf8#)
+(1...Be7 2. Qg7#)
+(1...Bd8 2. Qg7#)
+(1...Be5 2. Qxf8#)
+(1...Qa4 2. Qxf8#)
+(1...Qc4 2. Qxf8#)
+(1...Rc4 2. Qxf8#)
+(1...Rc5 2. Qxf8#)
+(1...Rc6 2. Qxf8#)
+(1...Rc7 2. Qxf8#)
+(1...Rcc8 2. Qxf6#)
+(1...Rd3 2. Qxf8#)
+(1...Rxb3 2. Qxf8#)
+2. Bg6 Rxg6
+(2...Qe1 3. Qxf8#)
+(2...Bg5 3. Qxf8#)
+(2...Rg5 3. Qxf8#)
+(2...Qf4 3. Qxf8#)
+(2...Qh4 3. Qxf8#)
+(2...e5 3. Qxf8#)
+(2...Bc3 3. Qxf8#)
+(2...Bh4 3. Qxf8#)
+(2...Qc3 3. Qxf8#)
+(2...Re3 3. Qxf8#)
+(2...Rc3 3. Qxf8#)
+(2...fxg6 3. Qxf8#)
+(2...Rxg2 3. Qxf8#)
+(2...Re8 3. Qxh7#)
+(2...Rd8 3. Qxh7#)
+(2...Rc8 3. Qxh7#)
+(2...Rb8 3. Qxh7#)
+(2...Ra8 3. Qxh7#)
+(2...Rg8 3. Qxh7#)
+(2...Kg8 3. Qxh7#)
+(2...b6 3. Qxf8#)
+(2...b5 3. Qxf8#)
+(2...Bc8 3. Qxf8#)
+(2...Bc6 3. Qxf8#)
+(2...Bb5 3. Qxf8#)
+(2...Be8 3. Qxf8#)
+(2...a5 3. Qxf8#)
+(2...d5 3. Qxh7#)
+(2...Bd4 3. Qxf8#)
+(2...Bg7 3. Qxh7#)
+(2...Qc5 3. Qxf8#)
+(2...Qd2 3. Qxf8#)
+(2...Qb6 3. Qxf8#)
+(2...Qd4 3. Qxf8#)
+(2...Rg4 3. Qxf8#)
+(2...Rh3 3. Qxf8#)
+(2...Ba4 3. Qxf8#)
+(2...Be7 3. Qxh7#)
+(2...Bd8 3. Qxf8#)
+(2...Be5 3. Qxf8#)
+(2...Bb2 3. Qxf8#)
+(2...Ba1 3. Qxf8#)
+(2...Qa5 3. Qxf8#)
+(2...Qa3 3. Qxf8#)
+(2...Qb5 3. Qxf8#)
+(2...Qc4 3. Qxf8#)
+(2...Qe4 3. Qxf8#)
+(2...Qg4 3. Qxf8#)
+(2...Rf3 3. Qxf8#)
+(2...exf5 3. Qxf8#)
+(2...Qxb3 3. Qxf8#)
+(2...Qa4 3. Qxf8#)
+(2...Rd3 3. Qxf8#)
+(2...Rxb3 3. Qxf8#)
+3. fxg6 Qe1
+(3...Qf4 4. Qxf8#)
+(3...Bg5 4. Qxf8#)
+(3...Bc6 4. Qxf8#)
+(3...fxg6 4. Qxf8#)
+(3...Bc3 4. Qxf8#)
+(3...Bg7 4. Qxh7#)
+(3...Bh4 4. Qxf8#)
+(3...Qc3 4. Qxf8#)
+(3...Qe4 4. Qxf8#)
+(3...Qh4 4. Qxf8#)
+(3...Re8 4. Qxh7#)
+(3...Rd8 4. Qxh7#)
+(3...Rc8 4. Qxh7#)
+(3...Rb8 4. Qxh7#)
+(3...Ra8 4. Qxh7#)
+(3...Rg8 4. Qxh7#)
+(3...Kg8 4. Qxh7#)
+(3...b6 4. Qxf8#)
+(3...b5 4. Qxf8#)
+(3...Bc8 4. Qxf8#)
+(3...Bb5 4. Qxf8#)
+(3...Be8 4. Qxf8#)
+(3...a5 4. Qxf8#)
+(3...d5 4. Qxh7#)
+(3...e5 4. Qxf8#)
+(3...Bd4 4. Qxf8#)
+(3...Qc5 4. Qxf8#)
+(3...Qd2 4. Qxf8#)
+(3...Qb6 4. Qxf8#)
+(3...Qd4 4. Qxf8#)
+(3...Qg4 4. Qxf8#)
+(3...Ba4 4. Qxf8#)
+(3...Be7 4. Qxh7#)
+(3...Bd8 4. Qxf8#)
+(3...Be5 4. Qxf8#)
+(3...Bb2 4. Qxf8#)
+(3...Ba1 4. Qxf8#)
+(3...Qa5 4. Qxf8#)
+(3...Qa3 4. Qxf8#)
+(3...Qb5 4. Qxf8#)
+(3...Qc4 4. Qxf8#)
+(3...Qxb3 4. Qxf8#)
+(3...Qa4 4. Qxf8#)
+4. Qxf8#
+1-0
+
+[Event "Position793"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "?"]
+[Black "?"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "3rkb2/pp3R1R/8/2p1P3/3pKB2/6P1/PrP2P2/8 w - - 0 1"]
+
+1. Bh6 Bxh6
+(1...Bg7 2. Rfxg7 Rd7
+(2...c4 3. Rg8#)
+(2...Rxa2 3. Rg8#)
+(2...Rxc2 3. Rg8#)
+(2...Kf8 3. Rh8#)
+(2...a6 3. Rg8#)
+(2...a5 3. Rg8#)
+(2...Rb3 3. Rg8#)
+(2...Rb4 3. Rg8#)
+(2...Rb5 3. Rg8#)
+(2...Rb6 3. Rg8#)
+(2...Rb1 3. Rg8#)
+(2...Rd6 3. Rg8#)
+(2...Rd5 3. Rg8#)
+(2...Rc8 3. Rg8#)
+(2...Rb8 3. Rg8#)
+(2...Ra8 3. Rg8#)
+(2...b6 3. Rg8#)
+(2...b5 3. Rg8#)
+(2...d3 3. Rg8#)
+3. Rg8#)
+(1...Bd6 2. exd6 Rd7
+(2...Rxd6 3. Rf8#)
+(2...Rxa2 3. Rf8#)
+(2...Rxc2 3. Rf8#)
+(2...c4 3. Rf8#)
+(2...Rc8 3. Rf8#)
+(2...Rb8 3. Rf8#)
+(2...Ra8 3. Rf8#)
+(2...a6 3. Rf8#)
+(2...a5 3. Rf8#)
+(2...Rb3 3. Rf8#)
+(2...Rb4 3. Rf8#)
+(2...Rb5 3. Rf8#)
+(2...Rb6 3. Rf8#)
+(2...Rb1 3. Rf8#)
+(2...b6 3. Rf8#)
+(2...b5 3. Rf8#)
+(2...d3 3. Rf8#)
+3. Rf8#)
+(1...Be7 2. Rxe7#)
+(1...Rd7 2. Rxf8#)
+(1...c4 2. Rxf8#)
+(1...Rxa2 2. Rxf8#)
+(1...Rxc2 2. Rxf8#)
+(1...a6 2. Rxf8#)
+(1...a5 2. Rxf8#)
+(1...Rb3 2. Rxf8#)
+(1...Rb4 2. Rxf8#)
+(1...Rb5 2. Rxf8#)
+(1...Rb6 2. Rxf8#)
+(1...Rb1 2. Rxf8#)
+(1...Rd6 2. Rxf8#)
+(1...Rd5 2. Rxf8#)
+(1...Rc8 2. Rxf8#)
+(1...Rb8 2. Rxf8#)
+(1...Ra8 2. Rxf8#)
+(1...b6 2. Rxf8#)
+(1...b5 2. Rxf8#)
+(1...d3 2. Rxf8#)
+2. e6 c4
+(2...Rxa2 3. Rh8+ Bf8 4. Rhxf8#)
+(2...Rxc2 3. Rh8+ Bf8 4. Rhxf8#)
+(2...Rd7 3. Rh8+ Bf8 4. Rhxf8#)
+(2...Rd5 3. Rh8+ Bf8 4. Rhxf8#)
+(2...Rd6 3. Rh8+ Bf8 4. Rhxf8#)
+(2...a6 3. Rh8+ Bf8 4. Rhxf8#)
+(2...a5 3. Rh8+ Bf8 4. Rhxf8#)
+(2...d3 3. Rh8+ Bf8 4. Rhxf8#)
+(2...Rb3 3. Rh8+ Bf8 4. Rhxf8#)
+(2...Rb4 3. Rh8+ Bf8 4. Rhxf8#)
+(2...Rb5 3. Rh8+ Bf8 4. Rhxf8#)
+(2...Rb6 3. Rh8+ Bf8 4. Rhxf8#)
+(2...Rb1 3. Rh8+ Bf8 4. Rhxf8#)
+(2...Rc8 3. Rh8+ Bf8 4. Rhxf8#)
+(2...Rb8 3. Rh8+ Bf8 4. Rhxf8#)
+(2...Ra8 3. Rh8+ Bf8 4. Rhxf8#)
+(2...b6 3. Rh8+ Bf8 4. Rhxf8#)
+(2...b5 3. Rh8+ Bf8 4. Rhxf8#)
+(2...Bg7 3. Rhxg7 c4
+(3...Rxa2 4. Rg8#)
+(3...Rxc2 4. Rg8#)
+(3...Rd7 4. Rg8#)
+(3...Rd5 4. Rg8#)
+(3...Rd6 4. Rg8#)
+(3...a6 4. Rg8#)
+(3...a5 4. Rg8#)
+(3...Rb3 4. Rg8#)
+(3...Rb4 4. Rg8#)
+(3...Rb5 4. Rg8#)
+(3...Rb6 4. Rg8#)
+(3...Rb1 4. Rg8#)
+(3...Rc8 4. Rg8#)
+(3...Rb8 4. Rg8#)
+(3...Ra8 4. Rg8#)
+(3...b6 4. Rg8#)
+(3...b5 4. Rg8#)
+(3...d3 4. Rg8#)
+4. Rg8#)
+(2...Bf8 3. Rh8 c4
+(3...Rxa2 4. Rhxf8#)
+(3...Rxc2 4. Rhxf8#)
+(3...Rd7 4. Rhxf8#)
+(3...Rd5 4. Rhxf8#)
+(3...Rd6 4. Rhxf8#)
+(3...a6 4. Rhxf8#)
+(3...a5 4. Rhxf8#)
+(3...Rb3 4. Rhxf8#)
+(3...Rb4 4. Rhxf8#)
+(3...Rb5 4. Rhxf8#)
+(3...Rb6 4. Rhxf8#)
+(3...Rb1 4. Rhxf8#)
+(3...Rc8 4. Rhxf8#)
+(3...Rb8 4. Rhxf8#)
+(3...Ra8 4. Rhxf8#)
+(3...b6 4. Rhxf8#)
+(3...b5 4. Rhxf8#)
+(3...d3 4. Rhxf8#)
+4. Rhxf8#)
+(2...Bf4 3. Rh8#)
+(2...Bg5 3. Rh8#)
+(2...Bd2 3. Rh8#)
+(2...Bc1 3. Rh8#)
+(2...Be3 3. Rh8#)
+3. Rh8+ Bf8 4. Rhxf8#
+1-0
+
+[Event "Position794"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "?"]
+[Black "?"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "4r2k/4R1pp/7N/p6n/qp6/6QP/5PPK/8 w - - 0 1"]
+
+1. Qb3 Qxb3
+(1...Qd7 2. Qg8+ Rxg8 3. Nf7#)
+(1...gxh6 2. Qf7 Rxe7
+(2...Qd7 3. Qxh7#)
+(2...Nf6 3. Qg7#)
+(2...Qd1 3. Rxe8#)
+(2...Qa1 3. Rxe8#)
+(2...Ng3 3. Qg7#)
+(2...Nf4 3. Qg7#)
+(2...Qb3 3. Rxe8#)
+(2...b3 3. Qxh7#)
+(2...Rd8 3. Qxh7#)
+(2...Rc8 3. Qxh7#)
+(2...Rb8 3. Qxh7#)
+(2...Ra8 3. Qxh7#)
+(2...Rf8 3. Qxf8#)
+(2...Rg8 3. Qxh7#)
+(2...Ng7 3. Qxg7#)
+(2...Qb5 3. Qxh7#)
+(2...Qc6 3. Qxh7#)
+(2...Qc2 3. Rxe8#)
+(2...Qa3 3. Rxe8#)
+(2...Qa2 3. Rxe8#)
+3. Qf8#)
+(1...Ng3 2. Qg8+ Rxg8 3. Nf7#)
+(1...Rd8 2. Qg8+ Rxg8 3. Nf7#)
+(1...Rc8 2. Qg8+ Rxg8 3. Nf7#)
+(1...Rb8 2. Qg8+ Rxg8 3. Nf7#)
+(1...Ra8 2. Qg8+ Rxg8 3. Nf7#)
+(1...Rf8 2. Qg8+ Rxg8 3. Nf7#)
+(1...Nf4 2. Qg8+ Rxg8 3. Nf7#)
+(1...Qb5 2. Qg8+ Rxg8 3. Nf7#)
+(1...Qc6 2. Qg8+ Rxg8 3. Nf7#)
+(1...g6 2. Qb2+ Nf6
+(2...Ng7 3. Qxg7#)
+3. Qxf6#)
+(1...g5 2. Qb2+ Nf6
+(2...Ng7 3. Qxg7#)
+3. Qxf6#)
+(1...Nf6 2. Qg8+ Rxg8
+(2...Nxg8 3. Nf7#)
+3. Nf7#)
+(1...Rxe7 2. Qg8#)
+(1...Qa1 2. Rxe8#)
+(1...Rg8 2. Nf7#)
+(1...Qa3 2. Rxe8#)
+(1...Qa2 2. Rxe8#)
+2. Rxe8+ Qg8 3. Nf7#
+1-0
+
+[Event "Position795"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "?"]
+[Black "?"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "r1b1r1k1/pp3pp1/1np5/4q3/2B4N/4P3/PP3PP1/2R2K1R w - - 0 1"]
+
+1. Ng6 Qh2
+(1...Bh3 2. Rxh3 Qh5
+(2...Qh2 3. Rxh2 Nxc4
+(3...Nd5 4. Rh8#)
+(3...Rxe3 4. Rh8#)
+(3...Re6 4. Rh8#)
+(3...Re4 4. Rh8#)
+(3...Na4 4. Rh8#)
+(3...Rab8 4. Rh8#)
+(3...Rac8 4. Rh8#)
+(3...Rad8 4. Rh8#)
+(3...Re7 4. Rh8#)
+(3...Re5 4. Rh8#)
+(3...Red8 4. Rh8#)
+(3...Rec8 4. Rh8#)
+(3...Reb8 4. Rh8#)
+(3...Rf8 4. Ne7#)
+(3...a6 4. Rh8#)
+(3...a5 4. Rh8#)
+(3...Nd7 4. Rh8#)
+(3...Nc8 4. Rh8#)
+(3...c5 4. Rh8#)
+4. Rh8#)
+(2...Nxc4 3. Rh8#)
+(2...Qb5 3. Rh8#)
+(2...Qxb2 3. Rh8#)
+(2...Nd5 3. Rh8#)
+(2...Qg3 3. Rh8#)
+(2...Qd5 3. Rh8#)
+(2...Re6 3. Rh8#)
+(2...Na4 3. Rh8#)
+(2...Qe6 3. Rh8#)
+(2...Qe4 3. Rh8#)
+(2...Qa5 3. Rh8#)
+(2...Qxe3 3. Rh8#)
+(2...Rab8 3. Rh8#)
+(2...Rac8 3. Rh8#)
+(2...Rad8 3. Rh8#)
+(2...Re7 3. Rh8#)
+(2...Red8 3. Rh8#)
+(2...Rec8 3. Rh8#)
+(2...Reb8 3. Rh8#)
+(2...Rf8 3. Rh8#)
+(2...a6 3. Rh8#)
+(2...a5 3. Rh8#)
+(2...Nd7 3. Rh8#)
+(2...Nc8 3. Rh8#)
+(2...c5 3. Rh8#)
+(2...Qd6 3. Rh8#)
+(2...Qc7 3. Rh8#)
+(2...Qb8 3. Rh8#)
+(2...Qc3 3. Rh8#)
+(2...Qf6 3. Rh8#)
+(2...Qf4 3. Rh8#)
+(2...Qe7 3. Rh8#)
+(2...Qc5 3. Rh8#)
+(2...Qf5 3. Rh8#)
+(2...Qg5 3. Rh8#)
+(2...Qd4 3. Rh8#)
+3. Rxh5 Nxc4
+(3...Nd5 4. Rh8#)
+(3...Re5 4. Rh8#)
+(3...c5 4. Rh8#)
+(3...Rxe3 4. Rh8#)
+(3...Re6 4. Rh8#)
+(3...Re4 4. Rh8#)
+(3...Na4 4. Rh8#)
+(3...Rab8 4. Rh8#)
+(3...Rac8 4. Rh8#)
+(3...Rad8 4. Rh8#)
+(3...Re7 4. Rh8#)
+(3...Red8 4. Rh8#)
+(3...Rec8 4. Rh8#)
+(3...Reb8 4. Rh8#)
+(3...Rf8 4. Ne7#)
+(3...a6 4. Rh8#)
+(3...a5 4. Rh8#)
+(3...Nd7 4. Rh8#)
+(3...Nc8 4. Rh8#)
+4. Rh8#)
+(1...Qh5 2. Rxh5 Nxc4
+(2...Bf5 3. Rh8#)
+(2...Nd5 3. Rh8#)
+(2...Re5 3. Rh8#)
+(2...Bh3 3. Rh8#)
+(2...Bg4 3. Rh8#)
+(2...c5 3. Rh8#)
+(2...Rxe3 3. Rh8#)
+(2...Be6 3. Rh8#)
+(2...Re6 3. Rh8#)
+(2...Re4 3. Rh8#)
+(2...Na4 3. Rh8#)
+(2...Rb8 3. Rh8#)
+(2...Bd7 3. Rh8#)
+(2...Re7 3. Rh8#)
+(2...Rd8 3. Rh8#)
+(2...Rf8 3. Ne7#)
+(2...a6 3. Rh8#)
+(2...a5 3. Rh8#)
+(2...Nd7 3. Rh8#)
+3. Rh8#)
+(1...Nxc4 2. Rh8#)
+(1...Qb5 2. Rh8#)
+(1...Qxb2 2. Rh8#)
+(1...Bg4 2. Rh8#)
+(1...Nd5 2. Rh8#)
+(1...Qd5 2. Rh8#)
+(1...Qxe3 2. Rh8#)
+(1...Be6 2. Rh8#)
+(1...Re6 2. Rh8#)
+(1...Na4 2. Rh8#)
+(1...Qg3 2. Rh8#)
+(1...Qe6 2. Rh8#)
+(1...Qe4 2. Rh8#)
+(1...Qa5 2. Rh8#)
+(1...Rb8 2. Rh8#)
+(1...Bd7 2. Rh8#)
+(1...Bf5 2. Rh8#)
+(1...Re7 2. Rh8#)
+(1...Rd8 2. Rh8#)
+(1...Rf8 2. Rh8#)
+(1...a6 2. Rh8#)
+(1...a5 2. Rh8#)
+(1...Nd7 2. Rh8#)
+(1...c5 2. Rh8#)
+(1...Qd6 2. Rh8#)
+(1...Qc7 2. Rh8#)
+(1...Qb8 2. Rh8#)
+(1...Qc3 2. Rh8#)
+(1...Qf6 2. Rh8#)
+(1...Qf4 2. Rh8#)
+(1...Qe7 2. Rh8#)
+(1...Qc5 2. Rh8#)
+(1...Qf5 2. Rh8#)
+(1...Qg5 2. Rh8#)
+(1...Qd4 2. Rh8#)
+2. Rxh2 Bh3
+(2...Nxc4 3. Rh8#)
+(2...Bg4 3. Rh8#)
+(2...Nd5 3. Rh8#)
+(2...Rxe3 3. Rh8#)
+(2...Be6 3. Rh8#)
+(2...Re6 3. Rh8#)
+(2...Re4 3. Rh8#)
+(2...Na4 3. Rh8#)
+(2...Rb8 3. Rh8#)
+(2...Bd7 3. Rh8#)
+(2...Bf5 3. Rh8#)
+(2...Re7 3. Rh8#)
+(2...Re5 3. Rh8#)
+(2...Rd8 3. Rh8#)
+(2...Rf8 3. Ne7#)
+(2...a6 3. Rh8#)
+(2...a5 3. Rh8#)
+(2...Nd7 3. Rh8#)
+(2...c5 3. Rh8#)
+3. Rxh3 Nxc4
+(3...Nd5 4. Rh8#)
+(3...Re6 4. Rh8#)
+(3...Re4 4. Rh8#)
+(3...Na4 4. Rh8#)
+(3...Rxe3 4. Rh8#)
+(3...Rab8 4. Rh8#)
+(3...Rac8 4. Rh8#)
+(3...Rad8 4. Rh8#)
+(3...Re7 4. Rh8#)
+(3...Re5 4. Rh8#)
+(3...Red8 4. Rh8#)
+(3...Rec8 4. Rh8#)
+(3...Reb8 4. Rh8#)
+(3...Rf8 4. Ne7#)
+(3...a6 4. Rh8#)
+(3...a5 4. Rh8#)
+(3...Nd7 4. Rh8#)
+(3...Nc8 4. Rh8#)
+(3...c5 4. Rh8#)
+4. Rh8#
+1-0
+
+1...exf3 2. Rg1
+(2. Bf1 Qxf1+ 3. Rxf1 f2#)
+(2. Bxd8 Qg2#)
+(2. Qd4 Qg2#)
+(2. Bd4 Qg2#)
+(2. h4 Qg2#)
+(2. a3 Qg2#)
+(2. a4 Qg2#)
+(2. h3 Qg2#)
+(2. Qb2 Qg2#)
+(2. Qc3 Qg2#)
+(2. Qe5 Qg2#)
+(2. Qb1 Qg2#)
+(2. Qc1 Qg2#)
+(2. Qd1 Qg2#)
+(2. Rd1 Qg2#)
+(2. Rc1 Qg2#)
+(2. Rb1 Qg2#)
+(2. Rf1 Qg2#)
+(2. Be7 Qg2#)
+(2. Bg7 Qg2#)
+(2. Bg5 Qg2#)
+(2. Bh4 Qg2#)
+(2. Bd3 Qg2#)
+(2. Be5 Qg2#)
+(2. Bc3 Qg2#)
+(2. Bb2 Qg2#)
+(2. Bh8 Qg2#)
+(2. g4 Qg2#)
+(2. Bb5 Qg2#)
+(2. Bc4 Qg2#)
+(2. Ba6 Qg2#)
+(2. Bd1 Qg2#)
+(2. Bxf3 Bxf3#)
+2...fxe2+ 3. Rg2 Bxg2#
+0-1
+
+[Event "Position797"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "?"]
+[Black "?"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "1qr2bk1/pb3pp1/1pn3np/3N2NQ/8/P7/BP3PPP/2B1R1K1 w - - 0 1"]
+
+1. Nf6+ gxf6
+(1...Kh8 2. Nxf7#)
+2. Qxg6+ Bg7
+(2...Kh8 3. Qh7#)
+3. Bxf7+ Kf8
+(3...Kh8 4. Qh7#)
+4. Nh7#
+1-0
+
+[Event "Position798"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "?"]
+[Black "?"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "4rk2/pb1Q1p2/6p1/3p2p1/2pP4/2q1PPK1/Pr4P1/1B2R2R w - - 0 1"]
+
+1. Rh8+ Kg7 2. Rh7+ Kxh7
+(2...Kf8 3. Qxf7#)
+(2...Kg8 3. Qxf7#)
+(2...Kf6 3. Qxf7#)
+3. Qxf7+ Kh8
+(3...Kh6 4. Rh1#)
+4. Rh1#
+1-0

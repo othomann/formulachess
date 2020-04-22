@@ -1,4 +1,4 @@
 # formulachess
 
-Chess engin written in Java.
+Chess engine written in Java.
 Test

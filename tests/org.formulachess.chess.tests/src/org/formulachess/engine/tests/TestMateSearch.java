@@ -3221,4 +3221,73 @@ public class TestMateSearch extends TestCase {
 	public void test798() {
 		checkMate("Position798", "4rk2/pb1Q1p2/6p1/3p2p1/2pP4/2q1PPK1/Pr4P1/1B2R2R w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
 	}
+	public void test799() {
+		checkMate("Position799", "4k3/2q2p2/4p3/3bP1Q1/p6R/r6P/6PK/5B2 w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test800() {
+		checkMate("Position800", "r2qrb2/p1pn1Qp1/1p4Nk/4PR2/3n4/7N/P5PP/R6K w - - 0 1", 2); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test801() {
+		checkMate("Position801", "r2r4/p1p2p1p/n5k1/1p5N/2p2R2/5N2/P1K3PP/5R2 w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test802() {
+		checkMate("Position802", "r6k/pppb1B2/6Q1/8/3P4/2P1q3/PKP3PP/7R w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test803() {
+		checkMate("Position803", "r2q3r/ppp5/2n4p/4Pbk1/2BP1Npb/P2QB3/1PP3P1/R5K1 w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test804() {
+		checkMate("Position804", "5rbk/2pq3p/5PQR/p7/3p3R/1P4N1/P5PP/6K1 w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test805() {
+		checkMate("Position805", "3q1rk1/4bp1p/1n2P2Q/1p1p1p2/6r1/Pp2R2N/1B1P2PP/7K w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test806() {
+		checkMate("Position806", "r6k/pppb1B2/6Q1/8/3P4/2P1q3/PKP3PP/7R w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test807() {
+		checkMate("Position807", "2rq1r1k/1b2bp1p/p1nppp1Q/1p3P2/4P1PP/2N2N2/PPP5/1K1R1B1R w - - 0 1", 3); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test808() {
+		checkMate("Position808", "qr6/1b1p1krQ/p2Pp1p1/4PP2/1p1B1n2/3B4/PP3K1P/2R2R2 w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test809() {
+		checkMate("Position809", "4R3/p2r1q1k/5B1P/6P1/2p4K/3b4/4Q3/8 w - - 0 1", 3); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test810() {
+		checkMate("Position810", "1rb3k1/ppN2R1p/2n1P1p1/6p1/6B1/8/PPP3PP/6K1 w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test811() {
+		checkMate("Position811", "rk3q1r/pbp4p/1p3P2/2p1N3/3p2Q1/3P4/PPP3PP/R3R1K1 w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test812() {
+		checkMate("Position812", "r3rk2/5pn1/pb1nq1pR/1p2p1P1/2p1P3/2P2QN1/PPBB1P2/2K4R w - - 0 1", 3); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test813() {
+		checkMate("Position813", "5b2/1p3rpk/p1b3Rp/4B1RQ/3P1p1P/7q/5P2/6K1 w - - 0 1", 2); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test814() {
+		checkMate("Position814", "5rk1/pR4pp/4p2r/2p1n2q/2P1p3/P1Q1P1P1/1P3P1P/R1B2NK1 b - - 0 1", 3); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test815() {
+		checkMate("Position815", "Q7/1R5p/2kqr2n/7p/5Pb1/8/P1P2BP1/6K1 w - - 0 1", 3); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test816() {
+		checkMate("Position816", "2k4r/ppp2p2/2b2B2/7p/6pP/2P1q1bP/PP3N2/R4QK1 b - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test817() {
+		checkMate("Position817", "8/5kB1/3p4/1p3q1p/7P/KPPn2Q1/P7/8 b - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test818() {
+		checkMate("Position818", "5b2/1p3rpk/p1b3Rp/4B1RQ/3P1p1P/7q/5P2/6K1 w - - 0 1", 2); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test819() {
+		checkMate("Position819", "r3r3/3R1Qp1/pqb1p2k/1p4N1/8/4P3/Pb3PPP/2R3K1 w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test820() {
+		checkMate("Position820", "3rkq1r/1pQ2p1p/p3bPp1/3pR3/8/8/PPP2PP1/1K1R4 w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	public void test821() {
+		checkMate("Position821", "4b3/pkb5/1pp1Bp2/4pPp1/PP2P2r/2PQBq2/8/2KR4 w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
 }

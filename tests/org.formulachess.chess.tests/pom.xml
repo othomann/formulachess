@@ -17,7 +17,7 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
-	<plugins>
+	<!-- plugins>
 		<plugin>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-surefire-plugin</artifactId>
@@ -37,7 +37,7 @@
 			</execution>
 			</executions>
 		</plugin>
-	</plugins>
+	</plugins -->
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<resources>

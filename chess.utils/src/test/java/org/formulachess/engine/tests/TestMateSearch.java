@@ -4070,9 +4070,7 @@ public class TestMateSearch {
 	@Test
 	@DisplayName("test666")
 	public void test666() {
-		// checkMate("Position666", "3r3k/4Qp1p/p3p3/1pR5/3qb2P/P5R1/1P3PP1/6K1
-		// w - - 0
-		// 1", 8); //$NON-NLS-1$ //$NON-NLS-2$
+		checkMate("Position666", "3r3k/4Qp1p/p3p3/1pR5/3qb2P/P5R1/1P3PP1/6K1 w - - 0 1", 8); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	@Test

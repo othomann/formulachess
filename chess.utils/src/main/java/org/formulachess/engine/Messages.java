@@ -19,6 +19,9 @@ public class Messages {
 
 	private ResourceBundle resourceBundle;
 
+	public Messages() {
+		this(Locale.getDefault());
+	}
 	/**
 	 * 
 	 */

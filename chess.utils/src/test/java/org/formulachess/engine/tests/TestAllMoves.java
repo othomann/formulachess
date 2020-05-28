@@ -49,7 +49,7 @@ public class TestAllMoves {
 			myLogger.log(Level.INFO, () -> model.toString());
 			myLogger.log(Level.INFO, () -> pgnMoveContainer.toString());
 		}
-		assertEquals(WRONG_MOVES, expectedMoves, pgnMoveContainer.toString());
+		assertEquals(expectedMoves, pgnMoveContainer.toString(), WRONG_MOVES);
 		if (DEBUG) {
 			myLogger.log(Level.INFO,
 					() -> "================ END " + testName + " ===================================="); //$NON-NLS-1$ //$NON-NLS-2$

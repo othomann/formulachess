@@ -79,6 +79,15 @@ public class ChessEngine extends AbstractChessEngine {
 		return model.perft(depth);
 	}
 
+
+	public ChessEngine() {
+		this(Locale.getDefault());
+	}
+
+	public ChessEngine(String fenPosition) {
+		this(Locale.getDefault(), fenPosition);
+	}
+
 	public ChessEngine(Locale currentLocale) {
 		this.locale = currentLocale;
 		this.currentMessages = new Messages(currentLocale);

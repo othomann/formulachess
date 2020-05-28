@@ -71,7 +71,7 @@ public class TestPgnParser extends TestCase {
 				}
 			}
 		} catch (Exception e) {
-			myLogger.log(Level.INFO, "Exception occurred while running test004", e); //$NON-NLS-1$
+			myLogger.log(Level.INFO, "Exception occurred while running test003", e); //$NON-NLS-1$
 			assertTrue("Exception while parsing the database", false); //$NON-NLS-1$
 		}
 	}

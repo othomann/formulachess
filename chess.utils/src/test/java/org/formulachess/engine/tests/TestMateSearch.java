@@ -52,7 +52,7 @@ public class TestMateSearch {
 			MyLogger.log(Level.INFO, () -> "Skipping test: " + testName); //$NON-NLS-1$
 			return;
 		}
-		ChessEngine model = new ChessEngine(Locale.getDefault(), fenNotation);
+		ChessEngine model = new ChessEngine(fenNotation);
 		long time = System.currentTimeMillis();
 		MateNode root = MateNode.newRoot(model.getTurn());
 		assertTrue(MateSearch.searchMate(model, 1, maxDepth, root), "No mate found"); //$NON-NLS-1$

@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -4983,5 +4982,10 @@ public class TestMateSearch {
 	@DisplayName("test821")
 	public void test821() {
 		checkMate("Position821", "4b3/pkb5/1pp1Bp2/4pPp1/PP2P2r/2PQBq2/8/2KR4 w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	@Test
+	@DisplayName("test822")
+	public void test822() {
+		checkMate("Position822", "1r2r1k1/5p2/5Rp1/4Q2p/P2B2qP/1NP5/1KP5/8 w - - 0 1", 3); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

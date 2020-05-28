@@ -1,14 +1,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.formulachess.chess.tests</groupId>
-	<artifactId>org.formulachess.chess.tests</artifactId>
+	<groupId>org.formulachess</groupId>
+	<artifactId>chess.utils</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<name>utils</name>
+	<description>chess engine</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
+		<maven.compiler.target>1.8</maven.compiler.target>
 		<junit.jupiter.version>5.6.2</junit.jupiter.version>
 	</properties>
 
@@ -30,11 +32,6 @@
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.22.2</version>
-				<configuration>
-					<includes>
-						<include>**/*Test.java</include>
-					</includes>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>

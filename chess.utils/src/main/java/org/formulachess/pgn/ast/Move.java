@@ -151,9 +151,13 @@ public abstract class Move extends ASTNode {
 		return buffer.toString();
 	}
 
-	public abstract void appendSpecificEnd(StringBuilder buffer, ResourceBundle bundle);
+	public void appendSpecificEnd(StringBuilder buffer, ResourceBundle bundle) {
+		// do nothing
+	}
 
-	public abstract void appendDetailed(StringBuilder buffer, ResourceBundle bundle);
+	public void appendDetailed(StringBuilder buffer, ResourceBundle bundle) {
+		// do nothing
+	}
 
 	public void addVariation(Variation variation) {
 		if (this.variations == null) {

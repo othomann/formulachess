@@ -36,11 +36,6 @@ public class PawnMove extends Move {
 	}
 
 	@Override
-	public void appendDetailed(StringBuilder buffer, ResourceBundle bundle) {
-		// nothing to do
-	}
-
-	@Override
 	public void appendSpecificEnd(StringBuilder buffer, ResourceBundle bundle) {
 		if (this.isPromotion) {
 			buffer.append('=');

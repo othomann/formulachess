@@ -11,85 +11,85 @@ import org.formulachess.pgn.ast.TagPair;
 import org.formulachess.pgn.ast.TagSection;
 import org.formulachess.pgn.ast.Variation;
 
-public abstract class ASTVisitor {
+public interface ASTVisitor {
 
-	public void endVisit(Castle castle) {
+	public default void endVisit(Castle castle) {
 		// do nothing by default
 	}
 
-	public void endVisit(Comment comment) {
+	public default void endVisit(Comment comment) {
 		// do nothing by default
 	}
 
-	public void endVisit(GameTermination termination) {
+	public default void endVisit(GameTermination termination) {
 		// do nothing by default
 	}
 
-	public void endVisit(Move move) {
+	public default void endVisit(Move move) {
 		// do nothing by default
 	}
 
-	public void endVisit(MoveText moveText) {
+	public default void endVisit(MoveText moveText) {
 		// do nothing by default
 	}
 
-	public void endVisit(PGNDatabase database) {
+	public default void endVisit(PGNDatabase database) {
 		// do nothing by default
 	}
 
-	public void endVisit(PGNGame game) {
+	public default void endVisit(PGNGame game) {
 		// do nothing by default
 	}
 
-	public void endVisit(TagPair pair) {
+	public default void endVisit(TagPair pair) {
 		// do nothing by default
 	}
 
-	public void endVisit(TagSection section) {
+	public default void endVisit(TagSection section) {
 		// do nothing by default
 	}
 
-	public void endVisit(Variation variation) {
+	public default void endVisit(Variation variation) {
 		// do nothing by default
 	}
 
-	public boolean visit(Castle castle) {
+	public default boolean visit(Castle castle) {
 		return true; // do nothing by default, keep traversing
 	}
 
-	public boolean visit(Comment comment) {
+	public default boolean visit(Comment comment) {
 		return true; // do nothing by default, keep traversing
 	}
 
-	public boolean visit(GameTermination termination) {
-		return true; // do nothing by default, keep traversing
-	}
-	
-	public boolean visit(Move move) {
+	public default boolean visit(GameTermination termination) {
 		return true; // do nothing by default, keep traversing
 	}
 	
-	public boolean visit(MoveText moveText) {
-		return true; // do nothing by default, keep traversing
-	}
-
-	public boolean visit(PGNDatabase database) {
-		return true; // do nothing by default, keep traversing
-	}
-
-	public boolean visit(PGNGame game) {
-		return true; // do nothing by default, keep traversing
-	}
-
-	public boolean visit(TagPair pair) {
+	public default boolean visit(Move move) {
 		return true; // do nothing by default, keep traversing
 	}
 	
-	public boolean visit(TagSection section) {
+	public default boolean visit(MoveText moveText) {
 		return true; // do nothing by default, keep traversing
 	}
 
-	public boolean visit(Variation variation) {
+	public default boolean visit(PGNDatabase database) {
+		return true; // do nothing by default, keep traversing
+	}
+
+	public default boolean visit(PGNGame game) {
+		return true; // do nothing by default, keep traversing
+	}
+
+	public default boolean visit(TagPair pair) {
+		return true; // do nothing by default, keep traversing
+	}
+	
+	public default boolean visit(TagSection section) {
+		return true; // do nothing by default, keep traversing
+	}
+
+	public default boolean visit(Variation variation) {
 		return true; // do nothing by default, keep traversing
 	}	
 }

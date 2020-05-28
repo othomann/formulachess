@@ -17,25 +17,12 @@ public class Util {
 
 	private static final Logger MY_LOGGER = Logger.getLogger(Util.class.getCanonicalName());
 	private static final char[] NO_CHAR = new char[0];
-	private static final String UTF_8 = "UTF-8"; //$NON-NLS-1$
+	public static final String UTF_8 = "UTF-8"; //$NON-NLS-1$
 	private static final int DEFAULT_READING_SIZE = 4096;
 	public static final String LINE_SEPARATOR = System.getProperty("line.separator"); //$NON-NLS-1$
 
 	private Util() {
 		// disable constructor
-	}
-
-	/**
-	 * Returns the contents of the given file as a char array. When encoding is
-	 * null, then the platform default one is used
-	 * 
-	 * @throws IOException
-	 *             if a problem occurred reading the file.
-	 */
-	public static char[] getFileCharContent(File file, String encoding) throws IOException {
-		try (InputStream stream = new BufferedInputStream(new FileInputStream(file))) {
-			return getInputStreamAsCharArray(stream, (int) file.length(), encoding);
-		}
 	}
 
 	/**
@@ -58,7 +45,7 @@ public class Util {
 	 * @throws IOException
 	 *             if a problem occurred reading the stream.
 	 */
-	public static char[] getInputStreamAsCharArray(InputStream stream, int length, String encoding) throws IOException {
+	private static char[] getInputStreamAsCharArray(InputStream stream, int length, String encoding) throws IOException {
 		BufferedReader reader = null;
 		try {
 			reader = encoding == null ? new BufferedReader(new InputStreamReader(stream))
@@ -119,18 +106,6 @@ public class Util {
 			System.arraycopy(contents, start, contents = new char[totalRead], 0, totalRead);
 		}
 		return contents;
-	}
-
-	/**
-	 * Returns the contents of the given zip entry as a byte array.
-	 * 
-	 * @throws IOException
-	 *             if a problem occurred reading the zip entry.
-	 */
-	public static char[] getZipEntryCharContent(ZipEntry ze, ZipFile zip) throws IOException {
-		try (InputStream stream = new BufferedInputStream(zip.getInputStream(ze))) {
-			return getInputStreamAsCharArray(stream, (int) ze.getSize(), "UTF-8"); //$NON-NLS-1$
-		}
 	}
 
 	public static String getFisherRandomFEN(int number) {

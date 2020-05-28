@@ -50,11 +50,6 @@ public class PieceMove extends Move {
 	}
 
 	@Override
-	public void appendSpecificEnd(StringBuilder buffer, ResourceBundle bundle) {
-		// nothing to do
-	}
-
-	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();

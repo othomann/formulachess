@@ -17,11 +17,12 @@ import static org.formulachess.pgn.Scanner.TokenNameStart_nag;
 import static org.formulachess.pgn.Scanner.TokenNameStringLiteral;
 import static org.formulachess.pgn.Scanner.TokenNameVERY_BAD_MOVE;
 
-import java.util.Enumeration;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
 
 import org.formulachess.pgn.ast.ASTNode;
 import org.formulachess.pgn.ast.Castle;
@@ -35,7 +36,6 @@ import org.formulachess.pgn.ast.PieceMove;
 import org.formulachess.pgn.ast.TagPair;
 import org.formulachess.pgn.ast.TagSection;
 import org.formulachess.pgn.ast.Variation;
-import org.formulachess.util.Util;
 
 public class Parser {
 
@@ -61,17 +61,17 @@ public class Parser {
 	private static final Logger MyLogger = Logger.getLogger(Parser.class.getCanonicalName());
 	private static final boolean DEBUG = false;
 	// internal data for the automaton
-	protected static final int StackIncrement = 255;
+	protected static final int STACK_INCREMENT = 255;
 	protected int stateStackTop;
-	protected int[] stack = new int[StackIncrement];
+	protected int[] stack = new int[STACK_INCREMENT];
 
 	// AST management
-	private ASTNode[] nodeStack = new ASTNode[StackIncrement];
+	private ASTNode[] nodeStack = new ASTNode[STACK_INCREMENT];
 	private int nodeStackPointer = 0;
-	private char[][] nodeInformation = new char[StackIncrement][];
+	private char[][] nodeInformation = new char[STACK_INCREMENT][];
 	private int nodeInformationPointer = 0;
 	private int variationCounter = 0;
-	private int[] variationMovesNumber = new int[StackIncrement];
+	private int[] variationMovesNumber = new int[STACK_INCREMENT];
 	private int currentMoveIndication;
 	private PGNDatabase pgnDatabase;
 
@@ -152,7 +152,7 @@ public class Parser {
 				if (this.stateStackTop == this.stack.length) {
 					// resize
 					int oldStackLength = this.stack.length;
-					System.arraycopy(this.stack, 0, this.stack = new int[oldStackLength + StackIncrement], 0,
+					System.arraycopy(this.stack, 0, this.stack = new int[oldStackLength + STACK_INCREMENT], 0,
 							oldStackLength);
 				}
 				this.stack[this.stateStackTop] = act;
@@ -553,32 +553,27 @@ public class Parser {
 		return this.pgnDatabase;
 	}
 
-	public PGNDatabase parseZipFile(ZipFile zipFile) {
+	public PGNDatabase parseArchive(ZipInputStream inputStream) {
 		PGNDatabase result = null;
+		byte[] buffer = new byte[2048];
 		try {
-			/* automaton initialization */
-			Enumeration<? extends ZipEntry> enumeration = zipFile.entries();
-			ZipEntry entry = null;
-			while ((entry = enumeration.nextElement()) != null) {
-				if (entry.getName().endsWith(".pgn")) {
-					initialize();
-					goForPGNDatabase();
-
-					char[] source = Util.getZipEntryCharContent(entry, zipFile);
-					/* scanner initialization */
-					this.scanner = new Scanner();
-					this.scanner.resetTo(0, source.length);
-					this.scanner.setSource(source);
-
-					parse();
+			ZipEntry nextEntry;
+			while ((nextEntry = inputStream.getNextEntry()) != null) {
+				if (nextEntry.getName().endsWith(".pgn")) { //$NON-NLS-1$
+					StringWriter writer = new StringWriter();
+					int len;
+					while ((len = inputStream.read(buffer)) > 0) {
+						String contents = new String(buffer, 0, len);
+						writer.write(contents);
+					}
 					if (result == null) {
-						result = this.pgnDatabase;
+						result = parse(writer.toString().toCharArray());
 					} else {
-						result.concatPGNDatabase(this.pgnDatabase);
+						result.concatPGNDatabase(parse(writer.toString().toCharArray()));
 					}
 				}
 			}
-		} catch (java.io.IOException e) {
+		} catch (IOException e) {
 			MyLogger.log(Level.SEVERE, "IOException", e);
 		}
 		return result;
@@ -1004,8 +999,8 @@ public class Parser {
 
 	private void pushOnNodeStack(ASTNode astNode) {
 		if (this.nodeStackPointer == this.nodeStack.length) {
-			System.arraycopy(this.nodeStack, 0, this.nodeStack = new ASTNode[this.nodeStackPointer + StackIncrement], 0,
-					this.nodeStackPointer);
+			System.arraycopy(this.nodeStack, 0, this.nodeStack = new ASTNode[this.nodeStackPointer + STACK_INCREMENT],
+					0, this.nodeStackPointer);
 		}
 		this.nodeStack[this.nodeStackPointer++] = astNode;
 	}
@@ -1013,7 +1008,7 @@ public class Parser {
 	private void pushOnNodeInformationStack(char[] info) {
 		if (this.nodeInformationPointer == this.nodeInformation.length) {
 			System.arraycopy(this.nodeInformation, 0,
-					this.nodeInformation = new char[this.nodeInformationPointer + StackIncrement][], 0,
+					this.nodeInformation = new char[this.nodeInformationPointer + STACK_INCREMENT][], 0,
 					this.nodeInformationPointer);
 		}
 		this.nodeInformation[this.nodeInformationPointer++] = info;

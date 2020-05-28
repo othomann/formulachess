@@ -10,11 +10,7 @@ import static org.formulachess.engine.Turn.*;
 
 public class MateNode implements Comparable<MateNode> {
 
-	static Comparator<MateNode> mateNodeComparator = new Comparator<MateNode>() {
-		public int compare(MateNode o1, MateNode o2) {
-			return o1.compareTo(o2);
-		}
-	};
+	static Comparator<MateNode> mateNodeComparator = (o1, o2) -> o1.compareTo(o2);
 
 	public static MateNode newRoot(Turn turn) {
 		return new MateNode(null, null, turn, 0);

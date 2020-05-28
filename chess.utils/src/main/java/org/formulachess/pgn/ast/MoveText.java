@@ -97,13 +97,13 @@ public class MoveText extends ASTNode {
 	@Override
 	public void accept(ASTVisitor visitor) {
 		if (visitor.visit(this)) {
-			Comment comment = this.getComment();
-			if (comment != null) {
-				comment.accept(visitor);
+			Comment c = this.getComment();
+			if (c != null) {
+				c.accept(visitor);
 			}
-			Move[] moves = this.getMoves();
-			if (moves != null) {
-				for (Move move : moves) {
+			Move[] mvs = this.getMoves();
+			if (mvs != null) {
+				for (Move move : mvs) {
 					move.accept(visitor);
 				}
 			}

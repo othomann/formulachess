@@ -98,9 +98,7 @@ public class MateMove implements Comparable<MateMove> {
 		MateMove other = (MateMove) obj;
 		if (mobility != other.mobility)
 			return false;
-		if (move != other.move)
-			return false;
-		return true;
+		return move == other.move;
 	}
 
 	public int getMobility() {

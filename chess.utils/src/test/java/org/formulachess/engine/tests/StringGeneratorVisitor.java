@@ -12,7 +12,7 @@ import org.formulachess.pgn.ast.TagPair;
 import org.formulachess.pgn.ast.TagSection;
 import org.formulachess.pgn.ast.Variation;
 
-public class StringGeneratorVisitor extends ASTVisitor {
+public class StringGeneratorVisitor implements ASTVisitor {
 	
 	StringBuilder builder = new StringBuilder();
 

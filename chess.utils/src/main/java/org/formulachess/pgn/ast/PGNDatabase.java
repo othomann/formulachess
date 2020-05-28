@@ -33,7 +33,7 @@ public class PGNDatabase extends ASTNode {
 		PGNGame[] databaseGames = database.getPGNGames();
 		PGNGame[] result = new PGNGame[this.gamesCounter + databaseGames.length];
 		System.arraycopy(this.games, 0, result, 0, this.gamesCounter);
-		System.arraycopy(databaseGames, 0, result, this.gamesCounter + 1, databaseGames.length);
+		System.arraycopy(databaseGames, 0, result, this.gamesCounter, databaseGames.length);
 		this.games = result;
 		this.gamesCounter += databaseGames.length;
 	}

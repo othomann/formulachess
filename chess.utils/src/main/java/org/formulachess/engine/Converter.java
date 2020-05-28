@@ -12,7 +12,7 @@ public class Converter {
 	}
 
 	public static String moveToString(Piece[] board, long move) {
-		return moveToString(board, move, Locale.FRENCH);
+		return moveToString(board, move, Locale.US);
 	}
 
 	public static String moveToString(Piece[] board, long move, Locale locale) {

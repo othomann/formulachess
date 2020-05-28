@@ -79,7 +79,6 @@ public class ChessEngine extends AbstractChessEngine {
 		return model.perft(depth);
 	}
 
-
 	public ChessEngine() {
 		this(Locale.getDefault());
 	}
@@ -107,56 +106,41 @@ public class ChessEngine extends AbstractChessEngine {
 	}
 
 	void addMove(int startingPosition, int endingPosition, Piece capturePieceType, Piece promotedPiece) {
-		long info = MoveConstants.getMoveValue(
-				startingPosition,
-				endingPosition,
-				capturePieceType,
-				promotedPiece,
-				this.enPassantSquare,
-				this.whiteCanCastleKingSide,
-				this.whiteCanCastleQueenSide,
-				this.blackCanCastleKingSide,
-				this.blackCanCastleQueenSide);
+		long info = MoveConstants.getMoveValue(startingPosition, endingPosition, capturePieceType, promotedPiece,
+				this.enPassantSquare, this.whiteCanCastleKingSide, this.whiteCanCastleQueenSide,
+				this.blackCanCastleKingSide, this.blackCanCastleQueenSide);
 
 		try {
-			switch(this.getTurn()) {
-				case WHITE_TURN :
-					if (startingPosition == this.whiteKingSquare && Math.abs(startingPosition - endingPosition) == 2) {
-						info = MoveConstants.tagAsCastle(info);
-					}
-					break;
-				case BLACK_TURN :
-					if (startingPosition == this.blackKingSquare && Math.abs(startingPosition - endingPosition) == 2) {
-						info = MoveConstants.tagAsCastle(info);
-					}
-					break;
+			if (this.getTurn() == WHITE_TURN) {
+				if (startingPosition == this.whiteKingSquare && Math.abs(startingPosition - endingPosition) == 2) {
+					info = MoveConstants.tagAsCastle(info);
+				}
+			} else if (startingPosition == this.blackKingSquare && Math.abs(startingPosition - endingPosition) == 2) {
+				info = MoveConstants.tagAsCastle(info);
 			}
 			movePiece(info);
-			switch(this.getTurn()) {
-				case WHITE_TURN :
-					if (startingPosition == this.whiteKingSquare) {
-						if (isWhiteInCheck(endingPosition)) {
-							return;
-						}
-					} else if (isWhiteInCheck(this.whiteKingSquare)) {
+			if (this.getTurn() == WHITE_TURN) {
+				if (startingPosition == this.whiteKingSquare) {
+					if (isWhiteInCheck(endingPosition)) {
 						return;
 					}
-					if (isBlackInCheck(this.blackKingSquare)) {
-						info = MoveConstants.tagAsCheck(info);
-					}
-					break;
-				case BLACK_TURN :
-					if (startingPosition == this.blackKingSquare) {
-						if (isBlackInCheck(endingPosition)) {
-							return;
-						}
-					} else if (isBlackInCheck(this.blackKingSquare)) {
+				} else if (isWhiteInCheck(this.whiteKingSquare)) {
+					return;
+				}
+				if (isBlackInCheck(this.blackKingSquare)) {
+					info = MoveConstants.tagAsCheck(info);
+				}
+			} else {
+				if (startingPosition == this.blackKingSquare) {
+					if (isBlackInCheck(endingPosition)) {
 						return;
 					}
-					if (isWhiteInCheck(this.whiteKingSquare)) {
-						info = MoveConstants.tagAsCheck(info);
-					}
-					break;
+				} else if (isBlackInCheck(this.blackKingSquare)) {
+					return;
+				}
+				if (isWhiteInCheck(this.whiteKingSquare)) {
+					info = MoveConstants.tagAsCheck(info);
+				}
 			}
 		} finally {
 			movePieceBack(info);
@@ -1771,11 +1755,7 @@ public class ChessEngine extends AbstractChessEngine {
 		this.startingMoveNumber++;
 		this.moveHistory[this.moveNumber] = Converter.moveToString(this.board, move);
 
-		if (this.turn == WHITE_TURN) {
-			this.turn = BLACK_TURN;
-		} else {
-			this.turn = WHITE_TURN;
-		}
+		this.turn = this.turn == WHITE_TURN ? BLACK_TURN : WHITE_TURN;
 		final long info = move;
 		int startingSquare = MoveConstants.getStartingSquare(info);
 		int endingSquare = MoveConstants.getEndingSquare(info);
@@ -2199,11 +2179,7 @@ public class ChessEngine extends AbstractChessEngine {
 
 	@Override
 	public void undoMoveWithoutNotification(long move) {
-		if (this.turn == WHITE_TURN) {
-			this.turn = BLACK_TURN;
-		} else {
-			this.turn = WHITE_TURN;
-		}
+		this.turn = this.turn == WHITE_TURN ? BLACK_TURN : WHITE_TURN;
 		final long info = move;
 		int startingSquare = MoveConstants.getStartingSquare(info);
 		int endingSquare = MoveConstants.getEndingSquare(info);

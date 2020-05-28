@@ -1,17 +1,12 @@
 package org.formulachess.util;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 public class Util {
 
@@ -124,10 +119,8 @@ public class Util {
 			case 2:
 				lightSquareBishopColum = 5;
 				break;
-			case 3:
+			default: // only 4 possible values
 				lightSquareBishopColum = 7;
-				break;
-			default:
 		}
 		fenNotation.replace(blackStartIndex + lightSquareBishopColum, blackStartIndex + lightSquareBishopColum + 1,
 				"b"); //$NON-NLS-1$
@@ -145,10 +138,8 @@ public class Util {
 			case 2:
 				darkSquaredBishopColum = 4;
 				break;
-			case 3:
+			default: // only 4 possible values
 				darkSquaredBishopColum = 6;
-				break;
-			default:
 		}
 		fenNotation.replace(blackStartIndex + darkSquaredBishopColum, blackStartIndex + darkSquaredBishopColum + 1,
 				"b"); //$NON-NLS-1$
@@ -199,8 +190,6 @@ public class Util {
 				break;
 			case 9:
 				remainingPieces = "RKRNN"; //$NON-NLS-1$
-				break;
-			default:
 		}
 		if (remainingPieces == null) {
 			return null;

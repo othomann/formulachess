@@ -129,7 +129,7 @@ public class Util {
 	 */
 	public static char[] getZipEntryCharContent(ZipEntry ze, ZipFile zip) throws IOException {
 		try (InputStream stream = new BufferedInputStream(zip.getInputStream(ze))) {
-			return getInputStreamAsCharArray(stream, (int) ze.getSize(), "ISO-8859-1"); //$NON-NLS-1$
+			return getInputStreamAsCharArray(stream, (int) ze.getSize(), "UTF-8"); //$NON-NLS-1$
 		}
 	}
 

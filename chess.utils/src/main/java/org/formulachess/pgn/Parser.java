@@ -38,7 +38,7 @@ import org.formulachess.pgn.ast.Variation;
 import org.formulachess.util.Util;
 
 public class Parser {
-	
+
 	// ParserBasicInformation
 	public static final int ERROR_SYMBOL = 51;
 	public static final int MAX_NAME_LENGTH = 27;
@@ -134,10 +134,10 @@ public class Parser {
 	}
 
 	/*
-	 * main loop of the automat When a rule is reduced, the method consumeRule(int)
-	 * is called with the number of the consumed rule. When a terminal is consumed,
-	 * the method consumeToken(int) is called in order to remember (when needed) the
-	 * consumed token
+	 * main loop of the automat When a rule is reduced, the method
+	 * consumeRule(int) is called with the number of the consumed rule. When a
+	 * terminal is consumed, the method consumeToken(int) is called in order to
+	 * remember (when needed) the consumed token
 	 */
 	// (int)asr[asi(act)]
 	// name[symbol_index[currentKind]]
@@ -203,8 +203,8 @@ public class Parser {
 	}
 
 	/*
-	 * Syntax error was detected. Will attempt to perform some recovery action in
-	 * order to resume to the regular parse loop.
+	 * Syntax error was detected. Will attempt to perform some recovery action
+	 * in order to resume to the regular parse loop.
 	 */
 	protected boolean resumeOnSyntaxError() {
 		return false;
@@ -554,24 +554,34 @@ public class Parser {
 	}
 
 	public PGNDatabase parseZipFile(ZipFile zipFile) {
+		PGNDatabase result = null;
 		try {
 			/* automaton initialization */
-			initialize();
-			goForPGNDatabase();
-
 			Enumeration<? extends ZipEntry> enumeration = zipFile.entries();
-			ZipEntry entry = enumeration.nextElement();
-			char[] source = Util.getZipEntryCharContent(entry, zipFile);
-			/* scanner initialization */
-			this.scanner = new Scanner();
-			this.scanner.resetTo(0, source.length);
-			this.scanner.setSource(source);
+			ZipEntry entry = null;
+			while ((entry = enumeration.nextElement()) != null) {
+				if (entry.getName().endsWith(".pgn")) {
+					initialize();
+					goForPGNDatabase();
 
-			parse();
+					char[] source = Util.getZipEntryCharContent(entry, zipFile);
+					/* scanner initialization */
+					this.scanner = new Scanner();
+					this.scanner.resetTo(0, source.length);
+					this.scanner.setSource(source);
+
+					parse();
+					if (result == null) {
+						result = this.pgnDatabase;
+					} else {
+						result.concatPGNDatabase(this.pgnDatabase);
+					}
+				}
+			}
 		} catch (java.io.IOException e) {
 			MyLogger.log(Level.SEVERE, "IOException", e);
 		}
-		return this.pgnDatabase;
+		return result;
 	}
 
 	private void consumePGNDatabase() {

@@ -29,6 +29,15 @@ public class PGNDatabase extends ASTNode {
 		return this.games[i];
 	}
 
+	public void concatPGNDatabase(PGNDatabase database) {
+		PGNGame[] databaseGames = database.getPGNGames();
+		PGNGame[] result = new PGNGame[this.gamesCounter + databaseGames.length];
+		System.arraycopy(this.games, 0, result, 0, this.gamesCounter);
+		System.arraycopy(databaseGames, 0, result, this.gamesCounter + 1, databaseGames.length);
+		this.games = result;
+		this.gamesCounter += databaseGames.length;
+	}
+
 	@Override
 	public void accept(ASTVisitor visitor) {
 		if (visitor.visit(this)) {

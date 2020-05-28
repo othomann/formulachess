@@ -1,7 +1,6 @@
 package org.formulachess.engine;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;

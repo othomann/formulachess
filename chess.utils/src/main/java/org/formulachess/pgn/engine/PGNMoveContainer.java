@@ -5,9 +5,9 @@ import static org.formulachess.engine.Piece.UNDEFINED;
 
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 import org.formulachess.engine.ChessEngine;
+import org.formulachess.engine.Messages;
 import org.formulachess.engine.MoveConstants;
 import org.formulachess.engine.Piece;
 import org.formulachess.util.HashtableOfLong;
@@ -16,14 +16,14 @@ public class PGNMoveContainer {
 
 	private HashtableOfLong pgnNotationContainer;
 	private HashtableOfLong currentLocaleContainer;
-	private HashMap<Locale, ResourceBundle> bundles;
+	private HashMap<Locale, Messages> bundles;
 	private long[] moves;
 
 	public PGNMoveContainer(ChessEngine model, long[] moves, Locale currentLocale) {
 		this.bundles = new HashMap<>();
 		this.moves = moves;
-		this.bundles.put(Locale.ENGLISH, ResourceBundle.getBundle("org.formulachess.engine.messages", Locale.ENGLISH)); //$NON-NLS-1$
-		this.bundles.put(currentLocale, ResourceBundle.getBundle("org.formulachess.engine.messages", currentLocale)); //$NON-NLS-1$
+		this.bundles.put(Locale.ENGLISH, new Messages(Locale.ENGLISH)); //$NON-NLS-1$
+		this.bundles.put(currentLocale, new Messages(currentLocale)); //$NON-NLS-1$
 
 		this.pgnNotationContainer = new HashtableOfLong();
 		this.currentLocaleContainer = new HashtableOfLong();
@@ -103,7 +103,11 @@ public class PGNMoveContainer {
 			Locale locale,
 			boolean columnAmbiguity,
 			boolean rowAmbiguity) {
-		ResourceBundle bundle = this.bundles.get(locale);
+		Messages messages = this.bundles.get(locale);
+		if (messages == null) {
+			messages = new Messages(locale);
+			this.bundles.put(locale, messages);
+		}
 		StringBuilder builder = new StringBuilder();
 		int startingPosition = MoveConstants.getStartingSquare(move);
 		int endingPosition = MoveConstants.getEndingSquare(move);
@@ -112,15 +116,15 @@ public class PGNMoveContainer {
 		switch (model.getBoard(startingPosition)) {
 			case WHITE_BISHOP:
 			case BLACK_BISHOP:
-				builder.append(bundle.getString("piece.bishop")); //$NON-NLS-1$
+				builder.append(messages.getString("piece.bishop")); //$NON-NLS-1$
 				break;
 			case WHITE_ROOK:
 			case BLACK_ROOK:
-				builder.append(bundle.getString("piece.rook")); //$NON-NLS-1$
+				builder.append(messages.getString("piece.rook")); //$NON-NLS-1$
 				break;
 			case WHITE_QUEEN:
 			case BLACK_QUEEN:
-				builder.append(bundle.getString("piece.queen")); //$NON-NLS-1$
+				builder.append(messages.getString("piece.queen")); //$NON-NLS-1$
 				break;
 			case WHITE_KING:
 			case BLACK_KING:
@@ -130,11 +134,11 @@ public class PGNMoveContainer {
 					}
 					return "O-O-O"; //$NON-NLS-1$
 				}
-				builder.append(bundle.getString("piece.king")); //$NON-NLS-1$
+				builder.append(messages.getString("piece.king")); //$NON-NLS-1$
 				break;
 			case WHITE_KNIGHT:
 			case BLACK_KNIGHT:
-				builder.append(bundle.getString("piece.knight")); //$NON-NLS-1$
+				builder.append(messages.getString("piece.knight")); //$NON-NLS-1$
 				break;
 			case WHITE_PAWN:
 			case BLACK_PAWN:
@@ -160,19 +164,19 @@ public class PGNMoveContainer {
 			switch (promotion) {
 				case WHITE_BISHOP:
 				case BLACK_BISHOP:
-					builder.append(bundle.getString("piece.bishop")); //$NON-NLS-1$
+					builder.append(messages.getString("piece.bishop")); //$NON-NLS-1$
 					break;
 				case WHITE_ROOK:
 				case BLACK_ROOK:
-					builder.append(bundle.getString("piece.rook")); //$NON-NLS-1$
+					builder.append(messages.getString("piece.rook")); //$NON-NLS-1$
 					break;
 				case WHITE_QUEEN:
 				case BLACK_QUEEN:
-					builder.append(bundle.getString("piece.queen")); //$NON-NLS-1$
+					builder.append(messages.getString("piece.queen")); //$NON-NLS-1$
 					break;
 				case WHITE_KNIGHT:
 				case BLACK_KNIGHT:
-					builder.append(bundle.getString("piece.knight")); //$NON-NLS-1$
+					builder.append(messages.getString("piece.knight")); //$NON-NLS-1$
 					break;
 				default:
 			}

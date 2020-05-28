@@ -1,8 +1,7 @@
 package org.formulachess.pgn.ast;
 
 import java.util.ArrayList;
-import java.util.ResourceBundle;
-
+import org.formulachess.engine.Messages;
 import org.formulachess.pgn.ASTVisitor;
 
 public abstract class Move extends ASTNode {
@@ -123,9 +122,9 @@ public abstract class Move extends ASTNode {
 	/**
 	 * @see formulachess.pgn.ast.MateMove#getMoveNotation()
 	 */
-	public String getMoveNotation(ResourceBundle bundle) {
+	public String getMoveNotation(Messages messages) {
 		StringBuilder buffer = new StringBuilder();
-		appendDetailed(buffer, bundle);
+		appendDetailed(buffer, messages);
 		if (this.startingFile != 0) {
 			buffer.append(this.startingFile);
 		}
@@ -141,7 +140,7 @@ public abstract class Move extends ASTNode {
 		if (this.endingRank != 0) {
 			buffer.append(this.endingRank);
 		}
-		appendSpecificEnd(buffer, bundle);
+		appendSpecificEnd(buffer, messages);
 		if (this.isCheck) {
 			buffer.append('+');
 		}
@@ -151,11 +150,11 @@ public abstract class Move extends ASTNode {
 		return buffer.toString();
 	}
 
-	public void appendSpecificEnd(StringBuilder buffer, ResourceBundle bundle) {
+	public void appendSpecificEnd(StringBuilder buffer, Messages messages) {
 		// do nothing
 	}
 
-	public void appendDetailed(StringBuilder buffer, ResourceBundle bundle) {
+	public void appendDetailed(StringBuilder buffer, Messages messages) {
 		// do nothing
 	}
 

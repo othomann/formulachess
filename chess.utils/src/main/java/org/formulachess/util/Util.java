@@ -190,6 +190,8 @@ public class Util {
 				break;
 			case 9:
 				remainingPieces = "RKRNN"; //$NON-NLS-1$
+				break;
+			default:
 		}
 		if (remainingPieces == null) {
 			return null;

@@ -3,7 +3,6 @@ package org.formulachess.engine;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 public class Converter {
 
@@ -16,30 +15,30 @@ public class Converter {
 	}
 
 	public static String moveToString(Piece[] board, long move, Locale locale) {
-		ResourceBundle bundle = ResourceBundle.getBundle("org.formulachess.engine.messages", locale); //$NON-NLS-1$
+		Messages messages = new Messages(locale);
 		StringBuilder buffer = new StringBuilder();
 		int startingPosition = MoveConstants.getStartingSquare(move);
 		int endingPosition = MoveConstants.getEndingSquare(move);
 		switch (board[startingPosition]) {
 			case WHITE_BISHOP:
 			case BLACK_BISHOP:
-				buffer.append(bundle.getString("piece.bishop")); //$NON-NLS-1$
+				buffer.append(messages.getString("piece.bishop")); //$NON-NLS-1$
 				break;
 			case WHITE_ROOK:
 			case BLACK_ROOK:
-				buffer.append(bundle.getString("piece.rook")); //$NON-NLS-1$
+				buffer.append(messages.getString("piece.rook")); //$NON-NLS-1$
 				break;
 			case WHITE_QUEEN:
 			case BLACK_QUEEN:
-				buffer.append(bundle.getString("piece.queen")); //$NON-NLS-1$
+				buffer.append(messages.getString("piece.queen")); //$NON-NLS-1$
 				break;
 			case WHITE_KING:
 			case BLACK_KING:
-				buffer.append(bundle.getString("piece.king")); //$NON-NLS-1$
+				buffer.append(messages.getString("piece.king")); //$NON-NLS-1$
 				break;
 			case WHITE_KNIGHT:
 			case BLACK_KNIGHT:
-				buffer.append(bundle.getString("piece.knight")); //$NON-NLS-1$
+				buffer.append(messages.getString("piece.knight")); //$NON-NLS-1$
 				break;
 			default:
 		}

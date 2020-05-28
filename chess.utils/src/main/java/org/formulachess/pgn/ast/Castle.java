@@ -1,7 +1,6 @@
 package org.formulachess.pgn.ast;
 
-import java.util.ResourceBundle;
-
+import org.formulachess.engine.Messages;
 import org.formulachess.pgn.ASTVisitor;
 
 public class Castle extends Move {
@@ -56,7 +55,7 @@ public class Castle extends Move {
 	}
 
 	@Override
-	public String getMoveNotation(ResourceBundle bundle) {
+	public String getMoveNotation(Messages messages) {
 		return getMoveNotation();
 	}
 

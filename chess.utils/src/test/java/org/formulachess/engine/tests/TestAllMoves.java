@@ -87,7 +87,7 @@ public class TestAllMoves {
 	@Test
 	@DisplayName("test001")
 	public void test001() {
-		ChessEngine model = new ChessEngine(Locale.getDefault());
+		ChessEngine model = new ChessEngine();
 		model.setBoard(AbstractChessEngine.getEmptyBoard());
 		model.setBoard(28, Piece.WHITE_KING);
 		model.setTurn(WHITE_TURN);
@@ -98,12 +98,18 @@ public class TestAllMoves {
 			builder.append(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
 		}
 		assertEquals("Rd6 Re6 Rf6 Rd5 Rf5 Rd4 Re4 Rf4 ", String.valueOf(builder), WRONG_MOVES); //$NON-NLS-1$
+
+		builder = new StringBuilder();
+		for (int i = 0; i < moves.length; i++) {
+			builder.append(Converter.moveToString(model.getBoard(), moves[i], Locale.US) + " "); //$NON-NLS-1$
+		}
+		assertEquals("Kd6 Ke6 Kf6 Kd5 Kf5 Kd4 Ke4 Kf4 ", String.valueOf(builder), WRONG_MOVES); //$NON-NLS-1$
 	}
 
 	@Test
 	@DisplayName("test002")
 	public void test002() {
-		ChessEngine model = new ChessEngine(Locale.getDefault());
+		ChessEngine model = new ChessEngine();
 		model.setBoard(AbstractChessEngine.getEmptyBoard());
 		model.setBoard(28, Piece.BLACK_KNIGHT);
 		model.setBoard(0, Piece.BLACK_KING);
@@ -123,7 +129,7 @@ public class TestAllMoves {
 	@Test
 	@DisplayName("test003")
 	public void test003() {
-		ChessEngine model = new ChessEngine(Locale.getDefault());
+		ChessEngine model = new ChessEngine();
 		model.setBoard(AbstractChessEngine.getEmptyBoard());
 		model.setBoard(28, Piece.BLACK_KNIGHT);
 		model.setBoard(0, Piece.BLACK_KING);
@@ -143,7 +149,7 @@ public class TestAllMoves {
 	@Test
 	@DisplayName("test004")
 	public void test004() {
-		ChessEngine model = new ChessEngine(Locale.getDefault());
+		ChessEngine model = new ChessEngine();
 		model.setBoard(AbstractChessEngine.getEmptyBoard());
 		model.setBoard(28, Piece.BLACK_KNIGHT);
 		model.setBoard(0, Piece.BLACK_KING);
@@ -159,7 +165,7 @@ public class TestAllMoves {
 	@Test
 	@DisplayName("test005")
 	public void test005() {
-		ChessEngine model = new ChessEngine(Locale.getDefault());
+		ChessEngine model = new ChessEngine();
 		model.setBoard(AbstractChessEngine.getEmptyBoard());
 		model.setBoard(60, Piece.WHITE_KING);
 		model.setBoard(63, Piece.WHITE_ROOK);
@@ -181,7 +187,7 @@ public class TestAllMoves {
 	@Test
 	@DisplayName("test064")
 	public void test006() {
-		ChessEngine model = new ChessEngine(Locale.getDefault());
+		ChessEngine model = new ChessEngine();
 		model.setBoard(AbstractChessEngine.getEmptyBoard());
 		model.setBoard(60, Piece.WHITE_KING);
 		model.setBoard(63, Piece.WHITE_ROOK);
@@ -203,7 +209,7 @@ public class TestAllMoves {
 	@Test
 	@DisplayName("test007")
 	public void test007() {
-		ChessEngine model = new ChessEngine(Locale.getDefault());
+		ChessEngine model = new ChessEngine();
 		model.setBoard(AbstractChessEngine.getEmptyBoard());
 		model.setBoard(60, Piece.WHITE_KING);
 		model.setBoard(41, Piece.WHITE_PAWN);
@@ -220,7 +226,7 @@ public class TestAllMoves {
 	@Test
 	@DisplayName("test008")
 	public void test008() {
-		ChessEngine model = new ChessEngine(Locale.getDefault());
+		ChessEngine model = new ChessEngine();
 		model.setBoard(AbstractChessEngine.getEmptyBoard());
 		model.setBoard(60, Piece.WHITE_KING);
 		model.setBoard(49, Piece.WHITE_PAWN);
@@ -238,7 +244,7 @@ public class TestAllMoves {
 	@Test
 	@DisplayName("test009")
 	public void test009() {
-		ChessEngine model = new ChessEngine(Locale.getDefault());
+		ChessEngine model = new ChessEngine();
 		model.setBoard(AbstractChessEngine.getEmptyBoard());
 		model.setBoard(60, Piece.WHITE_KING);
 		model.setBoard(49, Piece.WHITE_PAWN);
@@ -256,7 +262,7 @@ public class TestAllMoves {
 	@Test
 	@DisplayName("test010")
 	public void test010() {
-		ChessEngine model = new ChessEngine(Locale.getDefault());
+		ChessEngine model = new ChessEngine();
 		model.setBoard(AbstractChessEngine.getEmptyBoard());
 		model.setBoard(60, Piece.WHITE_KING);
 		model.setBoard(49, Piece.WHITE_PAWN);

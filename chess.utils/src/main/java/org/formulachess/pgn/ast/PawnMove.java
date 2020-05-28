@@ -1,6 +1,6 @@
 package org.formulachess.pgn.ast;
 
-import java.util.ResourceBundle;
+import org.formulachess.engine.Messages;
 
 public class PawnMove extends Move {
 
@@ -36,27 +36,23 @@ public class PawnMove extends Move {
 	}
 
 	@Override
-	public void appendSpecificEnd(StringBuilder buffer, ResourceBundle bundle) {
+	public void appendSpecificEnd(StringBuilder buffer, Messages messages) {
 		if (this.isPromotion) {
 			buffer.append('=');
-			if (bundle == null) {
-				buffer.append(this.promotedPiece);
-			} else {
-				switch (this.promotedPiece) {
-					case 'B':
-						buffer.append(bundle.getString("piece.bishop")); //$NON-NLS-1$
-						break;
-					case 'N':
-						buffer.append(bundle.getString("piece.knight")); //$NON-NLS-1$
-						break;
-					case 'R':
-						buffer.append(bundle.getString("piece.rook")); //$NON-NLS-1$
-						break;
-					case 'Q':
-						buffer.append(bundle.getString("piece.queen")); //$NON-NLS-1$
-						break;
-					default:
-				}
+			switch (this.promotedPiece) {
+				case 'B':
+					buffer.append(messages.getString("piece.bishop")); //$NON-NLS-1$
+					break;
+				case 'N':
+					buffer.append(messages.getString("piece.knight")); //$NON-NLS-1$
+					break;
+				case 'R':
+					buffer.append(messages.getString("piece.rook")); //$NON-NLS-1$
+					break;
+				case 'Q':
+					buffer.append(messages.getString("piece.queen")); //$NON-NLS-1$
+					break;
+				default:
 			}
 		}
 	}

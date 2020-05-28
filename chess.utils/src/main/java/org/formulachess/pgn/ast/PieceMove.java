@@ -1,6 +1,6 @@
 package org.formulachess.pgn.ast;
 
-import java.util.ResourceBundle;
+import org.formulachess.engine.Messages;
 
 public class PieceMove extends Move {
 
@@ -24,28 +24,22 @@ public class PieceMove extends Move {
 	}
 
 	@Override
-	public void appendDetailed(StringBuilder buffer, ResourceBundle bundle) {
-		if (bundle == null) {
-			buffer.append(this.pieceIdentification);
-		} else {
-			switch (this.pieceIdentification) {
-				case 'B':
-					buffer.append(bundle.getString("piece.bishop")); //$NON-NLS-1$
-					break;
-				case 'N':
-					buffer.append(bundle.getString("piece.knight")); //$NON-NLS-1$
-					break;
-				case 'R':
-					buffer.append(bundle.getString("piece.rook")); //$NON-NLS-1$
-					break;
-				case 'Q':
-					buffer.append(bundle.getString("piece.queen")); //$NON-NLS-1$
-					break;
-				case 'K':
-					buffer.append(bundle.getString("piece.king")); //$NON-NLS-1$
-					break;
-				default:
-			}
+	public void appendDetailed(StringBuilder buffer, Messages messages) {
+		switch (this.pieceIdentification) {
+			case 'B':
+				buffer.append(messages.getString("piece.bishop")); //$NON-NLS-1$
+				break;
+			case 'N':
+				buffer.append(messages.getString("piece.knight")); //$NON-NLS-1$
+				break;
+			case 'R':
+				buffer.append(messages.getString("piece.rook")); //$NON-NLS-1$
+				break;
+			case 'Q':
+				buffer.append(messages.getString("piece.queen")); //$NON-NLS-1$
+				break;
+			case 'K':
+				buffer.append(messages.getString("piece.king")); //$NON-NLS-1$
 		}
 	}
 

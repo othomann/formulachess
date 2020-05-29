@@ -1,8 +1,24 @@
 package org.formulachess.engine;
 
+import static org.formulachess.engine.Piece.BLACK_BISHOP;
+import static org.formulachess.engine.Piece.BLACK_KING;
+import static org.formulachess.engine.Piece.BLACK_KNIGHT;
+import static org.formulachess.engine.Piece.BLACK_PAWN;
+import static org.formulachess.engine.Piece.BLACK_QUEEN;
+import static org.formulachess.engine.Piece.BLACK_ROOK;
+import static org.formulachess.engine.Piece.EMPTY;
+import static org.formulachess.engine.Piece.WHITE_BISHOP;
+import static org.formulachess.engine.Piece.WHITE_KING;
+import static org.formulachess.engine.Piece.WHITE_KNIGHT;
+import static org.formulachess.engine.Piece.WHITE_PAWN;
+import static org.formulachess.engine.Piece.WHITE_QUEEN;
+import static org.formulachess.engine.Piece.WHITE_ROOK;
+
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Observable;
-import static org.formulachess.engine.Piece.*;
+
+import org.formulachess.pgn.engine.PGNMoveContainer;
 
 public abstract class AbstractChessEngine extends Observable {
 
@@ -14,7 +30,11 @@ public abstract class AbstractChessEngine extends Observable {
 
 	public abstract long getLastMove();
 
-	public abstract void initialize(String fenNotation);
+	public abstract void initialize(String fenNotation, boolean isFischerRandom);
+
+	public void initialize(String fenNotation) {
+		initialize(fenNotation, false);
+	}
 
 	public abstract void initializeToStartingPosition();
 
@@ -26,6 +46,8 @@ public abstract class AbstractChessEngine extends Observable {
 
 	public long perft(int depth) {
 		long[] moves = this.allMoves();
+		PGNMoveContainer pgnMoveContainer = new PGNMoveContainer(this, moves, Locale.FRANCE);
+		System.out.println(pgnMoveContainer.toString(true));
 		if (depth == 1) {
 			return moves.length;
 		}
@@ -39,6 +61,8 @@ public abstract class AbstractChessEngine extends Observable {
 	}
 
 	public abstract void playMove(long move);
+	
+	public abstract Piece getBoard(int position);
 
 	public abstract void playMoveWithoutNotification(long move);
 

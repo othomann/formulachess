@@ -62,8 +62,8 @@ public class TestPgnParser {
 		assertNotNull(pgnDatabase, "Should not be null"); //$NON-NLS-1$
 		PGNGame[] pgnGames = pgnDatabase.getPGNGames();
 		for (PGNGame game : pgnGames) {
-			if (game.getTagSection().getTag(TagSection.VARIANT) != null) {
-				// Fisher Randon is not handled
+			if (game.isFischerRandom()) {
+				// Fischer Random is not handled
 				continue;
 			}
 			PGNModel model = new PGNModel(game, new ChessEngine());

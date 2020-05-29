@@ -6,6 +6,7 @@ import static org.formulachess.engine.Piece.UNDEFINED;
 import java.util.HashMap;
 import java.util.Locale;
 
+import org.formulachess.engine.AbstractChessEngine;
 import org.formulachess.engine.ChessEngine;
 import org.formulachess.engine.Messages;
 import org.formulachess.engine.MoveConstants;
@@ -19,7 +20,7 @@ public class PGNMoveContainer {
 	private HashMap<Locale, Messages> bundles;
 	private long[] moves;
 
-	public PGNMoveContainer(ChessEngine model, long[] moves, Locale currentLocale) {
+	public PGNMoveContainer(AbstractChessEngine model, long[] moves, Locale currentLocale) {
 		this.bundles = new HashMap<>();
 		this.moves = moves;
 		this.bundles.put(Locale.ENGLISH, new Messages(Locale.ENGLISH)); //$NON-NLS-1$
@@ -85,20 +86,20 @@ public class PGNMoveContainer {
 		return null;
 	}
 
-	private String getShortNotation(ChessEngine model, long move, Locale locale) {
+	private String getShortNotation(AbstractChessEngine model, long move, Locale locale) {
 		return moveToString(model, move, locale, false, false);
 	}
 
-	private String getColumnNotation(ChessEngine model, long move, Locale locale) {
+	private String getColumnNotation(AbstractChessEngine model, long move, Locale locale) {
 		return moveToString(model, move, locale, true, false);
 	}
 
-	private String getRowNotation(ChessEngine model, long move, Locale locale) {
+	private String getRowNotation(AbstractChessEngine model, long move, Locale locale) {
 		return moveToString(model, move, locale, false, true);
 	}
 
 	private String moveToString(
-			ChessEngine model,
+			AbstractChessEngine model,
 			final long move,
 			Locale locale,
 			boolean columnAmbiguity,

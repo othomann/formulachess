@@ -49,10 +49,9 @@ public class PawnMove extends Move {
 				case 'R':
 					buffer.append(messages.getString("piece.rook")); //$NON-NLS-1$
 					break;
-				case 'Q':
-					buffer.append(messages.getString("piece.queen")); //$NON-NLS-1$
-					break;
 				default:
+					// remaining piece is the Queen
+					buffer.append(messages.getString("piece.queen")); //$NON-NLS-1$
 			}
 		}
 	}

@@ -38,7 +38,8 @@ public class PieceMove extends Move {
 			case 'Q':
 				buffer.append(messages.getString("piece.queen")); //$NON-NLS-1$
 				break;
-			case 'K':
+			default:
+				// remaining piece is the King
 				buffer.append(messages.getString("piece.king")); //$NON-NLS-1$
 		}
 	}

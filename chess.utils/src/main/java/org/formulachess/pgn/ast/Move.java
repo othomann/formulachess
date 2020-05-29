@@ -116,7 +116,7 @@ public abstract class Move extends ASTNode {
 	 * @see formulachess.pgn.ast.MateMove#getMoveNotation()
 	 */
 	public String getMoveNotation() {
-		return getMoveNotation(null);
+		return getMoveNotation(new Messages());
 	}
 
 	/**
@@ -245,7 +245,7 @@ public abstract class Move extends ASTNode {
 	}
 
 	public Move[] pathFromRoot() {
-		ArrayList<ASTNode> collection = new ArrayList<ASTNode>(this.getMoveIndication() * 2);
+		ArrayList<ASTNode> collection = new ArrayList<>(this.getMoveIndication() * 2);
 		collection.add(this);
 		ASTNode parentNode = this.getParent();
 		while (parentNode != null) {

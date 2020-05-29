@@ -9,8 +9,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipInputStream;
 
+import org.formulachess.engine.ChessEngine;
 import org.formulachess.pgn.Parser;
+import org.formulachess.pgn.ast.Move;
 import org.formulachess.pgn.ast.PGNDatabase;
+import org.formulachess.pgn.ast.PGNGame;
+import org.formulachess.pgn.ast.TagSection;
+import org.formulachess.pgn.engine.PGNModel;
 import org.formulachess.util.Util;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -55,5 +60,15 @@ public class TestPgnParser {
 		Parser parser = new Parser();
 		PGNDatabase pgnDatabase = parser.parse(source.toCharArray());
 		assertNotNull(pgnDatabase, "Should not be null"); //$NON-NLS-1$
+		PGNGame[] pgnGames = pgnDatabase.getPGNGames();
+		for (PGNGame game : pgnGames) {
+			if (game.getTagSection().getTag(TagSection.VARIANT) != null) {
+				// Fisher Randon is not handled
+				continue;
+			}
+			PGNModel model = new PGNModel(game, new ChessEngine());
+			Move[] moves = game.getMoveText().getMoves();
+			model.playMovesTill(moves, moves.length - 1);
+		}
 	}
 }

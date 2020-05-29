@@ -190,7 +190,7 @@ public abstract class Move extends ASTNode {
 		if (this.isWhiteMove()) {
 			buffer.append(this.getMoveIndication()).append('.').append(' ');
 		}
-		buffer.append(getMoveNotation(null));
+		buffer.append(getMoveNotation());
 		return String.valueOf(buffer);
 	}
 

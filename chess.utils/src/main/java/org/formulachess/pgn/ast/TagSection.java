@@ -18,6 +18,8 @@ public class TagSection extends ASTNode {
 	public static final String TAG_WHITE = "[White"; //$NON-NLS-1$
 	public static final String TAG_WHITE_ELO = "[WhiteElo"; //$NON-NLS-1$
 	public static final String TAG_EVENT = "[Event"; //$NON-NLS-1$
+	public static final String TAG_FEN = "[FEN"; //$NON-NLS-1$
+	public static final String VARIANT = "[VARIANT" ; //$NON-NLS-1$
 
 	private static final int INITIAL_SIZE = 7;
 	private TagPair[] tagPairs = new TagPair[INITIAL_SIZE];

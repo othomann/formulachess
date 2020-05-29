@@ -5,19 +5,25 @@ import java.util.Locale;
 import org.formulachess.engine.ChessEngine;
 import org.formulachess.pgn.ast.Move;
 import org.formulachess.pgn.ast.PGNGame;
+import org.formulachess.pgn.ast.Player;
+import org.formulachess.pgn.ast.TagSection;
 
 public class PGNModel {
 
 	private String fenNotation;
 	private ChessEngine model;
 	private int currentMoveCounter;
+	private Player white;
+	private Player black;
 
 	public PGNModel(PGNGame pgnGame, ChessEngine model) {
 		if (pgnGame != null) {
-			this.fenNotation = pgnGame.getTagSection().getTag("[FEN"); //$NON-NLS-1$
+			this.fenNotation = pgnGame.getTagSection().getTag(TagSection.TAG_FEN); // $NON-NLS-1$
 			if (this.fenNotation != null) {
 				this.fenNotation = this.fenNotation.substring(1, this.fenNotation.length() - 1);
 			}
+			this.white = new Player(pgnGame.getTagSection().getTag(TagSection.TAG_WHITE));
+			this.black = new Player(pgnGame.getTagSection().getTag(TagSection.TAG_BLACK));
 		}
 		this.model = model;
 		this.currentMoveCounter = 0;
@@ -33,6 +39,14 @@ public class PGNModel {
 
 	public boolean isReady() {
 		return this.model.isReady();
+	}
+	
+	public Player getWhite() {
+		return this.white;
+	}
+
+	public Player getBlack() {
+		return this.black;
 	}
 
 	public void playMovesTill(Move[] moves, int index) {
@@ -51,8 +65,7 @@ public class PGNModel {
 				this.model.initializeToStartingPosition();
 			}
 			for (int i = 0; i <= index; i++) {
-				PGNMoveContainer container = new PGNMoveContainer(this.model, this.model.allMoves(),
-						Locale.getDefault());
+				PGNMoveContainer container = new PGNMoveContainer(this.model, this.model.allMoves(), Locale.US);
 				String trimmedMoveNotation = trimmedMoveNotation(moves[i]);
 				long move = container.get(trimmedMoveNotation);
 				if (move != -1) {

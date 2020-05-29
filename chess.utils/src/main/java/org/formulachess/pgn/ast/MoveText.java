@@ -3,7 +3,8 @@ package org.formulachess.pgn.ast;
 import org.formulachess.pgn.ASTVisitor;
 
 public class MoveText extends ASTNode {
-
+	
+	private static final Move[] NO_MOVES = new Move[0];
 	private Move[] moves;
 	private GameTermination gameTermination;
 	private Comment comment;
@@ -91,7 +92,7 @@ public class MoveText extends ASTNode {
 	 * @return Move[]
 	 */
 	public Move[] getMoves() {
-		return this.moves;
+		return this.moves == null ? NO_MOVES : this.moves;
 	}
 
 	@Override

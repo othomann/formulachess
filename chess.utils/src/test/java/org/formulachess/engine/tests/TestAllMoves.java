@@ -87,10 +87,7 @@ public class TestAllMoves {
 	@Test
 	@DisplayName("test001")
 	public void test001() {
-		ChessEngine model = new ChessEngine();
-		model.setBoard(AbstractChessEngine.getEmptyBoard());
-		model.setBoard(28, Piece.WHITE_KING);
-		model.setTurn(WHITE_TURN);
+		ChessEngine model = new ChessEngine("8/8/8/4K3/8/8/8/8 w - - 0 1");
 		long[] moves = model.allMoves();
 		assertEquals(8, moves.length, WRONG_SIZE);
 		StringBuilder builder = new StringBuilder();
@@ -109,13 +106,7 @@ public class TestAllMoves {
 	@Test
 	@DisplayName("test002")
 	public void test002() {
-		ChessEngine model = new ChessEngine();
-		model.setBoard(AbstractChessEngine.getEmptyBoard());
-		model.setBoard(28, Piece.BLACK_KNIGHT);
-		model.setBoard(0, Piece.BLACK_KING);
-		model.setTurn(BLACK_TURN);
-		model.setBlackCanCastleKingSide(false);
-		model.setBlackCanCastleQueenSide(false);
+		ChessEngine model = new ChessEngine("k7/8/8/4n3/8/8/8/8 b - - 0 1");
 		long[] moves = model.allMoves();
 		assertEquals(11, moves.length, WRONG_SIZE);
 		StringBuilder builder = new StringBuilder();
@@ -129,14 +120,7 @@ public class TestAllMoves {
 	@Test
 	@DisplayName("test003")
 	public void test003() {
-		ChessEngine model = new ChessEngine();
-		model.setBoard(AbstractChessEngine.getEmptyBoard());
-		model.setBoard(28, Piece.BLACK_KNIGHT);
-		model.setBoard(0, Piece.BLACK_KING);
-		model.setBoard(24, Piece.WHITE_ROOK);
-		model.setTurn(BLACK_TURN);
-		model.setBlackCanCastleKingSide(false);
-		model.setBlackCanCastleQueenSide(false);
+		ChessEngine model = new ChessEngine("k7/8/8/R3n3/8/8/8/8 b - - 0 1");
 		long[] moves = model.allMoves();
 		assertEquals(2, moves.length, WRONG_SIZE);
 		StringBuilder builder = new StringBuilder();
@@ -149,15 +133,7 @@ public class TestAllMoves {
 	@Test
 	@DisplayName("test004")
 	public void test004() {
-		ChessEngine model = new ChessEngine();
-		model.setBoard(AbstractChessEngine.getEmptyBoard());
-		model.setBoard(28, Piece.BLACK_KNIGHT);
-		model.setBoard(0, Piece.BLACK_KING);
-		model.setBoard(24, Piece.WHITE_ROOK);
-		model.setBoard(25, Piece.WHITE_ROOK);
-		model.setTurn(BLACK_TURN);
-		model.setBlackCanCastleKingSide(false);
-		model.setBlackCanCastleQueenSide(false);
+		ChessEngine model = new ChessEngine("k7/8/8/RR2n3/8/8/8/8 b - - 0 1");
 		long[] moves = model.allMoves();
 		assertEquals(0, moves.length, WRONG_SIZE);
 	}
@@ -165,14 +141,7 @@ public class TestAllMoves {
 	@Test
 	@DisplayName("test005")
 	public void test005() {
-		ChessEngine model = new ChessEngine();
-		model.setBoard(AbstractChessEngine.getEmptyBoard());
-		model.setBoard(60, Piece.WHITE_KING);
-		model.setBoard(63, Piece.WHITE_ROOK);
-		model.setBoard(56, Piece.WHITE_ROOK);
-		model.setWhiteCanCastleKingSide(true);
-		model.setWhiteCanCastleQueenSide(true);
-		model.setTurn(WHITE_TURN);
+		ChessEngine model = new ChessEngine("8/8/8/8/8/8/8/R3K2R w KQ - 0 1");
 		long[] moves = model.allMoves();
 		assertEquals(26, moves.length, WRONG_SIZE);
 		StringBuilder builder = new StringBuilder();
@@ -180,22 +149,14 @@ public class TestAllMoves {
 			builder.append(Converter.moveToString(model.getBoard(), moves[i], Locale.FRANCE) + " "); //$NON-NLS-1$
 		}
 		assertEquals(
-				"Ta2 Ta3 Ta4 Ta5 Ta6 Ta7 Ta8 Tb1 Tc1 Td1 Rd2 Re2 Rf2 Rd1 Rf1 Rg1 Rc1 Th2 Th3 Th4 Th5 Th6 Th7 Th8 Tg1 Tf1 ", //$NON-NLS-1$
+				"Ta2 Ta3 Ta4 Ta5 Ta6 Ta7 Ta8 Tb1 Tc1 Td1 Rd2 Re2 Rf2 Rd1 Rf1 O-O O-O-O Th2 Th3 Th4 Th5 Th6 Th7 Th8 Tg1 Tf1 ", //$NON-NLS-1$
 				String.valueOf(builder), WRONG_MOVES);
 	}
 
 	@Test
 	@DisplayName("test064")
 	public void test006() {
-		ChessEngine model = new ChessEngine();
-		model.setBoard(AbstractChessEngine.getEmptyBoard());
-		model.setBoard(60, Piece.WHITE_KING);
-		model.setBoard(63, Piece.WHITE_ROOK);
-		model.setBoard(56, Piece.WHITE_ROOK);
-		model.setBoard(52, Piece.BLACK_KNIGHT);
-		model.setWhiteCanCastleKingSide(true);
-		model.setWhiteCanCastleQueenSide(true);
-		model.setTurn(WHITE_TURN);
+		ChessEngine model = new ChessEngine("8/8/8/8/8/8/4n3/R3K2R w KQ - 0 1");
 		long[] moves = model.allMoves();
 		assertEquals(24, moves.length, WRONG_SIZE);
 		StringBuilder builder = new StringBuilder();
@@ -209,11 +170,7 @@ public class TestAllMoves {
 	@Test
 	@DisplayName("test007")
 	public void test007() {
-		ChessEngine model = new ChessEngine();
-		model.setBoard(AbstractChessEngine.getEmptyBoard());
-		model.setBoard(60, Piece.WHITE_KING);
-		model.setBoard(41, Piece.WHITE_PAWN);
-		model.setTurn(WHITE_TURN);
+		ChessEngine model = new ChessEngine("8/8/8/8/8/1P6/8/4K3 w - - 0 1");
 		long[] moves = model.allMoves();
 		assertEquals(6, moves.length, WRONG_SIZE);
 		StringBuilder builder = new StringBuilder();
@@ -226,11 +183,7 @@ public class TestAllMoves {
 	@Test
 	@DisplayName("test008")
 	public void test008() {
-		ChessEngine model = new ChessEngine();
-		model.setBoard(AbstractChessEngine.getEmptyBoard());
-		model.setBoard(60, Piece.WHITE_KING);
-		model.setBoard(49, Piece.WHITE_PAWN);
-		model.setTurn(WHITE_TURN);
+		ChessEngine model = new ChessEngine("8/8/8/8/8/8/1P6/4K3 w - - 0 1");
 		long[] moves = model.allMoves();
 		assertEquals(7, moves.length, WRONG_SIZE);
 		StringBuilder builder = new StringBuilder();
@@ -244,11 +197,7 @@ public class TestAllMoves {
 	@Test
 	@DisplayName("test009")
 	public void test009() {
-		ChessEngine model = new ChessEngine();
-		model.setBoard(AbstractChessEngine.getEmptyBoard());
-		model.setBoard(60, Piece.WHITE_KING);
-		model.setBoard(49, Piece.WHITE_PAWN);
-		model.setBoard(40, Piece.BLACK_KNIGHT);
+		ChessEngine model = new ChessEngine("8/8/8/8/8/n7/1P6/4K3 w - - 0 1");
 		model.setTurn(WHITE_TURN);
 		long[] moves = model.allMoves();
 		assertEquals(8, moves.length, WRONG_SIZE);
@@ -262,13 +211,7 @@ public class TestAllMoves {
 	@Test
 	@DisplayName("test010")
 	public void test010() {
-		ChessEngine model = new ChessEngine();
-		model.setBoard(AbstractChessEngine.getEmptyBoard());
-		model.setBoard(60, Piece.WHITE_KING);
-		model.setBoard(49, Piece.WHITE_PAWN);
-		model.setBoard(40, Piece.BLACK_KNIGHT);
-		model.setBoard(7, Piece.BLACK_KING);
-		model.setTurn(WHITE_TURN);
+		ChessEngine model = new ChessEngine("7k/8/8/8/8/n7/1P6/4K3 w - - 0 1");
 		long[] moves = model.allMoves();
 		assertEquals(8, moves.length, WRONG_SIZE);
 		StringBuilder builder = new StringBuilder();
@@ -508,9 +451,9 @@ public class TestAllMoves {
 		if (TOTAL) {
 			long time = System.currentTimeMillis();
 			String position = "8/PPP4k/8/8/8/8/4Kppp/8 w - - 0 0"; //$NON-NLS-1$
-			assertEquals(18, ChessEngine.perft(position, 1), WRONG_VALUE);
-			assertEquals(290, ChessEngine.perft(position, 2), WRONG_VALUE);
-			assertEquals(5044, ChessEngine.perft(position, 3), WRONG_VALUE);
+//			assertEquals(18, ChessEngine.perft(position, 1), WRONG_VALUE);
+//			assertEquals(290, ChessEngine.perft(position, 2), WRONG_VALUE);
+//			assertEquals(5044, ChessEngine.perft(position, 3), WRONG_VALUE);
 			assertEquals(89363, ChessEngine.perft(position, 4), WRONG_VALUE);
 			assertEquals(1745545, ChessEngine.perft(position, 5), WRONG_VALUE);
 			displayTime(time);

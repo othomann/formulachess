@@ -33,7 +33,25 @@ public class Converter {
 				buffer.append(messages.getString("piece.queen")); //$NON-NLS-1$
 				break;
 			case WHITE_KING:
+				if (MoveConstants.isCastle(move)) {
+					if (endingPosition == ChessEngine.WHITE_KING_CASTLE_QUEEN_SIDE) {
+						buffer.append("O-O-O");
+					} else {
+						buffer.append("O-O");
+					}
+					return String.valueOf(buffer);
+				}
+				buffer.append(messages.getString("piece.king")); //$NON-NLS-1$
+				break;
 			case BLACK_KING:
+				if (MoveConstants.isCastle(move)) {
+					if (endingPosition == ChessEngine.BLACK_KING_CASTLE_QUEEN_SIDE) {
+						buffer.append("O-O-O");
+					} else {
+						buffer.append("O-O");
+					}
+					return String.valueOf(buffer);
+				}
 				buffer.append(messages.getString("piece.king")); //$NON-NLS-1$
 				break;
 			case WHITE_KNIGHT:

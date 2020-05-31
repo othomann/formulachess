@@ -62,9 +62,11 @@ public class ChessEngine extends AbstractChessEngine {
 	private int whiteKingSquare;
 	private int whiteRookKingSideSquare = -1;
 	private int whiteRookQueenSideSquare = -1;
+	private int whiteKingInitialSquare = -1;
 	private int blackKingSquare;
 	private int blackRookKingSideSquare = -1;
 	private int blackRookQueenSideSquare = -1;
+	private int blackKingInitialSquare = -1;
 	private int enPassantSquare;
 	private boolean isFischerRandom;
 
@@ -124,15 +126,11 @@ public class ChessEngine extends AbstractChessEngine {
 	void addMove(int startingPosition, int endingPosition, Piece capturePieceType, Piece promotedPiece,
 			boolean isCastle) {
 		long info = MoveConstants.getMoveValue(startingPosition, endingPosition, capturePieceType, promotedPiece,
-				this.enPassantSquare, this.whiteCanCastleKingSide, this.whiteCanCastleQueenSide,
-				this.blackCanCastleKingSide, this.blackCanCastleQueenSide);
+				this.enPassantSquare, this.isWhiteCanCastleKingSide(), this.isWhiteCanCastleQueenSide(),
+				this.isBlackCanCastleKingSide(), this.isBlackCanCastleQueenSide());
 
 		try {
-			if (this.getTurn() == WHITE_TURN) {
-				if (isCastle) {
-					info = MoveConstants.tagAsCastle(info);
-				}
-			} else if (isCastle) {
+			if (isCastle) {
 				info = MoveConstants.tagAsCastle(info);
 			}
 			movePiece(info);
@@ -407,6 +405,7 @@ public class ChessEngine extends AbstractChessEngine {
 						case 'k':
 							this.board[squareIndex] = BLACK_KING;
 							this.blackKingSquare = squareIndex;
+							this.blackKingInitialSquare = squareIndex;
 							col++;
 							break;
 						case 'p':
@@ -437,6 +436,7 @@ public class ChessEngine extends AbstractChessEngine {
 						case 'K':
 							this.board[squareIndex] = WHITE_KING;
 							this.whiteKingSquare = squareIndex;
+							this.whiteKingInitialSquare = squareIndex;
 							col++;
 							break;
 						case 'P':
@@ -537,11 +537,11 @@ public class ChessEngine extends AbstractChessEngine {
 	}
 
 	public boolean isBlackCanCastleKingSide() {
-		return blackCanCastleKingSide;
+		return this.blackCanCastleKingSide;
 	}
 
 	public boolean isBlackCanCastleQueenSide() {
-		return blackCanCastleQueenSide;
+		return this.blackCanCastleQueenSide;
 	}
 
 	@Override
@@ -1130,12 +1130,12 @@ public class ChessEngine extends AbstractChessEngine {
 			}
 		}
 		if (!this.isFischerRandom) {
-			if (this.blackCanCastleKingSide && i == this.blackKingSquare && !isBlackInCheck()
+			if (this.isBlackCanCastleKingSide() && i == this.blackKingInitialSquare && !isBlackInCheck()
 					&& this.board[i + 2] == EMPTY && this.board[i + 1] == EMPTY && !isBlackInCheck(i + 2)
 					&& !isBlackInCheck(i + 1) && this.board[i + 3] == BLACK_ROOK) {
 				addMove(i, i + 2, EMPTY, true);
 			}
-			if (this.blackCanCastleQueenSide && !isBlackInCheck() && i == this.blackKingSquare
+			if (this.isBlackCanCastleQueenSide() && !isBlackInCheck() && i == this.blackKingInitialSquare
 					&& this.board[i - 3] == EMPTY && this.board[i - 2] == EMPTY && this.board[i - 1] == EMPTY
 					&& !isBlackInCheck(i - 2) && !isBlackInCheck(i - 1) && this.board[i - 4] == BLACK_ROOK) {
 				addMove(i, i - 2, EMPTY, true);
@@ -1695,12 +1695,12 @@ public class ChessEngine extends AbstractChessEngine {
 			}
 		}
 		if (!this.isFischerRandom) {
-			if (this.whiteCanCastleKingSide && i == this.whiteKingSquare && !isWhiteInCheck()
+			if (this.isWhiteCanCastleKingSide() && i == this.whiteKingInitialSquare && !isWhiteInCheck()
 					&& this.board[i + 2] == EMPTY && this.board[i + 1] == EMPTY && !isWhiteInCheck(i + 2)
 					&& !isWhiteInCheck(i + 1) && this.board[i + 3] == WHITE_ROOK) {
 				addMove(i, i + 2, EMPTY, true);
 			}
-			if (this.whiteCanCastleQueenSide && i == this.whiteKingSquare && !isWhiteInCheck()
+			if (this.isWhiteCanCastleQueenSide() && i == this.whiteKingInitialSquare && !isWhiteInCheck()
 					&& this.board[i - 3] == EMPTY && this.board[i - 2] == EMPTY && this.board[i - 1] == EMPTY
 					&& !isWhiteInCheck(i - 2) && !isWhiteInCheck(i - 1) && this.board[i - 4] == WHITE_ROOK) {
 				addMove(i, i - 2, EMPTY, true);
@@ -1809,12 +1809,12 @@ public class ChessEngine extends AbstractChessEngine {
 				if (MoveConstants.isCastle(move)) {
 					if (this.isFischerRandom) {
 						switch (endingSquare) {
-							case 6:
-								this.board[5] = BLACK_ROOK;
+							case 62:
+								this.board[61] = WHITE_ROOK;
 								this.board[this.whiteRookKingSideSquare] = EMPTY;
 								break;
-							case 2:
-								this.board[3] = BLACK_ROOK;
+							case 58:
+								this.board[59] = WHITE_ROOK;
 								this.board[this.whiteRookQueenSideSquare] = EMPTY;
 								break;
 							default:
@@ -1834,8 +1834,8 @@ public class ChessEngine extends AbstractChessEngine {
 					}
 				}
 				this.whiteKingSquare = endingSquare;
-				this.whiteCanCastleKingSide = false;
-				this.whiteCanCastleQueenSide = false;
+				this.setWhiteCanCastleKingSide(false);
+				this.setWhiteCanCastleQueenSide(false);
 				this.enPassantSquare = -1;
 				break;
 			case BLACK_KING:
@@ -1866,8 +1866,8 @@ public class ChessEngine extends AbstractChessEngine {
 						}
 					}
 				}
-				this.blackCanCastleKingSide = false;
-				this.blackCanCastleQueenSide = false;
+				this.setBlackCanCastleKingSide(false);
+				this.setBlackCanCastleQueenSide(false);
 				this.enPassantSquare = -1;
 				this.blackKingSquare = endingSquare;
 				break;
@@ -1917,17 +1917,17 @@ public class ChessEngine extends AbstractChessEngine {
 				break;
 			case WHITE_ROOK:
 				if (startingSquare == 63) {
-					this.whiteCanCastleKingSide = false;
+					this.setWhiteCanCastleKingSide(false);
 				} else if (startingSquare == 56) {
-					this.whiteCanCastleQueenSide = false;
+					this.setWhiteCanCastleQueenSide(false);
 				}
 				this.enPassantSquare = -1;
 				break;
 			case BLACK_ROOK:
 				if (startingSquare == 7) {
-					this.blackCanCastleKingSide = false;
+					this.setBlackCanCastleKingSide(false);
 				} else if (startingSquare == 0) {
-					this.blackCanCastleQueenSide = false;
+					this.setBlackCanCastleQueenSide(false);
 				}
 				this.enPassantSquare = -1;
 				break;
@@ -2101,19 +2101,19 @@ public class ChessEngine extends AbstractChessEngine {
 			buffer.append(" b "); //$NON-NLS-1$
 		}
 		boolean hasCastle = false;
-		if (this.whiteCanCastleKingSide) {
+		if (this.isWhiteCanCastleKingSide()) {
 			hasCastle = true;
 			buffer.append('K');
 		}
-		if (this.whiteCanCastleQueenSide) {
+		if (this.isWhiteCanCastleQueenSide()) {
 			hasCastle = true;
 			buffer.append('Q');
 		}
-		if (this.blackCanCastleKingSide) {
+		if (this.isBlackCanCastleKingSide()) {
 			hasCastle = true;
 			buffer.append('k');
 		}
-		if (this.blackCanCastleQueenSide) {
+		if (this.isBlackCanCastleQueenSide()) {
 			hasCastle = true;
 			buffer.append('q');
 		}
@@ -2199,19 +2199,19 @@ public class ChessEngine extends AbstractChessEngine {
 			buffer.append("BLACK TURN "); //$NON-NLS-1$
 		}
 		boolean possibleCastling = false;
-		if (this.whiteCanCastleKingSide) {
+		if (this.isWhiteCanCastleKingSide()) {
 			buffer.append("K"); //$NON-NLS-1$
 			possibleCastling = true;
 		}
-		if (this.whiteCanCastleQueenSide) {
+		if (this.isWhiteCanCastleQueenSide()) {
 			buffer.append("Q"); //$NON-NLS-1$
 			possibleCastling = true;
 		}
-		if (this.blackCanCastleKingSide) {
+		if (this.isBlackCanCastleKingSide()) {
 			buffer.append("k"); //$NON-NLS-1$
 			possibleCastling = true;
 		}
-		if (this.blackCanCastleQueenSide) {
+		if (this.isBlackCanCastleQueenSide()) {
 			buffer.append("q"); //$NON-NLS-1$
 			possibleCastling = true;
 		}
@@ -2264,10 +2264,10 @@ public class ChessEngine extends AbstractChessEngine {
 			}
 		}
 
-		this.whiteCanCastleKingSide = MoveConstants.isWhiteCanCastleKingSide(info);
-		this.whiteCanCastleQueenSide = MoveConstants.isWhiteCanCastleQueenSide(info);
-		this.blackCanCastleKingSide = MoveConstants.isBlackCanCastleKingSide(info);
-		this.blackCanCastleQueenSide = MoveConstants.isBlackCanCastleQueenSide(info);
+		this.setWhiteCanCastleKingSide(MoveConstants.isWhiteCanCastleKingSide(info));
+		this.setWhiteCanCastleQueenSide(MoveConstants.isWhiteCanCastleQueenSide(info));
+		this.setBlackCanCastleKingSide(MoveConstants.isBlackCanCastleKingSide(info));
+		this.setBlackCanCastleQueenSide(MoveConstants.isBlackCanCastleQueenSide(info));
 
 		int fakeEnPassantSquare = MoveConstants.getEnPassantSquare(info);
 		switch (fakeEnPassantSquare) {
@@ -2304,11 +2304,11 @@ public class ChessEngine extends AbstractChessEngine {
 					} else {
 						switch (endingSquare) {
 							case 62:
-								this.board[this.whiteRookKingSideSquare] = WHITE_ROOK;
+								this.board[63] = WHITE_ROOK;
 								this.board[61] = EMPTY;
 								break;
 							case 58:
-								this.board[this.whiteRookQueenSideSquare] = WHITE_ROOK;
+								this.board[56] = WHITE_ROOK;
 								this.board[59] = EMPTY;
 								break;
 							default:
@@ -2324,11 +2324,11 @@ public class ChessEngine extends AbstractChessEngine {
 					} else {
 						switch (endingSquare) {
 							case 6:
-								this.board[this.blackRookKingSideSquare] = BLACK_ROOK;
+								this.board[7] = BLACK_ROOK;
 								this.board[5] = EMPTY;
 								break;
 							case 2:
-								this.board[this.blackRookQueenSideSquare] = BLACK_ROOK;
+								this.board[0] = BLACK_ROOK;
 								this.board[3] = EMPTY;
 								break;
 							default:

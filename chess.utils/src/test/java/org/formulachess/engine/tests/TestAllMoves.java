@@ -450,12 +450,12 @@ public class TestAllMoves {
 	public void test028() {
 		if (TOTAL) {
 			long time = System.currentTimeMillis();
-			String position = "8/PPP4k/8/8/8/8/4Kppp/8 w - - 0 0"; //$NON-NLS-1$
-//			assertEquals(18, ChessEngine.perft(position, 1), WRONG_VALUE);
-//			assertEquals(290, ChessEngine.perft(position, 2), WRONG_VALUE);
-//			assertEquals(5044, ChessEngine.perft(position, 3), WRONG_VALUE);
-			assertEquals(89363, ChessEngine.perft(position, 4), WRONG_VALUE);
-			assertEquals(1745545, ChessEngine.perft(position, 5), WRONG_VALUE);
+			String position = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 0"; //$NON-NLS-1$
+			assertEquals(48, ChessEngine.perft(position, 1), WRONG_VALUE);
+			assertEquals(2039, ChessEngine.perft(position, 2), WRONG_VALUE);
+			assertEquals(97862, ChessEngine.perft(position, 3), WRONG_VALUE);
+			assertEquals(4085603, ChessEngine.perft(position, 4), WRONG_VALUE);
+			assertEquals(193690690, ChessEngine.perft(position, 5), WRONG_VALUE);
 			displayTime(time);
 		}
 	}

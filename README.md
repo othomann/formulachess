@@ -1,3 +1,3 @@
 # formulachess
 
-Chess engine written in Java.
+Chess engine written in Java

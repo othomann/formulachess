@@ -27,9 +27,18 @@ import org.formulachess.util.Util;
 
 public class ChessEngine extends AbstractChessEngine {
 
-	public static final int WHITE_KING_CASTLE_QUEEN_SIDE = 58;
 	public static final int BLACK_KING_CASTLE_QUEEN_SIDE = 2;
+	static final boolean DEBUG = true;
 
+	private static final long[] EMPTY_MOVES = new long[0];
+
+	private static final int HISTORY_DEFAULT_SIZE = 10;
+
+	private static final int[] KING_POSITIONS = { -11, -10, -9, -1, 1, 9, 10, 11 };
+	private static final int[] KNIGHT_POSITIONS = { 21, 19, 12, 8, -8, -12, -19, -21 };
+	private static final Logger logger = Logger.getLogger(ChessEngine.class.getName());
+
+	private static final long[] NO_MOVES = new long[0];
 	private static final int[] TAB_120 = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 			-1, -1, 0, 1, 2, 3, 4, 5, 6, 7, -1, -1, 8, 9, 10, 11, 12, 13, 14, 15, -1, -1, 16, 17, 18, 19, 20, 21, 22,
 			23, -1, -1, 24, 25, 26, 27, 28, 29, 30, 31, -1, -1, 32, 33, 34, 35, 36, 37, 38, 39, -1, -1, 40, 41, 42, 43,
@@ -39,50 +48,40 @@ public class ChessEngine extends AbstractChessEngine {
 	private static final int[] TAB_64 = { 21, 22, 23, 24, 25, 26, 27, 28, 31, 32, 33, 34, 35, 36, 37, 38, 41, 42, 43,
 			44, 45, 46, 47, 48, 51, 52, 53, 54, 55, 56, 57, 58, 61, 62, 63, 64, 65, 66, 67, 68, 71, 72, 73, 74, 75, 76,
 			77, 78, 81, 82, 83, 84, 85, 86, 87, 88, 91, 92, 93, 94, 95, 96, 97, 98 };
+	public static final int WHITE_KING_CASTLE_QUEEN_SIDE = 58;
 
-	private static final int[] KNIGHT_POSITIONS = { 21, 19, 12, 8, -8, -12, -19, -21 };
-	private static final int[] KING_POSITIONS = { -11, -10, -9, -1, 1, 9, 10, 11 };
-	private static final long[] NO_MOVES = new long[0];
-
-	static final boolean DEBUG = true;
-	private static final long[] EMPTY_MOVES = new long[0];
-
-	private static final int HISTORY_DEFAULT_SIZE = 10;
-	private static final Logger logger = Logger.getLogger(ChessEngine.class.getName());
+	public static long perft(String fenNotation, int depth) {
+		ChessEngine model = new ChessEngine(Locale.getDefault(), fenNotation);
+		return model.perft(depth);
+	}
 
 	private boolean blackCanCastleKingSide;
 	private boolean blackCanCastleQueenSide;
-	private boolean whiteCanCastleKingSide;
-	private boolean whiteCanCastleQueenSide;
-
-	private Piece[] board;
-	private Messages currentMessages;
-	private int fiftyMovesRuleNumber;
-	public int getFiftyMovesRuleNumber() {
-		return fiftyMovesRuleNumber;
-	}
-
-	public void setFiftyMovesRuleNumber(int fiftyMovesRuleNumber) {
-		this.fiftyMovesRuleNumber = fiftyMovesRuleNumber;
-	}
-
-	private long[] history;
-	private boolean isReady;
-
-	private int whiteKingSquare;
-	private int whiteRookKingSideSquare = -1;
-	private int whiteRookQueenSideSquare = -1;
-	private int whiteKingInitialSquare = -1;
+	private int blackKingInitialSquare = -1;
 	private int blackKingSquare;
 	private int blackRookKingSideSquare = -1;
 	private int blackRookQueenSideSquare = -1;
-	private int blackKingInitialSquare = -1;
+
+	private Piece[] board;
+
+	private Messages currentMessages;
+
 	private int enPassantSquare;
+
+	private int fiftyMovesRuleNumber;
+
+	private long[] history;
+
 	private boolean isFischerRandom;
 
+	private boolean isReady;
+
 	private Locale locale;
+
 	private String[] moveHistory;
+
 	private int moveNumber;
+
 	private int movesCounter;
 
 	private long[] nextMoves;
@@ -90,56 +89,47 @@ public class ChessEngine extends AbstractChessEngine {
 	private Turn startingColor;
 
 	private int startingMoveNumber;
-
-	public int getStartingMoveNumber() {
-		return this.startingMoveNumber;
-	}
-
-	public void incrementStartingMoveCounter() {
-		this.startingMoveNumber++;
-	}
-
-	public void decrementStartingMoveCounter() {
-		this.startingMoveNumber--;
-	}
-
-	public void setStartingMoveNumber(int moveNumber) {
-		this.startingMoveNumber = moveNumber;
-	}
-
 	private Turn turn;
-
-	public static long perft(String fenNotation, int depth) {
-		ChessEngine model = new ChessEngine(Locale.getDefault(), fenNotation);
-		return model.perft(depth);
-	}
+	private boolean whiteCanCastleKingSide;
+	private boolean whiteCanCastleQueenSide;
+	private int whiteKingInitialSquare = -1;
+	private int whiteKingSquare;
+	private int whiteRookKingSideSquare = -1;
+	private int whiteRookQueenSideSquare = -1;
 
 	public ChessEngine() {
 		this(Locale.getDefault());
 	}
-
-	public ChessEngine(String fenPosition) {
-		this(Locale.getDefault(), fenPosition);
-	}
-
 	public ChessEngine(Locale currentLocale) {
 		this.locale = currentLocale;
 		this.currentMessages = new Messages(currentLocale);
 		decodeFENNotation("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"); //$NON-NLS-1$
 		this.isReady = false;
 	}
-
 	public ChessEngine(Locale currentLocale, String fenPosition) {
 		this.locale = currentLocale;
 		this.currentMessages = new Messages(currentLocale);
 		decodeFENNotation(fenPosition);
 		this.isReady = false;
 	}
-
+	public ChessEngine(String fenPosition) {
+		this(Locale.getDefault(), fenPosition);
+	}
+	public void addHistory(long move) {
+		if (this.history.length == this.getMoveNumber() + 1) {
+			// resize
+			System.arraycopy(this.history, 0, this.history = new long[this.history.length + HISTORY_DEFAULT_SIZE], 0,
+					this.moveNumber + 1);
+			System.arraycopy(this.moveHistory, 0,
+					this.moveHistory = new String[this.history.length + HISTORY_DEFAULT_SIZE], 0, this.moveNumber + 1);
+		}
+		this.incrementMoveNumber();
+		this.history[this.getMoveNumber()] = move;
+		this.moveHistory[this.getMoveNumber()] = Converter.moveToString(this.getBoard(), move);
+	}
 	void addMove(int startingPosition, int endingPosition, Piece capturePieceType) {
 		addMove(startingPosition, endingPosition, capturePieceType, UNDEFINED);
 	}
-
 	void addMove(int startingPosition, int endingPosition, Piece capturePieceType, Piece promotedPiece) {
 		long info = MoveConstants.getMoveValue(startingPosition, endingPosition, capturePieceType, promotedPiece,
 				this.getEnPassantSquare(), this.isWhiteCanCastleKingSide(), this.isWhiteCanCastleQueenSide(),
@@ -147,33 +137,33 @@ public class ChessEngine extends AbstractChessEngine {
 
 		try {
 			if (this.getTurn() == WHITE_TURN) {
-				if (startingPosition == this.whiteKingSquare && Math.abs(startingPosition - endingPosition) == 2) {
+				if (startingPosition == this.getWhiteKingSquare() && Math.abs(startingPosition - endingPosition) == 2) {
 					info = MoveConstants.tagAsCastle(info);
 				}
-			} else if (startingPosition == this.blackKingSquare && Math.abs(startingPosition - endingPosition) == 2) {
+			} else if (startingPosition == this.getBlackKingSquare() && Math.abs(startingPosition - endingPosition) == 2) {
 				info = MoveConstants.tagAsCastle(info);
 			}
 			movePiece(info);
 			if (this.getTurn() == WHITE_TURN) {
-				if (startingPosition == this.whiteKingSquare) {
+				if (startingPosition == this.getWhiteKingSquare()) {
 					if (isWhiteInCheck(endingPosition)) {
 						return;
 					}
-				} else if (isWhiteInCheck(this.whiteKingSquare)) {
+				} else if (this.isWhiteInCheck()) {
 					return;
 				}
-				if (isBlackInCheck(this.blackKingSquare)) {
+				if (this.isBlackInCheck()) {
 					info = MoveConstants.tagAsCheck(info);
 				}
 			} else {
-				if (startingPosition == this.blackKingSquare) {
+				if (startingPosition == this.getBlackKingSquare()) {
 					if (isBlackInCheck(endingPosition)) {
 						return;
 					}
-				} else if (isBlackInCheck(this.blackKingSquare)) {
+				} else if (this.isBlackInCheck()) {
 					return;
 				}
-				if (isWhiteInCheck(this.whiteKingSquare)) {
+				if (this.isWhiteInCheck()) {
 					info = MoveConstants.tagAsCheck(info);
 				}
 			}
@@ -188,7 +178,6 @@ public class ChessEngine extends AbstractChessEngine {
 		}
 		this.nextMoves[this.movesCounter++] = info;
 	}
-
 	private final long[] allBlackMoves() {
 		this.movesCounter = 0;
 		for (int i = 0; i < 64; i++) {
@@ -219,7 +208,6 @@ public class ChessEngine extends AbstractChessEngine {
 		}
 		return getNextMoves();
 	}
-
 	private final long[] allBlackMoves(Piece searchPieceType) {
 		if (searchPieceType == null || searchPieceType.isWhiteOrEmpty()) {
 			return EMPTY_MOVES;
@@ -284,18 +272,15 @@ public class ChessEngine extends AbstractChessEngine {
 	public long[] allMoves() {
 		return this.turn == WHITE_TURN ? allWhiteMoves() : allBlackMoves();
 	}
-
 	@Override
 	public long[] allMoves(Piece pieceType) {
 		return this.turn == WHITE_TURN ? allWhiteMoves(pieceType) : allBlackMoves(pieceType);
 	}
-
 	@Override
 	public long[] allMoves(Piece pieceType, int startingSquare) {
 		return this.turn == WHITE_TURN ? allWhiteMoves(pieceType, startingSquare)
 				: allBlackMoves(pieceType, startingSquare);
 	}
-
 	private final long[] allWhiteMoves() {
 		this.movesCounter = 0;
 		for (int i = 0; i < 64; i++) {
@@ -326,11 +311,10 @@ public class ChessEngine extends AbstractChessEngine {
 		}
 		return getNextMoves();
 	}
-
 	private final long[] allWhiteMoves(Piece searchPieceType) {
 		this.movesCounter = 0;
 		for (int i = 0; i < 64; i++) {
-			Piece currentPiece =this.getBoard(i);
+			Piece currentPiece = this.getBoard(i);
 			if (currentPiece == searchPieceType) {
 				switch (currentPiece) {
 					case WHITE_BISHOP:
@@ -401,10 +385,10 @@ public class ChessEngine extends AbstractChessEngine {
 					int squareIndex = row * 8 + col;
 					switch (token) {
 						case 'r':
-							if (this.blackRookQueenSideSquare == -1) {
-								this.blackRookQueenSideSquare = squareIndex;
+							if (this.getBlackRookQueenSideSquare() == -1) {
+								this.setBlackRookQueenSideSquare(squareIndex);
 							} else {
-								this.blackRookKingSideSquare = squareIndex;
+								this.setBlackRookKingSideSquare(squareIndex);
 							}
 							this.setBoard(squareIndex, BLACK_ROOK);
 							col++;
@@ -423,8 +407,8 @@ public class ChessEngine extends AbstractChessEngine {
 							break;
 						case 'k':
 							this.setBoard(squareIndex, BLACK_KING);
-							this.blackKingInitialSquare = squareIndex;
-							this.blackKingSquare = squareIndex;
+							this.setBlackKingInitialSquare(squareIndex);
+							this.setBlackKingSquare(squareIndex);
 							col++;
 							break;
 						case 'p':
@@ -432,10 +416,10 @@ public class ChessEngine extends AbstractChessEngine {
 							col++;
 							break;
 						case 'R':
-							if (this.whiteRookQueenSideSquare == -1) {
-								this.whiteRookQueenSideSquare = squareIndex;
+							if (this.getWhiteRookQueenSideSquare() == -1) {
+								this.setWhiteRookQueenSideSquare(squareIndex);
 							} else {
-								this.whiteRookKingSideSquare = squareIndex;
+								this.setWhiteRookKingSideSquare(squareIndex);
 							}
 							this.setBoard(squareIndex, WHITE_ROOK);
 							col++;
@@ -454,8 +438,8 @@ public class ChessEngine extends AbstractChessEngine {
 							break;
 						case 'K':
 							this.setBoard(squareIndex, WHITE_KING);
-							this.whiteKingSquare = squareIndex;
-							this.whiteKingInitialSquare = squareIndex;
+							this.setWhiteKingInitialSquare(squareIndex);
+							this.setWhiteKingInitialSquare(squareIndex);
 							col++;
 							break;
 						case 'P':
@@ -504,34 +488,44 @@ public class ChessEngine extends AbstractChessEngine {
 		}
 	}
 
+	public void decrementMoveNumber() {
+		this.moveNumber--;
+	}
+
+	public void decrementStartingMoveCounter() {
+		this.startingMoveNumber--;
+	}
+
+	public int getBlackKingInitialSquare() {
+		return this.blackKingInitialSquare;
+	}
+
+	public int getBlackKingSquare() {
+		return this.blackKingSquare;
+	}
+
+	public int getBlackRookKingSideSquare() {
+		return this.blackRookKingSideSquare;
+	}
+
+	public int getBlackRookQueenSideSquare() {
+		return this.blackRookQueenSideSquare;
+	}
+
 	public Piece[] getBoard() {
 		return this.board;
 	}
 
-	public void initializeHistory() {
-		this.history = new long[HISTORY_DEFAULT_SIZE];
-		this.moveHistory = new String[HISTORY_DEFAULT_SIZE];
-	}
-
-	public void addHistory(long move) {
-		if (this.history.length == this.getMoveNumber() + 1) {
-			// resize
-			System.arraycopy(this.history, 0, this.history = new long[this.history.length + HISTORY_DEFAULT_SIZE], 0,
-					this.moveNumber + 1);
-			System.arraycopy(this.moveHistory, 0,
-					this.moveHistory = new String[this.history.length + HISTORY_DEFAULT_SIZE], 0, this.moveNumber + 1);
-		}
-		this.incrementMoveNumber();
-		this.history[this.getMoveNumber()] = move;
-		this.moveHistory[this.getMoveNumber()] = Converter.moveToString(this.getBoard(), move);
-	}
-
 	public Piece getBoard(int index) {
-		return board[index];
+		return this.board[index];
 	}
 
-	public Locale getLocale() {
-		return this.locale;
+	public int getEnPassantSquare() {
+		return this.enPassantSquare;
+	}
+
+	public int getFiftyMovesRuleNumber() {
+		return this.fiftyMovesRuleNumber;
 	}
 
 	@Override
@@ -540,6 +534,10 @@ public class ChessEngine extends AbstractChessEngine {
 			return -1;
 		}
 		return this.history[this.moveNumber];
+	}
+
+	public Locale getLocale() {
+		return this.locale;
 	}
 
 	public int getMoveNumber() {
@@ -559,8 +557,36 @@ public class ChessEngine extends AbstractChessEngine {
 		return startingColor;
 	}
 
+	public int getStartingMoveNumber() {
+		return this.startingMoveNumber;
+	}
+
 	public Turn getTurn() {
 		return this.turn;
+	}
+
+	public int getWhiteKingInitialSquare() {
+		return whiteKingInitialSquare;
+	}
+
+	public int getWhiteKingSquare() {
+		return whiteKingSquare;
+	}
+
+	public int getWhiteRookKingSideSquare() {
+		return whiteRookKingSideSquare;
+	}
+
+	public int getWhiteRookQueenSideSquare() {
+		return whiteRookQueenSideSquare;
+	}
+
+	public void incrementMoveNumber() {
+		this.moveNumber++;
+	}
+
+	public void incrementStartingMoveCounter() {
+		this.startingMoveNumber++;
 	}
 
 	@Override
@@ -570,6 +596,11 @@ public class ChessEngine extends AbstractChessEngine {
 
 	public void initialize(String fenNotation, boolean isFischerRandom) {
 		this.initialize(fenNotation);
+	}
+
+	public void initializeHistory() {
+		this.history = new long[HISTORY_DEFAULT_SIZE];
+		this.moveHistory = new String[HISTORY_DEFAULT_SIZE];
 	}
 
 	@Override
@@ -587,7 +618,7 @@ public class ChessEngine extends AbstractChessEngine {
 
 	@Override
 	public boolean isBlackInCheck() {
-		return isBlackInCheck(this.blackKingSquare);
+		return isBlackInCheck(this.getBlackKingSquare());
 	}
 
 	private boolean isBlackInCheck(int square) {
@@ -812,6 +843,10 @@ public class ChessEngine extends AbstractChessEngine {
 			}
 		}
 		return false;
+	}
+
+	public boolean isFischerRandom() {
+		return isFischerRandom;
 	}
 
 	@Override
@@ -1170,15 +1205,17 @@ public class ChessEngine extends AbstractChessEngine {
 				}
 			}
 		}
-		if (this.isBlackCanCastleKingSide() && !isBlackInCheck() && this.getBoard(i + 2) == EMPTY
-				&& this.getBoard(i + 1) == EMPTY && !isBlackInCheck(i + 2) && !isBlackInCheck(i + 1)
-				&& this.getBoard(i + 3) == BLACK_ROOK) {
-			addMove(i, i + 2, EMPTY);
-		}
-		if (this.isBlackCanCastleQueenSide() && !isBlackInCheck() && this.getBoard(i - 3) == EMPTY
-				&& this.getBoard(i - 2) == EMPTY &&this.getBoard(i - 1) == EMPTY && !isBlackInCheck(i - 2)
-				&& !isBlackInCheck(i - 1) && this.getBoard(i - 4) == BLACK_ROOK) {
-			addMove(i, i - 2, EMPTY);
+		if (!this.isFischerRandom()) {
+			if (this.isBlackCanCastleKingSide() && !isBlackInCheck() && this.getBoard(i + 2) == EMPTY
+					&& this.getBoard(i + 1) == EMPTY && !isBlackInCheck(i + 2) && !isBlackInCheck(i + 1)
+					&& this.getBoard(i + 3) == BLACK_ROOK) {
+				addMove(i, i + 2, EMPTY);
+			}
+			if (this.isBlackCanCastleQueenSide() && !isBlackInCheck() && this.getBoard(i - 3) == EMPTY
+					&& this.getBoard(i - 2) == EMPTY && this.getBoard(i - 1) == EMPTY && !isBlackInCheck(i - 2)
+					&& !isBlackInCheck(i - 1) && this.getBoard(i - 4) == BLACK_ROOK) {
+				addMove(i, i - 2, EMPTY);
+			}
 		}
 	}
 
@@ -1287,7 +1324,7 @@ public class ChessEngine extends AbstractChessEngine {
 						default:
 					}
 				}
-				this.whiteKingSquare = endingSquare;
+				this.setWhiteKingSquare(endingSquare);
 				break;
 			case BLACK_KING:
 				if ((((startingSquare - endingSquare) == 2) || ((startingSquare - endingSquare) == -2))
@@ -1304,7 +1341,7 @@ public class ChessEngine extends AbstractChessEngine {
 						default:
 					}
 				}
-				this.blackKingSquare = endingSquare;
+				this.setBlackKingSquare(endingSquare);
 				break;
 			case WHITE_PAWN:
 				if (MoveConstants.isPromotion(move)) {
@@ -1381,7 +1418,7 @@ public class ChessEngine extends AbstractChessEngine {
 						default:
 					}
 				}
-				this.whiteKingSquare = startingSquare;
+				this.setWhiteKingSquare(startingSquare);
 				break;
 			case BLACK_KING:
 				if ((((startingSquare - endingSquare) == 2) || ((startingSquare - endingSquare) == -2))
@@ -1398,7 +1435,7 @@ public class ChessEngine extends AbstractChessEngine {
 						default:
 					}
 				}
-				this.blackKingSquare = startingSquare;
+				this.setBlackKingSquare(startingSquare);
 				break;
 			case WHITE_PAWN:
 				if (endingSquare == this.getEnPassantSquare()) {
@@ -1731,15 +1768,19 @@ public class ChessEngine extends AbstractChessEngine {
 				}
 			}
 		}
-		if (this.isWhiteCanCastleKingSide() && !isWhiteInCheck() && this.getBoard(i + 2) == EMPTY
-				&& this.getBoard(i + 1) == EMPTY && !isWhiteInCheck(i + 2) && !isWhiteInCheck(i + 1)
-				&& this.getBoard(i + 3) == WHITE_ROOK) {
-			addMove(i, i + 2, EMPTY);
-		}
-		if (this.isWhiteCanCastleQueenSide() && !isWhiteInCheck() && this.getBoard(i - 3) == EMPTY
-				&& this.getBoard(i - 2) == EMPTY && this.getBoard(i - 1) == EMPTY && !isWhiteInCheck(i - 2)
-				&& !isWhiteInCheck(i - 1) && this.getBoard(i - 4) == WHITE_ROOK) {
-			addMove(i, i - 2, EMPTY);
+		if (!this.isFischerRandom()) {
+			if (this.isWhiteCanCastleKingSide() && !isWhiteInCheck() && this.getBoard(i + 2) == EMPTY
+					&& this.getBoard(i + 1) == EMPTY && !isWhiteInCheck(i + 2) && !isWhiteInCheck(i + 1)
+					&& this.getBoard(i + 3) == WHITE_ROOK) {
+				addMove(i, i + 2, EMPTY);
+			}
+			if (this.isWhiteCanCastleQueenSide() && !isWhiteInCheck() && this.getBoard(i - 3) == EMPTY
+					&& this.getBoard(i - 2) == EMPTY && this.getBoard(i - 1) == EMPTY && !isWhiteInCheck(i - 2)
+					&& !isWhiteInCheck(i - 1) && this.getBoard(i - 4) == WHITE_ROOK) {
+				addMove(i, i - 2, EMPTY);
+			}
+		} else {
+			// handle fischer random castling
 		}
 	}
 
@@ -1844,7 +1885,7 @@ public class ChessEngine extends AbstractChessEngine {
 						default:
 					}
 				}
-				this.whiteKingSquare = endingSquare;
+				this.setWhiteKingSquare(endingSquare);
 				this.setWhiteCanCastleKingSide(false);
 				this.setWhiteCanCastleQueenSide(false);
 				this.setEnPassantSquare(-1);
@@ -1867,7 +1908,7 @@ public class ChessEngine extends AbstractChessEngine {
 				this.setBlackCanCastleKingSide(false);
 				this.setBlackCanCastleQueenSide(false);
 				this.setEnPassantSquare(-1);
-				this.blackKingSquare = endingSquare;
+				this.setBlackKingSquare(endingSquare);
 				break;
 			case WHITE_PAWN:
 				if (MoveConstants.isPromotion(info)) {
@@ -1942,6 +1983,22 @@ public class ChessEngine extends AbstractChessEngine {
 		this.blackCanCastleQueenSide = blackCanCastleQueenSide;
 	}
 
+	public void setBlackKingInitialSquare(int blackKingInitialSquare) {
+		this.blackKingInitialSquare = blackKingInitialSquare;
+	}
+
+	public void setBlackKingSquare(int blackKingSquare) {
+		this.blackKingSquare = blackKingSquare;
+	}
+
+	public void setBlackRookKingSideSquare(int blackRookKingSideSquare) {
+		this.blackRookKingSideSquare = blackRookKingSideSquare;
+	}
+
+	public void setBlackRookQueenSideSquare(int blackRookQueenSideSquare) {
+		this.blackRookQueenSideSquare = blackRookQueenSideSquare;
+	}
+
 	public void setBoard(int i, Piece piece) {
 		if (this.board == null) {
 			this.board = getEmptyBoard();
@@ -1949,10 +2006,10 @@ public class ChessEngine extends AbstractChessEngine {
 		this.board[i] = piece;
 		switch (piece) {
 			case WHITE_KING:
-				this.whiteKingSquare = i;
+				this.setWhiteKingSquare(i);
 				break;
 			case BLACK_KING:
-				this.blackKingSquare = i;
+				this.setBlackKingSquare(i);
 				break;
 			default:
 		}
@@ -1960,6 +2017,18 @@ public class ChessEngine extends AbstractChessEngine {
 
 	public void setBoard(Piece[] board) {
 		this.board = board;
+	}
+
+	public void setEnPassantSquare(int enPassantSquare) {
+		this.enPassantSquare = enPassantSquare;
+	}
+
+	public void setFiftyMovesRuleNumber(int fiftyMovesRuleNumber) {
+		this.fiftyMovesRuleNumber = fiftyMovesRuleNumber;
+	}
+
+	public void setFischerRandom(boolean isFischerRandom) {
+		this.isFischerRandom = isFischerRandom;
 	}
 
 	public void setIsReady(boolean value) {
@@ -1970,16 +2039,12 @@ public class ChessEngine extends AbstractChessEngine {
 		this.moveNumber = moveNumber;
 	}
 
-	public void incrementMoveNumber() {
-		this.moveNumber++;
-	}
-
-	public void decrementMoveNumber() {
-		this.moveNumber--;
-	}
-
 	public void setStartingColor(Turn startingColor) {
 		this.startingColor = startingColor;
+	}
+
+	public void setStartingMoveNumber(int moveNumber) {
+		this.startingMoveNumber = moveNumber;
 	}
 
 	public void setTurn(Turn turn) {
@@ -1992,6 +2057,22 @@ public class ChessEngine extends AbstractChessEngine {
 
 	public void setWhiteCanCastleQueenSide(boolean whiteCanCastleQueenSide) {
 		this.whiteCanCastleQueenSide = whiteCanCastleQueenSide;
+	}
+
+	public void setWhiteKingInitialSquare(int whiteKingInitialSquare) {
+		this.whiteKingInitialSquare = whiteKingInitialSquare;
+	}
+
+	public void setWhiteKingSquare(int whiteKingSquare) {
+		this.whiteKingSquare = whiteKingSquare;
+	}
+
+	public void setWhiteRookKingSideSquare(int whiteRookKingSideSquare) {
+		this.whiteRookKingSideSquare = whiteRookKingSideSquare;
+	}
+
+	public void setWhiteRookQueenSideSquare(int whiteRookQueenSideSquare) {
+		this.whiteRookQueenSideSquare = whiteRookQueenSideSquare;
 	}
 
 	@Override
@@ -2308,7 +2389,7 @@ public class ChessEngine extends AbstractChessEngine {
 						&& startingSquare == 60) {
 					switch (endingSquare) {
 						case 62:
-							this.setBoard(63,  WHITE_ROOK);
+							this.setBoard(63, WHITE_ROOK);
 							this.setBoard(61, EMPTY);
 							break;
 						case 58:
@@ -2318,7 +2399,7 @@ public class ChessEngine extends AbstractChessEngine {
 						default:
 					}
 				}
-				this.whiteKingSquare = startingSquare;
+				this.setWhiteKingSquare(startingSquare);
 				break;
 			case BLACK_KING:
 				if ((((startingSquare - endingSquare) == 2) || ((startingSquare - endingSquare) == -2))
@@ -2335,7 +2416,7 @@ public class ChessEngine extends AbstractChessEngine {
 						default:
 					}
 				}
-				this.blackKingSquare = startingSquare;
+				this.setBlackKingSquare(startingSquare);
 				break;
 			case WHITE_PAWN:
 				if (endingSquare == this.getEnPassantSquare()) {
@@ -2367,15 +2448,8 @@ public class ChessEngine extends AbstractChessEngine {
 				break;
 			default:
 		}
-		this.decrementMoveNumber();;
+		this.decrementMoveNumber();
+		;
 		this.decrementStartingMoveCounter();
-	}
-
-	public int getEnPassantSquare() {
-		return enPassantSquare;
-	}
-
-	public void setEnPassantSquare(int enPassantSquare) {
-		this.enPassantSquare = enPassantSquare;
 	}
 }

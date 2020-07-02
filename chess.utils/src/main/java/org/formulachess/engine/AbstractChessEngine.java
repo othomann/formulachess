@@ -15,10 +15,7 @@ import static org.formulachess.engine.Piece.WHITE_QUEEN;
 import static org.formulachess.engine.Piece.WHITE_ROOK;
 
 import java.util.Arrays;
-import java.util.Locale;
 import java.util.Observable;
-
-import org.formulachess.pgn.engine.PGNMoveContainer;
 
 public abstract class AbstractChessEngine extends Observable {
 

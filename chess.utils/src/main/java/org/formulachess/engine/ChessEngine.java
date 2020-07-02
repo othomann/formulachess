@@ -27,6 +27,9 @@ import org.formulachess.util.Util;
 
 public class ChessEngine extends AbstractChessEngine {
 
+	public static final int WHITE_KING_CASTLE_QUEEN_SIDE = 58;
+	public static final int BLACK_KING_CASTLE_QUEEN_SIDE = 2;
+
 	private static final int[] TAB_120 = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 			-1, -1, 0, 1, 2, 3, 4, 5, 6, 7, -1, -1, 8, 9, 10, 11, 12, 13, 14, 15, -1, -1, 16, 17, 18, 19, 20, 21, 22,
 			23, -1, -1, 24, 25, 26, 27, 28, 29, 30, 31, -1, -1, 32, 33, 34, 35, 36, 37, 38, 39, -1, -1, 40, 41, 42, 43,
@@ -49,14 +52,33 @@ public class ChessEngine extends AbstractChessEngine {
 
 	private boolean blackCanCastleKingSide;
 	private boolean blackCanCastleQueenSide;
+	private boolean whiteCanCastleKingSide;
+	private boolean whiteCanCastleQueenSide;
 
-	private int blackKingSquare;
 	private Piece[] board;
 	private Messages currentMessages;
-	private int enPassantSquare;
 	private int fiftyMovesRuleNumber;
+	public int getFiftyMovesRuleNumber() {
+		return fiftyMovesRuleNumber;
+	}
+
+	public void setFiftyMovesRuleNumber(int fiftyMovesRuleNumber) {
+		this.fiftyMovesRuleNumber = fiftyMovesRuleNumber;
+	}
+
 	private long[] history;
 	private boolean isReady;
+
+	private int whiteKingSquare;
+	private int whiteRookKingSideSquare = -1;
+	private int whiteRookQueenSideSquare = -1;
+	private int whiteKingInitialSquare = -1;
+	private int blackKingSquare;
+	private int blackRookKingSideSquare = -1;
+	private int blackRookQueenSideSquare = -1;
+	private int blackKingInitialSquare = -1;
+	private int enPassantSquare;
+	private boolean isFischerRandom;
 
 	private Locale locale;
 	private String[] moveHistory;
@@ -68,11 +90,24 @@ public class ChessEngine extends AbstractChessEngine {
 	private Turn startingColor;
 
 	private int startingMoveNumber;
-	private Turn turn;
-	private boolean whiteCanCastleKingSide;
-	private boolean whiteCanCastleQueenSide;
 
-	private int whiteKingSquare;
+	public int getStartingMoveNumber() {
+		return this.startingMoveNumber;
+	}
+
+	public void incrementStartingMoveCounter() {
+		this.startingMoveNumber++;
+	}
+
+	public void decrementStartingMoveCounter() {
+		this.startingMoveNumber--;
+	}
+
+	public void setStartingMoveNumber(int moveNumber) {
+		this.startingMoveNumber = moveNumber;
+	}
+
+	private Turn turn;
 
 	public static long perft(String fenNotation, int depth) {
 		ChessEngine model = new ChessEngine(Locale.getDefault(), fenNotation);
@@ -107,8 +142,8 @@ public class ChessEngine extends AbstractChessEngine {
 
 	void addMove(int startingPosition, int endingPosition, Piece capturePieceType, Piece promotedPiece) {
 		long info = MoveConstants.getMoveValue(startingPosition, endingPosition, capturePieceType, promotedPiece,
-				this.enPassantSquare, this.whiteCanCastleKingSide, this.whiteCanCastleQueenSide,
-				this.blackCanCastleKingSide, this.blackCanCastleQueenSide);
+				this.getEnPassantSquare(), this.isWhiteCanCastleKingSide(), this.isWhiteCanCastleQueenSide(),
+				this.isBlackCanCastleKingSide(), this.isBlackCanCastleQueenSide());
 
 		try {
 			if (this.getTurn() == WHITE_TURN) {
@@ -157,7 +192,7 @@ public class ChessEngine extends AbstractChessEngine {
 	private final long[] allBlackMoves() {
 		this.movesCounter = 0;
 		for (int i = 0; i < 64; i++) {
-			Piece currentPiece = this.board[i];
+			Piece currentPiece = this.getBoard(i);
 			if (currentPiece.isBlack()) {
 				switch (currentPiece) {
 					case BLACK_BISHOP:
@@ -191,7 +226,7 @@ public class ChessEngine extends AbstractChessEngine {
 		}
 		this.movesCounter = 0;
 		for (int i = 0; i < 64; i++) {
-			Piece currentPiece = this.board[i];
+			Piece currentPiece = this.getBoard(i);
 			if (currentPiece == searchPieceType) {
 				switch (currentPiece) {
 					case BLACK_BISHOP:
@@ -264,7 +299,7 @@ public class ChessEngine extends AbstractChessEngine {
 	private final long[] allWhiteMoves() {
 		this.movesCounter = 0;
 		for (int i = 0; i < 64; i++) {
-			Piece currentPiece = this.board[i];
+			Piece currentPiece = this.getBoard(i);
 			if (currentPiece.isWhite()) {
 				switch (currentPiece) {
 					case WHITE_BISHOP:
@@ -295,7 +330,7 @@ public class ChessEngine extends AbstractChessEngine {
 	private final long[] allWhiteMoves(Piece searchPieceType) {
 		this.movesCounter = 0;
 		for (int i = 0; i < 64; i++) {
-			Piece currentPiece = this.board[i];
+			Piece currentPiece =this.getBoard(i);
 			if (currentPiece == searchPieceType) {
 				switch (currentPiece) {
 					case WHITE_BISHOP:
@@ -350,10 +385,9 @@ public class ChessEngine extends AbstractChessEngine {
 	}
 
 	private void decodeFENNotation(String fenPosition) {
-		this.moveNumber = -1;
-		this.history = new long[HISTORY_DEFAULT_SIZE];
-		this.moveHistory = new String[HISTORY_DEFAULT_SIZE];
-		this.board = new Piece[64];
+		this.setMoveNumber(-1);
+		this.initializeHistory();
+		this.setBoard(new Piece[64]);
 		try {
 			String fen = fenPosition.trim();
 			StringTokenizer fenDecoder = new StringTokenizer(fen);
@@ -364,61 +398,74 @@ public class ChessEngine extends AbstractChessEngine {
 				int col = 0;
 				for (int index = 0; index < temp.length(); index++) {
 					char token = temp.charAt(index);
+					int squareIndex = row * 8 + col;
 					switch (token) {
 						case 'r':
-							this.board[row * 8 + col] = BLACK_ROOK;
+							if (this.blackRookQueenSideSquare == -1) {
+								this.blackRookQueenSideSquare = squareIndex;
+							} else {
+								this.blackRookKingSideSquare = squareIndex;
+							}
+							this.setBoard(squareIndex, BLACK_ROOK);
 							col++;
 							break;
 						case 'n':
-							this.board[row * 8 + col] = BLACK_KNIGHT;
+							this.setBoard(squareIndex, BLACK_KNIGHT);
 							col++;
 							break;
 						case 'b':
-							this.board[row * 8 + col] = BLACK_BISHOP;
+							this.setBoard(squareIndex, BLACK_BISHOP);
 							col++;
 							break;
 						case 'q':
-							this.board[row * 8 + col] = BLACK_QUEEN;
+							this.setBoard(squareIndex, BLACK_QUEEN);
 							col++;
 							break;
 						case 'k':
-							this.board[row * 8 + col] = BLACK_KING;
-							this.blackKingSquare = row * 8 + col;
+							this.setBoard(squareIndex, BLACK_KING);
+							this.blackKingInitialSquare = squareIndex;
+							this.blackKingSquare = squareIndex;
 							col++;
 							break;
 						case 'p':
-							this.board[row * 8 + col] = BLACK_PAWN;
+							this.setBoard(squareIndex, BLACK_PAWN);
 							col++;
 							break;
 						case 'R':
-							this.board[row * 8 + col] = WHITE_ROOK;
+							if (this.whiteRookQueenSideSquare == -1) {
+								this.whiteRookQueenSideSquare = squareIndex;
+							} else {
+								this.whiteRookKingSideSquare = squareIndex;
+							}
+							this.setBoard(squareIndex, WHITE_ROOK);
 							col++;
 							break;
 						case 'N':
-							this.board[row * 8 + col] = WHITE_KNIGHT;
+							this.setBoard(squareIndex, WHITE_KNIGHT);
 							col++;
 							break;
 						case 'B':
-							this.board[row * 8 + col] = WHITE_BISHOP;
+							this.setBoard(squareIndex, WHITE_BISHOP);
 							col++;
 							break;
 						case 'Q':
-							this.board[row * 8 + col] = WHITE_QUEEN;
+							this.setBoard(squareIndex, WHITE_QUEEN);
 							col++;
 							break;
 						case 'K':
-							this.board[row * 8 + col] = WHITE_KING;
-							this.whiteKingSquare = row * 8 + col;
+							this.setBoard(squareIndex, WHITE_KING);
+							this.whiteKingSquare = squareIndex;
+							this.whiteKingInitialSquare = squareIndex;
 							col++;
 							break;
 						case 'P':
-							this.board[row * 8 + col] = WHITE_PAWN;
+							this.setBoard(squareIndex, WHITE_PAWN);
 							col++;
 							break;
 						default:
 							int blank = Character.getNumericValue(token);
 							for (int i = 0; i < blank; i++) {
-								this.board[row * 8 + i + col] = EMPTY;
+								this.setBoard(squareIndex + i, EMPTY);
 							}
 							col += blank;
 							break;
@@ -438,27 +485,45 @@ public class ChessEngine extends AbstractChessEngine {
 			}
 			// now we looking on each side each color can castle
 			String castling = fenDecoder.nextToken();
-			this.whiteCanCastleQueenSide = castling.indexOf('Q') != -1; // $NON-NLS-1$
-			this.whiteCanCastleKingSide = castling.indexOf('K') != -1; // $NON-NLS-1$
-			this.blackCanCastleQueenSide = castling.indexOf('q') != -1; // $NON-NLS-1$
-			this.blackCanCastleKingSide = castling.indexOf('k') != -1; // $NON-NLS-1$
+			this.setWhiteCanCastleQueenSide(castling.indexOf('Q') != -1); // $NON-NLS-1$
+			this.setWhiteCanCastleKingSide(castling.indexOf('K') != -1); // $NON-NLS-1$
+			this.setBlackCanCastleQueenSide(castling.indexOf('q') != -1); // $NON-NLS-1$
+			this.setBlackCanCastleKingSide(castling.indexOf('k') != -1); // $NON-NLS-1$
 
 			String enPassantCoords = fenDecoder.nextToken();
 			if ("-".equals(enPassantCoords)) { //$NON-NLS-1$
-				this.enPassantSquare = -1;
+				this.setEnPassantSquare(-1);
 			} else {
-				this.enPassantSquare = Converter.squareToInt(enPassantCoords);
+				this.setEnPassantSquare(Converter.squareToInt(enPassantCoords));
 			}
 			// now we retrieve the half move clock
-			this.fiftyMovesRuleNumber = Integer.parseInt(fenDecoder.nextToken());
-			this.startingMoveNumber = Integer.parseInt(fenDecoder.nextToken());
+			this.setFiftyMovesRuleNumber(Integer.parseInt(fenDecoder.nextToken()));
+			this.setStartingMoveNumber(Integer.parseInt(fenDecoder.nextToken()));
 		} catch (NoSuchElementException e) {
 			logger.log(Level.SEVERE, this.currentMessages.getString("fen.decoding.error"), e);//$NON-NLS-1$
 		}
 	}
 
 	public Piece[] getBoard() {
-		return board;
+		return this.board;
+	}
+
+	public void initializeHistory() {
+		this.history = new long[HISTORY_DEFAULT_SIZE];
+		this.moveHistory = new String[HISTORY_DEFAULT_SIZE];
+	}
+
+	public void addHistory(long move) {
+		if (this.history.length == this.getMoveNumber() + 1) {
+			// resize
+			System.arraycopy(this.history, 0, this.history = new long[this.history.length + HISTORY_DEFAULT_SIZE], 0,
+					this.moveNumber + 1);
+			System.arraycopy(this.moveHistory, 0,
+					this.moveHistory = new String[this.history.length + HISTORY_DEFAULT_SIZE], 0, this.moveNumber + 1);
+		}
+		this.incrementMoveNumber();
+		this.history[this.getMoveNumber()] = move;
+		this.moveHistory[this.getMoveNumber()] = Converter.moveToString(this.getBoard(), move);
 	}
 
 	public Piece getBoard(int index) {
@@ -478,7 +543,7 @@ public class ChessEngine extends AbstractChessEngine {
 	}
 
 	public int getMoveNumber() {
-		return moveNumber;
+		return this.moveNumber;
 	}
 
 	private long[] getNextMoves() {
@@ -502,7 +567,7 @@ public class ChessEngine extends AbstractChessEngine {
 	public void initialize(String fenNotation) {
 		this.decodeFENNotation(fenNotation);
 	}
-	
+
 	public void initialize(String fenNotation, boolean isFischerRandom) {
 		this.initialize(fenNotation);
 	}
@@ -513,11 +578,11 @@ public class ChessEngine extends AbstractChessEngine {
 	}
 
 	public boolean isBlackCanCastleKingSide() {
-		return blackCanCastleKingSide;
+		return this.blackCanCastleKingSide;
 	}
 
 	public boolean isBlackCanCastleQueenSide() {
-		return blackCanCastleQueenSide;
+		return this.blackCanCastleQueenSide;
 	}
 
 	@Override
@@ -532,7 +597,7 @@ public class ChessEngine extends AbstractChessEngine {
 		north_west_next: for (int j = currentPosition - 11; j > 0; j -= 11) {
 			int nextPosition = TAB_120[j];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (nextSquare.isWhiteOrEmpty()) {
 					switch (nextSquare) {
 						case WHITE_QUEEN:
@@ -558,7 +623,7 @@ public class ChessEngine extends AbstractChessEngine {
 		south_west_next: for (int j = currentPosition + 9; j < 120; j += 9) {
 			int nextPosition = TAB_120[j];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (nextSquare.isWhiteOrEmpty()) {
 					switch (nextSquare) {
 						case WHITE_QUEEN:
@@ -584,7 +649,7 @@ public class ChessEngine extends AbstractChessEngine {
 		north_east_next: for (int j = currentPosition - 9; j > 0; j -= 9) {
 			int nextPosition = TAB_120[j];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (nextSquare.isWhiteOrEmpty()) {
 					switch (nextSquare) {
 						case WHITE_QUEEN:
@@ -609,7 +674,7 @@ public class ChessEngine extends AbstractChessEngine {
 		south_east_next: for (int j = currentPosition + 11; j < 120; j += 11) {
 			int nextPosition = TAB_120[j];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (nextSquare.isWhiteOrEmpty()) {
 					switch (nextSquare) {
 						case WHITE_QUEEN:
@@ -636,7 +701,7 @@ public class ChessEngine extends AbstractChessEngine {
 		north_next: for (int j = currentPosition - 10; j > 0; j -= 10) {
 			int nextPosition = TAB_120[j];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (nextSquare.isWhiteOrEmpty()) {
 					switch (nextSquare) {
 						case WHITE_QUEEN:
@@ -661,7 +726,7 @@ public class ChessEngine extends AbstractChessEngine {
 		south_next: for (int j = currentPosition + 10; j < 120; j += 10) {
 			int nextPosition = TAB_120[j];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (nextSquare.isWhiteOrEmpty()) {
 					switch (nextSquare) {
 						case WHITE_QUEEN:
@@ -686,7 +751,7 @@ public class ChessEngine extends AbstractChessEngine {
 		west_next: for (int j = currentPosition - 1; j > 0; j--) {
 			int nextPosition = TAB_120[j];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (nextSquare.isWhiteOrEmpty()) {
 					switch (nextSquare) {
 						case WHITE_QUEEN:
@@ -711,7 +776,7 @@ public class ChessEngine extends AbstractChessEngine {
 		east_next: for (int j = currentPosition + 1; j < 120; j++) {
 			int nextPosition = TAB_120[j];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (nextSquare.isWhiteOrEmpty()) {
 					switch (nextSquare) {
 						case WHITE_QUEEN:
@@ -734,7 +799,7 @@ public class ChessEngine extends AbstractChessEngine {
 		knight_check: for (int j = 0; j < 8; j++) {
 			int nextPosition = TAB_120[currentPosition + KNIGHT_POSITIONS[j]];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (nextSquare.isWhiteOrEmpty()) {
 					switch (nextSquare) {
 						case WHITE_KNIGHT:
@@ -779,7 +844,7 @@ public class ChessEngine extends AbstractChessEngine {
 		north_west_next: for (int j = currentPosition - 11; j > 0; j -= 11) {
 			int nextPosition = TAB_120[j];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (nextSquare.isBlackOrEmpty()) {
 					switch (nextSquare) {
 						case BLACK_QUEEN:
@@ -806,7 +871,7 @@ public class ChessEngine extends AbstractChessEngine {
 		south_west_next: for (int j = currentPosition + 9; j < 120; j += 9) {
 			int nextPosition = TAB_120[j];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (nextSquare.isBlackOrEmpty()) {
 					switch (nextSquare) {
 						case BLACK_QUEEN:
@@ -831,7 +896,7 @@ public class ChessEngine extends AbstractChessEngine {
 		north_east_next: for (int j = currentPosition - 9; j > 0; j -= 9) {
 			int nextPosition = TAB_120[j];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (nextSquare.isBlackOrEmpty()) {
 					switch (nextSquare) {
 						case BLACK_QUEEN:
@@ -857,7 +922,7 @@ public class ChessEngine extends AbstractChessEngine {
 		south_east_next: for (int j = currentPosition + 11; j < 120; j += 11) {
 			int nextPosition = TAB_120[j];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (nextSquare.isBlackOrEmpty()) {
 					switch (nextSquare) {
 						case BLACK_QUEEN:
@@ -883,7 +948,7 @@ public class ChessEngine extends AbstractChessEngine {
 		north_next: for (int j = currentPosition - 10; j > 0; j -= 10) {
 			int nextPosition = TAB_120[j];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (nextSquare.isBlackOrEmpty()) {
 					switch (nextSquare) {
 						case BLACK_QUEEN:
@@ -908,7 +973,7 @@ public class ChessEngine extends AbstractChessEngine {
 		south_next: for (int j = currentPosition + 10; j < 120; j += 10) {
 			int nextPosition = TAB_120[j];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (nextSquare.isBlackOrEmpty()) {
 					switch (nextSquare) {
 						case BLACK_QUEEN:
@@ -933,7 +998,7 @@ public class ChessEngine extends AbstractChessEngine {
 		west_next: for (int j = currentPosition - 1; j > 0; j--) {
 			int nextPosition = TAB_120[j];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (nextSquare.isBlackOrEmpty()) {
 					switch (nextSquare) {
 						case BLACK_QUEEN:
@@ -958,7 +1023,7 @@ public class ChessEngine extends AbstractChessEngine {
 		east_next: for (int j = currentPosition + 1; j < 120; j++) {
 			int nextPosition = TAB_120[j];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (nextSquare.isBlackOrEmpty()) {
 					switch (nextSquare) {
 						case BLACK_QUEEN:
@@ -981,7 +1046,7 @@ public class ChessEngine extends AbstractChessEngine {
 		knight_check: for (int j = 0; j < 8; j++) {
 			int nextPosition = TAB_120[currentPosition + KNIGHT_POSITIONS[j]];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (nextSquare.isBlackOrEmpty()) {
 					switch (nextSquare) {
 						case BLACK_KNIGHT:
@@ -1002,7 +1067,7 @@ public class ChessEngine extends AbstractChessEngine {
 		north_west_next: for (int j = currentPosition - 11; j > 0; j -= 11) {
 			int nextPosition = TAB_120[j];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (isWhite) {
 					if (nextSquare.getValue() >= EMPTY.getValue()) {
 						addMove(i, nextPosition, nextSquare);
@@ -1025,7 +1090,7 @@ public class ChessEngine extends AbstractChessEngine {
 		south_west_next: for (int j = currentPosition + 9; j < 120; j += 9) {
 			int nextPosition = TAB_120[j];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (isWhite) {
 					if (nextSquare.getValue() >= EMPTY.getValue()) {
 						addMove(i, nextPosition, nextSquare);
@@ -1048,7 +1113,7 @@ public class ChessEngine extends AbstractChessEngine {
 		north_east_next: for (int j = currentPosition - 9; j > 0; j -= 9) {
 			int nextPosition = TAB_120[j];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (isWhite) {
 					if (nextSquare.getValue() >= EMPTY.getValue()) {
 						addMove(i, nextPosition, nextSquare);
@@ -1071,7 +1136,7 @@ public class ChessEngine extends AbstractChessEngine {
 		south_east_next: for (int j = currentPosition + 11; j < 120; j += 11) {
 			int nextPosition = TAB_120[j];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (isWhite) {
 					if (nextSquare.getValue() >= EMPTY.getValue()) {
 						addMove(i, nextPosition, nextSquare);
@@ -1099,19 +1164,20 @@ public class ChessEngine extends AbstractChessEngine {
 		for (int j = 0; j < 8; j++) {
 			int nextPosition = TAB_120[currentPosition + KING_POSITIONS[j]];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (nextSquare.getValue() <= EMPTY.getValue()) {
 					addMove(i, nextPosition, nextSquare);
 				}
 			}
 		}
-		if (this.blackCanCastleKingSide && !isBlackInCheck() && this.board[i + 2] == EMPTY && this.board[i + 1] == EMPTY
-				&& !isBlackInCheck(i + 2) && !isBlackInCheck(i + 1) && this.board[i + 3] == BLACK_ROOK) {
+		if (this.isBlackCanCastleKingSide() && !isBlackInCheck() && this.getBoard(i + 2) == EMPTY
+				&& this.getBoard(i + 1) == EMPTY && !isBlackInCheck(i + 2) && !isBlackInCheck(i + 1)
+				&& this.getBoard(i + 3) == BLACK_ROOK) {
 			addMove(i, i + 2, EMPTY);
 		}
-		if (this.blackCanCastleQueenSide && !isBlackInCheck() && this.board[i - 3] == EMPTY
-				&& this.board[i - 2] == EMPTY && this.board[i - 1] == EMPTY && !isBlackInCheck(i - 2)
-				&& !isBlackInCheck(i - 1) && this.board[i - 4] == BLACK_ROOK) {
+		if (this.isBlackCanCastleQueenSide() && !isBlackInCheck() && this.getBoard(i - 3) == EMPTY
+				&& this.getBoard(i - 2) == EMPTY &&this.getBoard(i - 1) == EMPTY && !isBlackInCheck(i - 2)
+				&& !isBlackInCheck(i - 1) && this.getBoard(i - 4) == BLACK_ROOK) {
 			addMove(i, i - 2, EMPTY);
 		}
 	}
@@ -1121,16 +1187,16 @@ public class ChessEngine extends AbstractChessEngine {
 		// one square or two squares if it has not moved yet.
 		if (i >= 8 && i <= 15) {
 			int nextPosition = TAB_120[currentPosition + 10];
-			if (this.board[nextPosition] == EMPTY) {
+			if (this.getBoard(nextPosition) == EMPTY) {
 				addMove(i, nextPosition, EMPTY);
 				nextPosition = TAB_120[currentPosition + 20];
-				if (this.board[nextPosition] == EMPTY) {
+				if (this.getBoard(nextPosition) == EMPTY) {
 					addMove(i, nextPosition, EMPTY);
 				}
 			}
 		} else {
 			int nextPosition = TAB_120[currentPosition + 10];
-			if (nextPosition > 0 && this.board[nextPosition] == EMPTY) {
+			if (nextPosition > 0 && this.getBoard(nextPosition) == EMPTY) {
 				if (nextPosition >= 56) {
 					// this is a promotion
 					for (Piece promotionPiece : Piece.getBlackPromotionPieces()) {
@@ -1144,7 +1210,7 @@ public class ChessEngine extends AbstractChessEngine {
 		// capture on the side
 		int nextPosition = TAB_120[currentPosition + 11];
 		if (nextPosition > 0) {
-			Piece nextSquare = this.board[nextPosition];
+			Piece nextSquare = this.getBoard(nextPosition);
 			if (nextSquare.getValue() < EMPTY.getValue()) {
 				if (nextPosition >= 56) {
 					// this is a promotion
@@ -1154,14 +1220,14 @@ public class ChessEngine extends AbstractChessEngine {
 				} else {
 					addMove(i, nextPosition, nextSquare);
 				}
-			} else if (i >= 32 && i <= 39 && nextPosition == this.enPassantSquare) {
+			} else if (i >= 32 && i <= 39 && nextPosition == this.getEnPassantSquare()) {
 				// en passant
-				addMove(i, nextPosition, this.board[TAB_120[currentPosition + 1]]);
+				addMove(i, nextPosition, this.getBoard(TAB_120[currentPosition + 1]));
 			}
 		}
 		nextPosition = TAB_120[currentPosition + 9];
 		if (nextPosition > 0) {
-			Piece nextSquare = this.board[nextPosition];
+			Piece nextSquare = this.getBoard(nextPosition);
 			if (nextSquare.getValue() < EMPTY.getValue()) {
 				if (nextPosition >= 56) {
 					// this is a promotion
@@ -1171,9 +1237,9 @@ public class ChessEngine extends AbstractChessEngine {
 				} else {
 					addMove(i, nextPosition, nextSquare);
 				}
-			} else if (i >= 32 && i <= 39 && nextPosition == this.enPassantSquare) {
+			} else if (i >= 32 && i <= 39 && nextPosition == this.getEnPassantSquare()) {
 				// en passant
-				addMove(i, nextPosition, this.board[TAB_120[currentPosition - 1]]);
+				addMove(i, nextPosition, this.getBoard(TAB_120[currentPosition - 1]));
 			}
 		}
 	}
@@ -1183,7 +1249,7 @@ public class ChessEngine extends AbstractChessEngine {
 		for (int j = 0; j < 8; j++) {
 			int nextPosition = TAB_120[currentPosition + KNIGHT_POSITIONS[j]];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (isWhite) {
 					if (nextSquare.getValue() >= EMPTY.getValue()) {
 						addMove(i, nextPosition, nextSquare);
@@ -1200,23 +1266,23 @@ public class ChessEngine extends AbstractChessEngine {
 	private final void movePiece(long move) {
 		int startingSquare = MoveConstants.getStartingSquare(move);
 		int endingSquare = MoveConstants.getEndingSquare(move);
-		Piece pieceType = this.board[startingSquare];
+		Piece pieceType = this.getBoard(startingSquare);
 
 		// common behavior
-		this.board[startingSquare] = EMPTY;
-		this.board[endingSquare] = pieceType;
+		this.setBoard(startingSquare, EMPTY);
+		this.setBoard(endingSquare, pieceType);
 		switch (pieceType) {
 			case WHITE_KING:
 				if ((((startingSquare - endingSquare) == 2) || ((startingSquare - endingSquare) == -2))
 						&& startingSquare == 60) {
 					switch (endingSquare) {
 						case 62:
-							this.board[61] = WHITE_ROOK;
-							this.board[63] = EMPTY;
+							this.setBoard(61, WHITE_ROOK);
+							this.setBoard(63, EMPTY);
 							break;
 						case 58:
-							this.board[59] = WHITE_ROOK;
-							this.board[56] = EMPTY;
+							this.setBoard(59, WHITE_ROOK);
+							this.setBoard(56, EMPTY);
 							break;
 						default:
 					}
@@ -1228,12 +1294,12 @@ public class ChessEngine extends AbstractChessEngine {
 						&& startingSquare == 4) {
 					switch (endingSquare) {
 						case 6:
-							this.board[5] = BLACK_ROOK;
-							this.board[7] = EMPTY;
+							this.setBoard(5, BLACK_ROOK);
+							this.setBoard(7, EMPTY);
 							break;
 						case 2:
-							this.board[3] = BLACK_ROOK;
-							this.board[0] = EMPTY;
+							this.setBoard(3, BLACK_ROOK);
+							this.setBoard(0, EMPTY);
 							break;
 						default:
 					}
@@ -1243,15 +1309,15 @@ public class ChessEngine extends AbstractChessEngine {
 			case WHITE_PAWN:
 				if (MoveConstants.isPromotion(move)) {
 					// promotion
-					this.board[endingSquare] = Piece.getPiece(MoveConstants.getPromotionValue(move));
+					this.setBoard(endingSquare, Piece.getPiece(MoveConstants.getPromotionValue(move)));
 				}
-				if (endingSquare == this.enPassantSquare) {
+				if (endingSquare == this.getEnPassantSquare()) {
 					switch (endingSquare - startingSquare) {
 						case -7:
-							this.board[startingSquare + 1] = EMPTY;
+							this.setBoard(startingSquare + 1, EMPTY);
 							break;
 						case -9:
-							this.board[startingSquare - 1] = EMPTY;
+							this.setBoard(startingSquare - 1, EMPTY);
 							break;
 						default:
 					}
@@ -1260,15 +1326,15 @@ public class ChessEngine extends AbstractChessEngine {
 			case BLACK_PAWN:
 				if (MoveConstants.isPromotion(move)) {
 					// promotion
-					this.board[endingSquare] = Piece.getPiece(MoveConstants.getPromotionValue(move));
+					this.setBoard(endingSquare, Piece.getPiece(MoveConstants.getPromotionValue(move)));
 				}
-				if (endingSquare == this.enPassantSquare) {
+				if (endingSquare == this.getEnPassantSquare()) {
 					switch (endingSquare - startingSquare) {
 						case 9:
-							this.board[startingSquare + 1] = EMPTY;
+							this.setBoard(startingSquare + 1, EMPTY);
 							break;
 						case 7:
-							this.board[startingSquare - 1] = EMPTY;
+							this.setBoard(startingSquare - 1, EMPTY);
 							break;
 						default:
 					}
@@ -1281,20 +1347,20 @@ public class ChessEngine extends AbstractChessEngine {
 	private final void movePieceBack(long move) {
 		int startingSquare = MoveConstants.getStartingSquare(move);
 		int endingSquare = MoveConstants.getEndingSquare(move);
-		Piece pieceType = this.board[endingSquare];
+		Piece pieceType = this.getBoard(endingSquare);
 		Piece capturedPiece = Piece.getPiece(MoveConstants.getCaptureValue(move));
 
 		// common behavior
-		this.board[startingSquare] = pieceType;
-		this.board[endingSquare] = capturedPiece;
+		this.setBoard(startingSquare, pieceType);
+		this.setBoard(endingSquare, capturedPiece);
 
 		// handle promotion
 		Piece promotedPiece = Piece.getPiece(MoveConstants.getPromotionValue(move));
 		if (promotedPiece != UNDEFINED) {
 			if (promotedPiece.getValue() < EMPTY.getValue()) {
-				this.board[startingSquare] = WHITE_PAWN;
+				this.setBoard(startingSquare, WHITE_PAWN);
 			} else {
-				this.board[startingSquare] = BLACK_PAWN;
+				this.setBoard(startingSquare, BLACK_PAWN);
 			}
 		}
 
@@ -1305,12 +1371,12 @@ public class ChessEngine extends AbstractChessEngine {
 						&& startingSquare == 60) {
 					switch (endingSquare) {
 						case 62:
-							this.board[63] = WHITE_ROOK;
-							this.board[61] = EMPTY;
+							this.setBoard(63, WHITE_ROOK);
+							this.setBoard(61, EMPTY);
 							break;
 						case 58:
-							this.board[56] = WHITE_ROOK;
-							this.board[59] = EMPTY;
+							this.setBoard(56, WHITE_ROOK);
+							this.setBoard(59, EMPTY);
 							break;
 						default:
 					}
@@ -1322,12 +1388,12 @@ public class ChessEngine extends AbstractChessEngine {
 						&& startingSquare == 4) {
 					switch (endingSquare) {
 						case 6:
-							this.board[7] = BLACK_ROOK;
-							this.board[5] = EMPTY;
+							this.setBoard(7, BLACK_ROOK);
+							this.setBoard(5, EMPTY);
 							break;
 						case 2:
-							this.board[0] = BLACK_ROOK;
-							this.board[3] = EMPTY;
+							this.setBoard(0, BLACK_ROOK);
+							this.setBoard(3, EMPTY);
 							break;
 						default:
 					}
@@ -1335,31 +1401,31 @@ public class ChessEngine extends AbstractChessEngine {
 				this.blackKingSquare = startingSquare;
 				break;
 			case WHITE_PAWN:
-				if (endingSquare == this.enPassantSquare) {
+				if (endingSquare == this.getEnPassantSquare()) {
 					switch (endingSquare - startingSquare) {
 						case -7:
-							this.board[startingSquare + 1] = capturedPiece;
+							this.setBoard(startingSquare + 1, capturedPiece);
 							break;
 						case -9:
-							this.board[startingSquare - 1] = capturedPiece;
+							this.setBoard(startingSquare - 1, capturedPiece);
 							break;
 						default:
 					}
-					this.board[endingSquare] = EMPTY;
+					this.setBoard(endingSquare, EMPTY);
 				}
 				break;
 			case BLACK_PAWN:
-				if (endingSquare == this.enPassantSquare) {
+				if (endingSquare == this.getEnPassantSquare()) {
 					switch (endingSquare - startingSquare) {
 						case 9:
-							this.board[startingSquare + 1] = capturedPiece;
+							this.setBoard(startingSquare + 1, capturedPiece);
 							break;
 						case 7:
-							this.board[startingSquare - 1] = capturedPiece;
+							this.setBoard(startingSquare - 1, capturedPiece);
 							break;
 						default:
 					}
-					this.board[endingSquare] = EMPTY;
+					this.setBoard(endingSquare, EMPTY);
 				}
 				break;
 			default:
@@ -1372,7 +1438,7 @@ public class ChessEngine extends AbstractChessEngine {
 		north_west_next: for (int j = currentPosition - 11; j > 0; j -= 11) {
 			int nextPosition = TAB_120[j];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (isWhite) {
 					if (nextSquare.getValue() >= EMPTY.getValue()) {
 						addMove(i, nextPosition, nextSquare);
@@ -1395,7 +1461,7 @@ public class ChessEngine extends AbstractChessEngine {
 		south_west_next: for (int j = currentPosition + 9; j < 120; j += 9) {
 			int nextPosition = TAB_120[j];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (isWhite) {
 					if (nextSquare.getValue() >= EMPTY.getValue()) {
 						addMove(i, nextPosition, nextSquare);
@@ -1418,7 +1484,7 @@ public class ChessEngine extends AbstractChessEngine {
 		north_east_next: for (int j = currentPosition - 9; j > 0; j -= 9) {
 			int nextPosition = TAB_120[j];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (isWhite) {
 					if (nextSquare.getValue() >= EMPTY.getValue()) {
 						addMove(i, nextPosition, nextSquare);
@@ -1441,7 +1507,7 @@ public class ChessEngine extends AbstractChessEngine {
 		south_east_next: for (int j = currentPosition + 11; j < 120; j += 11) {
 			int nextPosition = TAB_120[j];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (isWhite) {
 					if (nextSquare.getValue() >= EMPTY.getValue()) {
 						addMove(i, nextPosition, nextSquare);
@@ -1465,7 +1531,7 @@ public class ChessEngine extends AbstractChessEngine {
 		north_next: for (int j = currentPosition - 10; j > 0; j -= 10) {
 			int nextPosition = TAB_120[j];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (isWhite) {
 					if (nextSquare.getValue() >= EMPTY.getValue()) {
 						addMove(i, nextPosition, nextSquare);
@@ -1488,7 +1554,7 @@ public class ChessEngine extends AbstractChessEngine {
 		south_next: for (int j = currentPosition + 10; j < 120; j += 10) {
 			int nextPosition = TAB_120[j];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (isWhite) {
 					if (nextSquare.getValue() >= EMPTY.getValue()) {
 						addMove(i, nextPosition, nextSquare);
@@ -1511,7 +1577,7 @@ public class ChessEngine extends AbstractChessEngine {
 		west_next: for (int j = currentPosition - 1; j > 0; j--) {
 			int nextPosition = TAB_120[j];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (isWhite) {
 					if (nextSquare.getValue() >= EMPTY.getValue()) {
 						addMove(i, nextPosition, nextSquare);
@@ -1534,7 +1600,7 @@ public class ChessEngine extends AbstractChessEngine {
 		east_next: for (int j = currentPosition + 1; j < 120; j++) {
 			int nextPosition = TAB_120[j];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (isWhite) {
 					if (nextSquare.getValue() >= EMPTY.getValue()) {
 						addMove(i, nextPosition, nextSquare);
@@ -1562,7 +1628,7 @@ public class ChessEngine extends AbstractChessEngine {
 		north_next: for (int j = currentPosition - 10; j > 0; j -= 10) {
 			int nextPosition = TAB_120[j];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (isWhite) {
 					if (nextSquare.getValue() >= EMPTY.getValue()) {
 						addMove(i, nextPosition, nextSquare);
@@ -1585,7 +1651,7 @@ public class ChessEngine extends AbstractChessEngine {
 		south_next: for (int j = currentPosition + 10; j < 120; j += 10) {
 			int nextPosition = TAB_120[j];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (isWhite) {
 					if (nextSquare.getValue() >= EMPTY.getValue()) {
 						addMove(i, nextPosition, nextSquare);
@@ -1608,7 +1674,7 @@ public class ChessEngine extends AbstractChessEngine {
 		west_next: for (int j = currentPosition - 1; j > 0; j--) {
 			int nextPosition = TAB_120[j];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (isWhite) {
 					if (nextSquare.getValue() >= EMPTY.getValue()) {
 						addMove(i, nextPosition, nextSquare);
@@ -1631,7 +1697,7 @@ public class ChessEngine extends AbstractChessEngine {
 		east_next: for (int j = currentPosition + 1; j < 120; j++) {
 			int nextPosition = TAB_120[j];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (isWhite) {
 					if (nextSquare.getValue() >= EMPTY.getValue()) {
 						addMove(i, nextPosition, nextSquare);
@@ -1659,19 +1725,20 @@ public class ChessEngine extends AbstractChessEngine {
 		for (int j = 0; j < 8; j++) {
 			int nextPosition = TAB_120[currentPosition + KING_POSITIONS[j]];
 			if (nextPosition >= 0) {
-				final Piece nextSquare = this.board[nextPosition];
+				final Piece nextSquare = this.getBoard(nextPosition);
 				if (nextSquare.getValue() >= EMPTY.getValue()) {
 					addMove(i, nextPosition, nextSquare);
 				}
 			}
 		}
-		if (this.whiteCanCastleKingSide && !isWhiteInCheck() && this.board[i + 2] == EMPTY && this.board[i + 1] == EMPTY
-				&& !isWhiteInCheck(i + 2) && !isWhiteInCheck(i + 1) && this.board[i + 3] == WHITE_ROOK) {
+		if (this.isWhiteCanCastleKingSide() && !isWhiteInCheck() && this.getBoard(i + 2) == EMPTY
+				&& this.getBoard(i + 1) == EMPTY && !isWhiteInCheck(i + 2) && !isWhiteInCheck(i + 1)
+				&& this.getBoard(i + 3) == WHITE_ROOK) {
 			addMove(i, i + 2, EMPTY);
 		}
-		if (this.whiteCanCastleQueenSide && !isWhiteInCheck() && this.board[i - 3] == EMPTY
-				&& this.board[i - 2] == EMPTY && this.board[i - 1] == EMPTY && !isWhiteInCheck(i - 2)
-				&& !isWhiteInCheck(i - 1) && this.board[i - 4] == WHITE_ROOK) {
+		if (this.isWhiteCanCastleQueenSide() && !isWhiteInCheck() && this.getBoard(i - 3) == EMPTY
+				&& this.getBoard(i - 2) == EMPTY && this.getBoard(i - 1) == EMPTY && !isWhiteInCheck(i - 2)
+				&& !isWhiteInCheck(i - 1) && this.getBoard(i - 4) == WHITE_ROOK) {
 			addMove(i, i - 2, EMPTY);
 		}
 	}
@@ -1682,16 +1749,16 @@ public class ChessEngine extends AbstractChessEngine {
 		// one square or two squares if it has not moved yet.
 		if (i >= 48 && i <= 55) {
 			int nextPosition = TAB_120[currentPosition - 10];
-			if (this.board[nextPosition] == EMPTY) {
+			if (this.getBoard(nextPosition) == EMPTY) {
 				addMove(i, nextPosition, EMPTY);
 				nextPosition = TAB_120[currentPosition - 20];
-				if (this.board[nextPosition] == EMPTY) {
+				if (this.getBoard(nextPosition) == EMPTY) {
 					addMove(i, nextPosition, EMPTY);
 				}
 			}
 		} else {
 			int nextPosition = TAB_120[currentPosition - 10];
-			if (nextPosition >= 0 && this.board[nextPosition] == EMPTY) {
+			if (nextPosition >= 0 && this.getBoard(nextPosition) == EMPTY) {
 				if (nextPosition <= 7) {
 					// this is a promotion
 					for (Piece promotionPiece : Piece.getWhitePromotionPieces()) {
@@ -1705,7 +1772,7 @@ public class ChessEngine extends AbstractChessEngine {
 		// capture on the side
 		int nextPosition = TAB_120[currentPosition - 11];
 		if (nextPosition >= 0) {
-			Piece nextSquare = this.board[nextPosition];
+			Piece nextSquare = this.getBoard(nextPosition);
 			if (nextSquare.getValue() > EMPTY.getValue()) {
 				if (nextPosition <= 7) {
 					// this is a promotion
@@ -1715,14 +1782,14 @@ public class ChessEngine extends AbstractChessEngine {
 				} else {
 					addMove(i, nextPosition, nextSquare);
 				}
-			} else if (i >= 24 && i <= 31 && nextPosition == this.enPassantSquare) {
+			} else if (i >= 24 && i <= 31 && nextPosition == this.getEnPassantSquare()) {
 				// en passant
-				addMove(i, nextPosition, this.board[TAB_120[currentPosition - 1]]);
+				addMove(i, nextPosition, this.getBoard(TAB_120[currentPosition - 1]));
 			}
 		}
 		nextPosition = TAB_120[currentPosition - 9];
 		if (nextPosition >= 0) {
-			Piece nextSquare = this.board[nextPosition];
+			Piece nextSquare = this.getBoard(nextPosition);
 			if (nextSquare.getValue() > EMPTY.getValue()) {
 				if (nextPosition <= 7) {
 					// this is a promotion
@@ -1732,9 +1799,9 @@ public class ChessEngine extends AbstractChessEngine {
 				} else {
 					addMove(i, nextPosition, nextSquare);
 				}
-			} else if (i >= 24 && i <= 31 && nextPosition == this.enPassantSquare) {
+			} else if (i >= 24 && i <= 31 && nextPosition == this.getEnPassantSquare()) {
 				// en passant
-				addMove(i, nextPosition, this.board[TAB_120[currentPosition + 1]]);
+				addMove(i, nextPosition, this.getBoard(TAB_120[currentPosition + 1]));
 			}
 		}
 	}
@@ -1747,27 +1814,18 @@ public class ChessEngine extends AbstractChessEngine {
 
 	@Override
 	public void playMoveWithoutNotification(long move) {
-		if (this.history.length == this.moveNumber + 1) {
-			// resize
-			System.arraycopy(this.history, 0, this.history = new long[this.history.length + HISTORY_DEFAULT_SIZE], 0,
-					this.moveNumber + 1);
-			System.arraycopy(this.moveHistory, 0,
-					this.moveHistory = new String[this.history.length + HISTORY_DEFAULT_SIZE], 0, this.moveNumber + 1);
-		}
-		++this.moveNumber;
-		this.history[this.moveNumber] = move;
-		this.startingMoveNumber++;
-		this.moveHistory[this.moveNumber] = Converter.moveToString(this.board, move);
+		this.addHistory(move);
+		this.incrementStartingMoveCounter();
 
 		this.turn = this.turn == WHITE_TURN ? BLACK_TURN : WHITE_TURN;
 		final long info = move;
 		int startingSquare = MoveConstants.getStartingSquare(info);
 		int endingSquare = MoveConstants.getEndingSquare(info);
-		Piece pieceType = this.board[startingSquare];
+		Piece pieceType = this.getBoard(startingSquare);
 
 		// common behavior
-		this.board[startingSquare] = EMPTY;
-		this.board[endingSquare] = pieceType;
+		this.setBoard(startingSquare, EMPTY);
+		this.setBoard(endingSquare, pieceType);
 
 		// detect castling and update the this.board
 		switch (pieceType) {
@@ -1776,103 +1834,103 @@ public class ChessEngine extends AbstractChessEngine {
 						&& startingSquare == 60) {
 					switch (endingSquare) {
 						case 62:
-							this.board[61] = WHITE_ROOK;
-							this.board[63] = EMPTY;
+							this.setBoard(61, WHITE_ROOK);
+							this.setBoard(63, EMPTY);
 							break;
 						case 58:
-							this.board[59] = WHITE_ROOK;
-							this.board[56] = EMPTY;
+							this.setBoard(59, WHITE_ROOK);
+							this.setBoard(56, EMPTY);
 							break;
 						default:
 					}
 				}
 				this.whiteKingSquare = endingSquare;
-				this.whiteCanCastleKingSide = false;
-				this.whiteCanCastleQueenSide = false;
-				this.enPassantSquare = -1;
+				this.setWhiteCanCastleKingSide(false);
+				this.setWhiteCanCastleQueenSide(false);
+				this.setEnPassantSquare(-1);
 				break;
 			case BLACK_KING:
 				if ((((startingSquare - endingSquare) == 2) || ((startingSquare - endingSquare) == -2))
 						&& startingSquare == 4) {
 					switch (endingSquare) {
 						case 6:
-							this.board[5] = BLACK_ROOK;
-							this.board[7] = EMPTY;
+							this.setBoard(5, BLACK_ROOK);
+							this.setBoard(7, EMPTY);
 							break;
 						case 2:
-							this.board[3] = BLACK_ROOK;
-							this.board[0] = EMPTY;
+							this.setBoard(3, BLACK_ROOK);
+							this.setBoard(0, EMPTY);
 							break;
 						default:
 					}
 				}
-				this.blackCanCastleKingSide = false;
-				this.blackCanCastleQueenSide = false;
-				this.enPassantSquare = -1;
+				this.setBlackCanCastleKingSide(false);
+				this.setBlackCanCastleQueenSide(false);
+				this.setEnPassantSquare(-1);
 				this.blackKingSquare = endingSquare;
 				break;
 			case WHITE_PAWN:
 				if (MoveConstants.isPromotion(info)) {
 					// promotion
-					this.board[endingSquare] = Piece.getPiece(MoveConstants.getPromotionValue(info));
+					this.setBoard(endingSquare, Piece.getPiece(MoveConstants.getPromotionValue(info)));
 				}
-				if (endingSquare == this.enPassantSquare) {
+				if (endingSquare == this.getEnPassantSquare()) {
 					switch (endingSquare - startingSquare) {
 						case -7:
-							this.board[startingSquare + 1] = EMPTY;
+							this.setBoard(startingSquare + 1, EMPTY);
 							break;
 						case -9:
-							this.board[startingSquare - 1] = EMPTY;
+							this.setBoard(startingSquare - 1, EMPTY);
 							break;
 						default:
 					}
 				}
 				if (startingSquare - endingSquare == 16) {
-					this.enPassantSquare = startingSquare - 8;
+					this.setEnPassantSquare(startingSquare - 8);
 				} else {
-					this.enPassantSquare = -1;
+					this.setEnPassantSquare(-1);
 				}
 				break;
 			case BLACK_PAWN:
 				if (MoveConstants.isPromotion(info)) {
 					// promotion
-					this.board[endingSquare] = Piece.getPiece(MoveConstants.getPromotionValue(info));
+					this.setBoard(endingSquare, Piece.getPiece(MoveConstants.getPromotionValue(info)));
 				}
-				if (endingSquare == this.enPassantSquare) {
+				if (endingSquare == this.getEnPassantSquare()) {
 					switch (endingSquare - startingSquare) {
 						case 9:
-							this.board[startingSquare + 1] = EMPTY;
+							this.setBoard(startingSquare + 1, EMPTY);
 							break;
 						case 7:
-							this.board[startingSquare - 1] = EMPTY;
+							this.setBoard(startingSquare - 1, EMPTY);
 							break;
 						default:
 					}
 				}
 				if (endingSquare - startingSquare == 16) {
-					this.enPassantSquare = endingSquare - 8;
+					this.setEnPassantSquare(endingSquare - 8);
 				} else {
-					this.enPassantSquare = -1;
+					this.setEnPassantSquare(-1);
 				}
 				break;
 			case WHITE_ROOK:
 				if (startingSquare == 63) {
-					this.whiteCanCastleKingSide = false;
+					this.setWhiteCanCastleKingSide(false);
 				} else if (startingSquare == 56) {
-					this.whiteCanCastleQueenSide = false;
+					this.setWhiteCanCastleQueenSide(false);
 				}
-				this.enPassantSquare = -1;
+				this.setEnPassantSquare(-1);
 				break;
 			case BLACK_ROOK:
 				if (startingSquare == 7) {
-					this.blackCanCastleKingSide = false;
+					this.setBlackCanCastleKingSide(false);
 				} else if (startingSquare == 0) {
-					this.blackCanCastleQueenSide = false;
+					this.setBlackCanCastleQueenSide(false);
 				}
-				this.enPassantSquare = -1;
+				this.setEnPassantSquare(-1);
 				break;
 			default:
-				this.enPassantSquare = -1;
+				this.setEnPassantSquare(-1);
 		}
 	}
 
@@ -1912,6 +1970,14 @@ public class ChessEngine extends AbstractChessEngine {
 		this.moveNumber = moveNumber;
 	}
 
+	public void incrementMoveNumber() {
+		this.moveNumber++;
+	}
+
+	public void decrementMoveNumber() {
+		this.moveNumber--;
+	}
+
 	public void setStartingColor(Turn startingColor) {
 		this.startingColor = startingColor;
 	}
@@ -1940,7 +2006,7 @@ public class ChessEngine extends AbstractChessEngine {
 				}
 				buffer.append("/"); //$NON-NLS-1$
 			}
-			switch (this.board[i]) {
+			switch (this.getBoard(i)) {
 				case WHITE_BISHOP:
 					if (empty != 0) {
 						buffer.append(empty);
@@ -2041,27 +2107,27 @@ public class ChessEngine extends AbstractChessEngine {
 			buffer.append(" b "); //$NON-NLS-1$
 		}
 		boolean hasCastle = false;
-		if (this.whiteCanCastleKingSide) {
+		if (this.isWhiteCanCastleKingSide()) {
 			hasCastle = true;
 			buffer.append('K');
 		}
-		if (this.whiteCanCastleQueenSide) {
+		if (this.isWhiteCanCastleQueenSide()) {
 			hasCastle = true;
 			buffer.append('Q');
 		}
-		if (this.blackCanCastleKingSide) {
+		if (this.isBlackCanCastleKingSide()) {
 			hasCastle = true;
 			buffer.append('k');
 		}
-		if (this.blackCanCastleQueenSide) {
+		if (this.isBlackCanCastleQueenSide()) {
 			hasCastle = true;
 			buffer.append('q');
 		}
 		if (!hasCastle) {
 			buffer.append("-"); //$NON-NLS-1$
 		}
-		buffer.append(" " + Converter.intToSquare(this.enPassantSquare)); //$NON-NLS-1$
-		buffer.append(" " + this.fiftyMovesRuleNumber + " " + this.startingMoveNumber); //$NON-NLS-1$ //$NON-NLS-2$
+		buffer.append(" " + Converter.intToSquare(this.getEnPassantSquare())); //$NON-NLS-1$
+		buffer.append(" " + this.getFiftyMovesRuleNumber() + " " + this.getStartingMoveNumber()); //$NON-NLS-1$ //$NON-NLS-2$
 		return String.valueOf(buffer);
 	}
 
@@ -2079,7 +2145,7 @@ public class ChessEngine extends AbstractChessEngine {
 			}
 			buffer.append("|"); //$NON-NLS-1$
 			char pieceType;
-			switch (this.board[i]) {
+			switch (this.getBoard(i)) {
 				case WHITE_BISHOP:
 					pieceType = 'F';
 					break;
@@ -2127,10 +2193,10 @@ public class ChessEngine extends AbstractChessEngine {
 		buffer.append("|") //$NON-NLS-1$
 				.append(Util.LINE_SEPARATOR).append(" +-+-+-+-+-+-+-+-+") //$NON-NLS-1$
 				.append(Util.LINE_SEPARATOR).append("  a b c d e f g h ") //$NON-NLS-1$
-				.append(Util.LINE_SEPARATOR).append(Util.LINE_SEPARATOR).append("move number = " + this.moveNumber) //$NON-NLS-1$
-				.append(" - fifty rule = " + this.fiftyMovesRuleNumber); //$NON-NLS-1$
-		if (this.enPassantSquare != 0) {
-			buffer.append(" - en passant = " + Converter.intToSquare(this.enPassantSquare)); //$NON-NLS-1$
+				.append(Util.LINE_SEPARATOR).append(Util.LINE_SEPARATOR).append("move number = " + this.getMoveNumber()) //$NON-NLS-1$
+				.append(" - fifty rule = " + this.getFiftyMovesRuleNumber()); //$NON-NLS-1$
+		if (this.getEnPassantSquare() != 0) {
+			buffer.append(" - en passant = " + Converter.intToSquare(this.getEnPassantSquare())); //$NON-NLS-1$
 		}
 		buffer.append(" - TURN = "); //$NON-NLS-1$
 		if (this.turn == WHITE_TURN) {
@@ -2139,19 +2205,19 @@ public class ChessEngine extends AbstractChessEngine {
 			buffer.append("BLACK TURN "); //$NON-NLS-1$
 		}
 		boolean possibleCastling = false;
-		if (this.whiteCanCastleKingSide) {
+		if (this.isWhiteCanCastleKingSide()) {
 			buffer.append("K"); //$NON-NLS-1$
 			possibleCastling = true;
 		}
-		if (this.whiteCanCastleQueenSide) {
+		if (this.isWhiteCanCastleQueenSide()) {
 			buffer.append("Q"); //$NON-NLS-1$
 			possibleCastling = true;
 		}
-		if (this.blackCanCastleKingSide) {
+		if (this.isBlackCanCastleKingSide()) {
 			buffer.append("k"); //$NON-NLS-1$
 			possibleCastling = true;
 		}
-		if (this.blackCanCastleQueenSide) {
+		if (this.isBlackCanCastleQueenSide()) {
 			buffer.append("q"); //$NON-NLS-1$
 			possibleCastling = true;
 		}
@@ -2176,7 +2242,7 @@ public class ChessEngine extends AbstractChessEngine {
 
 	@Override
 	public void undoMoveWithoutNotification() {
-		if (this.moveNumber >= 0) {
+		if (this.getMoveNumber() >= 0) {
 			undoMoveWithoutNotification(getLastMove());
 		}
 	}
@@ -2187,27 +2253,27 @@ public class ChessEngine extends AbstractChessEngine {
 		final long info = move;
 		int startingSquare = MoveConstants.getStartingSquare(info);
 		int endingSquare = MoveConstants.getEndingSquare(info);
-		Piece pieceType = this.board[endingSquare];
+		Piece pieceType = this.getBoard(endingSquare);
 		Piece capturedPiece = Piece.getPiece(MoveConstants.getCaptureValue(info));
 
 		// common behavior
-		this.board[startingSquare] = pieceType;
-		this.board[endingSquare] = capturedPiece;
+		this.setBoard(startingSquare, pieceType);
+		this.setBoard(endingSquare, capturedPiece);
 
 		// handle promotion
 		int promotedPiece = MoveConstants.getPromotionValue(info);
 		if (promotedPiece != 0) {
 			if (promotedPiece < 7) {
-				this.board[startingSquare] = WHITE_PAWN;
+				this.setBoard(startingSquare, WHITE_PAWN);
 			} else {
-				this.board[startingSquare] = BLACK_PAWN;
+				this.setBoard(startingSquare, BLACK_PAWN);
 			}
 		}
 
-		this.whiteCanCastleKingSide = MoveConstants.isWhiteCanCastleKingSide(info);
-		this.whiteCanCastleQueenSide = MoveConstants.isWhiteCanCastleQueenSide(info);
-		this.blackCanCastleKingSide = MoveConstants.isBlackCanCastleKingSide(info);
-		this.blackCanCastleQueenSide = MoveConstants.isBlackCanCastleQueenSide(info);
+		this.setWhiteCanCastleKingSide(MoveConstants.isWhiteCanCastleKingSide(info));
+		this.setWhiteCanCastleQueenSide(MoveConstants.isWhiteCanCastleQueenSide(info));
+		this.setBlackCanCastleKingSide(MoveConstants.isBlackCanCastleKingSide(info));
+		this.setBlackCanCastleQueenSide(MoveConstants.isBlackCanCastleQueenSide(info));
 
 		int fakeEnPassantSquare = MoveConstants.getEnPassantSquare(info);
 		switch (fakeEnPassantSquare) {
@@ -2219,7 +2285,7 @@ public class ChessEngine extends AbstractChessEngine {
 			case 6:
 			case 7:
 			case 8:
-				this.enPassantSquare = fakeEnPassantSquare + 15;
+				this.setEnPassantSquare(fakeEnPassantSquare + 15);
 				break;
 			case 9:
 			case 10:
@@ -2229,10 +2295,10 @@ public class ChessEngine extends AbstractChessEngine {
 			case 14:
 			case 15:
 			case 16:
-				this.enPassantSquare = fakeEnPassantSquare + 31;
+				this.setEnPassantSquare(fakeEnPassantSquare + 31);
 				break;
 			default:
-				this.enPassantSquare = -1;
+				this.setEnPassantSquare(-1);
 		}
 
 		// detect castling and update the this.board
@@ -2242,12 +2308,12 @@ public class ChessEngine extends AbstractChessEngine {
 						&& startingSquare == 60) {
 					switch (endingSquare) {
 						case 62:
-							this.board[63] = WHITE_ROOK;
-							this.board[61] = EMPTY;
+							this.setBoard(63,  WHITE_ROOK);
+							this.setBoard(61, EMPTY);
 							break;
 						case 58:
-							this.board[56] = WHITE_ROOK;
-							this.board[59] = EMPTY;
+							this.setBoard(56, WHITE_ROOK);
+							this.setBoard(59, EMPTY);
 							break;
 						default:
 					}
@@ -2259,12 +2325,12 @@ public class ChessEngine extends AbstractChessEngine {
 						&& startingSquare == 4) {
 					switch (endingSquare) {
 						case 6:
-							this.board[7] = BLACK_ROOK;
-							this.board[5] = EMPTY;
+							this.setBoard(7, BLACK_ROOK);
+							this.setBoard(5, EMPTY);
 							break;
 						case 2:
-							this.board[0] = BLACK_ROOK;
-							this.board[3] = EMPTY;
+							this.setBoard(0, BLACK_ROOK);
+							this.setBoard(3, EMPTY);
 							break;
 						default:
 					}
@@ -2272,36 +2338,44 @@ public class ChessEngine extends AbstractChessEngine {
 				this.blackKingSquare = startingSquare;
 				break;
 			case WHITE_PAWN:
-				if (endingSquare == this.enPassantSquare) {
+				if (endingSquare == this.getEnPassantSquare()) {
 					switch (endingSquare - startingSquare) {
 						case -7:
-							this.board[startingSquare + 1] = capturedPiece;
+							this.setBoard(startingSquare + 1, capturedPiece);
 							break;
 						case -9:
-							this.board[startingSquare - 1] = capturedPiece;
+							this.setBoard(startingSquare - 1, capturedPiece);
 							break;
 						default:
 					}
-					this.board[endingSquare] = EMPTY;
+					this.setBoard(endingSquare, EMPTY);
 				}
 				break;
 			case BLACK_PAWN:
-				if (endingSquare == this.enPassantSquare) {
+				if (endingSquare == this.getEnPassantSquare()) {
 					switch (startingSquare - endingSquare) {
 						case -9:
-							this.board[startingSquare + 1] = capturedPiece;
+							this.setBoard(startingSquare + 1, capturedPiece);
 							break;
 						case -7:
-							this.board[startingSquare - 1] = capturedPiece;
+							this.setBoard(startingSquare - 1, capturedPiece);
 							break;
 						default:
 					}
-					this.board[endingSquare] = EMPTY;
+					this.setBoard(endingSquare, EMPTY);
 				}
 				break;
 			default:
 		}
-		this.moveNumber--;
-		this.startingMoveNumber--;
+		this.decrementMoveNumber();;
+		this.decrementStartingMoveCounter();
+	}
+
+	public int getEnPassantSquare() {
+		return enPassantSquare;
+	}
+
+	public void setEnPassantSquare(int enPassantSquare) {
+		this.enPassantSquare = enPassantSquare;
 	}
 }

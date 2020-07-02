@@ -15,6 +15,7 @@ public class PGNModel {
 	private int currentMoveCounter;
 	private Player white;
 	private Player black;
+	private boolean isFischerRandom;
 
 	public PGNModel(PGNGame pgnGame, ChessEngine model) {
 		if (pgnGame != null) {
@@ -24,6 +25,7 @@ public class PGNModel {
 			}
 			this.white = new Player(pgnGame.getTagSection().getTag(TagSection.TAG_WHITE));
 			this.black = new Player(pgnGame.getTagSection().getTag(TagSection.TAG_BLACK));
+			this.isFischerRandom = pgnGame.isFischerRandom();
 		}
 		this.model = model;
 		this.currentMoveCounter = 0;
@@ -52,7 +54,7 @@ public class PGNModel {
 	public void playMovesTill(Move[] moves, int index) {
 		if (index == -1) {
 			if (this.fenNotation != null) {
-				this.model.initialize(this.fenNotation);
+				this.model.initialize(this.fenNotation, this.isFischerRandom);
 			} else {
 				this.model.initializeToStartingPosition();
 			}
@@ -60,7 +62,7 @@ public class PGNModel {
 			this.currentMoveCounter = -1;
 		} else if (this.currentMoveCounter != index || this.model.getMoveNumber() != index) {
 			if (this.fenNotation != null) {
-				this.model.initialize(this.fenNotation);
+				this.model.initialize(this.fenNotation, this.isFischerRandom);
 			} else {
 				this.model.initializeToStartingPosition();
 			}

@@ -54,7 +54,8 @@ public class PGNGame extends ASTNode {
 	 */
 	public boolean isFischerRandom() {
 		TagSection section = this.tagSection;
-		return section != null && section.getTag(TagSection.VARIANT) != null
-				&& section.getTag(TagSection.VARIANT).equals(TagSection.FISCHER_RANDOM);
+		if (section == null) return false;
+		String variant = section.getTag(TagSection.VARIANT);
+		return TagSection.FISCHER_RANDOM.equals(variant);
 	}
 }

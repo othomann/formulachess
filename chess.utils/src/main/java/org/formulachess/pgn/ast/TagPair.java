@@ -32,7 +32,7 @@ public class TagPair extends ASTNode {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append('[').append(this.getName()).append(this.getValue()).append(']');
+		builder.append(this.getName()).append(this.getValue()).append(']');
 		return String.valueOf(builder);
 	}
 

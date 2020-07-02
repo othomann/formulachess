@@ -14,7 +14,6 @@ import org.formulachess.pgn.Parser;
 import org.formulachess.pgn.ast.Move;
 import org.formulachess.pgn.ast.PGNDatabase;
 import org.formulachess.pgn.ast.PGNGame;
-import org.formulachess.pgn.ast.TagSection;
 import org.formulachess.pgn.engine.PGNModel;
 import org.formulachess.util.Util;
 import org.junit.jupiter.api.DisplayName;

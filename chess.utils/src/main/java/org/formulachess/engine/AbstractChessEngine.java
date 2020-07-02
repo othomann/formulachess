@@ -27,7 +27,11 @@ public abstract class AbstractChessEngine extends Observable {
 
 	public abstract long getLastMove();
 
-	public abstract void initialize(String fenNotation);
+	public abstract void initialize(String fenNotation, boolean isFischerRandom);
+
+	public void initialize(String fenNotation) {
+		initialize(fenNotation, false);
+	}
 
 	public abstract void initializeToStartingPosition();
 

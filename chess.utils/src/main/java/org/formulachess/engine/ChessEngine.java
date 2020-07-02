@@ -500,7 +500,11 @@ public class ChessEngine extends AbstractChessEngine {
 
 	@Override
 	public void initialize(String fenNotation) {
-		decodeFENNotation(fenNotation);
+		this.decodeFENNotation(fenNotation);
+	}
+	
+	public void initialize(String fenNotation, boolean isFischerRandom) {
+		this.initialize(fenNotation);
 	}
 
 	@Override

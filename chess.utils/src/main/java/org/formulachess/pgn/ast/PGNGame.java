@@ -48,4 +48,13 @@ public class PGNGame extends ASTNode {
 		}
 		visitor.endVisit(this);
 	}
+
+	/**
+	 * Returns true if the given game is a fisher random game
+	 */
+	public boolean isFischerRandom() {
+		TagSection section = this.tagSection;
+		return section != null && section.getTag(TagSection.VARIANT) != null
+				&& section.getTag(TagSection.VARIANT).equals(TagSection.FISCHER_RANDOM);
+	}
 }

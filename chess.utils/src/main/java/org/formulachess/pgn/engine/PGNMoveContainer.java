@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Locale;
 
 import org.formulachess.engine.AbstractChessEngine;
-import org.formulachess.engine.ChessEngine;
 import org.formulachess.engine.Messages;
 import org.formulachess.engine.MoveConstants;
 import org.formulachess.engine.Piece;

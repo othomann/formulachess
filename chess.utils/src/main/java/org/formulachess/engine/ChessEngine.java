@@ -392,7 +392,7 @@ public class ChessEngine extends AbstractChessEngine {
 	private void decodeFENNotation(String fenPosition) {
 		this.setMoveNumber(-1);
 		this.initializeHistory();
-		this.setBoard(new Piece[64]);
+		this.setBoard(null);
 		try {
 			String fen = fenPosition.trim();
 			StringTokenizer fenDecoder = new StringTokenizer(fen);
@@ -616,13 +616,8 @@ public class ChessEngine extends AbstractChessEngine {
 		this.startingMoveNumber++;
 	}
 
-	@Override
-	public void initialize(String fenNotation) {
-		this.decodeFENNotation(fenNotation);
-	}
-
 	public void initialize(String fenNotation, boolean isFischerRandom) {
-		this.initialize(fenNotation);
+		this.decodeFENNotation(fenNotation);
 		this.isFischerRandom = isFischerRandom;
 	}
 
@@ -2167,6 +2162,9 @@ public class ChessEngine extends AbstractChessEngine {
 	}
 
 	public void setBoard(Piece[] board) {
+		if (board == null) {
+			board = getEmptyBoard();
+		}
 		this.board = board;
 	}
 

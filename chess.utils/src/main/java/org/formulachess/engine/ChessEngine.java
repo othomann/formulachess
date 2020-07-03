@@ -188,6 +188,7 @@ public class ChessEngine extends AbstractChessEngine {
 		}
 		this.nextMoves[this.movesCounter++] = info;
 	}
+
 	private final long[] allBlackMoves() {
 		this.movesCounter = 0;
 		for (int i = 0; i < 64; i++) {
@@ -1901,6 +1902,8 @@ public class ChessEngine extends AbstractChessEngine {
 		// common behavior
 		this.setBoard(startingSquare, EMPTY);
 		this.setBoard(endingSquare, pieceType);
+		int currentEnPassantSquare = this.getEnPassantSquare();
+		this.setEnPassantSquare(-1);
 
 		// detect castling and update the board
 		switch (pieceType) {
@@ -1921,7 +1924,6 @@ public class ChessEngine extends AbstractChessEngine {
 				this.setWhiteKingSquare(endingSquare);
 				this.setWhiteCanCastleKingSide(false);
 				this.setWhiteCanCastleQueenSide(false);
-				this.setEnPassantSquare(-1);
 				break;
 			case BLACK_KING:
 				if (Math.abs(startingSquare - endingSquare) == 2 && startingSquare == this.getBlackKingInitialSquare()) {
@@ -1939,7 +1941,6 @@ public class ChessEngine extends AbstractChessEngine {
 				}
 				this.setBlackCanCastleKingSide(false);
 				this.setBlackCanCastleQueenSide(false);
-				this.setEnPassantSquare(-1);
 				this.setBlackKingSquare(endingSquare);
 				break;
 			case WHITE_PAWN:
@@ -1947,7 +1948,7 @@ public class ChessEngine extends AbstractChessEngine {
 					// promotion
 					this.setBoard(endingSquare, Piece.getPiece(MoveConstants.getPromotionValue(info)));
 				}
-				if (endingSquare == this.getEnPassantSquare()) {
+				if (endingSquare == currentEnPassantSquare) {
 					switch (endingSquare - startingSquare) {
 						case -7:
 							this.setBoard(startingSquare + 1, EMPTY);
@@ -1960,8 +1961,6 @@ public class ChessEngine extends AbstractChessEngine {
 				}
 				if (startingSquare - endingSquare == 16) {
 					this.setEnPassantSquare(startingSquare - 8);
-				} else {
-					this.setEnPassantSquare(-1);
 				}
 				break;
 			case BLACK_PAWN:
@@ -1969,7 +1968,7 @@ public class ChessEngine extends AbstractChessEngine {
 					// promotion
 					this.setBoard(endingSquare, Piece.getPiece(MoveConstants.getPromotionValue(info)));
 				}
-				if (endingSquare == this.getEnPassantSquare()) {
+				if (endingSquare == currentEnPassantSquare) {
 					switch (endingSquare - startingSquare) {
 						case 9:
 							this.setBoard(startingSquare + 1, EMPTY);
@@ -1982,8 +1981,6 @@ public class ChessEngine extends AbstractChessEngine {
 				}
 				if (endingSquare - startingSquare == 16) {
 					this.setEnPassantSquare(endingSquare - 8);
-				} else {
-					this.setEnPassantSquare(-1);
 				}
 				break;
 			case WHITE_ROOK:
@@ -1992,7 +1989,6 @@ public class ChessEngine extends AbstractChessEngine {
 				} else if (startingSquare == 56) {
 					this.setWhiteCanCastleQueenSide(false);
 				}
-				this.setEnPassantSquare(-1);
 				break;
 			case BLACK_ROOK:
 				if (startingSquare == 7) {
@@ -2000,10 +1996,8 @@ public class ChessEngine extends AbstractChessEngine {
 				} else if (startingSquare == 0) {
 					this.setBlackCanCastleQueenSide(false);
 				}
-				this.setEnPassantSquare(-1);
 				break;
 			default:
-				this.setEnPassantSquare(-1);
 		}
 	}
 

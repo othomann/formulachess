@@ -47,23 +47,11 @@ public class TestPgnParser {
 	@Test
 	@DisplayName("test fischer random")
 	public void testFischerRandom() {
-		final String source = "[Site \"Europe Echecs\"]\n" +
-				"[Date \"2010.04.14\"]\n" +
-				"[Time \"23:33:08\"]\n" +
-				"[PlyCount \"3\"]\n" +
-				"[White \"gouat\"]\n" +
-				"[Black \"morkai\"]\n" +
-				"[WhiteElo \"1882\"]\n" +
-				"[BlackElo \"1863\"]\n" +
-				"[FEN \"rqknbbrn/pppppppp/8/8/8/8/PPPPPPPP/RQKNBBRN w KQkq - 0 1\"]\n" +
-				"[VARIANT \"FischerRandom\"]\n" +
-				"[ECO \"\"]\n" +
-				"[TimeControl \"10/864000\"]\n" +
-				"[Mode \"WEB\"]\n" +
-				"[Result \"1-0\"]\n" +
-				"\n" +
-				"1. c3 d5 2. Qxh7 \n" +
-				"1-0"; //$NON-NLS-1$
+		final String source = "[Site \"Europe Echecs\"]\n" + "[Date \"2010.04.14\"]\n" + "[Time \"23:33:08\"]\n"
+				+ "[PlyCount \"3\"]\n" + "[White \"gouat\"]\n" + "[Black \"morkai\"]\n" + "[WhiteElo \"1882\"]\n"
+				+ "[BlackElo \"1863\"]\n" + "[FEN \"rqknbbrn/pppppppp/8/8/8/8/PPPPPPPP/RQKNBBRN w KQkq - 0 1\"]\n"
+				+ "[VARIANT \"FischerRandom\"]\n" + "[ECO \"\"]\n" + "[TimeControl \"10/864000\"]\n"
+				+ "[Mode \"WEB\"]\n" + "[Result \"1-0\"]\n" + "\n" + "1. c3 d5 2. Qxh7 \n" + "1-0"; //$NON-NLS-5$
 		parseSource(source);
 	}
 
@@ -84,22 +72,9 @@ public class TestPgnParser {
 		assertNotNull(pgnDatabase, "Should not be null"); //$NON-NLS-1$
 		PGNGame[] pgnGames = pgnDatabase.getPGNGames();
 		for (PGNGame game : pgnGames) {
-			if (game.isFischerRandom()) {
-				// Fischer Random is not handled
-				// continue;
-				PGNModel model = new PGNModel(game, new ChessEngine());
-				Move[] moves = game.getMoveText().getMoves();
-				model.playMovesTill(moves, moves.length - 1);
-			} else {
-				try {
-					PGNModel model = new PGNModel(game, new ChessEngine());
-					Move[] moves = game.getMoveText().getMoves();
-					model.playMovesTill(moves, moves.length - 1);
-				} catch (ArrayIndexOutOfBoundsException e) {
-					System.err.println(game);
-					throw e;
-				}
-			}
+			PGNModel model = new PGNModel(game, new ChessEngine());
+			Move[] moves = game.getMoveText().getMoves();
+			model.playMovesTill(moves, moves.length - 1);
 		}
 	}
 }

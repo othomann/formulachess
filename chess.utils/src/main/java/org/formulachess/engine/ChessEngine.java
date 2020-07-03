@@ -108,21 +108,25 @@ public class ChessEngine extends AbstractChessEngine {
 	public ChessEngine() {
 		this(Locale.getDefault());
 	}
+
 	public ChessEngine(Locale currentLocale) {
 		this.locale = currentLocale;
 		this.currentMessages = new Messages(currentLocale);
 		decodeFENNotation("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"); //$NON-NLS-1$
 		this.isReady = false;
 	}
+
 	public ChessEngine(Locale currentLocale, String fenPosition) {
 		this.locale = currentLocale;
 		this.currentMessages = new Messages(currentLocale);
 		decodeFENNotation(fenPosition);
 		this.isReady = false;
 	}
+
 	public ChessEngine(String fenPosition) {
 		this(Locale.getDefault(), fenPosition);
 	}
+
 	public void addHistory(long move) {
 		if (this.history.length == this.getMoveNumber() + 1) {
 			// resize
@@ -144,7 +148,8 @@ public class ChessEngine extends AbstractChessEngine {
 		addMove(startingPosition, endingPosition, capturePieceType, UNDEFINED, castling);
 	}
 
-	void addMove(int startingPosition, int endingPosition, Piece capturePieceType, Piece promotedPiece, boolean castling) {
+	void addMove(int startingPosition, int endingPosition, Piece capturePieceType, Piece promotedPiece,
+			boolean castling) {
 		long info = MoveConstants.getMoveValue(startingPosition, endingPosition, capturePieceType, promotedPiece,
 				this.getEnPassantSquare(), this.isWhiteCanCastleKingSide(), this.isWhiteCanCastleQueenSide(),
 				this.isBlackCanCastleKingSide(), this.isBlackCanCastleQueenSide());
@@ -219,6 +224,7 @@ public class ChessEngine extends AbstractChessEngine {
 		}
 		return getNextMoves();
 	}
+
 	private final long[] allBlackMoves(Piece searchPieceType) {
 		if (searchPieceType == null || searchPieceType.isWhiteOrEmpty()) {
 			return EMPTY_MOVES;
@@ -283,15 +289,18 @@ public class ChessEngine extends AbstractChessEngine {
 	public long[] allMoves() {
 		return this.turn == WHITE_TURN ? allWhiteMoves() : allBlackMoves();
 	}
+
 	@Override
 	public long[] allMoves(Piece pieceType) {
 		return this.turn == WHITE_TURN ? allWhiteMoves(pieceType) : allBlackMoves(pieceType);
 	}
+
 	@Override
 	public long[] allMoves(Piece pieceType, int startingSquare) {
 		return this.turn == WHITE_TURN ? allWhiteMoves(pieceType, startingSquare)
 				: allBlackMoves(pieceType, startingSquare);
 	}
+
 	private final long[] allWhiteMoves() {
 		this.movesCounter = 0;
 		for (int i = 0; i < 64; i++) {
@@ -322,6 +331,7 @@ public class ChessEngine extends AbstractChessEngine {
 		}
 		return getNextMoves();
 	}
+
 	private final long[] allWhiteMoves(Piece searchPieceType) {
 		this.movesCounter = 0;
 		for (int i = 0; i < 64; i++) {
@@ -1217,31 +1227,83 @@ public class ChessEngine extends AbstractChessEngine {
 				}
 			}
 		}
-		if (!this.isFischerRandom()) {
-			if (this.isBlackCanCastleKingSide()
-					&& i == this.getBlackKingInitialSquare()
-					&& !isBlackInCheck()
-					&& !isBlackInCheck(i + 2)
-					&& !isBlackInCheck(i + 1)
-					&& this.getBoard(i + 2) == EMPTY
-					&& this.getBoard(i + 1) == EMPTY
-					&& this.getBoard(i + 3) == BLACK_ROOK
-					) {
-				addMove(i, i + 2, EMPTY, true);
+		if (this.isBlackCanCastleKingSide() && i == this.getBlackKingInitialSquare()) {
+			if (this.isFischerRandom()) {
+				boolean castle = true;
+				// king side castle
+				// Unattacked
+				for (int square = i; square <= BLACK_KING_CASTLE_KING_SIDE; square++) {
+					if (isBlackInCheck(square)) {
+						castle = false;
+						break;
+					}
+				}
+				if (castle) {
+					// vacant
+					for (int square = i + 1; square <= BLACK_KING_CASTLE_KING_SIDE; square++) {
+						if (this.getBoard(square) != EMPTY) {
+							castle = false;
+							break;
+						}
+					}
+					if (castle) {
+						castle = this.getBoard(this.getBlackRookKingSideSquare()) == BLACK_ROOK;
+						for (int square = this.getBlackRookKingSideSquare()
+								- 1; square >= BLACK_KING_POST_CASTING_KING_SIDE_SQUARE; square--) {
+							if (this.getBoard(square) != EMPTY) {
+								castle = false;
+								break;
+							}
+						}
+					}
+				}
+				if (castle) {
+					addMove(i, BLACK_KING_CASTLE_KING_SIDE, EMPTY, true);
+				}
+			} else if (!isBlackInCheck() && !isBlackInCheck(i + 2) && !isBlackInCheck(i + 1)
+					&& this.getBoard(i + 2) == EMPTY && this.getBoard(i + 1) == EMPTY
+					&& this.getBoard(i + 3) == BLACK_ROOK) {
+				addMove(i, BLACK_KING_CASTLE_KING_SIDE, EMPTY, true);
 			}
-			if (this.isBlackCanCastleQueenSide()
-					&& i == this.getBlackKingInitialSquare()
-					&& !isBlackInCheck()
-					&& !isBlackInCheck(i - 2)
-					&& !isBlackInCheck(i - 1)
-					&& this.getBoard(i - 3) == EMPTY
-					&& this.getBoard(i - 2) == EMPTY
-					&& this.getBoard(i - 1) == EMPTY
+		}
+		if (this.isBlackCanCastleQueenSide() && i == this.getBlackKingInitialSquare()) {
+			if (this.isFischerRandom()) {
+				boolean castle = true;
+				// king side castle
+				// Unattacked
+				for (int square = i; square >= BLACK_KING_CASTLE_QUEEN_SIDE; square--) {
+					if (isBlackInCheck(square)) {
+						castle = false;
+						break;
+					}
+				}
+				if (castle) {
+					// vacant
+					for (int square = i - 1; square >= BLACK_KING_CASTLE_QUEEN_SIDE; square--) {
+						if (this.getBoard(square) != EMPTY) {
+							castle = false;
+							break;
+						}
+					}
+					if (castle) {
+						castle = this.getBoard(this.getBlackRookQueenSideSquare()) == BLACK_ROOK;
+						for (int square = this.getBlackRookQueenSideSquare()
+								+ 1; square <= BLACK_KING_POST_CASTING_QUEEN_SIDE_SQUARE; square++) {
+							if (this.getBoard(square) != EMPTY) {
+								castle = false;
+								break;
+							}
+						}
+					}
+				}
+				if (castle) {
+					addMove(i, BLACK_KING_CASTLE_QUEEN_SIDE, EMPTY, true);
+				}
+			} else if (!isBlackInCheck() && !isBlackInCheck(i - 2) && !isBlackInCheck(i - 1)
+					&& this.getBoard(i - 3) == EMPTY && this.getBoard(i - 2) == EMPTY && this.getBoard(i - 1) == EMPTY
 					&& this.getBoard(i - 4) == BLACK_ROOK) {
-				addMove(i, i - 2, EMPTY, true);
+				addMove(i, BLACK_KING_CASTLE_QUEEN_SIDE, EMPTY, true);
 			}
-		} else {
-			// handle fischer random castling
 		}
 	}
 
@@ -1336,7 +1398,8 @@ public class ChessEngine extends AbstractChessEngine {
 		this.setBoard(endingSquare, pieceType);
 		switch (pieceType) {
 			case WHITE_KING:
-				if (Math.abs(startingSquare - endingSquare) == 2 && startingSquare == this.getWhiteKingInitialSquare()) {
+				if (Math.abs(startingSquare - endingSquare) == 2
+						&& startingSquare == this.getWhiteKingInitialSquare()) {
 					switch (endingSquare) {
 						case WHITE_KING_CASTLE_KING_SIDE:
 							this.setBoard(WHITE_KING_POST_CASTING_KING_SIDE_SQUARE, WHITE_ROOK);
@@ -1352,7 +1415,8 @@ public class ChessEngine extends AbstractChessEngine {
 				this.setWhiteKingSquare(endingSquare);
 				break;
 			case BLACK_KING:
-				if (Math.abs(startingSquare - endingSquare) == 2 && startingSquare == this.getBlackKingInitialSquare()) {
+				if (Math.abs(startingSquare - endingSquare) == 2
+						&& startingSquare == this.getBlackKingInitialSquare()) {
 					switch (endingSquare) {
 						case BLACK_KING_CASTLE_KING_SIDE:
 							this.setBoard(BLACK_KING_POST_CASTING_KING_SIDE_SQUARE, BLACK_ROOK);
@@ -1792,30 +1856,83 @@ public class ChessEngine extends AbstractChessEngine {
 				}
 			}
 		}
-		if (!this.isFischerRandom()) {
-			if (this.isWhiteCanCastleKingSide()
-					&& i == this.getWhiteKingInitialSquare()
-					&& !isWhiteInCheck()
-					&& !isWhiteInCheck(i + 2) 
-					&& !isWhiteInCheck(i + 1)
-					&& this.getBoard(i + 2) == EMPTY
-					&& this.getBoard(i + 1) == EMPTY
+		if (this.isWhiteCanCastleKingSide() && i == this.getWhiteKingInitialSquare()) {
+			if (this.isFischerRandom()) {
+				boolean castle = true;
+				// king side castle
+				// Unattacked
+				for (int square = i; square <= WHITE_KING_CASTLE_KING_SIDE; square++) {
+					if (isWhiteInCheck(square)) {
+						castle = false;
+						break;
+					}
+				}
+				if (castle) {
+					// vacant
+					for (int square = i + 1; square <= WHITE_KING_CASTLE_KING_SIDE; square++) {
+						if (this.getBoard(square) != EMPTY) {
+							castle = false;
+							break;
+						}
+					}
+					if (castle) {
+						castle = this.getBoard(this.getWhiteRookKingSideSquare()) == WHITE_ROOK;
+						for (int square = this.getWhiteRookKingSideSquare()
+								- 1; square >= WHITE_KING_POST_CASTING_KING_SIDE_SQUARE; square--) {
+							if (this.getBoard(square) != EMPTY) {
+								castle = false;
+								break;
+							}
+						}
+					}
+				}
+				if (castle) {
+					addMove(i, WHITE_KING_CASTLE_KING_SIDE, EMPTY, true);
+				}
+			} else if (!isWhiteInCheck() && !isWhiteInCheck(i + 2) && !isWhiteInCheck(i + 1)
+					&& this.getBoard(i + 2) == EMPTY && this.getBoard(i + 1) == EMPTY
 					&& this.getBoard(i + 3) == WHITE_ROOK) {
-				addMove(i, i + 2, EMPTY, true);
+				addMove(i, WHITE_KING_CASTLE_KING_SIDE, EMPTY, true);
 			}
-			if (this.isWhiteCanCastleQueenSide()
-					&& i == this.getWhiteKingInitialSquare()
-					&& !isWhiteInCheck()
-					&& !isWhiteInCheck(i - 2)
-					&& !isWhiteInCheck(i - 1)
-					&& this.getBoard(i - 3) == EMPTY
-					&& this.getBoard(i - 2) == EMPTY
-					&& this.getBoard(i - 1) == EMPTY
+		}
+		if (this.isWhiteCanCastleQueenSide() && i == this.getWhiteKingInitialSquare()) {
+			if (this.isFischerRandom()) {
+				boolean castle = true;
+				// king side castle
+				// Unattacked
+				for (int square = i; square >= WHITE_KING_CASTLE_QUEEN_SIDE; square--) {
+					if (isWhiteInCheck(square)) {
+						castle = false;
+						break;
+					}
+				}
+				if (castle) {
+					// vacant
+					for (int square = i - 1; square >= WHITE_KING_CASTLE_QUEEN_SIDE; square--) {
+						if (this.getBoard(square) != EMPTY) {
+							castle = false;
+							break;
+						}
+					}
+					if (castle) {
+						castle = this.getBoard(this.getWhiteRookQueenSideSquare()) == WHITE_ROOK;
+						for (int square = this.getWhiteRookQueenSideSquare()
+								+ 1; square <= WHITE_KING_POST_CASTING_QUEEN_SIDE_SQUARE; square++) {
+							if (this.getBoard(square) != EMPTY) {
+								castle = false;
+								break;
+							}
+						}
+					}
+				}
+				if (castle) {
+					addMove(i, WHITE_KING_CASTLE_QUEEN_SIDE, EMPTY, true);
+				}
+			} else if (!isWhiteInCheck() && !isWhiteInCheck(i - 2) && !isWhiteInCheck(i - 1)
+					&& this.getBoard(i - 3) == EMPTY && this.getBoard(i - 2) == EMPTY && this.getBoard(i - 1) == EMPTY
 					&& this.getBoard(i - 4) == WHITE_ROOK) {
-				addMove(i, i - 2, EMPTY, true);
+				addMove(i, WHITE_KING_CASTLE_QUEEN_SIDE, EMPTY, true);
 			}
-		} else {
-			// handle fischer random castling
 		}
 	}
 
@@ -1908,7 +2025,8 @@ public class ChessEngine extends AbstractChessEngine {
 		// detect castling and update the board
 		switch (pieceType) {
 			case WHITE_KING:
-				if (Math.abs(startingSquare - endingSquare) == 2 && startingSquare == this.getWhiteKingInitialSquare()) {
+				if (Math.abs(startingSquare - endingSquare) == 2
+						&& startingSquare == this.getWhiteKingInitialSquare()) {
 					switch (endingSquare) {
 						case 62:
 							this.setBoard(WHITE_KING_POST_CASTING_KING_SIDE_SQUARE, WHITE_ROOK);
@@ -1926,7 +2044,8 @@ public class ChessEngine extends AbstractChessEngine {
 				this.setWhiteCanCastleQueenSide(false);
 				break;
 			case BLACK_KING:
-				if (Math.abs(startingSquare - endingSquare) == 2 && startingSquare == this.getBlackKingInitialSquare()) {
+				if (Math.abs(startingSquare - endingSquare) == 2
+						&& startingSquare == this.getBlackKingInitialSquare()) {
 					switch (endingSquare) {
 						case 6:
 							this.setBoard(BLACK_KING_POST_CASTING_KING_SIDE_SQUARE, BLACK_ROOK);
@@ -2411,7 +2530,8 @@ public class ChessEngine extends AbstractChessEngine {
 		// detect castling and update the this.board
 		switch (pieceType) {
 			case WHITE_KING:
-				if (Math.abs(startingSquare - endingSquare) == 2 && startingSquare == this.getWhiteKingInitialSquare()) {
+				if (Math.abs(startingSquare - endingSquare) == 2
+						&& startingSquare == this.getWhiteKingInitialSquare()) {
 					switch (endingSquare) {
 						case WHITE_KING_CASTLE_KING_SIDE:
 							this.setBoard(this.getWhiteRookKingSideSquare(), WHITE_ROOK);
@@ -2427,7 +2547,8 @@ public class ChessEngine extends AbstractChessEngine {
 				this.setWhiteKingSquare(startingSquare);
 				break;
 			case BLACK_KING:
-				if (Math.abs(startingSquare - endingSquare) == 2 && startingSquare == this.getBlackKingInitialSquare()) {
+				if (Math.abs(startingSquare - endingSquare) == 2
+						&& startingSquare == this.getBlackKingInitialSquare()) {
 					switch (endingSquare) {
 						case BLACK_KING_CASTLE_KING_SIDE:
 							this.setBoard(this.getBlackRookKingSideSquare(), BLACK_ROOK);

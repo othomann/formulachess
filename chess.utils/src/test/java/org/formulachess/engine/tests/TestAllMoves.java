@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import org.formulachess.engine.ChessEngine;
 import org.formulachess.engine.Converter;
+import org.formulachess.engine.MoveConstants;
 import org.formulachess.engine.Piece;
 import org.formulachess.pgn.engine.PGNMoveContainer;
 import org.junit.jupiter.api.DisplayName;
@@ -149,7 +150,7 @@ public class TestAllMoves {
 	}
 
 	@Test
-	@DisplayName("test064")
+	@DisplayName("test06")
 	public void test006() {
 		ChessEngine model = new ChessEngine("8/8/8/8/8/8/4n3/R3K2R w KQ - 0 1");
 		long[] moves = model.allMoves();
@@ -649,5 +650,45 @@ public class TestAllMoves {
 			assertEquals(193690690, ChessEngine.perft(position, 5), WRONG_VALUE);
 			displayTime(time);
 		}
+	}
+
+	@Test
+	@DisplayName("test045")
+	public void test045() {
+		ChessEngine model = new ChessEngine("k7/8/8/8/8/8/8/R3K2R w KQ - 0 1");
+		long[] moves = model.allMoves();
+		assertEquals(26, moves.length, WRONG_SIZE);
+		long castling = 0;
+		for (long move : moves) {
+			if (MoveConstants.isCastle(move)) {
+				castling = move;
+				break;
+			}
+		}
+		model.playMove(castling);
+		model.undoMove();
+		moves = model.allMoves();
+		assertEquals(26, moves.length, WRONG_SIZE);
+	}
+
+	@Test
+	@DisplayName("test046")
+	public void test046() {
+		ChessEngine model = new ChessEngine("k7/8/8/8/8/8/8/R3K2R w KQ - 0 1");
+		long[] moves = model.allMoves();
+		assertEquals(26, moves.length, WRONG_SIZE);
+		long playingMove = 0;
+		for (long move : moves) {
+			PGNMoveContainer container = new PGNMoveContainer(model, moves, Locale.US);
+			if ("Ke2".equals(container.getMoveNotation(move))) {
+				playingMove = move;
+				break;
+			}
+		}
+		assertTrue(playingMove != 0, "Ke2 not found");
+		model.playMove(playingMove);
+		model.undoMove();
+		moves = model.allMoves();
+		assertEquals(26, moves.length, WRONG_SIZE);
 	}
 }

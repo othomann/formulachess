@@ -398,6 +398,8 @@ public class ChessEngine extends AbstractChessEngine {
 			StringTokenizer fenDecoder = new StringTokenizer(fen);
 			StringTokenizer tokenizer = new StringTokenizer(fenDecoder.nextToken(), "/"); //$NON-NLS-1$
 			int row = 0;
+			boolean setBlackRookQueenSide = true;
+			boolean setWhiteRookQueenSide = true;
 			while (tokenizer.hasMoreTokens()) {
 				String temp = tokenizer.nextToken();
 				int col = 0;
@@ -406,8 +408,9 @@ public class ChessEngine extends AbstractChessEngine {
 					int squareIndex = row * 8 + col;
 					switch (token) {
 						case 'r':
-							if (this.getBlackRookQueenSideSquare() == -1) {
+							if (setBlackRookQueenSide) {
 								this.setBlackRookQueenSideSquare(squareIndex);
+								setBlackRookQueenSide = false;
 							} else {
 								this.setBlackRookKingSideSquare(squareIndex);
 							}
@@ -427,6 +430,7 @@ public class ChessEngine extends AbstractChessEngine {
 							col++;
 							break;
 						case 'k':
+							setBlackRookQueenSide = false;
 							this.setBoard(squareIndex, BLACK_KING);
 							this.setBlackKingInitialSquare(squareIndex);
 							this.setBlackKingSquare(squareIndex);
@@ -437,8 +441,9 @@ public class ChessEngine extends AbstractChessEngine {
 							col++;
 							break;
 						case 'R':
-							if (this.getWhiteRookQueenSideSquare() == -1) {
+							if (setWhiteRookQueenSide) {
 								this.setWhiteRookQueenSideSquare(squareIndex);
+								setWhiteRookQueenSide = false;
 							} else {
 								this.setWhiteRookKingSideSquare(squareIndex);
 							}
@@ -458,6 +463,7 @@ public class ChessEngine extends AbstractChessEngine {
 							col++;
 							break;
 						case 'K':
+							setWhiteRookQueenSide = false;
 							this.setBoard(squareIndex, WHITE_KING);
 							this.setWhiteKingInitialSquare(squareIndex);
 							this.setWhiteKingInitialSquare(squareIndex);

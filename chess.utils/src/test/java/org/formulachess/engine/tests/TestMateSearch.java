@@ -19,7 +19,7 @@ public class TestMateSearch {
 	private static final Logger MyLogger = Logger.getLogger(TestMateSearch.class.getCanonicalName());
 	static int counter = 1;
 
-	private static final boolean DEBUG = true;
+	private static final boolean DEBUG = false;
 	public static final String LINE_SEPARATOR = System.getProperty("line.separator");//$NON-NLS-1$
 	public static final String NEW_PGN_HEADER = "[Site \"?\"]\r\n" + //$NON-NLS-1$
 			"[Date \"????.??.??\"]\n" + //$NON-NLS-1$
@@ -4987,5 +4987,15 @@ public class TestMateSearch {
 	@DisplayName("test822")
 	public void test822() {
 		checkMate("Position822", "1r2r1k1/5p2/5Rp1/4Q2p/P2B2qP/1NP5/1KP5/8 w - - 0 1", 3); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	@Test
+	@DisplayName("test823")
+	public void test823() {
+		checkMate("Position823", "1b6/2p5/8/2K2B2/k7/8/1P6/8 w - - 0 1", 8); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	@Test
+	@DisplayName("test824")
+	public void test824() {
+		checkMate("Position824", "r1b1kb1r/1p1n1p2/p1n1N2p/4P1p1/q3N2B/8/P1PQB1PP/1R2K2R w Kkq - 0 1", 3); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

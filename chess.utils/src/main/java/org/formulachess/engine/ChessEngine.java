@@ -564,7 +564,7 @@ public class ChessEngine extends AbstractChessEngine {
 	}
 
 	public Turn getStartingColor() {
-		return startingColor;
+		return this.startingColor;
 	}
 
 	public int getStartingMoveNumber() {
@@ -576,19 +576,19 @@ public class ChessEngine extends AbstractChessEngine {
 	}
 
 	public int getWhiteKingInitialSquare() {
-		return whiteKingInitialSquare;
+		return this.whiteKingInitialSquare;
 	}
 
 	public int getWhiteKingSquare() {
-		return whiteKingSquare;
+		return this.whiteKingSquare;
 	}
 
 	public int getWhiteRookKingSideSquare() {
-		return whiteRookKingSideSquare;
+		return this.whiteRookKingSideSquare;
 	}
 
 	public int getWhiteRookQueenSideSquare() {
-		return whiteRookQueenSideSquare;
+		return this.whiteRookQueenSideSquare;
 	}
 
 	public void incrementMoveNumber() {
@@ -1218,21 +1218,24 @@ public class ChessEngine extends AbstractChessEngine {
 		}
 		if (!this.isFischerRandom()) {
 			if (this.isBlackCanCastleKingSide()
-					&& i == this.getBlackKingSquare()
-					&& !isBlackInCheck() && this.getBoard(i + 2) == EMPTY
-					&& this.getBoard(i + 1) == EMPTY && !isBlackInCheck(i + 2) && !isBlackInCheck(i + 1)
+					&& i == this.getBlackKingInitialSquare()
+					&& !isBlackInCheck()
+					&& !isBlackInCheck(i + 2)
+					&& !isBlackInCheck(i + 1)
+					&& this.getBoard(i + 2) == EMPTY
+					&& this.getBoard(i + 1) == EMPTY
 					&& this.getBoard(i + 3) == BLACK_ROOK
 					) {
 				addMove(i, i + 2, EMPTY, true);
 			}
 			if (this.isBlackCanCastleQueenSide()
-					&& i == this.getBlackKingSquare()
+					&& i == this.getBlackKingInitialSquare()
 					&& !isBlackInCheck()
+					&& !isBlackInCheck(i - 2)
+					&& !isBlackInCheck(i - 1)
 					&& this.getBoard(i - 3) == EMPTY
 					&& this.getBoard(i - 2) == EMPTY
 					&& this.getBoard(i - 1) == EMPTY
-					&& !isBlackInCheck(i - 2)
-					&& !isBlackInCheck(i - 1)
 					&& this.getBoard(i - 4) == BLACK_ROOK) {
 				addMove(i, i - 2, EMPTY, true);
 			}
@@ -1790,22 +1793,23 @@ public class ChessEngine extends AbstractChessEngine {
 		}
 		if (!this.isFischerRandom()) {
 			if (this.isWhiteCanCastleKingSide()
-					&& i == this.getWhiteKingSquare()
+					&& i == this.getWhiteKingInitialSquare()
 					&& !isWhiteInCheck()
+					&& !isWhiteInCheck(i + 2) 
+					&& !isWhiteInCheck(i + 1)
 					&& this.getBoard(i + 2) == EMPTY
 					&& this.getBoard(i + 1) == EMPTY
-					&& !isWhiteInCheck(i + 2) && !isWhiteInCheck(i + 1)
 					&& this.getBoard(i + 3) == WHITE_ROOK) {
 				addMove(i, i + 2, EMPTY, true);
 			}
 			if (this.isWhiteCanCastleQueenSide()
-					&& i == this.getWhiteKingSquare()
+					&& i == this.getWhiteKingInitialSquare()
 					&& !isWhiteInCheck()
+					&& !isWhiteInCheck(i - 2)
+					&& !isWhiteInCheck(i - 1)
 					&& this.getBoard(i - 3) == EMPTY
 					&& this.getBoard(i - 2) == EMPTY
 					&& this.getBoard(i - 1) == EMPTY
-					&& !isWhiteInCheck(i - 2)
-					&& !isWhiteInCheck(i - 1)
 					&& this.getBoard(i - 4) == WHITE_ROOK) {
 				addMove(i, i - 2, EMPTY, true);
 			}

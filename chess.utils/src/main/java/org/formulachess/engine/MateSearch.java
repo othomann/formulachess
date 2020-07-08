@@ -34,42 +34,41 @@ public class MateSearch {
 
 	public static boolean searchMate(ChessEngine model, int depth, int maximum, MateNode result) {
 		long[] nextMoves = model.allMoves();
-		int nextMovesLength = nextMoves.length;
 		MateMove[] next = createSearchableMoves(model, nextMoves, true);
 		MateNode currentResult = result;
-		loop: for (int i = 0; i < nextMovesLength; i++) {
-			long move = next[i].getMove();
-			MateNode current = currentResult.add(next[i], model.getTurn(), depth);
+		loop: for (MateMove mateMove : next) {
+			long move = mateMove.getMove();
+			MateNode current = currentResult.add(mateMove, model.getTurn(), depth);
 			if ((depth == maximum && MateMove.isCheck(move)) || depth != maximum) {
-				int mobility = next[i].getMobility();
+				int mobility = mateMove.getMobility();
 				if (mobility == 0) {
-					debug(next[i], 2 * depth - 1);
+					debug(mateMove, 2 * depth - 1);
 					if (!MateMove.isCheck(move)) {
 						// stalemate
-						currentResult.remove(next[i], depth);
+						currentResult.remove(mateMove, depth);
 						continue loop;
 					}
 					// mate
 					if (depth != 1) {
 						return true;
 					}
-					currentResult.remove(next[i], depth);
+					currentResult.remove(mateMove, depth);
 				} else if (depth < maximum) {
-					debug(next[i], 2 * depth - 1);
+					debug(mateMove, 2 * depth - 1);
 					model.playMoveWithoutNotification(move);
 					int moveCounter = 0;
 					currentResult = current;
 					MateMove[] opponentNextMoves = createSearchableMoves(model, model.allMoves(), true);
-					opponentLoop: for (int j = 0, max = opponentNextMoves.length; j < max; j++) {
-						long opponentMove = opponentNextMoves[j].getMove();
-						debug(opponentNextMoves[j], 2 * depth);
-						MateNode opponentCurrent = currentResult.add(opponentNextMoves[j], model.getTurn(), depth);
+					opponentLoop: for (MateMove opponentMateMove : opponentNextMoves) {
+						long opponentMove = opponentMateMove.getMove();
+						debug(opponentMateMove, 2 * depth);
+						MateNode opponentCurrent = currentResult.add(opponentMateMove, model.getTurn(), depth);
 						currentResult = opponentCurrent;
 						model.playMoveWithoutNotification(opponentMove);
 						if (!searchMate(model, depth + 1, maximum, currentResult)) {
 							model.undoMoveWithoutNotification(opponentMove);
 							currentResult = currentResult.parent;
-							currentResult.remove(opponentNextMoves[j], depth);
+							currentResult.remove(opponentMateMove, depth);
 							break opponentLoop;
 						}
 						currentResult = currentResult.parent;
@@ -81,15 +80,15 @@ public class MateSearch {
 					if (mobility == moveCounter) {
 						return true;
 					}
-					currentResult.remove(next[i], depth);
+					currentResult.remove(mateMove, depth);
 				} else {
 					// mobility != 0 && depth == maximum
 					// we can stop this depth
-					currentResult.remove(next[i], depth);
+					currentResult.remove(mateMove, depth);
 					return false;
 				}
 			} else {
-				currentResult.remove(next[i], depth);
+				currentResult.remove(mateMove, depth);
 			}
 		}
 		return false;

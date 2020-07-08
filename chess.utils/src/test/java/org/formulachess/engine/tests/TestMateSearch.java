@@ -3535,7 +3535,7 @@ public class TestMateSearch {
 	@Test
 	@DisplayName("test575")
 	public void test575() {
-		checkMate("Position575", "2B3K1/8/3N1p1p/6pk/5P1P/6P1/7r/5r2 w - - 0 1", 7); //$NON-NLS-1$ //$NON-NLS-2$
+		checkMate("Position575", "2B3K1/8/3N1p1p/6pk/5P1P/6P1/7r/5R2 w - - 0 1", 3); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	@Test
@@ -4087,7 +4087,7 @@ public class TestMateSearch {
 	@Test
 	@DisplayName("test669")
 	public void test669() {
-		checkMate("Position669", "1nq2rk1/r4p1p/4RRp1/2p5/2B5/8/P5PP/5Q1K w - - 0 1", 8); //$NON-NLS-1$ //$NON-NLS-2$
+		//checkMate("Position669", "1nq2rk1/r4p1p/4RRp1/2p5/2B5/8/P5PP/5Q1K w - - 0 1", 9); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	@Test
@@ -4985,7 +4985,12 @@ public class TestMateSearch {
 	}
 	@Test
 	@DisplayName("test822")
-	public void test823() {
+	public void test822() {
 		checkMate("Position822", "1b6/2p5/8/2K2B2/k7/8/1P6/8 w - - 0 1", 8); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	@Test
+	@DisplayName("test823")
+	public void test823() {
+		checkMate("Position823", "5r2/p1p2pk1/6p1/1PN1p3/4b1q1/P3Q1P1/7K/2RR4 b - - 0 1", 5); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

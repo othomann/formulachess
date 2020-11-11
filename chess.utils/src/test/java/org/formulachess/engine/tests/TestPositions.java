@@ -30,6 +30,6 @@ public class TestPositions {
 		for (int i = 0; i < 960; i++) {
 			positions.add(Util.getFisherRandomFEN(i));
 		}
-		assertEquals(positions.size(), 960, "Wrong number of fisher random positions");
+		assertEquals(960, positions.size(), "Wrong number of fisher random positions");
 	}
 }

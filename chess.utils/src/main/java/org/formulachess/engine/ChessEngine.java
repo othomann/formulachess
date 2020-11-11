@@ -2598,7 +2598,6 @@ public class ChessEngine extends AbstractChessEngine {
 			default:
 		}
 		this.decrementMoveNumber();
-		;
 		this.decrementStartingMoveCounter();
 	}
 }

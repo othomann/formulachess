@@ -60,7 +60,8 @@ public class TestPgnParser {
 	public void test003() {
 		try (ZipInputStream zipStream = new ZipInputStream(
 				new BufferedInputStream(TestPgnParser.class.getResourceAsStream("database.zip")))) {
-			new Parser().parseArchive(zipStream);
+			PGNDatabase pgnDatabase = new Parser().parseArchive(zipStream);
+			assertNotNull(pgnDatabase, "Should not be null"); //$NON-NLS-1$
 		} catch (IOException e) {
 			myLogger.log(Level.INFO, "Exception occurred while running test003", e); //$NON-NLS-1$
 		}

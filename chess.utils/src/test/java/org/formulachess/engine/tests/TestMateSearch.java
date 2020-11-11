@@ -5023,4 +5023,99 @@ public class TestMateSearch {
 	public void test829() {
 		checkMate("Position829", "3rk2b/5R1P/6B1/8/1P3pN1/7P/P2pbP2/6K1 w - - 0 1", 3); //$NON-NLS-1$ //$NON-NLS-2$
 	}
+	@Test
+	@DisplayName("test830")
+	public void test830() {
+		checkMate("Position830", "3r1r1k/1p3p1p/p2p4/4n1NN/6bQ/1BPq4/P3p1PP/1R5K w - - 0 1", 3); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	@Test
+	@DisplayName("test831")
+	public void test831() {
+		checkMate("Position831", "8/r7/3pNb2/3R3p/1p2p3/pPk5/P1P3PP/1K6 w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	@Test
+	@DisplayName("test832")
+	public void test832() {
+		checkMate("Position832", "r1b2n2/2q3rk/p3p2n/1p3p1P/4N3/PN1B1P2/1PPQ4/2K3R1 w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	@Test
+	@DisplayName("test8332")
+	public void test833() {
+		checkMate("Position833", "1Q6/8/3p1pk1/2pP4/1p3K2/5R2/5qP1/4r3 b - - 0 1", 3); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	@Test
+	@DisplayName("test834")
+	public void test834() {
+		checkMate("Position834", "r2qr1k1/1p3pP1/p2p1np1/2pPp1B1/2PnP1b1/2N2p2/PP1Q4/2KR1BNR w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	@Test
+	@DisplayName("test8335")
+	public void test835() {
+		checkMate("Position835", "4r1rk/pQ2P2p/P7/2pqb3/3p1p2/8/3B2PP/4RRK1 b - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	@Test
+	@DisplayName("test836")
+	public void test836() {
+		checkMate("Position836", "3n2b1/1pr1r2k/p1p1pQpp/P1P5/2BP1PP1/5K2/1P5R/8 w - - 0 1", 3); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	@Test
+	@DisplayName("test837")
+	public void test837() {
+		checkMate("Position837", "8/6R1/1p1p4/1P1Np2k/2P1N2p/3P1p1q/1B2PP2/6K1 w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	@Test
+	@DisplayName("test838")
+	public void test838() {
+		checkMate("Position838", "2q1r3/4pR2/3rQ1pk/p1pnN2p/Pn5B/8/1P3PP/3R3K w - - 0 1", 2); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	@Test
+	@DisplayName("test839")
+	public void test839() {
+		checkMate("Position839", "1r2r1k1/5p2/5Rp1/4Q2p/P2B2qP/1NP5/1KP5/8 w - - 0 1", 3); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	@Test
+	@DisplayName("test840")
+	public void test840() {
+		checkMate("Position840", "5rk1/2R4p/3QP1p1/3p4/4p3/1P5P/q7/2R3K1 w - - 0 1", 3); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	@Test
+	@DisplayName("test841")
+	public void test841() {
+		checkMate("Position841", "8/8/2N5/8/8/p7/2K5/k7 w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	@Test
+	@DisplayName("test842")
+	public void test842() {
+		checkMate("Position842", "1r1qrbk1/3b3p/p2p1pp1/3NnP2/3N4/1Q4BP/PP4P1/1R2R2K w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	@Test
+	@DisplayName("test843")
+	public void test843() {
+		checkMate("Position843", "r4b2/p5pk/6rn/2n2N1Q/5PP1/2Bq4/PP6/K1R4R b - - 0 1", 3); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	@Test
+	@DisplayName("test844")
+	public void test844() {
+		checkMate("Position844", "r1br2k1/4p1b1/pq2pn2/1p4N1/7Q/3B4/PPP3PP/R4R1K w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	@Test
+	@DisplayName("test845")
+	public void test845() {
+		checkMate("Position845", "4qk2/6p1/p7/1p1Qp3/r1P2b2/1K5P/1P6/4RR2 w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	@Test
+	@DisplayName("test846")
+	public void test846() {
+		checkMate("Position846", "3rk1r1/1p5p/p1b1pP2/8/5K2/2B4q/PP2B2P/3RQ2R b - - 0 1", 2); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	@Test
+	@DisplayName("test847")
+	public void test847() {
+		checkMate("Position847", "r1nk3r/2b2ppp/p3b3/3NN3/Q2P3q/B2B4/P4PPP/4R1K1 w - - 0 1", 2); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	@Test
+	@DisplayName("test848")
+	public void test848() {
+		checkMate("Position848", "rn4nr/pppq2bk/7p/5b1P/4NBQ1/3B4/PPP3P1/R3K2R w - - 0 1", 3); //$NON-NLS-1$ //$NON-NLS-2$
+	}
 }

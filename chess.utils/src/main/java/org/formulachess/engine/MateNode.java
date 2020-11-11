@@ -31,7 +31,7 @@ public class MateNode implements Comparable<MateNode> {
 
 	public MateNode add(MateMove moveArg, Turn turn, int depthArg) {
 		if (this.children == null) {
-			this.children = new ArrayList<MateNode>();
+			this.children = new ArrayList<>();
 		}
 		MateNode newNode = new MateNode(this, moveArg, turn, depthArg);
 		this.children.add(newNode);

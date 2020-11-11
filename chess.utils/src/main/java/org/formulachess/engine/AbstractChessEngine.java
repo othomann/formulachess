@@ -43,8 +43,6 @@ public abstract class AbstractChessEngine extends Observable {
 
 	public long perft(int depth) {
 		long[] moves = this.allMoves();
-//		PGNMoveContainer pgnMoveContainer = new PGNMoveContainer(this, moves, Locale.FRANCE);
-//		System.out.println(pgnMoveContainer.toString(true));
 		if (depth == 1) {
 			return moves.length;
 		}

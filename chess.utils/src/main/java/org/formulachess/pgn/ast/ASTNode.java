@@ -37,7 +37,7 @@ public abstract class ASTNode {
 	public void setComments(List<Comment> comments) {
 		if (comments != null && !comments.isEmpty()) {
 			if (this.comments == null) {
-				this.comments = new ArrayList<Comment>();
+				this.comments = new ArrayList<>();
 			}
 			this.comments.addAll(comments);
 		}

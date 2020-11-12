@@ -1,6 +1,6 @@
 --main options
 %options ACTION, AN=JavaAction.java, GP=java, 
-%options FILE-PREFIX=java, ESCAPE=$, PREFIX=TokenName, OUTPUT-SIZE=125 ,
+%options FILE-PREFIX=java, ESCAPE=$, PREFIX=TOKEN_NAME_, OUTPUT-SIZE=125 ,
 %options NOGOTO-DEFAULT, SINGLE-PRODUCTIONS, LALR=1 , TABLE=TIME , 
 
 --error recovering options.....
@@ -25,14 +25,14 @@ $break
 -- here it starts really ------------------------------------------
 $Terminals
 
-	IntegerLiteral
-	StringLiteral
+	INTEGER
+	STRING
 	
-	FileName
-	RankName
-	PieceIdentification
-	Start_Tag_Section
-	Start_nag
+	COLUMN
+	RANK
+	PIECE_ID
+	START_TAG_SECTION
+	START_NAG
 	
 	Comment
 
@@ -88,10 +88,10 @@ tag-section ::= space tag-section tag-pair space
 tag-section ::= $empty
 /.$putCase consumeEmptyTagSection(); $break ./
 
-tag-pair ::= Start_Tag_Section space tag-value space END_TAG_SECTION
+tag-pair ::= START_TAG_SECTION space tag-value space END_TAG_SECTION
 /.$putCase consumeTagPair(); $break ./
 
-tag-value -> StringLiteral
+tag-value -> STRING
 
 movetext-section ::= element-sequence game-termination
 /.$putCase consumeMoveTextSection(); $break ./
@@ -130,40 +130,40 @@ BlackDots -> DOT DOT space
 BlackMoveFollowingWhiteMove ::= WhiteMove
 /.$putCase consumeBlackMoveFollowingWhiteMove(); $break ./
 
-InnerSANMove ::= FileName RankName
+InnerSANMove ::= COLUMN RANK
 /.$putCase consumePawnMove(); $break ./
-InnerSANMove ::= FileName RankName PROMOTE PieceIdentification
+InnerSANMove ::= COLUMN RANK PROMOTE PIECE_ID
 /.$putCase consumePawnMoveWithPromotion(); $break ./
-InnerSANMove ::= FileName RankName PieceIdentification
+InnerSANMove ::= COLUMN RANK PIECE_ID
 /.$putCase consumePawnMoveWithPromotion(); $break ./
-InnerSANMove ::= FileName CAPTURE FileName RankName
+InnerSANMove ::= COLUMN CAPTURE COLUMN RANK
 /.$putCase consumePawnMoveWithCapture(); $break ./
-InnerSANMove ::= FileName CAPTURE FileName RankName EN_PASSANT
+InnerSANMove ::= COLUMN CAPTURE COLUMN RANK EN_PASSANT
 /.$putCase consumePawnMoveWithCapture(); $break ./
-InnerSANMove ::= FileName CAPTURE FileName RankName PieceIdentification
+InnerSANMove ::= COLUMN CAPTURE COLUMN RANK PIECE_ID
 /.$putCase consumePawnMoveWithCaptureAndPromotion(); $break ./
-InnerSANMove ::= FileName CAPTURE FileName RankName PROMOTE PieceIdentification
+InnerSANMove ::= COLUMN CAPTURE COLUMN RANK PROMOTE PIECE_ID
 /.$putCase consumePawnMoveWithCaptureAndPromotion(); $break ./
-InnerSANMove ::= PieceIdentification FileName RankName
+InnerSANMove ::= PIECE_ID COLUMN RANK
 /.$putCase consumePieceMove(); $break ./
-InnerSANMove ::= PieceIdentification FileName FileName RankName
-/.$putCase consumePieceMoveWithFileNameAmbiguity(); $break ./
-InnerSANMove ::= PieceIdentification RankName FileName RankName
-/.$putCase consumePieceMoveWithRankNameAmbiguity(); $break ./
-InnerSANMove ::= PieceIdentification CAPTURE FileName RankName
+InnerSANMove ::= PIECE_ID COLUMN COLUMN RANK
+/.$putCase consumePieceMoveWithCOLUMNAmbiguity(); $break ./
+InnerSANMove ::= PIECE_ID RANK COLUMN RANK
+/.$putCase consumePieceMoveWithRANKAmbiguity(); $break ./
+InnerSANMove ::= PIECE_ID CAPTURE COLUMN RANK
 /.$putCase consumePieceMoveWithCapture(); $break ./
-InnerSANMove ::= PieceIdentification FileName CAPTURE FileName RankName
-/.$putCase consumePieceMoveWithCaptureAndFileNameAmbiguity(); $break ./
-InnerSANMove ::= PieceIdentification RankName CAPTURE FileName RankName
-/.$putCase consumePieceMoveWithCaptureAndRankNameAmbiguity(); $break ./
-InnerSANMove ::= PieceIdentification FileName RankName CAPTURE FileName RankName
+InnerSANMove ::= PIECE_ID COLUMN CAPTURE COLUMN RANK
+/.$putCase consumePieceMoveWithCaptureAndCOLUMNAmbiguity(); $break ./
+InnerSANMove ::= PIECE_ID RANK CAPTURE COLUMN RANK
+/.$putCase consumePieceMoveWithCaptureAndRANKAmbiguity(); $break ./
+InnerSANMove ::= PIECE_ID COLUMN RANK CAPTURE COLUMN RANK
 /.$putCase consumePieceMoveWithCaptureAndDoubleAmbiguity(); $break ./
 InnerSANMove ::= CASTLE_KING_SIDE
 /.$putCase consumeCastleKingSide(); $break ./
 InnerSANMove ::= CASTLE_QUEEN_SIDE
 /.$putCase consumeCastleQueenSide(); $break ./
 
-numeric-annotation-glyph ::= numeric-annotation-glyph Start_nag
+numeric-annotation-glyph ::= numeric-annotation-glyph START_NAG
 /.$putCase consumeNAG(); $break ./
 numeric-annotation-glyph ::= EXCELLENT_MOVE
 /.$putCase consumeExcellentMoveNAG(); $break ./
@@ -180,7 +180,7 @@ numeric-annotation-glyph ::= SUSPICIOUS_MOVE
 numeric-annotation-glyph ::= $empty
 /.$putCase consumeEmptyNAG(); $break ./
 
-move-number-indication ::= IntegerLiteral DOT space
+move-number-indication ::= INTEGER DOT space
 /.$putCase consumeMoveIndication(); $break ./
 
 recursive-variation ::= START_VARIATION space element-sequence END_VARIATION space

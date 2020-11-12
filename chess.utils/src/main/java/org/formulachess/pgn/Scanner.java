@@ -8,38 +8,38 @@ import org.formulachess.pgn.ast.Comment;
 public class Scanner {
 	
 	// TerminalSymbols
-	public static final int TokenNameIntegerLiteral = 19;
-	public static final int TokenNameStringLiteral = 30;
-	public static final int TokenNameFileName = 1;
-	public static final int TokenNameRankName = 4;
-	public static final int TokenNamePieceIdentification = 5;
-	public static final int TokenNameStart_Tag_Section = 31;
-	public static final int TokenNameStart_nag = 6;
-	public static final int TokenNameSTART_VARIATION = 20;
-	public static final int TokenNameEND_VARIATION = 32;
-	public static final int TokenNameDOT = 15;
-	public static final int TokenNameEND_TAG_SECTION = 33;
-	public static final int TokenNameWHITE_VICTORY = 34;
-	public static final int TokenNameBLACK_VICTORY = 35;
-	public static final int TokenNameDRAW = 36;
-	public static final int TokenNameUNKNOWN = 37;
-	public static final int TokenNameCAPTURE = 14;
-	public static final int TokenNameCHECK = 21;
-	public static final int TokenNameCHECKMATE = 22;
-	public static final int TokenNameCASTLE_KING_SIDE = 16;
-	public static final int TokenNameCASTLE_QUEEN_SIDE = 17;
-	public static final int TokenNamePROMOTE = 23;
-	public static final int TokenNameEXCELLENT_MOVE = 7;
-	public static final int TokenNameVERY_BAD_MOVE = 8;
-	public static final int TokenNameBAD_MOVE = 9;
-	public static final int TokenNameGOOD_MOVE = 10;
-	public static final int TokenNameINTERESTING_MOVE = 11;
-	public static final int TokenNameSUSPICIOUS_MOVE = 12;
-	public static final int TokenNameGREATER_THAN = 38;
-	public static final int TokenNameEN_PASSANT = 39;
-	public static final int TokenNameWHITESPACE = 2;
-	public static final int TokenNameEOF = 24;
-	public static final int TokenNameERROR = 51;
+	public static final int TOKEN_NAME_INTEGER = 19;
+	public static final int TOKEN_NAME_STRING = 30;
+	public static final int TOKEN_NAME_COLUMN = 1;
+	public static final int TOKEN_NAME_RANK = 4;
+	public static final int TOKEN_NAME_PIECE_ID = 5;
+	public static final int TOKEN_NAME_START_TAG_SECTION = 31;
+	public static final int TOKEN_NAME_START_NAG = 6;
+	public static final int TOKEN_NAME_START_VARIATION = 20;
+	public static final int TOKEN_NAME_END_VARIATION = 32;
+	public static final int TOKEN_NAME_DOT = 15;
+	public static final int TOKEN_NAME_END_TAG_SECTION = 33;
+	public static final int TOKEN_NAME_WHITE_VICTORY = 34;
+	public static final int TOKEN_NAME_BLACK_VICTORY = 35;
+	public static final int TOKEN_NAME_DRAW = 36;
+	public static final int TOKEN_NAME_UNKNOWN = 37;
+	public static final int TOKEN_NAME_CAPTURE = 14;
+	public static final int TOKEN_NAME_CHECK = 21;
+	public static final int TOKEN_NAME_CHECKMATE = 22;
+	public static final int TOKEN_NAME_CASTLE_KING_SIDE = 16;
+	public static final int TOKEN_NAME_CASTLE_QUEEN_SIDE = 17;
+	public static final int TOKEN_NAME_PROMOTE = 23;
+	public static final int TOKEN_NAME_EXCELLENT_MOVE = 7;
+	public static final int TOKEN_NAME_VERY_BAD_MOVE = 8;
+	public static final int TOKEN_NAME_BAD_MOVE = 9;
+	public static final int TOKEN_NAME_GOOD_MOVE = 10;
+	public static final int TOKEN_NAME_INTERESTING_MOVE = 11;
+	public static final int TOKEN_NAME_SUSPICIOUS_MOVE = 12;
+	public static final int TOKEN_NAME_GREATER_THAN = 38;
+	public static final int TOKEN_NAME_EN_PASSANT = 39;
+	public static final int TOKEN_NAME_WHITESPACE = 2;
+	public static final int TOKEN_NAME_EOF = 24;
+	public static final int TOKEN_NAME_ERROR = 51;
 
 	public static final String UNTERMINATED_STRING = "Unterminated_String"; //$NON-NLS-1$
 	public static final String UNTERMINATED_COMMENT = "Unterminated_Comment"; //$NON-NLS-1$
@@ -77,56 +77,56 @@ public class Scanner {
 				}
 				if (hasWhiteSpace) {
 					this.currentPosition--;
-					return TokenNameWHITESPACE;
+					return TOKEN_NAME_WHITESPACE;
 				}
 				// little trick to get out in the middle of a source computation
 				if (this.currentPosition > this.eofPosition)
-					return TokenNameEOF;
+					return TOKEN_NAME_EOF;
 
 				// ---------Identify the next token-------------
 
 				switch (this.currentCharacter) {
 					case '(':
-						return TokenNameSTART_VARIATION;
+						return TOKEN_NAME_START_VARIATION;
 					case ')':
-						return TokenNameEND_VARIATION;
+						return TOKEN_NAME_END_VARIATION;
 					case '[':
 						return consumeTagSection();
 					case ']':
-						return TokenNameEND_TAG_SECTION;
+						return TOKEN_NAME_END_TAG_SECTION;
 					case '.':
-						return TokenNameDOT;
+						return TOKEN_NAME_DOT;
 					case '+':
-						return TokenNameCHECK;
+						return TOKEN_NAME_CHECK;
 					case '#':
-						return TokenNameCHECKMATE;
+						return TOKEN_NAME_CHECKMATE;
 					case 'x':
 					case 'X':
-						return TokenNameCAPTURE;
+						return TOKEN_NAME_CAPTURE;
 					case '*':
-						return TokenNameUNKNOWN;
+						return TOKEN_NAME_UNKNOWN;
 					case '=':
-						return TokenNamePROMOTE;
+						return TOKEN_NAME_PROMOTE;
 					case '?':
 						if (checkQuestionMark()) {
 							this.currentCharacter = this.source[this.currentPosition++];
-							return TokenNameVERY_BAD_MOVE;
+							return TOKEN_NAME_VERY_BAD_MOVE;
 						}
 						if (checkExclamationPoint()) {
 							this.currentCharacter = this.source[this.currentPosition++];
-							return TokenNameSUSPICIOUS_MOVE;
+							return TOKEN_NAME_SUSPICIOUS_MOVE;
 						}
-						return TokenNameBAD_MOVE;
+						return TOKEN_NAME_BAD_MOVE;
 					case '!':
 						if (checkQuestionMark()) {
 							this.currentCharacter = this.source[this.currentPosition++];
-							return TokenNameINTERESTING_MOVE;
+							return TOKEN_NAME_INTERESTING_MOVE;
 						}
 						if (checkExclamationPoint()) {
 							this.currentCharacter = this.source[this.currentPosition++];
-							return TokenNameEXCELLENT_MOVE;
+							return TOKEN_NAME_EXCELLENT_MOVE;
 						}
-						return TokenNameGOOD_MOVE;
+						return TOKEN_NAME_GOOD_MOVE;
 					case '"':
 						return consumeStringLiteral();
 					case '{':
@@ -138,13 +138,13 @@ public class Scanner {
 					case 'd':
 					case 'e':
 						if (getNextChar('p')) {
-							return TokenNameEN_PASSANT;
+							return TOKEN_NAME_EN_PASSANT;
 						}
-						return TokenNameFileName;
+						return TOKEN_NAME_COLUMN;
 					case 'f':
 					case 'g':
 					case 'h':
-						return TokenNameFileName;
+						return TOKEN_NAME_COLUMN;
 					case '$':
 						return consumeNag();
 					case 'O':
@@ -156,21 +156,21 @@ public class Scanner {
 								if (checkDash()) {
 									this.currentCharacter = this.source[this.currentPosition++];
 									if (this.currentCharacter == 'O') {
-										return TokenNameCASTLE_QUEEN_SIDE;
+										return TOKEN_NAME_CASTLE_QUEEN_SIDE;
 									}
 								} else {
 									this.currentPosition--;
-									return TokenNameCASTLE_KING_SIDE;
+									return TOKEN_NAME_CASTLE_KING_SIDE;
 								}
 							}
 						}
-						return TokenNameERROR;
+						return TOKEN_NAME_ERROR;
 					case ';':
 						consumeLineComment();
 						break;
 					default:
 						if (this.isPieceIndentification()) {
-							return TokenNamePieceIdentification;
+							return TOKEN_NAME_PIECE_ID;
 						}
 						if (Character.isDigit(this.currentCharacter)) {
 							try {
@@ -182,32 +182,32 @@ public class Scanner {
 									this.currentCharacter = this.source[this.currentPosition++];
 								}
 							} catch (IndexOutOfBoundsException e) {
-								return TokenNameEOF;
+								return TOKEN_NAME_EOF;
 							}
 							if (checkDot()) {
 								this.currentPosition--;
-								return TokenNameIntegerLiteral;
+								return TOKEN_NAME_INTEGER;
 							} else if (checkDash()) {
 								this.currentCharacter = this.source[this.currentPosition];
 								switch (this.currentCharacter) {
 									case '0':
 										if (this.source[this.currentPosition - 2] != '1') {
-											return TokenNameERROR;
+											return TOKEN_NAME_ERROR;
 										}
 										this.currentPosition++;
-										return TokenNameWHITE_VICTORY;
+										return TOKEN_NAME_WHITE_VICTORY;
 									case '1':
 										if (this.source[this.currentPosition - 2] != '0') {
-											return TokenNameERROR;
+											return TOKEN_NAME_ERROR;
 										}
 										this.currentPosition++;
-										return TokenNameBLACK_VICTORY;
+										return TOKEN_NAME_BLACK_VICTORY;
 									default:
-										return TokenNameERROR;
+										return TOKEN_NAME_ERROR;
 								}
 							} else if (checkSlash()) {
 								if (this.source[this.currentPosition - 2] != '1') {
-									return TokenNameERROR;
+									return TOKEN_NAME_ERROR;
 								}
 								if ((this.source[this.currentPosition] == '2')
 										&& (this.source[this.currentPosition + 1] == '-')
@@ -215,21 +215,21 @@ public class Scanner {
 										&& (this.source[this.currentPosition + 3] == '/')
 										&& (this.source[this.currentPosition + 4] == '2')) {
 									this.currentPosition += 5;
-									return TokenNameDRAW;
+									return TOKEN_NAME_DRAW;
 								}
 							} else {
 								this.currentPosition--;
-								return TokenNameRankName;
+								return TOKEN_NAME_RANK;
 							}
 						}
-						return TokenNameERROR;
+						return TOKEN_NAME_ERROR;
 				}
 			}
 		} // -----------------end switch while try--------------------
 		catch (IndexOutOfBoundsException e) {
 			// ignore
 		}
-		return TokenNameEOF;
+		return TOKEN_NAME_EOF;
 	}
 
 	private void consumeLineComment() throws InvalidInputException {
@@ -273,13 +273,13 @@ public class Scanner {
 		try {
 			this.currentCharacter = this.source[this.currentPosition++];
 			if (!Character.isDigit(this.currentCharacter)) {
-				return TokenNameERROR;
+				return TOKEN_NAME_ERROR;
 			}
 			while (Character.isDigit(this.currentCharacter)) {
 				this.currentCharacter = this.source[this.currentPosition++];
 			}
 			this.currentPosition--;
-			return TokenNameStart_nag;
+			return TOKEN_NAME_START_NAG;
 		} catch (IndexOutOfBoundsException e) {
 			throw new InvalidInputException(UNTERMINATED_NAG, e);
 		}
@@ -292,7 +292,7 @@ public class Scanner {
 				// consume next character
 				this.currentCharacter = this.source[this.currentPosition++];
 			}
-			return TokenNameStart_Tag_Section;
+			return TOKEN_NAME_START_TAG_SECTION;
 		} catch (IndexOutOfBoundsException e) {
 			throw new InvalidInputException(UNTERMINATED_TAG_NAME, e);
 		}
@@ -326,7 +326,7 @@ public class Scanner {
 		} catch (IndexOutOfBoundsException e) {
 			throw new InvalidInputException(UNTERMINATED_STRING, e);
 		}
-		return TokenNameStringLiteral;
+		return TOKEN_NAME_STRING;
 	}
 
 	private boolean isPieceIndentification() {

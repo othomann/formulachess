@@ -1,21 +1,21 @@
 package org.formulachess.pgn;
 
-import static org.formulachess.pgn.Scanner.TokenNameBAD_MOVE;
-import static org.formulachess.pgn.Scanner.TokenNameEND_VARIATION;
-import static org.formulachess.pgn.Scanner.TokenNameEXCELLENT_MOVE;
-import static org.formulachess.pgn.Scanner.TokenNameFileName;
-import static org.formulachess.pgn.Scanner.TokenNameGOOD_MOVE;
-import static org.formulachess.pgn.Scanner.TokenNameGREATER_THAN;
-import static org.formulachess.pgn.Scanner.TokenNameINTERESTING_MOVE;
-import static org.formulachess.pgn.Scanner.TokenNameIntegerLiteral;
-import static org.formulachess.pgn.Scanner.TokenNamePieceIdentification;
-import static org.formulachess.pgn.Scanner.TokenNameRankName;
-import static org.formulachess.pgn.Scanner.TokenNameSTART_VARIATION;
-import static org.formulachess.pgn.Scanner.TokenNameSUSPICIOUS_MOVE;
-import static org.formulachess.pgn.Scanner.TokenNameStart_Tag_Section;
-import static org.formulachess.pgn.Scanner.TokenNameStart_nag;
-import static org.formulachess.pgn.Scanner.TokenNameStringLiteral;
-import static org.formulachess.pgn.Scanner.TokenNameVERY_BAD_MOVE;
+import static org.formulachess.pgn.Scanner.TOKEN_NAME_BAD_MOVE;
+import static org.formulachess.pgn.Scanner.TOKEN_NAME_END_VARIATION;
+import static org.formulachess.pgn.Scanner.TOKEN_NAME_EXCELLENT_MOVE;
+import static org.formulachess.pgn.Scanner.TOKEN_NAME_COLUMN;
+import static org.formulachess.pgn.Scanner.TOKEN_NAME_GOOD_MOVE;
+import static org.formulachess.pgn.Scanner.TOKEN_NAME_GREATER_THAN;
+import static org.formulachess.pgn.Scanner.TOKEN_NAME_INTERESTING_MOVE;
+import static org.formulachess.pgn.Scanner.TOKEN_NAME_INTEGER;
+import static org.formulachess.pgn.Scanner.TOKEN_NAME_PIECE_ID;
+import static org.formulachess.pgn.Scanner.TOKEN_NAME_RANK;
+import static org.formulachess.pgn.Scanner.TOKEN_NAME_START_VARIATION;
+import static org.formulachess.pgn.Scanner.TOKEN_NAME_SUSPICIOUS_MOVE;
+import static org.formulachess.pgn.Scanner.TOKEN_NAME_START_TAG_SECTION;
+import static org.formulachess.pgn.Scanner.TOKEN_NAME_START_NAG;
+import static org.formulachess.pgn.Scanner.TOKEN_NAME_STRING;
+import static org.formulachess.pgn.Scanner.TOKEN_NAME_VERY_BAD_MOVE;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -220,31 +220,31 @@ public class Parser {
 			this.scanner.clearComments();
 		}
 		switch (type) {
-			case TokenNameStringLiteral:
-			case TokenNamePieceIdentification:
-			case TokenNameBAD_MOVE:
-			case TokenNameEXCELLENT_MOVE:
-			case TokenNameVERY_BAD_MOVE:
-			case TokenNameSUSPICIOUS_MOVE:
-			case TokenNameINTERESTING_MOVE:
-			case TokenNameStart_nag:
-			case TokenNameGOOD_MOVE:
-			case TokenNameFileName:
-			case TokenNameRankName:
-			case TokenNameStart_Tag_Section:
+			case TOKEN_NAME_STRING:
+			case TOKEN_NAME_PIECE_ID:
+			case TOKEN_NAME_BAD_MOVE:
+			case TOKEN_NAME_EXCELLENT_MOVE:
+			case TOKEN_NAME_VERY_BAD_MOVE:
+			case TOKEN_NAME_SUSPICIOUS_MOVE:
+			case TOKEN_NAME_INTERESTING_MOVE:
+			case TOKEN_NAME_START_NAG:
+			case TOKEN_NAME_GOOD_MOVE:
+			case TOKEN_NAME_COLUMN:
+			case TOKEN_NAME_RANK:
+			case TOKEN_NAME_START_TAG_SECTION:
 				pushOnNodeInformationStack(this.scanner.getCurrentTokenSource());
 				break;
-			case TokenNameIntegerLiteral:
+			case TOKEN_NAME_INTEGER:
 				try {
 					this.currentMoveIndication = Integer.parseInt(new String(this.scanner.getCurrentTokenSource()));
 				} catch (NumberFormatException e) {
 					this.currentMoveIndication = -1;
 				}
 				break;
-			case TokenNameSTART_VARIATION:
+			case TOKEN_NAME_START_VARIATION:
 				this.variationCounter++;
 				break;
-			case TokenNameEND_VARIATION:
+			case TOKEN_NAME_END_VARIATION:
 				this.variationCounter--;
 				break;
 			default:
@@ -528,7 +528,7 @@ public class Parser {
 	}
 
 	private void goForPGNDatabase() {
-		this.firstToken = TokenNameGREATER_THAN;
+		this.firstToken = TOKEN_NAME_GREATER_THAN;
 	}
 
 	public PGNDatabase parse(char[] source) {

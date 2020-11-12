@@ -22,6 +22,19 @@ import org.junit.jupiter.api.Test;
 public class TestPgnParser {
 	private static Logger myLogger = Logger.getLogger(TestPgnParser.class.getCanonicalName());
 
+
+	private void parseSource(String source) {
+		Parser parser = new Parser();
+		PGNDatabase pgnDatabase = parser.parse(source.toCharArray());
+		assertNotNull(pgnDatabase, "Should not be null"); //$NON-NLS-1$
+		PGNGame[] pgnGames = pgnDatabase.getPGNGames();
+		for (PGNGame game : pgnGames) {
+			PGNModel model = new PGNModel(game, new ChessEngine());
+			Move[] moves = game.getMoveText().getMoves();
+			model.playMovesTill(moves, moves.length - 1);
+		}
+	}
+
 	@Test
 	@DisplayName("test001")
 	public void test001() {
@@ -66,16 +79,17 @@ public class TestPgnParser {
 			myLogger.log(Level.INFO, "Exception occurred while running test003", e); //$NON-NLS-1$
 		}
 	}
-
-	private void parseSource(String source) {
-		Parser parser = new Parser();
-		PGNDatabase pgnDatabase = parser.parse(source.toCharArray());
-		assertNotNull(pgnDatabase, "Should not be null"); //$NON-NLS-1$
-		PGNGame[] pgnGames = pgnDatabase.getPGNGames();
-		for (PGNGame game : pgnGames) {
-			PGNModel model = new PGNModel(game, new ChessEngine());
-			Move[] moves = game.getMoveText().getMoves();
-			model.playMovesTill(moves, moves.length - 1);
+	
+	@Test
+	@DisplayName("test004")
+	public void test004() {
+		StringBuilder buffer = new StringBuilder();
+		try (InputStream stream = TestPgnParser.class.getResourceAsStream("solutions.pgn")) {
+			buffer.append(Util.getFileCharContent(stream, Util.UTF_8));
+		} catch (Exception e) {
+			myLogger.log(Level.INFO, "Exception occurred while running test004", e); //$NON-NLS-1$
 		}
+		String source = String.valueOf(buffer);
+		parseSource(source);
 	}
 }

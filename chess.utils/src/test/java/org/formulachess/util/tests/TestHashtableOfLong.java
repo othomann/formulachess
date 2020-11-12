@@ -3,6 +3,9 @@ package org.formulachess.util.tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 import org.formulachess.util.HashtableOfLong;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -59,4 +62,49 @@ public class TestHashtableOfLong {
 		table.put("test2", 5677555);
 		assertEquals(4, table.size(), "wrong size");
 	}
+
+	@Test
+	@DisplayName("test005")
+	public void test005() {
+		HashtableOfLong table = new HashtableOfLong(30);
+		assertNotNull(table);
+		table.put("test", 3);
+		table.put("max", Long.MAX_VALUE);
+		table.put("min", Long.MIN_VALUE);
+		table.put("test", 5);
+		assertEquals(5, table.get("test"), "wrong value");
+		assertEquals(3, table.size(), "wrong size");
+
+		Iterator<String> iterator = table.iterator();
+		assertTrue(iterator.hasNext(), "not more elements");
+		iterator.next();
+		assertTrue(iterator.hasNext(), "not more elements");
+		iterator.next();
+		assertTrue(iterator.hasNext(), "not more elements");
+		iterator.next();
+		try {
+			assertFalse(iterator.hasNext(), "more elements");
+			iterator.next();
+			assertTrue(false, "more elements");
+		} catch(NoSuchElementException e) {
+			// ignore
+		}
+	}
+	
+	@Test
+	@DisplayName("test006")
+	public void test006() {
+		HashtableOfLong table = new HashtableOfLong(30);
+		assertNotNull(table);
+		table.put("test", 3);
+		table.put("max", Long.MAX_VALUE);
+		table.put("min", Long.MIN_VALUE);
+		table.put("test", 5);
+		assertEquals(5, table.get("test"), "wrong value");
+		assertEquals(3, table.size(), "wrong size");
+
+		HashtableOfLong table2 = new HashtableOfLong(table);
+		assertEquals(3, table2.size(), "wrong size");
+	}
+
 }

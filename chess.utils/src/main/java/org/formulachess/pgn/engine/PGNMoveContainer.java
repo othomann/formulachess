@@ -103,11 +103,7 @@ public class PGNMoveContainer {
 			Locale locale,
 			boolean columnAmbiguity,
 			boolean rowAmbiguity) {
-		Messages messages = this.bundles.get(locale);
-		if (messages == null) {
-			messages = new Messages(locale);
-			this.bundles.put(locale, messages);
-		}
+		Messages messages = this.bundles.computeIfAbsent(locale, loc -> new Messages(loc));
 		StringBuilder builder = new StringBuilder();
 		int startingPosition = MoveConstants.getStartingSquare(move);
 		int endingPosition = MoveConstants.getEndingSquare(move);

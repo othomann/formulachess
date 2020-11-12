@@ -128,8 +128,10 @@ public final class HashtableOfLong implements Iterable<String> {
 		int index = getIndex(key);
 		String currentKey;
 		while ((currentKey = this.keyTable[index]) != null) {
-			if (key.equals(currentKey))
-				return this.valueTable[index] = value;
+			if (key.equals(currentKey)) {
+				this.valueTable[index] = value;
+				return value;
+			}
 			index = (index + 1) % this.keyTable.length;
 		}
 		this.keyTable[index] = key;

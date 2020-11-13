@@ -42380,3 +42380,19 @@
 
 1. Re8+ Kxe8 2. Qe7#
 1-0
+
+[Event "Position850"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "?"]
+[Black "?"]
+[Result "0-1"]
+[SetUp "1"]
+[FEN "1kbq2r1/2p5/1pQ1P3/2pB3p/2P5/P5PK/4r2P/1R1R4 b - - 0 1"]
+
+1...Qh4+ 2. gxh4
+(2. Kxh4 Rxh2#)
+2...Re3+ 3. Bf3 Bxe6+ 4. Qxe6 Rxf3#
+0-1
+

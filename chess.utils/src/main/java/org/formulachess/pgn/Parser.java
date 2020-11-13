@@ -184,8 +184,9 @@ public class Parser {
 						return;
 					}
 					continue ProcessTerminals;
-				} else
+				} else {
 					break ProcessTerminals;
+				}
 
 				do { /* reduce */
 					consumeRule(act);

@@ -5128,4 +5128,9 @@ public class TestMateSearch {
 	public void test850() {
 		checkMate("Position850", "1kbq2r1/2p5/1pQ1P3/2pB3p/2P5/P5PK/4r2P/1R1R4 b - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
 	}
+	@Test
+	@DisplayName("test851")
+	public void test851() {
+		checkMate("Position851", "r1bqk2r/bppp1ppp/8/PB2N3/3n4/B7/2PPQnPP/RN2K2R w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
 }

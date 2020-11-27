@@ -19,7 +19,7 @@ public class TestMateSearch {
 	private static final Logger MyLogger = Logger.getLogger(TestMateSearch.class.getCanonicalName());
 	static int counter = 1;
 
-	private static final boolean DEBUG = false;
+	private static final boolean DEBUG = true;
 	public static final String LINE_SEPARATOR = System.getProperty("line.separator");//$NON-NLS-1$
 	public static final String NEW_PGN_HEADER = "[Site \"?\"]\r\n" + //$NON-NLS-1$
 			"[Date \"????.??.??\"]\n" + //$NON-NLS-1$
@@ -5132,5 +5132,30 @@ public class TestMateSearch {
 	@DisplayName("test851")
 	public void test851() {
 		checkMate("Position851", "r1bqk2r/bppp1ppp/8/PB2N3/3n4/B7/2PPQnPP/RN2K2R w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	@Test
+	@DisplayName("test852")
+	public void test852() {
+		checkMate("Position852", "2kr4/K1pp4/8/8/8/8/7Q/3R4 w - - 0 1", 2); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	@Test
+	@DisplayName("test853")
+	public void test853() {
+		checkMate("Position853", "rnbq1bkr/pp3p1p/2p3pQ/3N2N1/2B2p2/8/PPPP2PP/R1B1R1K1 w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	@Test
+	@DisplayName("test854")
+	public void test854() {
+		checkMate("Position854", "rnbq1bnr/pp1p1p1p/3pk3/3NP1p1/5p2/5N2/PPP1Q1PP/R1B1KB1N w - - 0 1", 4); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	@Test
+	@DisplayName("test855")
+	public void test855() {
+		checkMate("Position855", "2b5/k2n1p2/p2q4/5R1B/2p4P/2b5/KPQ1R3/6r1 b - - 0 1", 2); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	@Test
+	@DisplayName("test856")
+	public void test856() {
+		checkMate("Position856", "1k1r4/3b1p2/QP1b3p/1p1p4/3P2pN/1R4P1/KPPq1PP1/4r2R w - - 0 1", 3); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

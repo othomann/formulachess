@@ -81,7 +81,7 @@ public class TestMateSearch {
 		if (DEBUG) {
 			MyLogger.log(Level.INFO, () -> String.valueOf(buffer));
 		}
-		try (PrintWriter writer = new PrintWriter(new FileWriter("solutions2.pgn", true))) { //$NON-NLS-1$
+		try (PrintWriter writer = new PrintWriter(new FileWriter("solutions.pgn", true))) { //$NON-NLS-1$
 			writer.println(String.valueOf(buffer));
 			writer.flush();
 		} catch (IOException e) {
@@ -5162,5 +5162,10 @@ public class TestMateSearch {
 	@DisplayName("test857")
 	public void test857() {
 		checkMate("Position857", "r7/6p1/4b1Rp/4q2k/7b/1B6/2PB2Q1/2K5 w - - 0 1", 3); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	@Test
+	@DisplayName("test858")
+	public void test858() {
+		checkMate("Position858", "5rk1/n1p1R1bp/p2p4/1qpP1QB1/7P/2P3P1/PP3P2/6K1 w - - 0 1", 3); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 
 import org.formulachess.util.Util;
 
-public class ChessEngine extends AbstractChessEngine {
+public class ChessEngine implements AbstractChessEngine {
 
 	public static final String INITIAL_FEN_POSITION = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 	public static final int BLACK_KING_CASTLE_QUEEN_SIDE = 2;
@@ -2004,7 +2004,6 @@ public class ChessEngine extends AbstractChessEngine {
 	@Override
 	public void playMove(long move) {
 		this.playMoveWithoutNotification(move);
-		this.update();
 	}
 
 	@Override
@@ -2462,13 +2461,11 @@ public class ChessEngine extends AbstractChessEngine {
 	@Override
 	public void undoMove() {
 		undoMoveWithoutNotification();
-		update();
 	}
 
 	@Override
 	public void undoMove(long move) {
 		undoMoveWithoutNotification(move);
-		update();
 	}
 
 	@Override

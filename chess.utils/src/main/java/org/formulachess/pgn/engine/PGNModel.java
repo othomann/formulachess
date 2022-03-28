@@ -58,7 +58,6 @@ public class PGNModel {
 			} else {
 				this.model.initializeToStartingPosition();
 			}
-			this.model.update();
 			this.currentMoveCounter = -1;
 		} else if (this.currentMoveCounter != index || this.model.getMoveNumber() != index) {
 			if (this.fenNotation != null) {
@@ -75,7 +74,6 @@ public class PGNModel {
 				}
 			}
 			this.currentMoveCounter = index;
-			this.model.update();
 		}
 	}
 

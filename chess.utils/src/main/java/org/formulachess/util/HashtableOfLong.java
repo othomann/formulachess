@@ -124,13 +124,13 @@ public final class HashtableOfLong implements Iterable<String> {
 		return new Enumerator(this.keyTable);
 	}
 
-	public long put(String key, long value) {
+	public void put(String key, long value) {
 		int index = getIndex(key);
 		String currentKey;
 		while ((currentKey = this.keyTable[index]) != null) {
 			if (key.equals(currentKey)) {
 				this.valueTable[index] = value;
-				return value;
+				return;
 			}
 			index = (index + 1) % this.keyTable.length;
 		}
@@ -140,7 +140,6 @@ public final class HashtableOfLong implements Iterable<String> {
 		// assumes the threshold is never equal to the size of the table
 		if (++this.elementSize > this.threshold)
 			rehash();
-		return value;
 	}
 
 	private void rehash() {

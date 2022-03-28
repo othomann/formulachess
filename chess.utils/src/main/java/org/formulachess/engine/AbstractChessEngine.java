@@ -2,31 +2,31 @@ package org.formulachess.engine;
 
 import java.util.Arrays;
 
-public abstract class AbstractChessEngine {
+public interface AbstractChessEngine {
 
-	public abstract long[] allMoves();
+	public long[] allMoves();
 
-	public abstract long[] allMoves(Piece pieceType);
+	public long[] allMoves(Piece pieceType);
 
-	public abstract long[] allMoves(Piece pieceType, int startingSquare);
+	public long[] allMoves(Piece pieceType, int startingSquare);
 
-	public abstract long getLastMove();
+	public long getLastMove();
 
-	public abstract void initialize(String fenNotation, boolean isFischerRandom);
+	public void initialize(String fenNotation, boolean isFischerRandom);
 
-	public void initialize(String fenNotation) {
+	public default void initialize(String fenNotation) {
 		initialize(fenNotation, false);
 	}
 
-	public abstract void initializeToStartingPosition();
+	public void initializeToStartingPosition();
 
-	public abstract boolean isBlackInCheck();
+	public boolean isBlackInCheck();
 
-	public abstract boolean isMate();
+	public boolean isMate();
 
-	public abstract boolean isWhiteInCheck();
+	public boolean isWhiteInCheck();
 
-	public long perft(int depth) {
+	public default long perft(int depth) {
 		long[] moves = this.allMoves();
 		if (depth == 1) {
 			return moves.length;
@@ -40,28 +40,23 @@ public abstract class AbstractChessEngine {
 		return sum;
 	}
 
-	public abstract void playMove(long move);
+	public void playMove(long move);
 
-	public abstract Piece getBoard(int position);
+	public Piece getBoard(int position);
 	
-	public abstract void playMoveWithoutNotification(long move);
+	public void playMoveWithoutNotification(long move);
 
-	public abstract String toFENNotation();
+	public String toFENNotation();
 
-	public abstract void undoMoveWithoutNotification();
+	public void undoMoveWithoutNotification();
 
-	public abstract void undoMove();
+	public void undoMove();
 
-	public abstract void undoMove(long move);
+	public void undoMove(long move);
 
-	public abstract void undoMoveWithoutNotification(long move);
+	public void undoMoveWithoutNotification(long move);
 
-	public void update() {
-		//this.setChanged();
-		//this.notifyObservers();
-	}
-
-	public static Piece[] getEmptyBoard() {
+	public default Piece[] getEmptyBoard() {
 		Piece[] array = new Piece[64];
 		Arrays.fill(array, Piece.EMPTY);
 		return array;

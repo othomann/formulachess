@@ -27,6 +27,8 @@ import org.formulachess.util.Util;
 
 public class ChessEngine extends AbstractChessEngine {
 
+	public static final String INITIAL_FEN_POSITION = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+
 	private static final int[] TAB_120 = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 			-1, -1, 0, 1, 2, 3, 4, 5, 6, 7, -1, -1, 8, 9, 10, 11, 12, 13, 14, 15, -1, -1, 16, 17, 18, 19, 20, 21, 22,
 			23, -1, -1, 24, 25, 26, 27, 28, 29, 30, 31, -1, -1, 32, 33, 34, 35, 36, 37, 38, 39, -1, -1, 40, 41, 42, 43,
@@ -82,7 +84,7 @@ public class ChessEngine extends AbstractChessEngine {
 	public ChessEngine(Locale currentLocale) {
 		this.locale = currentLocale;
 		this.currentMessages = new Messages(currentLocale);
-		decodeFENNotation("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"); //$NON-NLS-1$
+		decodeFENNotation(INITIAL_FEN_POSITION); //$NON-NLS-1$
 		this.isReady = false;
 	}
 
@@ -512,7 +514,7 @@ public class ChessEngine extends AbstractChessEngine {
 
 	@Override
 	public void initializeToStartingPosition() {
-		decodeFENNotation("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"); //$NON-NLS-1$
+		decodeFENNotation(INITIAL_FEN_POSITION); //$NON-NLS-1$
 	}
 
 	public boolean isBlackCanCastleKingSide() {

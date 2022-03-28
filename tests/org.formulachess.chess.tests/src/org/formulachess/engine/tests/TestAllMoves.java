@@ -19,7 +19,6 @@ import junit.framework.TestSuite;
 
 public class TestAllMoves extends TestCase {
 
-	private static final String INITIAL_POSITION = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"; //$NON-NLS-1$
 	private static final String WRONG_MOVES = "Wrong moves"; //$NON-NLS-1$
 	private static final String WRONG_VALUE = "Wrong value"; //$NON-NLS-1$
 	private static Logger myLogger = Logger.getLogger(TestAllMoves.class.getCanonicalName());
@@ -267,10 +266,10 @@ public class TestAllMoves extends TestCase {
 	}
 
 	public void test011() {
-		ChessEngine model = new ChessEngine(Locale.getDefault(), INITIAL_POSITION);
+		ChessEngine model = new ChessEngine(Locale.getDefault(), ChessEngine.INITIAL_FEN_POSITION);
 		long[] moves = model.allMoves();
 		assertEquals(WRONG_SIZE, 20, moves.length);
-		playAllMoves(INITIAL_POSITION, model, moves);
+		playAllMoves(ChessEngine.INITIAL_FEN_POSITION, model, moves);
 		moves = model.allMoves();
 		assertEquals(WRONG_SIZE, 20, moves.length);
 		StringBuilder builder = new StringBuilder();
@@ -461,12 +460,12 @@ public class TestAllMoves extends TestCase {
 
 	public void test029() {
 		if (TOTAL) {
-			assertEquals(WRONG_VALUE, 20, ChessEngine.perft(INITIAL_POSITION, 1));
-			assertEquals(WRONG_VALUE, 400, ChessEngine.perft(INITIAL_POSITION, 2));
-			assertEquals(WRONG_VALUE, 8902, ChessEngine.perft(INITIAL_POSITION, 3));
-			assertEquals(WRONG_VALUE, 197281, ChessEngine.perft(INITIAL_POSITION, 4));
+			assertEquals(WRONG_VALUE, 20, ChessEngine.perft(ChessEngine.INITIAL_FEN_POSITION, 1));
+			assertEquals(WRONG_VALUE, 400, ChessEngine.perft(ChessEngine.INITIAL_FEN_POSITION, 2));
+			assertEquals(WRONG_VALUE, 8902, ChessEngine.perft(ChessEngine.INITIAL_FEN_POSITION, 3));
+			assertEquals(WRONG_VALUE, 197281, ChessEngine.perft(ChessEngine.INITIAL_FEN_POSITION, 4));
 			long time = System.currentTimeMillis();
-			assertEquals(WRONG_VALUE, 4865609, ChessEngine.perft(INITIAL_POSITION, 5));
+			assertEquals(WRONG_VALUE, 4865609, ChessEngine.perft(ChessEngine.INITIAL_FEN_POSITION, 5));
 			displayTime(time);
 		}
 	}

@@ -1,23 +1,8 @@
 package org.formulachess.engine;
 
-import static org.formulachess.engine.Piece.BLACK_BISHOP;
-import static org.formulachess.engine.Piece.BLACK_KING;
-import static org.formulachess.engine.Piece.BLACK_KNIGHT;
-import static org.formulachess.engine.Piece.BLACK_PAWN;
-import static org.formulachess.engine.Piece.BLACK_QUEEN;
-import static org.formulachess.engine.Piece.BLACK_ROOK;
-import static org.formulachess.engine.Piece.EMPTY;
-import static org.formulachess.engine.Piece.WHITE_BISHOP;
-import static org.formulachess.engine.Piece.WHITE_KING;
-import static org.formulachess.engine.Piece.WHITE_KNIGHT;
-import static org.formulachess.engine.Piece.WHITE_PAWN;
-import static org.formulachess.engine.Piece.WHITE_QUEEN;
-import static org.formulachess.engine.Piece.WHITE_ROOK;
-
 import java.util.Arrays;
-import java.util.Observable;
 
-public abstract class AbstractChessEngine extends Observable {
+public abstract class AbstractChessEngine {
 
 	public abstract long[] allMoves();
 
@@ -72,23 +57,13 @@ public abstract class AbstractChessEngine extends Observable {
 	public abstract void undoMoveWithoutNotification(long move);
 
 	public void update() {
-		this.setChanged();
-		this.notifyObservers();
+		//this.setChanged();
+		//this.notifyObservers();
 	}
 
 	public static Piece[] getEmptyBoard() {
 		Piece[] array = new Piece[64];
 		Arrays.fill(array, Piece.EMPTY);
 		return array;
-	}
-
-	public static Piece[] getInitialPosition() {
-		return new Piece[] { BLACK_ROOK, BLACK_KNIGHT, BLACK_BISHOP, BLACK_QUEEN, BLACK_KING, BLACK_BISHOP,
-				BLACK_KNIGHT, BLACK_ROOK, BLACK_PAWN, BLACK_PAWN, BLACK_PAWN, BLACK_PAWN, BLACK_PAWN, BLACK_PAWN,
-				BLACK_PAWN, BLACK_PAWN, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY,
-				EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY,
-				EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WHITE_PAWN, WHITE_PAWN, WHITE_PAWN, WHITE_PAWN, WHITE_PAWN,
-				WHITE_PAWN, WHITE_PAWN, WHITE_PAWN, WHITE_ROOK, WHITE_KNIGHT, WHITE_BISHOP, WHITE_QUEEN, WHITE_KING,
-				WHITE_BISHOP, WHITE_KNIGHT, WHITE_ROOK };
 	}
 }

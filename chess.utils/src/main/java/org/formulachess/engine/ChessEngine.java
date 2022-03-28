@@ -27,6 +27,7 @@ import org.formulachess.util.Util;
 
 public class ChessEngine extends AbstractChessEngine {
 
+	public static final String INITIAL_FEN_POSITION = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 	public static final int BLACK_KING_CASTLE_QUEEN_SIDE = 2;
 	public static final int BLACK_KING_CASTLE_KING_SIDE = 6;
 	public static final int BLACK_KING_POST_CASTING_KING_SIDE_SQUARE = 5;
@@ -112,7 +113,7 @@ public class ChessEngine extends AbstractChessEngine {
 	public ChessEngine(Locale currentLocale) {
 		this.locale = currentLocale;
 		this.currentMessages = new Messages(currentLocale);
-		decodeFENNotation("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"); //$NON-NLS-1$
+		decodeFENNotation(INITIAL_FEN_POSITION); //$NON-NLS-1$
 		this.isReady = false;
 	}
 
@@ -628,7 +629,7 @@ public class ChessEngine extends AbstractChessEngine {
 
 	@Override
 	public void initializeToStartingPosition() {
-		decodeFENNotation("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"); //$NON-NLS-1$
+		decodeFENNotation(INITIAL_FEN_POSITION); //$NON-NLS-1$
 	}
 
 	public boolean isBlackCanCastleKingSide() {

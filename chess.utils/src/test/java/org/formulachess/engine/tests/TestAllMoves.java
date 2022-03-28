@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 
 public class TestAllMoves {
 
-	private static final String INITIAL_POSITION = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"; //$NON-NLS-1$
 	private static final String WRONG_MOVES = "Wrong moves"; //$NON-NLS-1$
 	private static final String WRONG_VALUE = "Wrong value"; //$NON-NLS-1$
 	private static Logger myLogger = Logger.getLogger(TestAllMoves.class.getCanonicalName());
@@ -228,10 +227,10 @@ public class TestAllMoves {
 	@Test
 	@DisplayName("test011")
 	public void test011() {
-		ChessEngine model = new ChessEngine(Locale.getDefault(), INITIAL_POSITION);
+		ChessEngine model = new ChessEngine(Locale.getDefault(), ChessEngine.INITIAL_FEN_POSITION);
 		long[] moves = model.allMoves();
 		assertEquals(20, moves.length, WRONG_SIZE);
-		playAllMoves(INITIAL_POSITION, model, moves);
+		playAllMoves(ChessEngine.INITIAL_FEN_POSITION, model, moves);
 		moves = model.allMoves();
 		assertEquals(20, moves.length, WRONG_SIZE);
 		StringBuilder builder = new StringBuilder();
@@ -458,12 +457,12 @@ public class TestAllMoves {
 	@DisplayName("test029")
 	public void test029() {
 		if (TOTAL) {
-			assertEquals(20, ChessEngine.perft(INITIAL_POSITION, 1), WRONG_VALUE);
-			assertEquals(400, ChessEngine.perft(INITIAL_POSITION, 2), WRONG_VALUE);
-			assertEquals(8902, ChessEngine.perft(INITIAL_POSITION, 3), WRONG_VALUE);
-			assertEquals(197281, ChessEngine.perft(INITIAL_POSITION, 4), WRONG_VALUE);
+			assertEquals(20, ChessEngine.perft(ChessEngine.INITIAL_FEN_POSITION, 1), WRONG_VALUE);
+			assertEquals(400, ChessEngine.perft(ChessEngine.INITIAL_FEN_POSITION, 2), WRONG_VALUE);
+			assertEquals(8902, ChessEngine.perft(ChessEngine.INITIAL_FEN_POSITION, 3), WRONG_VALUE);
+			assertEquals(197281, ChessEngine.perft(ChessEngine.INITIAL_FEN_POSITION, 4), WRONG_VALUE);
 			long time = System.currentTimeMillis();
-			assertEquals(4865609, ChessEngine.perft(INITIAL_POSITION, 5), WRONG_VALUE);
+			assertEquals(4865609, ChessEngine.perft(ChessEngine.INITIAL_FEN_POSITION, 5), WRONG_VALUE);
 			displayTime(time);
 		}
 	}

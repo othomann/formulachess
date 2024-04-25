@@ -18,7 +18,7 @@ public class TestHashtableOfLong {
 		HashtableOfLong table = new HashtableOfLong();
 		assertNotNull(table);
 		table.put("test", 3);
-		assertNotNull(table.get("test"), "key not found");
+		assertEquals(3, table.get("test"), "key not found");
 		assertEquals(HashtableOfLong.NO_VALUE, table.get("test2"), "key found");
 		assertTrue(table.containsKey("test"), "key not found");
 	}

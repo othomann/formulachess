@@ -105,6 +105,9 @@ spec:
         EOF
 
         cat - >> "$SETTINGS_FILE" <<EOF
+            <profiles>
+        EOF
+        cat - >> "$SETTINGS_FILE" <<EOF
             <profile>
               <id>${MAVEN_NAME}</id>
               <repositories>

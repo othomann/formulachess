@@ -3,6 +3,9 @@ kind: Task
 metadata:
   name: build-maven
 spec:
+  params:
+    - name: source_directory
+      description: the source directory where the repo is cloned
   stepTemplate:
     env:
       - name: MAVEN_MIRROR_URL
@@ -45,6 +48,8 @@ spec:
     env:
       - name: HOME
         value: "/root"
+      - name: SOURCE_DIRECTORY
+        value: $(params.source_directory)
     workingDir: /workspace
     volumeMounts:
       - mountPath: /var/run/
@@ -54,6 +59,7 @@ spec:
       - |
         ls -la .
         echo "============================================================================="
+        cd ${SOURCE_DIRECTORY}
         export HOME=/root
         export SETTINGS_DIR=$HOME/.m2
         export SETTINGS_FILE=$SETTINGS_DIR/settings.xml
@@ -202,9 +208,9 @@ spec:
         EOF
         cat "$SETTINGS_FILE"
 
-        # cd chess.utils
-        # echo "formulachess"
-        # mvn -B clean verify
+        cd chess.utils
+        echo "build formulachess"
+        mvn -B clean verify
   sidecars:
     - image: icr.io/continuous-delivery/base-images/multiarch-dind:v1.15.0
       name: server

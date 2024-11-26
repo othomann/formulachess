@@ -31,6 +31,9 @@ spec:
       runAfter: [clone-source-repo]
       taskRef:
         name:  build-maven
+      params:
+        - name: source_directory
+          value: $(params.source_directory)
       workspaces:
       - name: task-pvc
         workspace: pipeline-pvc

@@ -17,6 +17,11 @@ spec:
         name: cd-config
       data:
         API: $(params.api)
+        MAVEN_MIRROR_URL: $(params.MAVEN_MIRROR_URL)
+        MAVEN_NAME: $(params.MAVEN_NAME)
+        MAVEN_RELEASE_URL : $(params.MAVEN_RELEASE_URL)
+        MAVEN_SNAPSHOT_URL : $(params.MAVEN_SNAPSHOT_URL)
+        MAVEN_USER_ID: $(params.MAVEN_USER_ID)
 
     - apiVersion: v1
       kind: Secret
@@ -25,6 +30,7 @@ spec:
       type: Opaque
       stringData:
         API_KEY: $(params.API_KEY)
+        MAVEN_TOKEN: $(params.MAVEN_TOKEN)
 
     # k8s resources to be able to pull docker image from a specific container registry
     # - apiVersion: v1

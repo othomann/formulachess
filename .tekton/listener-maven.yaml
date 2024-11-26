@@ -1,0 +1,100 @@
+apiVersion: tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: trigger-template-maven
+spec:
+  params:
+    # CD integration
+    - name: api
+      description: the ibmcloud api
+      default: https://cloud.ibm.com
+
+  resourcetemplates:
+    # CD context defined as a configmap and secret because it is immutable information
+    - apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: cd-config
+      data:
+        API: $(params.api)
+
+    - apiVersion: v1
+      kind: Secret
+      metadata:
+        name: cd-secret
+      type: Opaque
+      stringData:
+        API_KEY: $(params.API_KEY_1416501)
+
+    # k8s resources to be able to pull docker image from a specific container registry
+    # - apiVersion: v1
+    #   kind: Secret
+    #   metadata:
+    #     name: private-registry-secret
+    #   type: kubernetes.io/dockerconfigjson
+    #   data:
+    #     .dockerconfigjson: $(params.dockerconfigjson)
+    - apiVersion: v1
+      kind: ServiceAccount
+      metadata:
+        name: docker-build-sa
+      # imagePullSecrets:
+      #   - name: private-registry-secret
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: maven-$(uid)-pvc
+      spec:
+        resources:
+          requests:
+            storage:  15Gi
+        volumeMode: Filesystem
+        accessModes:
+          - ReadWriteOnce
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        #generateName: $(params.charts_branch)-base-run
+        name: maven-run-$(uid)
+        labels:
+          triggertemplated: "true"
+          generatedBy: "trigger-template-ci"
+      spec:
+        pipelineRef:
+          name: pipeline-maven
+        workspaces:
+          - name: pipeline-pvc
+            persistentVolumeClaim:
+              claimName: maven-$(uid)-pvc
+        serviceAccountName: docker-build-sa
+        params:
+          - name: source_repo
+            value: $(params.source_repo)
+          - name: source_branch
+            value: $(params.source_branch)
+          - name: source_directory
+            value: $(params.source_directory)
+---
+apiVersion: tekton.dev/v1beta1
+kind: TriggerBinding
+metadata:
+  name: trigger-binding-maven
+spec:
+  params:
+    - name: source_repo
+      value: "https://github.com/othomann/formulachess.git"
+    - name: source_branch
+      value: "master"
+    - name: source_directory
+      value: "formulachess"
+---
+apiVersion: tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  name: maven
+spec:
+  triggers:
+    - binding:
+        name: trigger-binding-maven
+      template:
+        name: trigger-template-maven
